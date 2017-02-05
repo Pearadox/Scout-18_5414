@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_visualizer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.pearadox.scout_5414.Visualizer_Activity">
+
+
+    <TextView
+        android:id="@+id/lbl_Student"
+        android:layout_width="70dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+        android:text="Student"
+        android:layout_below="@+id/txt_Dev"
+        android:layout_alignStart="@+id/lbl_Dev" />
+
+    <TextView
+        android:id="@+id/txt_Student"
+        android:text="Student's Name"
+        android:layout_width="150dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/yellow"
+        android:layout_alignBaseline="@+id/lbl_Student"
+        android:layout_alignBottom="@+id/lbl_Student"
+        android:layout_alignStart="@+id/txt_Dev" />
+
+    <TextView
+        android:id="@+id/lbl_Dev"
+        android:layout_width="70dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+        android:text="Device"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/imageView_VZ"
+        android:layout_marginStart="12dp" />
+
+    <TextView
+        android:id="@+id/txt_Dev"
+        android:text="Dev. Name"
+        android:layout_width="80dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/magenta"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/lbl_Student" />
+
+    <Spinner
+        android:id="@+id/spinner_MatchType"
+        android:layout_width="140dp"
+        android:layout_height="25dp"
+        android:layout_weight="1"
+        android:prompt="@string/mtchtyp_prompt"
+        android:layout_alignTop="@+id/lbl_MatchType"
+        android:layout_toRightOf="@+id/lbl_MatchType"
+        android:layout_toEndOf="@+id/lbl_MatchType" />
+
+    <Spinner
+        android:id="@+id/spinner_MatchNum"
+        android:layout_width="80dp"
+        android:layout_height="25dp"
+        android:layout_weight="1"
+        android:layout_below="@+id/spinner_MatchType"
+        android:layout_alignLeft="@+id/spinner_MatchType"
+        android:layout_alignStart="@+id/spinner_MatchType"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp" />
+
+    <TextView
+        android:id="@+id/lbl_MatchType"
+        android:layout_width="80dp"
+        android:layout_height="35dp"
+        android:layout_weight="1"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+        android:text="Match Type"
+        android:layout_below="@+id/lbl_Student"
+        android:layout_alignStart="@+id/lbl_Student" />
+
+    <TextView
+        android:id="@+id/lbl_MatchNum"
+        android:text="Match Number"
+        android:layout_height="35dp"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/spinner_MatchType"
+        android:layout_alignStart="@+id/lbl_MatchType" />
+
+    <ImageView
+        android:id="@+id/imageView_VZ"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/visualizer"
+        android:contentDescription="Visualizer logo"
+        android:layout_alignBottom="@+id/lbl_MatchType"
+        android:layout_alignParentStart="true" />
+
+
+
+    <TextView
+        android:id="@+id/lbl_RedAlliance"
+        android:layout_width="350dp"
+        android:textColor="@color/darkred"
+        android:background="@color/red"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_MatchNum"
+        android:text="Red Alliance"
+        android:gravity="center_horizontal"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_RedAlliance"
+        android:id="@+id/teams_sectR">
+
+        <TextView
+            android:id="@+id/lbl_teamR1"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:textColor="@color/red"
+            android:text="Team 1"
+            android:layout_below="@+id/spinner_MatchNum"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <TextView
+            android:id="@+id/txt_teamR1"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:textColor="@color/orange"
+            android:text="0001" />
+
+        <TextView
+            android:id="@+id/lbl_teamR2"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:textColor="@color/red"
+            android:text="Team 2"
+            android:layout_below="@+id/lbl_team1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <TextView
+            android:id="@+id/txt_teamR2"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:textColor="@color/orange"
+            android:text="0002" />
+        <TextView
+            android:id="@+id/lbl_teamR3"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:textColor="@color/red"
+            android:text="Team 3" />
+        <TextView
+            android:id="@+id/txt_teamR3"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:textColor="@color/orange"
+            android:text="0003" />
+        <TextView
+            android:id="@+id/lbl_fillerR1"
+            android:layout_width="80dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text=" " />
+
+    </LinearLayout>
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_BlueAlliance"
+        android:id="@+id/teams_sectB">
+        <TextView
+            android:id="@+id/lbl_teamB1"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:textColor="@color/blue"
+            android:text="Team 1"
+            android:layout_below="@+id/spinner_MatchNum"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <TextView
+            android:id="@+id/txt_teamB1"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:textColor="@color/cyan"
+            android:text="0001" />
+        <TextView
+            android:id="@+id/lbl_teamB2"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:textColor="@color/blue"
+            android:text="Team 2"
+            android:layout_below="@+id/lbl_team1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <TextView
+            android:id="@+id/txt_teamB2"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:textColor="@color/cyan"
+            android:text="0002" />
+
+        <TextView
+            android:id="@+id/lbl_teamB3"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:textColor="@color/blue"
+            android:text="Team 3" />
+        <TextView
+            android:id="@+id/txt_teamB3"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:textColor="@color/cyan"
+            android:text="0003" />
+        <TextView
+            android:id="@+id/lbl_fillerB1"
+            android:layout_width="80dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text=" " />
+    </LinearLayout>
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <TextView
+        android:id="@+id/lbl_BlueAlliance"
+        android:layout_width="350dp"
+        android:textColor="@color/brightblue"
+        android:background="@color/navy"
+        android:layout_height="wrap_content"
+        android:text="Blue Alliance"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/teams_sectR"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="12dp" />
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+</RelativeLayout>

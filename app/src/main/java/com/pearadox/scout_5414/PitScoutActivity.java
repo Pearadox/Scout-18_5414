@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 public class PitScoutActivity extends AppCompatActivity {
 
-    String TAG = "MatchScout_Activity";      // This CLASS name
+    String TAG = "PitScout_Activity";      // This CLASS name
     TextView txt_dev, txt_stud, txt_Team;
     ImageView imgScoutLogo;
     Spinner spinner_Team;
@@ -24,7 +24,7 @@ public class PitScoutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pit_scout);
-        Log.i(TAG, "<< Match Scout >>");
+        Log.i(TAG, "<< Pit Scout >>");
         Bundle bundle = this.getIntent().getExtras();
         String param1 = bundle.getString("dev");
         String param2 = bundle.getString("stud");

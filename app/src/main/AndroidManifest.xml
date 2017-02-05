@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -26,7 +27,8 @@
         </activity>
         <activity android:name=".ScoutMaster_Activity" />
         <activity android:name=".MatchScoutActivity" />
-        <activity android:name=".PitScoutActivity"></activity>
+        <activity android:name=".PitScoutActivity" />
+        <activity android:name=".Visualizer_Activity"></activity>
     </application>
 
 </manifest>

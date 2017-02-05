@@ -118,7 +118,12 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(sm_intent);        // Start the Scout Master activity
                         break;
                     case "Visualizer":          // Visualizer
-//            	            TODO
+                        Intent viz_intent = new Intent(MainActivity.this, Visualizer_Activity.class);
+                        Bundle VZbundle = new Bundle();
+                        VZbundle.putString("dev", devSelected);             // Pass data
+                        VZbundle.putString("stud", studentSelected);        //  to activity
+                        viz_intent.putExtras(VZbundle);
+                        startActivity(viz_intent);  	                    // Start Visualizer
                         break;
                     case ("Red-1"):             //#Red or Blue Scout
                     case ("Red-2"):             //#
@@ -126,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
                     case ("Blue-1"):            //#
                     case ("Blue-2"):            //#
                     case ("Blue-3"):            //#####
-//            	            TODO
                         Log.d(TAG, "### Red/Blue Scout ### " + devSelected);
                         if (Scout_Match) {
                             Intent smast_intent = new Intent(MainActivity.this, MatchScoutActivity.class);
@@ -134,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                             SMbundle.putString("dev", devSelected);             // Pass data
                             SMbundle.putString("stud", studentSelected);        //  to activity
                             smast_intent.putExtras(SMbundle);
-                            startActivity(smast_intent);  	// Start Match Scout
+                            startActivity(smast_intent);  	                    // Start Match Scout
                         } else {
                             if (Scout_Pit) {
                                 Intent spit_intent = new Intent(MainActivity.this, PitScoutActivity.class);
@@ -142,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                                 SPbundle.putString("dev", devSelected);             // Pass data
                                 SPbundle.putString("stud", studentSelected);        //  to activity
                                 spit_intent.putExtras(SPbundle);
-                                startActivity(spit_intent);  	// Start Pit Scout
+                                startActivity(spit_intent);  	                    // Start Pit Scout
                             } else {
                                 Log.e(TAG, "*** Error - Red/Blue Scout device selected but no TYPE indicator  ***");
                             }
@@ -210,7 +214,7 @@ private void preReqs() {
             if(directMatch.mkdir())
             { }        //directory is created;
         }
-        File directPit = new File(Environment.getExternalStorageDirectory() + "/download/FRC54414/pit");
+        File directPit = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit");
         if(!directPit.exists())  {
             if(directPit.mkdir())
             { }        //directory is created;

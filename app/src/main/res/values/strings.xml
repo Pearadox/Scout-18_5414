@@ -34,7 +34,7 @@
     <string-array name="team_array">
         <item> </item>
         <item>0001</item>
-        //  ...
+        // ...
         <item> 418</item>
         <item> 647</item>
         <item> 704</item>
@@ -47,7 +47,7 @@
         <item>5431</item>
         <item>5472</item>
         <item>5866</item>
-        //  ...
+        // ...
         <item>9999</item>
     </string-array>
 
