@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_match_scout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.pearadox.scout_5414.MatchScoutActivity">
+
+    <ImageView
+        android:id="@+id/imageView_MS"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/red_scout"
+        android:contentDescription="Match Scout logo" />
+
+    <TextView
+        android:id="@+id/txt_Dev"
+        android:text="Dev. Name"
+        android:layout_width="80dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/magenta"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/lbl_Student"
+        android:layout_toEndOf="@+id/lbl_Student" />
+
+    <TextView
+        android:id="@+id/lbl_Match"
+        android:layout_width="70dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+        android:text="Match"
+        android:layout_below="@+id/lbl_Student"
+        android:layout_alignLeft="@+id/lbl_Student"
+        android:layout_alignStart="@+id/lbl_Student" />
+    <TextView
+        android:id="@+id/lbl_Dev"
+        android:layout_width="70dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+        android:text="Device"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/chkBox_rotor3" />
+    <TextView
+        android:id="@+id/txt_Match"
+        android:text="T00"
+        android:layout_width="50dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/green"
+        android:layout_alignBaseline="@+id/lbl_Match"
+        android:layout_alignBottom="@+id/lbl_Match"
+        android:layout_toRightOf="@+id/lbl_Student"
+        android:layout_toEndOf="@+id/lbl_Student" />
+
+    <TextView
+        android:id="@+id/lbl_Student"
+        android:layout_width="70dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+        android:text="Student"
+        android:layout_below="@+id/txt_Dev"
+        android:layout_alignStart="@+id/lbl_Dev" />
+
+    <TextView
+        android:id="@+id/txt_Student"
+        android:text="Student's Name"
+        android:layout_width="150dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/yellow"
+        android:layout_below="@+id/txt_Dev"
+        android:layout_toEndOf="@+id/lbl_Match" />
+
+    <TextView
+        android:id="@+id/lbl_MyTeam"
+        android:layout_width="70dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+        android:text="My Team"
+        android:layout_below="@+id/lbl_Match"
+        android:layout_alignStart="@+id/lbl_Match" />
+
+    <TextView
+        android:id="@+id/txt_MyTeam"
+        android:text="0000"
+        android:layout_width="50dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/cyan"
+        android:layout_below="@+id/txt_Match"
+        android:layout_toEndOf="@+id/lbl_Match" />
+    <TextView
+        android:text="Team Name 12345"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/green"
+        android:textSize="14dp"
+        android:layout_below="@+id/txt_Match"
+        android:layout_toEndOf="@+id/txt_MyTeam"
+        android:id="@+id/txt_TeamName" />
+    <TextView
+        android:id="@+id/lbl_space1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_MyTeam"
+        android:text=" " />
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <!--<LinearLayout-->
+        <!--android:id="@+id/layout_rotors"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_alignParentEnd="true">-->
+    <CheckBox
+        android:id="@+id/chkBox_rotor1"
+        android:text="Rotor 1"
+        android:layout_weight="1.38"
+        android:layout_width="90dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="61dp"
+        android:layout_below="@+id/lbl_space1"
+        android:layout_alignParentStart="true" />
+    <CheckBox
+        android:id="@+id/chkBox_rotor2"
+        android:text="Rotor 2"
+        android:layout_weight="1"
+        android:layout_width="90dp"
+        android:layout_height="30dp"
+        android:layout_alignBaseline="@+id/chkBox_rotor1"
+        android:layout_alignBottom="@+id/chkBox_rotor1"
+        android:layout_toEndOf="@+id/chkBox_rotor1" />
+    <CheckBox
+        android:id="@+id/chkBox_rotor3"
+        android:text="Rotor 3"
+        android:layout_weight="1"
+        android:layout_width="90dp"
+        android:layout_height="30dp"
+        android:layout_alignBaseline="@+id/chkBox_rotor1"
+        android:layout_alignBottom="@+id/chkBox_rotor1"
+        android:layout_toEndOf="@+id/chkBox_rotor2" />
+    <CheckBox
+        android:id="@+id/chkBox_rotor4"
+        android:text="Rotor 4"
+        android:layout_weight="1"
+        android:layout_width="90dp"
+        android:layout_height="30dp"
+        android:layout_alignBaseline="@+id/chkBox_rotor2"
+        android:layout_alignBottom="@+id/chkBox_rotor2"
+        android:layout_toEndOf="@+id/chkBox_rotor3" />
+
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <TextView
+        android:id="@+id/lbl_GearPlaced"
+        android:layout_width="100dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+        android:text="Gear(s) Placed"
+        android:layout_below="@+id/chkBox_rotor1"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="32dp" />
+
+    <TextView
+        android:id="@+id/txt_GearsPlaced"
+        android:layout_width="30dp"
+        android:layout_height="25dp"
+        android:layout_alignBottom="@+id/lbl_GearPlaced"
+        android:layout_toEndOf="@+id/lbl_GearPlaced"
+        android:textSize="14dp"
+        android:textColor="@color/orange"
+        android:layout_alignTop="@+id/lbl_GearPlaced" />
+    <Button
+        android:id="@+id/button_GearsPlus"
+        android:text="+"
+        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_alignBaseline="@+id/txt_GearsPlaced"
+        android:layout_alignBottom="@+id/txt_GearsPlaced"
+        android:layout_toEndOf="@+id/txt_GearsPlaced" />
+
+    <Button
+        android:id="@+id/button_GearsMinus"
+        android:text="-"
+        android:textSize="14dp"
+        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_alignBaseline="@+id/txt_GearsPlaced"
+        android:layout_alignBottom="@+id/txt_GearsPlaced"
+        android:layout_toEndOf="@+id/button_GearsPlus" />
+
+
+    <!--</LinearLayout>-->
+
+</RelativeLayout>
+

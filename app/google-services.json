@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "372598341053",
+    "firebase_url": "https://paradox-2017.firebaseio.com",
+    "project_id": "paradox-2017",
+    "storage_bucket": "paradox-2017.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:372598341053:android:f9d2d1348193000d",
+        "android_client_info": {
+          "package_name": "com.pearadox.scout_5414"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "372598341053-bk7p1vs74rglcpoudflsljdprr4dr5d0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pearadox.scout_5414",
+            "certificate_hash": "4AE080903125E44278CA2A178DCAD4B5DF469DE4"
+          }
+        },
+        {
+          "client_id": "372598341053-2sqva5t1g04b97lr6nlp04hj9d6t6tfn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA92NwFnj6w51j1X4e9fk4nG0cxevOxjZU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "372598341053-2sqva5t1g04b97lr6nlp04hj9d6t6tfn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
