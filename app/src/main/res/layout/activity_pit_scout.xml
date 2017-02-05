@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_pit_scout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.pearadox.scout_5414.PitScoutActivity">
+
+    <ImageView
+        android:id="@+id/imageView_PS"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/robo_pit"
+        android:contentDescription="Pit Scout logo" />
+
+    <TextView
+        android:id="@+id/lbl_Dev"
+        android:layout_width="70dp"
+        android:layout_height="225dp"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+        android:text="Device"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/imageView_PS"
+        android:layout_marginEnd="14dp"
+        android:layout_above="@+id/txt_Student" />
+    <TextView
+        android:id="@+id/txt_Dev"
+        android:text="Dev. Name"
+        android:layout_width="80dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/magenta"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/imageView_PS"
+        android:layout_marginStart="58dp" />
+
+    <TextView
+        android:id="@+id/lbl_Student"
+        android:layout_width="70dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+        android:text="Student"
+        android:layout_below="@+id/txt_Dev"
+        android:layout_alignStart="@+id/lbl_Dev" />
+
+    <TextView
+        android:id="@+id/txt_Student"
+        android:text="Student's Name"
+        android:layout_width="150dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/yellow"
+        android:layout_alignBaseline="@+id/lbl_Student"
+        android:layout_alignBottom="@+id/lbl_Student"
+        android:layout_alignStart="@+id/txt_Dev" />
+
+    <TextView
+        android:id="@+id/lbl_Team"
+        android:layout_width="70dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+        android:text="Team"
+        android:layout_below="@+id/lbl_Student"
+        android:layout_toEndOf="@+id/imageView_PS" />
+
+    <Spinner
+        android:id="@+id/spinner_Team"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_Student"
+        android:layout_alignStart="@+id/txt_Student" />
+        android:id="@+id/spinner"
+
+
+</RelativeLayout>
