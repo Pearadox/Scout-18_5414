@@ -17,6 +17,6 @@ public class Pearadox {
     public static String FRC514_Device;                             // Devide ID
     public static String Student_ID;                                // Student Name
     public static String[] matches = new String[]
-            {"","01","02","03","04","05,","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20"};
+            {"","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20"};
 
 }
