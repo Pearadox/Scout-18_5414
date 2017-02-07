@@ -157,12 +157,12 @@ public class Visualizer_Activity extends AppCompatActivity {
         String tnum = "";
         //          ToDo - Get Red & Blue Alliance Teams from Firebase D/B
         teams.clear();          // empty the list
-        teams.add(new Pearadox_Firebase.teamsObj("1296","Full Metal Jackets",""));   //** DEBUG
-        teams.add(new Pearadox_Firebase.teamsObj("5414","Pearadox","Pearland, TX"));
-        teams.add(new Pearadox_Firebase.teamsObj("1642","Techno-Cats",""));
-        teams.add(new Pearadox_Firebase.teamsObj("1745","P-51 Mustangs",""));
-        teams.add(new Pearadox_Firebase.teamsObj("1817","Llano Estcado RoboRaiders",""));
-        teams.add(new Pearadox_Firebase.teamsObj("2333","S.C.R.E.E.C.H",""));
+        teams.add(new Pearadox_Firebase.teamsObj("1296 ","Full Metal Jackets",""));   //** DEBUG
+        teams.add(new Pearadox_Firebase.teamsObj("5414 ","Pearadox","Pearland, TX"));
+        teams.add(new Pearadox_Firebase.teamsObj("1642 ","Techno-Cats",""));
+        teams.add(new Pearadox_Firebase.teamsObj("1745 ","P-51 Mustangs",""));
+        teams.add(new Pearadox_Firebase.teamsObj("1817 ","Llano Estcado RoboRaiders",""));
+        teams.add(new Pearadox_Firebase.teamsObj("2333 ","S.C.R.E.E.C.H",""));
         Log.d(TAG, ">>>> # team instances = " + teams.size());  //** DEBUG
 
         txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
