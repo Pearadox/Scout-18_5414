@@ -1,13 +1,31 @@
 package com.pearadox.scout_5414;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class Visualizer_Activity extends AppCompatActivity {
 
@@ -21,6 +39,15 @@ public class Visualizer_Activity extends AppCompatActivity {
     public String NumSelected = " ";
     public String matchID = "T00";      // Type + #
     TextView txt_teamR1, txt_teamR2, txt_teamR3, txt_teamB1, txt_teamB2, txt_teamB3;
+    TextView txt_teamR1_Name, txt_teamR2_Name, txt_teamR3_Name, txt_teamB1_Name, txt_teamB2_Name, txt_teamB3_Name;
+    TextView tbl_teamR1, tbl_teamR2, tbl_teamR3, tbl_teamB1, tbl_teamB2, tbl_teamB3;
+    Button button_View;
+    String team_num, team_name, team_loc;
+    Pearadox_Firebase.teamsObj team_inst = new Pearadox_Firebase.teamsObj(team_num, team_name,  team_loc);
+    ArrayList<Pearadox_Firebase.teamsObj> teams = new ArrayList<Pearadox_Firebase.teamsObj>();
+    ImageView tbl_robotR1, tbl_robotR2, tbl_robotR3, tbl_robotB1, tbl_robotB2, tbl_robotB3;
+    Bitmap img;
+    String FB_url ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +77,44 @@ public class Visualizer_Activity extends AppCompatActivity {
         spinner_MatchNum.setAdapter(adapter_Num);
         spinner_MatchNum.setSelection(0, false);
         spinner_MatchNum.setOnItemSelectedListener(new Visualizer_Activity.mNum_OnItemSelectedListener());
+        clearTeams();
+        Button button_View = (Button) findViewById(R.id.button_View);   // Listner defined in Layout XML
+//        button_View.setOnClickListener(buttonView_Click);
+    }
+
+    private void clearTeams() {
+        Log.i(TAG, "Clearing Team data");
+        txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
+        txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
+        txt_teamR3 = (TextView) findViewById(R.id.txt_teamR3);
+        txt_teamB1 = (TextView) findViewById(R.id.txt_teamB1);
+        txt_teamB2 = (TextView) findViewById(R.id.txt_teamB2);
+        txt_teamB3 = (TextView) findViewById(R.id.txt_teamB3);
+        txt_teamR1_Name = (TextView) findViewById(R.id.txt_teamR1_Name);
+        txt_teamR2_Name = (TextView) findViewById(R.id.txt_teamR2_Name);
+        txt_teamR3_Name = (TextView) findViewById(R.id.txt_teamR3_Name);
+        txt_teamB1_Name = (TextView) findViewById(R.id.txt_teamB1_Name);
+        txt_teamB2_Name = (TextView) findViewById(R.id.txt_teamB2_Name);
+        txt_teamB3_Name = (TextView) findViewById(R.id.txt_teamB3_Name);
+
+        txt_teamR1.setText("");
+        txt_teamR2.setText("");
+        txt_teamR3.setText("");
+        txt_teamB1.setText("");
+        txt_teamB2.setText("");
+        txt_teamB3.setText("");
+
+        txt_teamR1_Name.setText("");
+        txt_teamR2_Name.setText("");
+        txt_teamR3_Name.setText("");
+        txt_teamB1_Name.setText("");
+        txt_teamB2_Name.setText("");
+        txt_teamB3_Name.setText("");
+
     }
 
 
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private class type_OnItemSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {
@@ -71,10 +132,8 @@ public class Visualizer_Activity extends AppCompatActivity {
                     break;
                 default:                // ????
                     Log.e(TAG, "*** Error - bad TYPE indicator  ***");
-
             }
         }
-
         public void onNothingSelected(AdapterView<?> parent) {
             // Do nothing.
         }
@@ -87,27 +146,102 @@ public class Visualizer_Activity extends AppCompatActivity {
             NumSelected = parent.getItemAtPosition(pos).toString();
             Log.d(TAG, ">>>>>  '" + NumSelected + "'");
             matchID = matchID + NumSelected;
-//          ToDo - Get Red & Blue Alliance Teams from Firebase D/B
-            txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
-            txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
-            txt_teamR3 = (TextView) findViewById(R.id.txt_teamR3);
-            txt_teamB1 = (TextView) findViewById(R.id.txt_teamB1);
-            txt_teamB2 = (TextView) findViewById(R.id.txt_teamB2);
-            txt_teamB3 = (TextView) findViewById(R.id.txt_teamB3);
-
-            txt_teamR1.setText("1111");             // ** DEBUG
-            txt_teamR2.setText("2222");
-            txt_teamR3.setText("3333");
-            txt_teamB1.setText("1111");
-            txt_teamB2.setText("2222");
-            txt_teamB3.setText("3333");             // ** DEBUG
-
-
         }
-
         public void onNothingSelected(AdapterView<?> parent) {
             // Do nothing.
         }
+    }
+
+    public void buttonView_Click(View view) {
+        Log.d(TAG, " VIEW Button Click  ");
+        String tnum = "";
+        //          ToDo - Get Red & Blue Alliance Teams from Firebase D/B
+        teams.clear();          // empty the list
+        teams.add(new Pearadox_Firebase.teamsObj("1296","Full Metal Jackets",""));   //** DEBUG
+        teams.add(new Pearadox_Firebase.teamsObj("5414","Pearadox","Pearland, TX"));
+        teams.add(new Pearadox_Firebase.teamsObj("1642","Techno-Cats",""));
+        teams.add(new Pearadox_Firebase.teamsObj("1745","P-51 Mustangs",""));
+        teams.add(new Pearadox_Firebase.teamsObj("1817","Llano Estcado RoboRaiders",""));
+        teams.add(new Pearadox_Firebase.teamsObj("2333","S.C.R.E.E.C.H",""));
+        Log.d(TAG, ">>>> # team instances = " + teams.size());  //** DEBUG
+
+        txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
+        txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
+        txt_teamR3 = (TextView) findViewById(R.id.txt_teamR3);
+        txt_teamB1 = (TextView) findViewById(R.id.txt_teamB1);
+        txt_teamB2 = (TextView) findViewById(R.id.txt_teamB2);
+        txt_teamB3 = (TextView) findViewById(R.id.txt_teamB3);
+        txt_teamR1_Name = (TextView) findViewById(R.id.txt_teamR1_Name);
+        txt_teamR2_Name = (TextView) findViewById(R.id.txt_teamR2_Name);
+        txt_teamR3_Name = (TextView) findViewById(R.id.txt_teamR3_Name);
+        txt_teamB1_Name = (TextView) findViewById(R.id.txt_teamB1_Name);
+        txt_teamB2_Name = (TextView) findViewById(R.id.txt_teamB2_Name);
+        txt_teamB3_Name = (TextView) findViewById(R.id.txt_teamB3_Name);
+        tbl_teamR1 = (TextView) findViewById(R.id.tbl_teamR1);
+        tbl_teamR2 = (TextView) findViewById(R.id.tbl_teamR2);
+        tbl_teamR3 = (TextView) findViewById(R.id.tbl_teamR3);
+        tbl_teamB1 = (TextView) findViewById(R.id.tbl_teamB1);
+        tbl_teamB2 = (TextView) findViewById(R.id.tbl_teamB2);
+        tbl_teamB3 = (TextView) findViewById(R.id.tbl_teamB3);
+
+        team_inst = teams.get(0);
+        txt_teamR1.setText(team_inst.getTeamNum());
+        txt_teamR1_Name.setText(team_inst.getTeamName());
+        tbl_teamR1.setText(team_inst.getTeamNum());
+        team_inst = teams.get(1);
+        txt_teamR2.setText(team_inst.getTeamNum());
+        txt_teamR2_Name.setText(team_inst.getTeamName());
+        tbl_teamR2.setText(team_inst.getTeamNum());
+        team_inst = teams.get(2);
+        txt_teamR3.setText(team_inst.getTeamNum());
+        txt_teamR3_Name.setText(team_inst.getTeamName());
+        tbl_teamR3.setText(team_inst.getTeamNum());
+        team_inst = teams.get(3);
+        txt_teamB1.setText(team_inst.getTeamNum());
+        txt_teamB1_Name.setText(team_inst.getTeamName());
+        tbl_teamB1.setText(team_inst.getTeamNum());
+        team_inst = teams.get(4);
+        txt_teamB2.setText(team_inst.getTeamNum());
+        txt_teamB2_Name.setText(team_inst.getTeamName());
+        tbl_teamB2.setText(team_inst.getTeamNum());
+        team_inst = teams.get(5);
+        txt_teamB3.setText(team_inst.getTeamNum());
+        txt_teamB3_Name.setText(team_inst.getTeamName());
+        tbl_teamB3.setText(team_inst.getTeamNum());
+
+        // Start getting data for Table
+        Log.d(TAG, " Loading Table Data ");          //** DEBUG
+        ImageView tbl_robotR1 = (ImageView) findViewById(R.id.tbl_robotR1);
+        ImageView tbl_robotR2 = (ImageView) findViewById(R.id.tbl_robotR2);
+        ImageView tbl_robotR3 = (ImageView) findViewById(R.id.tbl_robotR3);
+        ImageView tbl_robotB1 = (ImageView) findViewById(R.id.tbl_robotB1);
+        ImageView tbl_robotB2 = (ImageView) findViewById(R.id.tbl_robotB2);
+        ImageView tbl_robotB3 = (ImageView) findViewById(R.id.tbl_robotB3);
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com");
+        StorageReference imagesRef = storageRef.child("images");
+        tnum = (String) txt_teamR1.getText();
+        FB_url = "gs://paradox-2017.appspot.com/images/robot_" + tnum + ".jpg";
+        Log.d(TAG, "FireBase storage " + FB_url);
+        Picasso.with(this).load(FB_url).into(tbl_robotR1);
+        tnum = (String) txt_teamR2.getText();
+        FB_url = "gs://paradox-2017.appspot.com/images/robot_" + tnum + ".jpg";
+        Picasso.with(this).load(FB_url).into(tbl_robotR2);
+        tnum = (String) txt_teamR3.getText();
+        FB_url = "gs://paradox-2017.appspot.com/images/robot_" + tnum + ".jpg";
+        Picasso.with(this).load(FB_url).into(tbl_robotR3);
+        tnum = (String) txt_teamB1.getText();
+        FB_url = "gs://paradox-2017.appspot.com/images/robot_" + tnum + ".jpg";
+        Picasso.with(this).load(FB_url).into(tbl_robotB1);
+        tnum = (String) txt_teamB2.getText();
+        FB_url = "gs://paradox-2017.appspot.com/images/robot_" + tnum + ".jpg";
+        Picasso.with(this).load(FB_url).into(tbl_robotB2);
+        tnum = (String) txt_teamB3.getText();
+        FB_url = "gs://paradox-2017.appspot.com/images/robot_" + tnum + ".jpg";
+        Picasso.with(this).load(FB_url).into(tbl_robotB3);
+        Toast.makeText(getBaseContext(), "Robot images loaded", Toast.LENGTH_LONG).show();  //** DEBUG
+
     }
 
 

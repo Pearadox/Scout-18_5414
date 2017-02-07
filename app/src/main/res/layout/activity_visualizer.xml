@@ -11,11 +11,20 @@
     tools:context="com.pearadox.scout_5414.Visualizer_Activity">
 
 
+    <ImageView
+        android:id="@+id/imageView_VZ"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/visualizer"
+        android:contentDescription="Visualizer logo"
+        android:layout_alignBottom="@+id/lbl_MatchType"
+        android:layout_alignParentStart="true" />
+
     <TextView
         android:id="@+id/lbl_Student"
         android:layout_width="70dp"
         android:layout_height="25dp"
-        android:textSize="14dp"
+        android:textSize="14sp"
         android:textColor="@color/white"
         android:text="Student"
         android:layout_below="@+id/txt_Dev"
@@ -24,9 +33,9 @@
     <TextView
         android:id="@+id/txt_Student"
         android:text="Student's Name"
-        android:layout_width="150dp"
+        android:layout_width="180sp"
         android:layout_height="25dp"
-        android:textSize="14dp"
+        android:textSize="14sp"
         android:textColor="@color/yellow"
         android:layout_alignBaseline="@+id/lbl_Student"
         android:layout_alignBottom="@+id/lbl_Student"
@@ -36,19 +45,19 @@
         android:id="@+id/lbl_Dev"
         android:layout_width="70dp"
         android:layout_height="25dp"
-        android:textSize="14dp"
+        android:textSize="14sp"
         android:textColor="@color/white"
         android:text="Device"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/imageView_VZ"
-        android:layout_marginStart="12dp" />
+        android:layout_marginStart="14sp" />
 
     <TextView
         android:id="@+id/txt_Dev"
         android:text="Dev. Name"
         android:layout_width="80dp"
         android:layout_height="25dp"
-        android:textSize="14dp"
+        android:textSize="14sp"
         android:textColor="@color/magenta"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/lbl_Student" />
@@ -71,15 +80,15 @@
         android:layout_below="@+id/spinner_MatchType"
         android:layout_alignLeft="@+id/spinner_MatchType"
         android:layout_alignStart="@+id/spinner_MatchType"
-        android:layout_marginLeft="12dp"
-        android:layout_marginStart="12dp" />
+        android:layout_marginLeft="14sp"
+        android:layout_marginStart="14sp" />
 
     <TextView
         android:id="@+id/lbl_MatchType"
         android:layout_width="80dp"
         android:layout_height="35dp"
         android:layout_weight="1"
-        android:textSize="14dp"
+        android:textSize="14sp"
         android:textColor="@color/white"
         android:text="Match Type"
         android:layout_below="@+id/lbl_Student"
@@ -89,27 +98,28 @@
         android:id="@+id/lbl_MatchNum"
         android:text="Match Number"
         android:layout_height="35dp"
-        android:textSize="14dp"
+        android:textSize="14sp"
         android:textColor="@color/white"
         android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_below="@+id/spinner_MatchType"
         android:layout_alignStart="@+id/lbl_MatchType" />
+    <Button
+        android:id="@+id/button_View"
+        android:text="View Selected"
+        android:onClick="buttonView_Click"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_Student"
+        android:layout_toEndOf="@+id/txt_Student"
+        android:layout_marginStart="53dp" />
 
-    <ImageView
-        android:id="@+id/imageView_VZ"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/visualizer"
-        android:contentDescription="Visualizer logo"
-        android:layout_alignBottom="@+id/lbl_MatchType"
-        android:layout_alignParentStart="true" />
 
-
-
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    /* Start of Red Alliance */
     <TextView
         android:id="@+id/lbl_RedAlliance"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:textColor="@color/darkred"
         android:background="@color/red"
         android:layout_height="wrap_content"
@@ -129,82 +139,130 @@
 
         <TextView
             android:id="@+id/lbl_teamR1"
-            android:layout_width="30dp"
+            android:layout_width="25sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
-            android:textColor="@color/red"
+            android:textSize="14sp"
+            android:textColor="@color/darkred"
             android:text="Team 1"
             android:layout_below="@+id/spinner_MatchNum"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
+
         <TextView
             android:id="@+id/txt_teamR1"
-            android:layout_width="30dp"
+            android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
-            android:textColor="@color/orange"
+            android:textSize="14sp"
+            android:textColor="@color/red"
             android:text="0001" />
 
         <TextView
             android:id="@+id/lbl_teamR2"
-            android:layout_width="30dp"
+            android:layout_width="25sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
-            android:textColor="@color/red"
+            android:textSize="14sp"
+            android:textColor="@color/darkred"
             android:text="Team 2"
             android:layout_below="@+id/lbl_team1"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
         <TextView
             android:id="@+id/txt_teamR2"
-            android:layout_width="30dp"
+            android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
-            android:textColor="@color/orange"
+            android:textSize="14sp"
+            android:textColor="@color/red"
             android:text="0002" />
         <TextView
             android:id="@+id/lbl_teamR3"
-            android:layout_width="30dp"
+            android:layout_width="25sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
-            android:textColor="@color/red"
+            android:textSize="14sp"
+            android:textColor="@color/darkred"
             android:text="Team 3" />
         <TextView
             android:id="@+id/txt_teamR3"
-            android:layout_width="30dp"
+            android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
-            android:textColor="@color/orange"
+            android:textSize="14sp"
+            android:textColor="@color/red"
             android:text="0003" />
-        <TextView
-            android:id="@+id/lbl_fillerR1"
-            android:layout_width="80dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text=" " />
-
+        <!--<TextView-->
+            <!--android:id="@+id/lbl_fillerR1"-->
+            <!--android:layout_width="40sp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text=" " />-->
     </LinearLayout>
-
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/lbl_BlueAlliance"
-        android:id="@+id/teams_sectB">
+        android:layout_below="@+id/teams_sectR"
+        android:id="@+id/teams_sectR1">
         <TextView
-            android:id="@+id/lbl_teamB1"
-            android:layout_width="30dp"
+            android:id="@+id/txt_teamR1_Name"
+            android:layout_width="180sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
+            android:textSize="14sp"
+            android:textColor="@color/red"
+            android:text="Long Name of Red Team # 1 :::::::::::"
+            android:layout_below="@+id/teams_sectR"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/txt_teamR2_Name"
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:textColor="@color/red"
+            android:text="Long Name of Red Team # 2 :::::::::::"
+            android:layout_marginStart="11dp"
+            android:layout_below="@+id/teams_sectR"
+            android:layout_alignStart="@+id/spinner_MatchNum" />
+
+        <TextView
+            android:id="@+id/txt_teamR3_Name"
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:textColor="@color/red"
+            android:text="Long Name of Red Team # 3 :::::::::::"
+            android:layout_marginStart="75dp"
+            android:layout_below="@+id/teams_sectB"
+            android:layout_toEndOf="@+id/txt_Student" />
+    </LinearLayout>
+
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    /* Start of Blue Alliance */
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/teams_sectB"
+        android:layout_below="@+id/lbl_BlueAlliance"
+        android:layout_alignParentStart="true">
+
+
+        // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+        <TextView
+            android:id="@+id/lbl_teamB1"
+            android:layout_width="25sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="14sp"
             android:textColor="@color/blue"
             android:text="Team 1"
             android:layout_below="@+id/spinner_MatchNum"
@@ -212,72 +270,329 @@
             android:layout_alignParentStart="true" />
         <TextView
             android:id="@+id/txt_teamB1"
-            android:layout_width="30dp"
+            android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/cyan"
             android:text="0001" />
+
         <TextView
             android:id="@+id/lbl_teamB2"
-            android:layout_width="30dp"
+            android:layout_width="25sp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/blue"
             android:text="Team 2"
             android:layout_below="@+id/lbl_team1"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_weight="1" />
+
         <TextView
             android:id="@+id/txt_teamB2"
-            android:layout_width="30dp"
+            android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/cyan"
             android:text="0002" />
 
         <TextView
             android:id="@+id/lbl_teamB3"
-            android:layout_width="30dp"
+            android:layout_width="25sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/blue"
             android:text="Team 3" />
         <TextView
             android:id="@+id/txt_teamB3"
-            android:layout_width="30dp"
+            android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/cyan"
             android:text="0003" />
-        <TextView
-            android:id="@+id/lbl_fillerB1"
-            android:layout_width="80dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text=" " />
+        <!--<TextView-->
+            <!--android:id="@+id/lbl_fillerB1"-->
+            <!--android:layout_width="40sp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text=" " />-->
     </LinearLayout>
+
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/teams_sectB1"
+        android:layout_below="@+id/teams_sectB"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:id="@+id/txt_teamB1_Name"
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_weight="1"
+            android:textColor="@color/cyan"
+            android:text="Long Name of Blue Team # 1 :::::::::::"
+            android:layout_below="@+id/teams_sectB"
+            android:layout_alignParentStart="true" />
+
+
+        <TextView
+            android:id="@+id/txt_teamB2_Name"
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_weight="1"
+            android:textColor="@color/cyan"
+            android:text="Long Name of Blue Team # 2 :::::::::::"
+            android:layout_marginStart="11dp"
+            android:layout_below="@+id/teams_sectB1"
+            android:layout_alignStart="@+id/spinner_MatchNum" />
+
+        <TextView
+            android:id="@+id/txt_teamB3_Name"
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_weight="1"
+            android:textColor="@color/cyan"
+            android:text="Long Name of Blue Team # 3 :::::::::::"
+            android:layout_marginStart="75dp"
+            android:layout_below="@+id/teams_sectB"
+            android:layout_alignStart="@+id/spinner_MatchNum" />
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/lbl_BlueAlliance"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:textColor="@color/brightblue"
         android:background="@color/navy"
         android:layout_height="wrap_content"
         android:text="Blue Alliance"
         android:gravity="center_horizontal"
-        android:layout_below="@+id/teams_sectR"
-        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/teams_sectR1"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="12dp" />
+        android:layout_marginTop="10dp" />
 
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    <TextView
+        android:id="@+id/lbl_spacer1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_below="@+id/teams_sectB1"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="31dp" />
 
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:stretchColumns="1"
+        android:layout_alignTop="@+id/lbl_spacer1"
+        android:layout_alignParentStart="true">
+
+        /***  HEADER  ***/
+        <TableRow>
+            <TextView
+                android:id="@+id/hdr_team"
+                android:text="TEAM"
+                android:gravity="left"
+                android:layout_width="0px"
+                android:layout_weight="0.10"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+            <TextView
+                android:id="@+id/hdr_robot"
+                android:text="ROBOT PHOTO"
+                android:gravity="left"
+                android:layout_width="0px"
+                android:layout_weight="0.20"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+            <TextView
+                android:id="@+id/hdr_attr"
+                android:text="ATTRIBUTES"
+                android:gravity="left"
+                android:layout_width="0px"
+                android:layout_weight="0.70"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+        </TableRow>
+        // ==================================================================
+        /*  Row #1   */
+        <TableRow>
+            <TextView
+                android:id="@+id/tbl_teamR1"
+                android:text="1111"
+                android:textColor="@color/red"
+                android:layout_width="0px"
+                android:layout_weight="0.10"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+            <ImageView
+                android:id="@+id/tbl_robotR1"
+                android:src="@drawable/robot_1296"
+                android:layout_width="100dp"
+                android:layout_height="90dp"
+                android:layout_weight="0.20"
+                android:gravity="start"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+
+            <TextView
+                android:text="third"
+                android:gravity="right"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+        </TableRow>
+        // ==================================================================
+        /*  Row #2   */
+        <TableRow>
+            <TextView
+                android:id="@+id/tbl_teamR2"
+                android:text="2222"
+                android:textColor="@color/red"
+                android:layout_width="0px"
+                android:layout_weight="0.10"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+            <ImageView
+                android:id="@+id/tbl_robotR2"
+                android:src="@drawable/robot_5414"
+                android:layout_width="100dp"
+                android:layout_height="90dp"
+                android:layout_weight="0.20"
+                android:gravity="start"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+            <TextView
+                android:text="third"
+                android:gravity="right"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+        </TableRow>
+        // ==================================================================
+        /*  Row #3   */
+        <TableRow>
+            <TextView
+                android:id="@+id/tbl_teamR3"
+                android:text="3333"
+                android:textColor="@color/red"
+                android:layout_width="0px"
+                android:layout_weight="0.10"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+            <ImageView
+                android:id="@+id/tbl_robotR3"
+                android:layout_width="100dp"
+                android:layout_height="90dp"
+                android:text="second"
+                android:layout_weight="0.20"
+                android:gravity="start"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+            <TextView
+                android:text="third"
+                android:gravity="right"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+        </TableRow>
+        // ==================================================================
+        /*  Row #4   */
+        <TableRow>
+            <TextView
+                android:id="@+id/tbl_teamB1"
+                android:text="1111"
+                android:textColor="@color/cyan"
+                android:layout_width="0px"
+                android:layout_weight="0.10"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+            <ImageView
+                android:id="@+id/tbl_robotB1"
+                android:layout_width="100dp"
+                android:layout_height="90dp"
+                android:text="second"
+                android:layout_weight="0.20"
+                android:gravity="start"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+            <TextView
+                android:text="third"
+                android:gravity="right"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+        </TableRow>
+        // ==================================================================
+        /*  Row #5   */
+        <TableRow>
+            <TextView
+                android:id="@+id/tbl_teamB2"
+                android:text="2222"
+                android:textColor="@color/cyan"
+                android:layout_width="0px"
+                android:layout_weight="0.10"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+            <ImageView
+                android:id="@+id/tbl_robotB2"
+                android:layout_width="100dp"
+                android:layout_height="90dp"
+                android:text="second"
+                android:layout_weight="0.20"
+                android:gravity="start"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+            <TextView
+                android:text="third"
+                android:gravity="right"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+        </TableRow>
+        // ==================================================================
+        <TableRow>
+        /*  Row #6   */
+            <TextView
+                android:id="@+id/tbl_teamB3"
+                android:text="3333"
+                android:textColor="@color/cyan"
+                android:layout_width="0px"
+                android:layout_weight="0.10"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+            <ImageView
+                android:id="@+id/tbl_robotB3"
+                android:layout_width="100dp"
+                android:layout_height="90dp"
+                android:text="second"
+                android:layout_weight="0.20"
+                android:gravity="start"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+            <TextView
+                android:text="third"
+                android:gravity="right"
+                android:background="@drawable/border"
+                android:padding="3dip" />
+        </TableRow>
+    </TableLayout>
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 </RelativeLayout>
