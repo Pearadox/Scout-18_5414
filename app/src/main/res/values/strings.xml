@@ -1,10 +1,17 @@
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/tools">
     <string name="app_name">Scout-5414</string>
     <string name="action_settings">Settings</string>
     <string name="device_prompt">Device?</string>
     <string name="student_prompt">Student Name?</string>
     <string name="mtchtyp_prompt">Match Type?</string>
     <string name="lbl_Divider">______________________  Device Status  ______________________</string>
+    <string name="BT_connect">Connect a device</string>
+    <string name="BT_discover">Make this device discoverable</string>
+    <string name="scanning">Scanning for BT devices...</string>
+    <string name="select_device">Select a device to connect</string>
+    <string name="none_paired">No devices have been paired</string>
+    <string name="none_found">No BT devices found</string>
+    <string name="bt_not_enabled">Bluetooth was not enabled. </string>
 
 
     <!-- ##### DEVICES ##### -->
@@ -20,6 +27,8 @@
         // ...
         <item>Visualizer</item>
     </string-array>
+
+
     <!-- -->
     <!-- ##### Match Types ##### -->
     <string-array name="mtchtyp_array">
@@ -28,6 +37,20 @@
         <item>Qualifying</item>
         <item>Playoff</item>
     </string-array>
+
+    <!-- Options Menu -->
+    <string name="connect">Connect a BT device</string>
+    <string name="discoverable">Make discoverable</string>
+
+    <!--  BluetoothChat -->
+    <string name="send">Send</string>
+    <string name="not_connected">You are not connected to a device</string>
+    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
+    <string name="title_connecting">connecting...</string>
+    <string name="title_connected_to">connected to <xliff:g id="device_name">%1$s</xliff:g></string>
+    <string name="title_not_connected">not connected</string>
+
+
 
     <!-- -->
     <!-- TEMPORARY - until Firebase is working -->
@@ -68,5 +91,6 @@
     <color name="magenta">#ee00ee</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="grey">#a8a8a8</color>
 
 </resources>

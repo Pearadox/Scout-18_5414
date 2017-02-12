@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
     RadioGroup radgrp_Scout;      RadioButton radioScoutTyp;
     Boolean logged_On = false;
     Boolean Scout_Match = false, Scout_Pit = false;
-    private static final int REQUEST_ENABLE_BT = 1;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfDatabaseReference;
     private ChildEventListener pfEventListener;
@@ -293,43 +292,28 @@ private void retrieveStudents() {
                                    View view, int pos, long id) {
             devSelected = parent.getItemAtPosition(pos).toString();
             Log.d(TAG, ">>>>>  '" + devSelected + "'");
-            BluetoothAdapter myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-//            if (myBluetoothAdapter != null) {
-//                Log.i(TAG, "Bluetooth is available");
-//                if (!myBluetoothAdapter.isEnabled()) {
-//                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//                    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-//                }
-//                Log.i(TAG, "Bluetooth is enabled");
-                RadioGroup radgrp_Scout = (RadioGroup) findViewById(R.id.radgrp_Scout);
-                switch (devSelected) {
-                    case "Scout Master": 	            // Scout Master
-//            	        TODO - Start Bluetooth as slave
-                        radgrp_Scout.setVisibility(View.GONE);    // Hide scout group
-                        radgrp_Scout.setEnabled(false);
-                        break;
-                    case "Visualizer": 		// Visualizer
-                        radgrp_Scout.setVisibility(View.GONE);    // Hide scout group
-                        radgrp_Scout.setEnabled(false);
-                        break;
-                    case ("Red-1"):             //#Red or Blue Scout
-                    case ("Red-2"):             //#
-                    case ("Red-3"):             //#
-                    case ("Blue-1"):            //#
-                    case ("Blue-2"):            //#
-                    case ("Blue-3"):            //#####
-                        radgrp_Scout.setVisibility(VISIBLE);    // Show scout group
-                        radgrp_Scout.setEnabled(true);
-                        break;
-                    default:                // ?????
-//            	        TODO  - Start Bluetooth as master
-                }
+            RadioGroup radgrp_Scout = (RadioGroup) findViewById(R.id.radgrp_Scout);
+            switch (devSelected) {
+                case "Scout Master": 	            // Scout Master
+                    radgrp_Scout.setVisibility(View.GONE);    // Hide scout group
+                    radgrp_Scout.setEnabled(false);
+                    break;
+                case "Visualizer": 		// Visualizer
+                    radgrp_Scout.setVisibility(View.GONE);    // Hide scout group
+                    radgrp_Scout.setEnabled(false);
+                    break;
+                case ("Red-1"):             //#Red or Blue Scout
+                case ("Red-2"):             //#
+                case ("Red-3"):             //#
+                case ("Blue-1"):            //#
+                case ("Blue-2"):            //#
+                case ("Blue-3"):            //#####
+                    radgrp_Scout.setVisibility(VISIBLE);    // Show scout group
+                    radgrp_Scout.setEnabled(true);
+                    break;
+                default:                // ?????
+            }
             txt_messageLine.setText(" ");   // Clear Login message
-//            } else {        // Device does not support Bluetooth
-//                Log.d(TAG, "** Bluetooth is not availible ** ");
-//                Toast.makeText(getBaseContext(), "** Bluetooth is not availible ** ", Toast.LENGTH_LONG).show();
-//
-//            }
         }
         public void onNothingSelected(AdapterView<?> parent) {
             // Do nothing.
@@ -408,7 +392,7 @@ public void onResume() {
     super.onResume();
     Log.v(TAG, "onResume");
     txt_messageLine = (TextView) findViewById(R.id.txt_messageLine);
-//    txt_messageLine.setText("Prepare for next match ");
+//    txt_messageLine.setText("Log OFF and prepare for next match ");
 }
     @Override
     public void onStop() {

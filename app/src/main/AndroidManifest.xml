@@ -28,7 +28,8 @@
         <activity android:name=".ScoutMaster_Activity" />
         <activity android:name=".MatchScoutActivity" />
         <activity android:name=".PitScoutActivity" />
-        <activity android:name=".Visualizer_Activity"></activity>
+        <activity android:name=".Visualizer_Activity" />
+        <activity android:name=".BTdevices_Activity"></activity>
     </application>
 
 </manifest>

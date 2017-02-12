@@ -61,17 +61,28 @@
         android:layout_alignStart="@+id/spinner_MatchType"
         android:layout_marginLeft="12dp"
         android:layout_marginStart="12dp" />
-
     <ToggleButton
         android:text="ToggleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textOff="Start Match"
         android:textOn="Stop Match"
+        android:id="@+id/toggleStartStop"
         android:layout_alignTop="@+id/spinner_MatchType"
-        android:layout_toRightOf="@+id/spinner_MatchType"
-        android:layout_toEndOf="@+id/spinner_MatchType"
-        android:id="@+id/toggleStartStop" />
+        android:layout_toEndOf="@+id/lbl_Divider"
+        android:layout_marginStart="67dp" />
+
+    <TextClock
+        android:id="@+id/textClock"
+        android:layout_width="200sp"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:textColor="@color/limegreen"
+        android:textSize="44sp"
+        android:textStyle="bold"
+        android:layout_marginEnd="23dp"
+        android:layout_alignBottom="@+id/imageView_SM"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:id="@+id/lbl_space1"
@@ -82,7 +93,7 @@
 
     <TextView
         android:id="@+id/lbl_RedAlliance"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:textColor="@color/darkred"
         android:background="@color/red"
         android:layout_height="wrap_content"
@@ -102,66 +113,106 @@
 
         <TextView
             android:id="@+id/lbl_teamR1"
-            android:layout_width="30dp"
+            android:layout_width="25sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
-            android:textColor="@color/red"
+            android:textSize="14sp"
+            android:textColor="@color/darkred"
             android:text="Team 1"
             android:layout_below="@+id/spinner_MatchNum"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
         <TextView
             android:id="@+id/txt_teamR1"
-            android:layout_width="30dp"
+            android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
-            android:textColor="@color/orange"
+            android:textSize="14sp"
+            android:textColor="@color/red"
             android:text="0001" />
 
         <TextView
             android:id="@+id/lbl_teamR2"
-            android:layout_width="30dp"
+            android:layout_width="25sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
-            android:textColor="@color/red"
+            android:textSize="14sp"
+            android:textColor="@color/darkred"
             android:text="Team 2"
             android:layout_below="@+id/lbl_team1"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
         <TextView
             android:id="@+id/txt_teamR2"
-            android:layout_width="30dp"
+            android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
-            android:textColor="@color/orange"
+            android:textSize="14sp"
+            android:textColor="@color/red"
             android:text="0002" />
         <TextView
             android:id="@+id/lbl_teamR3"
-            android:layout_width="30dp"
+            android:layout_width="25sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
-            android:textColor="@color/red"
+            android:textSize="14sp"
+            android:textColor="@color/darkred"
             android:text="Team 3" />
         <TextView
             android:id="@+id/txt_teamR3"
-            android:layout_width="30dp"
+            android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
-            android:textColor="@color/orange"
+            android:textSize="14sp"
+            android:textColor="@color/red"
             android:text="0003" />
+        <!--<TextView-->
+            <!--android:id="@+id/lbl_fillerR1"-->
+            <!--android:layout_width="80dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text=" " />-->
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/teams_sectR"
+        android:id="@+id/teams_sectR1">
         <TextView
-            android:id="@+id/lbl_fillerR1"
-            android:layout_width="80dp"
-            android:layout_weight="1"
+            android:id="@+id/txt_teamR1_Name"
+            android:layout_width="180sp"
             android:layout_height="wrap_content"
-            android:text=" " />
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:textColor="@color/red"
+            android:text="Long Name of Red Team # 1 :::::::::::"
+            android:layout_below="@+id/teams_sectR"
+            android:layout_alignParentStart="true" />
 
+        <TextView
+            android:id="@+id/txt_teamR2_Name"
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:textColor="@color/red"
+            android:text="Long Name of Red Team # 2 :::::::::::"
+            android:layout_marginStart="11dp"
+            android:layout_below="@+id/teams_sectR"
+            android:layout_alignStart="@+id/spinner_MatchNum" />
+
+        <TextView
+            android:id="@+id/txt_teamR3_Name"
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:textColor="@color/red"
+            android:text="Long Name of Red Team # 3 :::::::::::"
+            android:layout_marginStart="75dp"
+            android:layout_below="@+id/teams_sectB"
+            android:layout_toEndOf="@+id/txt_Student" />
     </LinearLayout>
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -174,10 +225,10 @@
         android:id="@+id/teams_sectB">
         <TextView
             android:id="@+id/lbl_teamB1"
-            android:layout_width="30dp"
+            android:layout_width="25sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/blue"
             android:text="Team 1"
             android:layout_below="@+id/spinner_MatchNum"
@@ -185,18 +236,18 @@
             android:layout_alignParentStart="true" />
         <TextView
             android:id="@+id/txt_teamB1"
-            android:layout_width="30dp"
+            android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/cyan"
             android:text="0001" />
         <TextView
             android:id="@+id/lbl_teamB2"
-            android:layout_width="30dp"
+            android:layout_width="25sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/blue"
             android:text="Team 2"
             android:layout_below="@+id/lbl_team1"
@@ -204,65 +255,91 @@
             android:layout_alignParentStart="true" />
         <TextView
             android:id="@+id/txt_teamB2"
-            android:layout_width="30dp"
+            android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/cyan"
             android:text="0002" />
 
         <TextView
             android:id="@+id/lbl_teamB3"
-            android:layout_width="30dp"
+            android:layout_width="25sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/blue"
             android:text="Team 3" />
         <TextView
             android:id="@+id/txt_teamB3"
-            android:layout_width="30dp"
+            android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/cyan"
             android:text="0003" />
+        <!--<TextView-->
+            <!--android:id="@+id/lbl_fillerB1"-->
+            <!--android:layout_width="80dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text=" " />-->
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/teams_sectB1"
+        android:layout_below="@+id/teams_sectB"
+        android:layout_alignParentEnd="true">
         <TextView
-            android:id="@+id/lbl_fillerB1"
-            android:layout_width="80dp"
-            android:layout_weight="1"
+            android:id="@+id/txt_teamB1_Name"
+            android:layout_width="180sp"
             android:layout_height="wrap_content"
-            android:text=" " />
+            android:textSize="14sp"
+            android:layout_weight="1"
+            android:textColor="@color/cyan"
+            android:text="Long Name of Blue Team # 1 :::::::::::"
+            android:layout_below="@+id/teams_sectB"
+            android:layout_alignParentStart="true" />
+        <TextView
+            android:id="@+id/txt_teamB2_Name"
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_weight="1"
+            android:textColor="@color/cyan"
+            android:text="Long Name of Blue Team # 2 :::::::::::"
+            android:layout_marginStart="11dp"
+            android:layout_below="@+id/teams_sectB1"
+            android:layout_alignStart="@+id/spinner_MatchNum" />
+        <TextView
+            android:id="@+id/txt_teamB3_Name"
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_weight="1"
+            android:textColor="@color/cyan"
+            android:text="Long Name of Blue Team # 3 :::::::::::"
+            android:layout_marginStart="75dp"
+            android:layout_below="@+id/teams_sectB"
+            android:layout_alignStart="@+id/spinner_MatchNum" />
     </LinearLayout>
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-    <TextView
-        android:id="@+id/lbl_BlueAlliance"
-        android:layout_width="350dp"
-        android:textColor="@color/brightblue"
-        android:background="@color/navy"
-        android:layout_height="wrap_content"
-        android:text="Blue Alliance"
-        android:gravity="center_horizontal"
-        android:layout_below="@+id/teams_sectR"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="12dp" />
-
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
+    /* Start of DEVICE list */
     <TextView
         android:id="@+id/lbl_Divider"
         android:text="@string/lbl_Divider"
         android:layout_width="wrap_content"
-        android:textSize="14dp"
+        android:textSize="14sp"
         android:textColor="@color/white"
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/teams_sectB"
-        android:layout_marginTop="28dp"
-        android:layout_alignParentLeft="true"
+        android:layout_marginTop="14sp"
+        android:layout_below="@+id/teams_sectB1"
         android:layout_alignParentStart="true" />
 
     <LinearLayout
@@ -273,9 +350,9 @@
         android:layout_below="@+id/lbl_Divider" >
         <TextView
             android:id="@+id/lbl_scoutR1"
-            android:layout_width="70dp"
+            android:layout_width="90sp"
             android:layout_height="24dp"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/red"
             android:text="Scout Red-1"
             android:layout_below="@+id/devList" />
@@ -290,7 +367,7 @@
             android:id="@+id/txt_scoutR1"
             android:layout_width="180dp"
             android:layout_height="24dp"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/orange"
             android:text="Johnathan L. Zimmerwhistle"  />
     </LinearLayout>
@@ -303,9 +380,9 @@
         android:layout_below="@+id/devListR1" >
         <TextView
             android:id="@+id/lbl_scoutR2"
-            android:layout_width="70dp"
+            android:layout_width="90sp"
             android:layout_height="24dp"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/red"
             android:text="Scout Red-2" />
         <ImageView
@@ -319,7 +396,7 @@
             android:id="@+id/txt_scoutR2"
             android:layout_width="180dp"
             android:layout_height="24dp"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/orange"
             android:text="Johnathan L. Zimmerwhistle" />
     </LinearLayout>
@@ -331,9 +408,9 @@
         android:layout_below="@+id/devListR2" >
         <TextView
             android:id="@+id/lbl_scoutR3"
-            android:layout_width="70dp"
+            android:layout_width="90sp"
             android:layout_height="24dp"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/red"
             android:text="Scout Red-3" />
         <ImageView
@@ -347,7 +424,7 @@
             android:id="@+id/txt_scoutR3"
             android:layout_width="180dp"
             android:layout_height="24dp"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/orange"
             android:text="Johnathan L. Zimmerwhistle" />
     </LinearLayout>
@@ -359,9 +436,9 @@
         android:layout_below="@+id/devListR3" >
         <TextView
             android:id="@+id/lbl_scoutB1"
-            android:layout_width="70dp"
+            android:layout_width="90sp"
             android:layout_height="24dp"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/blue"
             android:text="Scout Blue-1"
             android:layout_below="@+id/devList" />
@@ -376,7 +453,7 @@
             android:id="@+id/txt_scoutB1"
             android:layout_width="180dp"
             android:layout_height="24dp"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/cyan"
             android:text="Johnathan L. Zimmerwhistle"  />
     </LinearLayout>
@@ -389,9 +466,9 @@
         android:layout_below="@+id/devListB1" >
         <TextView
             android:id="@+id/lbl_scoutB2"
-            android:layout_width="70dp"
+            android:layout_width="90sp"
             android:layout_height="24dp"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/blue"
             android:text="Scout Blue-2" />
         <ImageView
@@ -405,7 +482,7 @@
             android:id="@+id/txt_scoutB2"
             android:layout_width="180dp"
             android:layout_height="24dp"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/cyan"
             android:text="Johnathan L. Zimmerwhistle" />
     </LinearLayout>
@@ -417,9 +494,9 @@
         android:layout_below="@+id/devListB2" >
         <TextView
             android:id="@+id/lbl_scoutB3"
-            android:layout_width="70dp"
+            android:layout_width="90sp"
             android:layout_height="24dp"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/blue"
             android:text="Scout Blue-3" />
         <ImageView
@@ -433,8 +510,23 @@
             android:id="@+id/txt_scoutB3"
             android:layout_width="180dp"
             android:layout_height="24dp"
-            android:textSize="12dp"
+            android:textSize="14sp"
             android:textColor="@color/cyan"
             android:text="Johnathan L. Zimmerwhistle" />
     </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/lbl_BlueAlliance"
+        android:layout_width="match_parent"
+        android:textColor="@color/brightblue"
+        android:background="@color/navy"
+        android:layout_height="wrap_content"
+        android:text="Blue Alliance"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="14dp"
+        android:layout_below="@+id/teams_sectR1"
+        android:layout_alignParentStart="true" />
+
+
 </RelativeLayout>

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content" 
     android:layout_margin="0dp"
 	android:padding="0dip"
-    android:minHeight="20dp"
+    android:minHeight="30sp"
     android:textColor="@color/white"
     android:textAppearance="?android:attr/textAppearanceMedium" >
 </TextView> 
