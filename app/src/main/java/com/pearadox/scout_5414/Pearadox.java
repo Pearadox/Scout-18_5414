@@ -1,18 +1,20 @@
 package com.pearadox.scout_5414;
 
-import com.pearadox.*;
 //******************************************************
 // GLOBAL Variables
+
+import java.util.ArrayList;
 
 public class Pearadox {
 
     public static boolean  is_Network; 								// Internet available?
     public static int maxTeams = 40; 								// Maximum # of Teams per event
     public static int maxStudents = 80; 						    // Maximum # of Students
-    public static Pearadox_Firebase.teamsObj[] team_List = new Pearadox_Firebase.teamsObj[maxTeams]; 	    // Team list
-//    public static Pearadox_Firebase.students[] student_List = new Pearadox_Firebase.students[maxStudents]; 	// Student list
-    public static String[] student_List = new String[maxStudents];
+    public static p_Firebase.teamsObj[] team_List = new p_Firebase.teamsObj[maxTeams]; 	    // Team list
     public static int numTeams = 0; 						        // Actual # of Teams
+//    public static p_Firebase.students[] student_List = new p_Firebase.students[maxStudents]; 	// Student list
+    public static String[] student_List = new String[maxStudents];  // Student list (array of just Names)
+    public static ArrayList<p_Firebase.students> stud_Lst = new ArrayList<p_Firebase.students>();
     public static int numStudents = 0; 						        // Actual # of Students
     public static String FRC514_Device;                             // Devide ID
     public static String Student_ID;                                // Student Name

@@ -12,19 +12,13 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.view.Gravity;
 import android.widget.ToggleButton;
 import java.util.ArrayList;
 import java.util.Set;
@@ -53,8 +47,8 @@ public class ScoutMaster_Activity extends AppCompatActivity {
     String team_num, team_name, team_loc;
     public static String[] signedStudents = new String[]
             {"Johnathan L. Zimmerwhistle","John Doe","Gale French","Andrew Hartnett","Student05","Student06"};
-    Pearadox_Firebase.teamsObj team_inst = new Pearadox_Firebase.teamsObj(team_num, team_name,  team_loc);
-    ArrayList<Pearadox_Firebase.teamsObj> teams = new ArrayList<Pearadox_Firebase.teamsObj>();
+    p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name,  team_loc);
+    ArrayList<p_Firebase.teamsObj> teams = new ArrayList<p_Firebase.teamsObj>();
     //  Bluetooth
     BluetoothAdapter myBluetoothAdapter;
     BroadcastReceiver myBTReceiver;
@@ -344,12 +338,12 @@ public class ScoutMaster_Activity extends AppCompatActivity {
         if (z == 3) {
             //          ToDo - Get "real" Red & Blue Alliance Teams from Firebase D/B for _THIS_ Match
             teams.clear();          // empty the list
-            teams.add(new Pearadox_Firebase.teamsObj("1296 ","Full Metal Jackets",""));   //** DEBUG
-            teams.add(new Pearadox_Firebase.teamsObj("5414 ","Pearadox","Pearland, TX"));
-            teams.add(new Pearadox_Firebase.teamsObj("1642 ","Techno-Cats",""));
-            teams.add(new Pearadox_Firebase.teamsObj("1745 ","P-51 Mustangs",""));
-            teams.add(new Pearadox_Firebase.teamsObj("1817 ","Llano Estcado RoboRaiders",""));
-            teams.add(new Pearadox_Firebase.teamsObj("2333 ","S.C.R.E.E.C.H",""));
+            teams.add(new p_Firebase.teamsObj("1296 ","Full Metal Jackets",""));   //** DEBUG
+            teams.add(new p_Firebase.teamsObj("5414 ","Pearadox","Pearland, TX"));
+            teams.add(new p_Firebase.teamsObj("1642 ","Techno-Cats",""));
+            teams.add(new p_Firebase.teamsObj("1745 ","P-51 Mustangs",""));
+            teams.add(new p_Firebase.teamsObj("1817 ","Llano Estcado RoboRaiders",""));
+            teams.add(new p_Firebase.teamsObj("2333 ","S.C.R.E.E.C.H",""));
             Log.d(TAG, ">>>> # team instances = " + teams.size());  //** DEBUG
         } else {
             Toast.makeText(getBaseContext(), "** Select both Match TYPE & NUMBER ** ", Toast.LENGTH_LONG).show();

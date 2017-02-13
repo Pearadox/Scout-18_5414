@@ -23,7 +23,7 @@ public class MatchScoutActivity extends AppCompatActivity {
     private Button button_GearsMinus, button_GearsPlus;
     int gearNum = 0;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +34,6 @@ public class MatchScoutActivity extends AppCompatActivity {
         String param2 = bundle.getString("stud");
         Log.d(TAG, param1 + " " + param2);      // ** DEBUG **
 
-        txt_TeamName = (TextView) findViewById(R.id.txt_TeamName);
-        txt_TeamName.setText("Pearadox");
         txt_GearsPlaced = (TextView) findViewById(R.id.txt_GearsPlaced);
         button_GearsMinus = (Button) findViewById(R.id.button_GearsMinus);
         button_GearsPlus = (Button) findViewById(R.id.button_GearsPlus);
@@ -61,17 +59,19 @@ public class MatchScoutActivity extends AppCompatActivity {
         txt_stud = (TextView) findViewById(R.id.txt_Student);
         txt_match = (TextView) findViewById(R.id.txt_Match);
         txt_MyTeam = (TextView) findViewById(R.id.txt_MyTeam);
-        imgScoutLogo = (ImageView) findViewById(R.id.imageView_SM);
+        txt_TeamName = (TextView) findViewById(R.id.txt_TeamName);
+        ImageView imgScoutLogo = (ImageView) findViewById(R.id.imageView_MS);
         txt_dev.setText(param1);
         txt_stud.setText(param2);
+        txt_match.setText("");
+        txt_MyTeam.setText("");
+        txt_TeamName.setText("");
         String devcol = param1.substring(0,3);
         Log.d(TAG, "color=" + devcol);
         if (devcol.equals("Red")) {
-            // ToDo - figure out how to switch the image (changed for LollyPop?!?)
-            Log.d(TAG, "loading RED logo ..............");
-//            imgScoutLogo.setImageDrawable(getResources().getDrawable(R.dr
-            Log.d(TAG, "loading BLUE logo ..............");
-//            imgScoutLogo.setImageDrawable(getResources().getDrawable(R.drawable.blue_scout, getApplicationContext().getTheme()));
+            imgScoutLogo.setImageDrawable(getResources().getDrawable(R.drawable.red_scout));
+        } else {
+            imgScoutLogo.setImageDrawable(getResources().getDrawable(R.drawable.blue_scout));
         }
 
     }

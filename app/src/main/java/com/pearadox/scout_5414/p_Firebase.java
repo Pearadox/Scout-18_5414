@@ -2,7 +2,7 @@ package com.pearadox.scout_5414;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
-public class Pearadox_Firebase {
+public class p_Firebase {
 
     @IgnoreExtraProperties
     public static class teamsObj {
@@ -29,8 +29,8 @@ public class Pearadox_Firebase {
         public String getTeamLoc() {
             return team_loc;
         }
-        public void setTeamName(String teamNane) {
-            this.team_name = teamNane;
+        public void setTeamName(String teamName) {
+            this.team_name = teamName;
         }
         public void setTeamNumber(String teamNumber) {
             this.team_num = teamNumber;
@@ -63,12 +63,30 @@ public static class devicesObj {
 // ==========================================================
     public static class students {
         private String name;
+        private String status;
         // Default constructor required for calls to
         // DataSnapshot.getValue(students.class)
         public students() {
         }
-        public students(String name) {
+        public students(String name, String status) {
             this.name = name;
+            this.status = status;
+        }
+        public String getName() {
+            return name;
+        }
+        public String getStatus() {
+            return status;
+        }
+        public void setName(String sName) {
+            this.name = sName;
+        }
+        public void setStatus(String Stat) {
+            this.status = Stat;
         }
     }
+
+// ==========================================================
+// ==========================================================
+
 }
