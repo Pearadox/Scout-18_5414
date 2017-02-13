@@ -1,11 +1,8 @@
 package com.pearadox.scout_5414;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,15 +13,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Visualizer_Activity extends AppCompatActivity {
@@ -43,8 +35,8 @@ public class Visualizer_Activity extends AppCompatActivity {
     TextView tbl_teamR1, tbl_teamR2, tbl_teamR3, tbl_teamB1, tbl_teamB2, tbl_teamB3;
     Button button_View;
     String team_num, team_name, team_loc;
-    Pearadox_Firebase.teamsObj team_inst = new Pearadox_Firebase.teamsObj(team_num, team_name,  team_loc);
-    ArrayList<Pearadox_Firebase.teamsObj> teams = new ArrayList<Pearadox_Firebase.teamsObj>();
+    p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name,  team_loc);
+    ArrayList<p_Firebase.teamsObj> teams = new ArrayList<p_Firebase.teamsObj>();
     ImageView tbl_robotR1, tbl_robotR2, tbl_robotR3, tbl_robotB1, tbl_robotB2, tbl_robotB3;
     Bitmap img;
     String FB_url ="";
@@ -157,12 +149,12 @@ public class Visualizer_Activity extends AppCompatActivity {
         String tnum = "";
         //          ToDo - Get Red & Blue Alliance Teams from Firebase D/B
         teams.clear();          // empty the list
-        teams.add(new Pearadox_Firebase.teamsObj("1296 ","Full Metal Jackets",""));   //** DEBUG
-        teams.add(new Pearadox_Firebase.teamsObj("5414 ","Pearadox","Pearland, TX"));
-        teams.add(new Pearadox_Firebase.teamsObj("1642 ","Techno-Cats",""));
-        teams.add(new Pearadox_Firebase.teamsObj("1745 ","P-51 Mustangs",""));
-        teams.add(new Pearadox_Firebase.teamsObj("1817 ","Llano Estcado RoboRaiders",""));
-        teams.add(new Pearadox_Firebase.teamsObj("2333 ","S.C.R.E.E.C.H",""));
+        teams.add(new p_Firebase.teamsObj("1296 ","Full Metal Jackets",""));   //** DEBUG
+        teams.add(new p_Firebase.teamsObj("5414 ","Pearadox","Pearland, TX"));
+        teams.add(new p_Firebase.teamsObj("1642 ","Techno-Cats",""));
+        teams.add(new p_Firebase.teamsObj("1745 ","P-51 Mustangs",""));
+        teams.add(new p_Firebase.teamsObj("1817 ","Llano Estcado RoboRaiders",""));
+        teams.add(new p_Firebase.teamsObj("2333 ","S.C.R.E.E.C.H",""));
         Log.d(TAG, ">>>> # team instances = " + teams.size());  //** DEBUG
 
         txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
