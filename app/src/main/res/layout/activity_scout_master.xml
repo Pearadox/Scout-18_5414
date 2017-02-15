@@ -117,7 +117,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="14sp"
-            android:textColor="@color/darkred"
+            android:textColor="@color/orange"
             android:text="Team 1"
             android:layout_below="@+id/spinner_MatchNum"
             android:layout_alignParentLeft="true"
@@ -137,7 +137,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="14sp"
-            android:textColor="@color/darkred"
+            android:textColor="@color/orange"
             android:text="Team 2"
             android:layout_below="@+id/lbl_team1"
             android:layout_alignParentLeft="true"
@@ -156,7 +156,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="14sp"
-            android:textColor="@color/darkred"
+            android:textColor="@color/orange"
             android:text="Team 3" />
         <TextView
             android:id="@+id/txt_teamR3"

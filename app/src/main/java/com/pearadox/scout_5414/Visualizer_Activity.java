@@ -177,29 +177,29 @@ public class Visualizer_Activity extends AppCompatActivity {
         tbl_teamB3 = (TextView) findViewById(R.id.tbl_teamB3);
 
         team_inst = teams.get(0);
-        txt_teamR1.setText(team_inst.getTeamNum());
-        txt_teamR1_Name.setText(team_inst.getTeamName());
-        tbl_teamR1.setText(team_inst.getTeamNum());
+        txt_teamR1.setText(team_inst.getTeam_num());
+        txt_teamR1_Name.setText(team_inst.getTeam_name());
+        tbl_teamR1.setText(team_inst.getTeam_num());
         team_inst = teams.get(1);
-        txt_teamR2.setText(team_inst.getTeamNum());
-        txt_teamR2_Name.setText(team_inst.getTeamName());
-        tbl_teamR2.setText(team_inst.getTeamNum());
+        txt_teamR2.setText(team_inst.getTeam_num());
+        txt_teamR2_Name.setText(team_inst.getTeam_name());
+        tbl_teamR2.setText(team_inst.getTeam_num());
         team_inst = teams.get(2);
-        txt_teamR3.setText(team_inst.getTeamNum());
-        txt_teamR3_Name.setText(team_inst.getTeamName());
-        tbl_teamR3.setText(team_inst.getTeamNum());
+        txt_teamR3.setText(team_inst.getTeam_num());
+        txt_teamR3_Name.setText(team_inst.getTeam_name());
+        tbl_teamR3.setText(team_inst.getTeam_num());
         team_inst = teams.get(3);
-        txt_teamB1.setText(team_inst.getTeamNum());
-        txt_teamB1_Name.setText(team_inst.getTeamName());
-        tbl_teamB1.setText(team_inst.getTeamNum());
+        txt_teamB1.setText(team_inst.getTeam_num());
+        txt_teamB1_Name.setText(team_inst.getTeam_name());
+        tbl_teamB1.setText(team_inst.getTeam_num());
         team_inst = teams.get(4);
-        txt_teamB2.setText(team_inst.getTeamNum());
-        txt_teamB2_Name.setText(team_inst.getTeamName());
-        tbl_teamB2.setText(team_inst.getTeamNum());
+        txt_teamB2.setText(team_inst.getTeam_num());
+        txt_teamB2_Name.setText(team_inst.getTeam_name());
+        tbl_teamB2.setText(team_inst.getTeam_num());
         team_inst = teams.get(5);
-        txt_teamB3.setText(team_inst.getTeamNum());
-        txt_teamB3_Name.setText(team_inst.getTeamName());
-        tbl_teamB3.setText(team_inst.getTeamNum());
+        txt_teamB3.setText(team_inst.getTeam_num());
+        txt_teamB3_Name.setText(team_inst.getTeam_name());
+        tbl_teamB3.setText(team_inst.getTeam_num());
 
         // Start getting data for Table
         Log.d(TAG, " Loading Table Data ");          //** DEBUG

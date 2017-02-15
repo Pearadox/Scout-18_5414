@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference pfDevice_DBReference;
     private DatabaseReference pfTeam_DBReference;
     String team_num, team_name, team_loc;
+    p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name, team_loc);
 
 
     @Override
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             Pearadox_Version = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
         } catch (NameNotFoundException e) {
-            Log.e("TestApp", e.getMessage());
+            Log.e(TAG, e.getMessage());
         }
         Toast toast = Toast.makeText(getBaseContext(), "Pearadox ©2017  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
@@ -93,10 +94,11 @@ public class MainActivity extends AppCompatActivity {
         isInternetAvailable();          // See if device has Internet
 
         pfDatabase = FirebaseDatabase.getInstance();
-        pfTeam_DBReference = pfDatabase.getReference("teams");  // Retrieve team data from Firebase D/B
+        pfTeam_DBReference = pfDatabase.getReference("teams");          // Team data from Firebase D/B
         addTeam_VE_Listener(pfTeam_DBReference);
-        pfStudent_DBReference = pfDatabase.getReference("students");  // Get list of Students
+        pfStudent_DBReference = pfDatabase.getReference("students");    // Get list of Students
         addStud_VE_Listener(pfStudent_DBReference);
+        pfDevice_DBReference = pfDatabase.getReference("devices");      // List of Devices
 
         Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
 
@@ -108,8 +110,11 @@ public class MainActivity extends AppCompatActivity {
                 Spinner spinner_Device = (Spinner) findViewById(R.id.spinner_Device);
                 Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
                 if (toggleLogon.isChecked()) {      // See what state we are in
-//               if (devSelected.length() > 0) {
-                switch (devSelected) {
+                    Log.d(TAG, "!!!  Logged IN  !!!");
+                    logged_On = true;       // Logged ON
+                    updateDev(true);        // Update firebase with LOGON
+
+                    switch (devSelected) {          // Who you gonna call?!?
                     case "Scout Master":         // Scout Master
                         Intent sm_intent = new Intent(MainActivity.this, ScoutMaster_Activity.class);
                         startActivity(sm_intent);        // Start the Scout Master activity
@@ -151,12 +156,12 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     default:                //
                         Log.d(TAG, "DEV = NULL" );
-//            	            TODO
                 }
 
                 } else {
-                    Log.d(TAG, "!!!  Logged IN  !!!");
-//                    logged_On = true;       // Logged ON
+                    Log.d(TAG, "---  Logged OFF  ---");
+                    logged_On = false;       // Logged OFF
+                    updateDev(false);        // Update firebase with LOGOFF
                     devSelected = "";       // Null
                     radgrp_Scout.setVisibility(View.GONE);    // Hide scout group
                     radgrp_Scout.setEnabled(false);
@@ -179,32 +184,68 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
+    private void updateDev(boolean x) {     // x=true LOGON  x=false LOGOFF
+        Log.i(TAG, "#### updateDev #### " + x);
+        String key = null;
+        switch (devSelected) {
+            case "Scout Master":         // Scout Master
+                key = "0";
+                break;
+            case ("Red-1"):             //#Red or Blue Scout
+                key = "1";
+                break;
+            case ("Red-2"):             //#
+                key = "2";
+                break;
+            case ("Red-3"):             //#
+                key = "3";
+                break;
+            case ("Blue-1"):            //#
+                key = "4";
+                break;
+            case ("Blue-2"):            //#
+                key = "5";
+                break;
+            case ("Blue-3"):            //#####
+                key = "6";
+                break;
+            case "Visualizer":          // Visualizer
+                key = "7";
+                break;
+            default:                //
+                Log.d(TAG, "DEV = NULL" );
+        }
+        if (x) {
+            pfDevice_DBReference.child(key).child("stud_id").setValue(studentSelected);
+          } else {
+            pfDevice_DBReference.child(key).child("stud_id").setValue(" ");
+        }
+    }
 
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         private void addTeam_VE_Listener(final DatabaseReference pfTeam_DBReference) {
         pfTeam_DBReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.i(TAG, "<<<< getFB_Data >>>>");
-                    Log.i(TAG, "Teams");
-                    p_Firebase.teamsObj tmobj = new  p_Firebase.teamsObj();
+                    Log.i(TAG, "<<<< getFB_Data >>>> Teams");
+                    Pearadox.team_List.clear();
                     Pearadox.numTeams = 0;
-                /*this is called when first passing the data and
-                * then whenever the data is updated*/
+                    p_Firebase.teamsObj tmobj = new p_Firebase.teamsObj();
                     Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
                     Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
                     while (iterator.hasNext()) {
                         tmobj = iterator.next().getValue(p_Firebase.teamsObj.class);
-                        Pearadox.team_List[Pearadox.numTeams] = tmobj;
+                        Pearadox.team_List.add(tmobj);
                         Pearadox.numTeams ++;
                     }
-                    Log.i(TAG, "***** Teams Loaded. # = " + Pearadox.numTeams);
+                    Log.i(TAG, "***** Teams Loaded. # = " + Pearadox.numTeams + "  " + Pearadox.team_List.size());
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                 /*listener failed or was removed for security reasons*/
                 }
-            });
+        });
         }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -212,7 +253,6 @@ public class MainActivity extends AppCompatActivity {
         pfStudent_DBReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, "<<<< getFB_Data >>>>");
                 Log.d(TAG, "******* retrieveStudents  *******");
                 Pearadox.stud_Lst.clear();
                 p_Firebase.students student_Obj = new p_Firebase.students();
@@ -231,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
                 for(int i=0 ; i < Pearadox.stud_Lst.size() ; i++)
                 {
                     student_Obj = Pearadox.stud_Lst.get(i);
-                    Log.d(TAG, "***** student = " + student_Obj.getName() + " " + i);
+//                    Log.d(TAG, "***** student = " + student_Obj.getName() + " " + i);
                     Pearadox.student_List[i + 1] = student_Obj.getName();
                 }
                 Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
@@ -244,6 +284,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 /*listener failed or was removed for security reasons*/
+                throw databaseError.toException();
             }
         });
     }
@@ -395,34 +436,6 @@ private void preReqs() {
             Scout_Pit = true;
         }
     }
-//    private void teamValueEventListener(final DatabaseReference pfReference) {
-//        /*add ValueEventListener to update data in realtime*/
-//        pfReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                /*this is called when first passing the data and then whenever the data is updated*/
-//                String team_num="", team_name="", team_loc="";
-//                p_Firebase.teamsObj team = new p_Firebase.teamsObj(team_num, team_name, team_loc);
-//                Pearadox.numTeams = 0;
-//                int i = 0;
-//                   /*get the data children*/
-//                Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();
-//                Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
-//                while (iterator.hasNext()) {
-//                    /*get the values as a team object*/
-////                    p_Firebase.teamsObj value = iterator.next().getValue(p_Firebase.class);
-////                    teamList.add(value);
-//                    i++;
-//                }
-//                Pearadox.numTeams = i;
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                /*listener failed or was removed for security reasons*/
-//            }
-//        });
-//    }
 
 //###################################################################
 //###################################################################

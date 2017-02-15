@@ -35,12 +35,13 @@ public class PitScoutActivity extends AppCompatActivity {
         txt_dev.setText(param1);
         txt_stud.setText(param2);
         Spinner spinner_Team = (Spinner) findViewById(R.id.spinner_Team);
-        String[] teams = getResources().getStringArray(R.array.team_array);
-        adapter = new ArrayAdapter<String>(this, R.layout.team_list_layout, teams);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_Team.setAdapter(adapter);
-        spinner_Team.setSelection(0, false);
-        spinner_Team.setOnItemSelectedListener(new team_OnItemSelectedListener());
+        // Replace with Teal list from Firebase
+//        String[] teams = getResources().getStringArray(R.array.team_array);
+//        adapter = new ArrayAdapter<String>(this, R.layout.team_list_layout, teams);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinner_Team.setAdapter(adapter);
+//        spinner_Team.setSelection(0, false);
+//        spinner_Team.setOnItemSelectedListener(new team_OnItemSelectedListener());
 
     }
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */

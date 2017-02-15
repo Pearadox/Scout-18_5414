@@ -21,17 +21,28 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 // Debug & Messaging
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import static android.app.PendingIntent.getActivity;
+import static com.pearadox.scout_5414.Pearadox.numTeams;
 
 public class ScoutMaster_Activity extends AppCompatActivity {
 
-    String TAG = "ScoutMaster_Activity";      // This CLASS name
+    static String TAG = "ScoutMaster_Activity";      // This CLASS name
     ArrayAdapter<String> adapter_typ;
     public String typSelected = " ";
     Spinner spinner_MatchType;
@@ -42,13 +53,19 @@ public class ScoutMaster_Activity extends AppCompatActivity {
     ToggleButton toggleStartStop;
     TextView txt_teamR1, txt_teamR2, txt_teamR3, txt_teamB1, txt_teamB2, txt_teamB3;
     TextView txt_teamR1_Name, txt_teamR2_Name, txt_teamR3_Name, txt_teamB1_Name, txt_teamB2_Name, txt_teamB3_Name;
-    TextView txt_scoutR1,txt_scoutR2, txt_scoutR3, txt_scoutB1, txt_scoutB2, txt_scoutB3;
+    TextView txt_scoutR1, txt_scoutR2, txt_scoutR3, txt_scoutB1, txt_scoutB2, txt_scoutB3;
     ImageView imgBT_R1, imgBT_R2, imgBT_R3, imgBT_B1, imgBT_B2, imgBT_B3;
-    String team_num, team_name, team_loc;
+    private FirebaseDatabase pfDatabase;
+    private DatabaseReference pfStudent_DBReference;
+    private DatabaseReference pfDevice_DBReference;
+    private DatabaseReference pfTeam_DBReference;
+    private DatabaseReference pfMatch_DBReference;
     public static String[] signedStudents = new String[]
-            {"Johnathan L. Zimmerwhistle","John Doe","Gale French","Andrew Hartnett","Student05","Student06"};
-    p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name,  team_loc);
+            {" ", " ", " ", " ", " ", " "};
+    String team_num, team_name, team_loc;
+    p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name, team_loc);
     ArrayList<p_Firebase.teamsObj> teams = new ArrayList<p_Firebase.teamsObj>();
+
     //  Bluetooth
     BluetoothAdapter myBluetoothAdapter;
     BroadcastReceiver myBTReceiver;
@@ -56,7 +73,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
     ArrayList<String> devList = new ArrayList<String>();
     int numBT_connects = 0;     //# of Bluetooth connections
     public static String EXTRA_DEVICE_ADDRESS = "device_address";
-    String BTdevName =null;
+    String BTdevName = null;
     String MACaddr = null;
     private static final int REQUEST_CONNECT_DEVICE_SECURE = 1;
     private static final int REQUEST_CONNECT_DEVICE_INSECURE = 2;
@@ -86,6 +103,11 @@ public class ScoutMaster_Activity extends AppCompatActivity {
         spinner_MatchNum.setAdapter(adapter_Num);
         spinner_MatchNum.setSelection(0, false);
         spinner_MatchNum.setOnItemSelectedListener(new mNum_OnItemSelectedListener());
+        pfDatabase = FirebaseDatabase.getInstance();
+        pfTeam_DBReference = pfDatabase.getReference("teams");          // Tteam data from Firebase D/B
+        pfStudent_DBReference = pfDatabase.getReference("students");    // List of Students
+        pfDevice_DBReference = pfDatabase.getReference("devices");      // List of Students
+        pfMatch_DBReference = pfDatabase.getReference("matches");       // List of Students
         clearTeamData();
         clearDevData();
 
@@ -94,52 +116,23 @@ public class ScoutMaster_Activity extends AppCompatActivity {
         toggleStartStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            Spinner spinner_MatchType = (Spinner) findViewById(R.id.spinner_MatchType);
-            Spinner spinner_MatchNum = (Spinner) findViewById(R.id.spinner_MatchNum);
-            txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
-            txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
-            txt_teamR3 = (TextView) findViewById(R.id.txt_teamR3);
-            txt_teamB1 = (TextView) findViewById(R.id.txt_teamB1);
-            txt_teamB2 = (TextView) findViewById(R.id.txt_teamB2);
-            txt_teamB3 = (TextView) findViewById(R.id.txt_teamB3);
-            txt_teamR1_Name = (TextView) findViewById(R.id.txt_teamR1_Name);
-            txt_teamR2_Name = (TextView) findViewById(R.id.txt_teamR2_Name);
-            txt_teamR3_Name = (TextView) findViewById(R.id.txt_teamR3_Name);
-            txt_teamB1_Name = (TextView) findViewById(R.id.txt_teamB1_Name);
-            txt_teamB2_Name = (TextView) findViewById(R.id.txt_teamB2_Name);
-            txt_teamB3_Name = (TextView) findViewById(R.id.txt_teamB3_Name);
-            if (toggleStartStop.isChecked()) {      // See what state we are in
-                getTeams();
+                Spinner spinner_MatchType = (Spinner) findViewById(R.id.spinner_MatchType);
+                Spinner spinner_MatchNum = (Spinner) findViewById(R.id.spinner_MatchNum);
+                if (toggleStartStop.isChecked()) {      // See what state we are in
+                    getTeams();
 
-                team_inst = teams.get(0);
-                txt_teamR1.setText(team_inst.getTeamNum());
-                txt_teamR1_Name.setText(team_inst.getTeamName());
-                team_inst = teams.get(1);
-                txt_teamR2.setText(team_inst.getTeamNum());
-                txt_teamR2_Name.setText(team_inst.getTeamName());
-                team_inst = teams.get(2);
-                txt_teamR3.setText(team_inst.getTeamNum());
-                txt_teamR3_Name.setText(team_inst.getTeamName());
-                team_inst = teams.get(3);
-                txt_teamB1.setText(team_inst.getTeamNum());
-                txt_teamB1_Name.setText(team_inst.getTeamName());
-                team_inst = teams.get(4);
-                txt_teamB2.setText(team_inst.getTeamNum());
-                txt_teamB2_Name.setText(team_inst.getTeamName());
-                team_inst = teams.get(5);
-                txt_teamB3.setText(team_inst.getTeamNum());
-                txt_teamB3_Name.setText(team_inst.getTeamName());
-            } else {        // Stop Session
-//                  ToDo - Clear data
-                spinner_MatchType.setSelection(0);         //Reset to NO selection
-                spinner_MatchNum.setSelection(0);        //*
-                clearTeamData();
-            }
+                } else {        // Stop Session - Clear data
+                    matchID = "";
+                    spinner_MatchType.setSelection(0);       //Reset to NO selection
+                    spinner_MatchNum.setSelection(0);        //*
+                    clearTeamData();
+                }
             }
         });
     }
+
     @Override
-     public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.scoutmaster_menu, menu);
         return true;
@@ -197,7 +190,6 @@ public class ScoutMaster_Activity extends AppCompatActivity {
             ImageView imgBT_B1 = (ImageView) findViewById(R.id.imgBT_B1);
             ImageView imgBT_B2 = (ImageView) findViewById(R.id.imgBT_B2);
             ImageView imgBT_B3 = (ImageView) findViewById(R.id.imgBT_B3);
-//          ToDo - Get real student name from Firebase
             for (int i = 0; i < devList.size(); i++) {
                 String paired_dev = devList.get(i);
                 Log.i(TAG, "Paired device " + i + " = '" + paired_dev + "'");
@@ -242,10 +234,11 @@ public class ScoutMaster_Activity extends AppCompatActivity {
         } else {        // Device does not support Bluetooth
             Log.d(TAG, "** Bluetooth is not availible ** ");
             Toast.makeText(getBaseContext(), "** Bluetooth is not availible ** ",
-            Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_LONG).show();
 
         }
     }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i(TAG, "$$$$$$$$  onActivityResult  $$$$$$$$ " + requestCode);
         switch (requestCode) {
@@ -269,13 +262,14 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                     // User did not enable Bluetooth or an error occurred
                     Log.d(TAG, "BT not enabled");
                     Toast.makeText(getBaseContext(), "** Bluetooth is not availible ** ",
-                    Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_LONG).show();
 //                    finish();         //EXIT
                 }
             default:                // ????
                 Log.e(TAG, "*** Error - bad Request Code  *** " + requestCode);
         }
     }
+
     private void connectDevice(Intent data, boolean secure) {
         Log.i(TAG, "connectDevice");
         String address = data.getExtras()
@@ -285,11 +279,11 @@ public class ScoutMaster_Activity extends AppCompatActivity {
         MACaddr = address.substring(address.length() - 17);         // Get the device MAC address
         Log.d(TAG, "DEV=" + BTdevName + " MAC addr = " + MACaddr);
 //        BluetoothDevice device = myBluetoothAdapter.getRemoteDevice(address);
-//        mMsgService.connect(device, secure);  // Attempt to connect to the device
+//        mChatService.connect(device, secure);   // Attempt to connect to the device
     }
 
     private void clearTeamData() {
-        Log.d(TAG, "$$$$$  Clear Team Data");
+        Log.i(TAG, "$$$$$  Clear Team Data");
         txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
         txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
         txt_teamR3 = (TextView) findViewById(R.id.txt_teamR3);
@@ -315,8 +309,9 @@ public class ScoutMaster_Activity extends AppCompatActivity {
         txt_teamB2_Name.setText(" ");
         txt_teamB3_Name.setText(" ");
     }
+
     private void clearDevData() {
-        Log.d(TAG, "$$$$$  Clear Device Data");
+        Log.i(TAG, "$$$$$  Clear Device Data");
         txt_scoutR1 = (TextView) findViewById(R.id.txt_scoutR1);
         txt_scoutR2 = (TextView) findViewById(R.id.txt_scoutR2);
         txt_scoutR3 = (TextView) findViewById(R.id.txt_scoutR3);
@@ -332,21 +327,113 @@ public class ScoutMaster_Activity extends AppCompatActivity {
     }
 
     private void getTeams() {
-        Log.d(TAG, "getTeams");
-        String tnum = "";
+        Log.i(TAG, "$$$$$  getTeams");
+        Log.d(TAG, ">>>>>  Match = '" + matchID + "'");
+        txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
+        txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
+        txt_teamR3 = (TextView) findViewById(R.id.txt_teamR3);
+        txt_teamB1 = (TextView) findViewById(R.id.txt_teamB1);
+        txt_teamB2 = (TextView) findViewById(R.id.txt_teamB2);
+        txt_teamB3 = (TextView) findViewById(R.id.txt_teamB3);
+        txt_teamR1_Name = (TextView) findViewById(R.id.txt_teamR1_Name);
+        txt_teamR2_Name = (TextView) findViewById(R.id.txt_teamR2_Name);
+        txt_teamR3_Name = (TextView) findViewById(R.id.txt_teamR3_Name);
+        txt_teamB1_Name = (TextView) findViewById(R.id.txt_teamB1_Name);
+        txt_teamB2_Name = (TextView) findViewById(R.id.txt_teamB2_Name);
+        txt_teamB3_Name = (TextView) findViewById(R.id.txt_teamB3_Name);
         int z = matchID.length();
         if (z == 3) {
             //          ToDo - Get "real" Red & Blue Alliance Teams from Firebase D/B for _THIS_ Match
-            teams.clear();          // empty the list
-            teams.add(new p_Firebase.teamsObj("1296 ","Full Metal Jackets",""));   //** DEBUG
-            teams.add(new p_Firebase.teamsObj("5414 ","Pearadox","Pearland, TX"));
-            teams.add(new p_Firebase.teamsObj("1642 ","Techno-Cats",""));
-            teams.add(new p_Firebase.teamsObj("1745 ","P-51 Mustangs",""));
-            teams.add(new p_Firebase.teamsObj("1817 ","Llano Estcado RoboRaiders",""));
-            teams.add(new p_Firebase.teamsObj("2333 ","S.C.R.E.E.C.H",""));
-            Log.d(TAG, ">>>> # team instances = " + teams.size());  //** DEBUG
+            Log.i(TAG, "   Q U E R Y  ");
+//            p_Firebase.matchObj mobj = new p_Firebase.matchObj();
+            String child = "match";
+            String key = matchID;
+            Query query = pfMatch_DBReference.orderByChild(child).equalTo(key);
+            query.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Log.d(TAG, "%%%  ChildAdded");
+                    System.out.println(dataSnapshot.getValue());
+                    p_Firebase.matchObj mobj = dataSnapshot.getValue(p_Firebase.matchObj.class);
+                    System.out.println("Match: " + mobj.getMatch());
+                    System.out.println("Type: " + mobj.getMtype());
+                    System.out.println("Date: " + mobj.getDate());
+                    System.out.println("R1: " + mobj.getR1());
+                    System.out.println("B3: " + mobj.getB3());
+                    teams.clear();          // empty the list
+                    String tn = mobj.getR1();
+                    findTeam(tn);
+                    tn = mobj.getR2();
+                    findTeam(tn);
+                    tn = mobj.getR3();
+                    findTeam(tn);
+                    tn = mobj.getB1();
+                    findTeam(tn);
+                    tn = mobj.getB2();
+                    findTeam(tn);
+                    tn = mobj.getB3();
+                    findTeam(tn);
+                    Log.d(TAG, ">>>> # team instances = " + teams.size());  //** DEBUG
+                    // Put the teams for this match on screen
+                    team_inst = teams.get(0);
+                    txt_teamR1.setText(team_inst.getTeam_num());
+                    txt_teamR1_Name.setText(team_inst.getTeam_name());
+                    Log.i(TAG, " AFTER 0 - " + team_inst.getTeam_num() + " " + team_inst.getTeam_name());
+                    team_inst = teams.get(1);
+                    txt_teamR2.setText(team_inst.getTeam_num());
+                    txt_teamR2_Name.setText(team_inst.getTeam_name());
+                    Log.i(TAG, " AFTER 1 - " + team_inst.getTeam_num() + " " + team_inst.getTeam_name());
+                    team_inst = teams.get(2);
+                    txt_teamR3.setText(team_inst.getTeam_num());
+                    txt_teamR3_Name.setText(team_inst.getTeam_name());
+                    team_inst = teams.get(3);
+                    txt_teamB1.setText(team_inst.getTeam_num());
+                    txt_teamB1_Name.setText(team_inst.getTeam_name());
+                    team_inst = teams.get(4);
+                    txt_teamB2.setText(team_inst.getTeam_num());
+                    txt_teamB2_Name.setText(team_inst.getTeam_name());
+                    team_inst = teams.get(5);
+                    txt_teamB3.setText(team_inst.getTeam_num());
+                    txt_teamB3_Name.setText(team_inst.getTeam_name());
+                }
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    Log.d(TAG, "%%%  ChildChanged");
+                }
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    Log.d(TAG, "%%%  ChildRemoved");
+                }
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    Log.d(TAG, "%%%  ChildMoved");
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
         } else {
             Toast.makeText(getBaseContext(), "** Select both Match TYPE & NUMBER ** ", Toast.LENGTH_LONG).show();
+            // ToDo - turn toggle back to logon
+        }
+    }
+
+    private void findTeam(String tnum) {
+        Log.i(TAG, "$$$$$  findTeam " + tnum);
+        boolean found = false;
+        for (int i = 0; i < Pearadox.numTeams; i++) {        // check each team entry
+            if (Pearadox.team_List.get(i).getTeam_num().equals(tnum)) {
+                team_inst = Pearadox.team_List.get(i);
+                teams.add(team_inst);
+                Log.d(TAG, "===  Team " + team_inst.getTeam_num() + " " + team_inst.getTeam_name() + " " + team_inst.getTeam_loc());
+                found = true;
+                break;  // found it!
+            }
+        }  // end For
+        if (!found) {
+            Toast.makeText(getBaseContext(),"** Team '" + tnum + "' from Matches table _NOT_ found in Team list  ** ", Toast.LENGTH_LONG).show();
+            p_Firebase.teamsObj team_dummy = new p_Firebase.teamsObj("****", "team _NOT_ found in Team list - Check for TYPOs in Match Sched."," ");
+            teams.add(team_dummy);
         }
     }
 
@@ -357,13 +444,13 @@ public class ScoutMaster_Activity extends AppCompatActivity {
             typSelected = parent.getItemAtPosition(pos).toString();
             Log.d(TAG, ">>>>>  '" + typSelected + "'");
             switch (typSelected) {
-                case "Practice": 	    // Practice round
+                case "Practice":        // Practice round
                     matchID = "X";
                     break;
-                case "Qualifying": 		// Qualifying round
+                case "Qualifying":        // Qualifying round
                     matchID = "Q";
                     break;
-                case "Playoff": 		// Playoff round
+                case "Playoff":        // Playoff round
                     matchID = "P";
                     break;
                 default:                // ????
@@ -383,10 +470,12 @@ public class ScoutMaster_Activity extends AppCompatActivity {
             Log.d(TAG, ">>>>>  '" + NumSelected + "'");
             matchID = matchID + NumSelected;
         }
+
         public void onNothingSelected(AdapterView<?> parent) {
             // Do nothing.
         }
     }
+
     private void ensureDiscoverable() {
         Log.d(TAG, "******* Discoverable");
         BluetoothAdapter myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -403,7 +492,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.i(TAG, ">>>>> onOptionsItemSelected  ");
-            switch (item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.BTconnect_scan: {
                 // Launch the DeviceListActivity to see devices and do scan
                 Intent BTdev_Intent = new Intent(ScoutMaster_Activity.this, BTdevices_Activity.class);
@@ -459,36 +548,17 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                 case Constants.MESSAGE_DEVICE_NAME:
                     // save the connected device's name
                     mConnectedDeviceName = msg.getData().getString(Constants.DEVICE_NAME);
-                        Toast.makeText(getBaseContext(), "Connected to "
-                                + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "Connected to "
+                            + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
                     break;
                 case Constants.MESSAGE_TOAST:
-                        Toast.makeText(getBaseContext(), msg.getData().getString(Constants.TOAST),
-                                Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), msg.getData().getString(Constants.TOAST),
+                            Toast.LENGTH_SHORT).show();
                     break;
             }
         }
     };
 
-
-    //###################################################################
-//###################################################################
-//###################################################################
-@Override
-public void onStart() {
-    super.onStart();
-    Log.v(TAG, "onStart");
-    BluetoothAdapter myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-    // If BT is not on, request that it be enabled.
-    // setupChat() will then be called during onActivityResult
-    if (!myBluetoothAdapter.isEnabled()) {
-        Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-        // Otherwise, setup the chat session
-    } else if (mChatService == null) {
-        setupChat();
-    }
-}
 
     private void setupChat() {
         Log.d(TAG, "%%%%  setupChat  %%%%");
@@ -498,6 +568,85 @@ public void onStart() {
         // Initialize the buffer for outgoing messages
         mOutStringBuffer = new StringBuffer("");
 
+    }
+
+    public void FindDevItem() {
+        Log.d(TAG, "%%%%  FindDevItem  %%%%");
+        String child = "dev_name";
+        pfDevice_DBReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int numDevs = 0;
+                String device = "";
+                String  studname = "";
+                p_Firebase.devicesObj dev_Obj = new p_Firebase.devicesObj();
+                Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
+                Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
+                while (iterator.hasNext()) {
+                    dev_Obj = iterator.next().getValue(p_Firebase.devicesObj.class);
+                    device = dev_Obj.getDev_name();
+                    studname = dev_Obj.getStud_id();
+                    Log.d(TAG, "%%%%  " + studname + " is logged onto " + device);
+                    numDevs++;
+                    switch (device) {
+                        case "Scout Master":         // Scout Master
+                            // only interested in Scouts
+                            break;
+                        case ("Red-1"):             //#Red or Blue Scout
+                            signedStudents[0] = studname;
+                            break;
+                        case ("Red-2"):             //#
+                            signedStudents[1] = studname;
+                            break;
+                        case ("Red-3"):             //#
+                            signedStudents[2] = studname;
+                            break;
+                        case ("Blue-1"):            //#
+                            signedStudents[3] = studname;
+                            break;
+                        case ("Blue-2"):            //#
+                            signedStudents[4] = studname;
+                            break;
+                        case ("Blue-3"):            //#####
+                            signedStudents[5] = studname;
+                            break;
+                        case "Visualizer":          // Visualizer
+                            // only interested in Scouts
+                            break;
+                        default:                //
+                            Log.d(TAG, "DEV = NULL" );
+                    }
+                }
+                Log.d(TAG, "*****  # of devices = " + numDevs);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                /*listener failed or was removed for security reasons*/
+            }
+        });
+    }
+
+//###################################################################
+//###################################################################
+//###################################################################
+//###################################################################
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.v(TAG, "onStart");
+        FindDevItem();  // Get devices that are logged on
+
+        BluetoothAdapter myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        // If BT is not on, request that it be enabled.
+        // setupChat() will then be called during onActivityResult
+        if (!myBluetoothAdapter.isEnabled()) {
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+            // Otherwise, setup the chat session
+        } else if (mChatService == null) {
+            setupChat();
+        }
     }
 
     @Override
@@ -520,6 +669,6 @@ public void onStart() {
             myBluetoothAdapter.cancelDiscovery();
         }
         // Unregister broadcast listeners
-        this.unregisterReceiver(myBTReceiver);
+//        this.unregisterReceiver(myBTReceiver);
     }
 }
