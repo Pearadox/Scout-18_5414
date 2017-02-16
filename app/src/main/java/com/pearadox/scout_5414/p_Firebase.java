@@ -262,7 +262,7 @@ public class p_Firebase {
 // ==========================================================
 // ==========================================================
     public static class curMatch {
-        private String match;
+        private String cur_match;
         private String r1;
         private String r2;
         private String r3;
@@ -270,72 +270,70 @@ public class p_Firebase {
         private String b2;
         private String b3;
 
-    public curMatch() {
-     }
-
-    public curMatch(String match, String r1, String r2, String r3, String b1, String b2, String b3) {
-        this.match = match;
-        this.r1 = r1;
-        this.r2 = r2;
-        this.r3 = r3;
-        this.b1 = r1;
-        this.b2 = b2;
-        this.b3 = b3;
-    }
-    public String getR1() {
-        return r1;
-    }
-
-    public void setR1(String r1) {
-        this.r1 = r1;
-    }
-
-    public String getR2() {
-        return r2;
-    }
-
-    public void setR2(String r2) {
-        this.r2 = r2;
-    }
-
-    public String getR3() {
-        return r3;
-    }
-
-    public void setR3(String r3) {
-        this.r3 = r3;
-    }
-
-    public String getB1() {
-        return b1;
-    }
-
-    public void setB1(String b1) {
-        this.b1 = b1;
-    }
-
-    public String getB2() {
-        return b2;
-    }
-
-    public void setB2(String b2) {
-        this.b2 = b2;
-    }
-
-        public String getB3() {
-        return b3;
-    }
-
-    public void setB3(String b3) {
-        this.b3 = b3;
-    }
-
-        public String getMatch() {
-            return match;
+        public curMatch() {
+         }
+        public curMatch(String cur_match, String r1, String r2, String r3, String b1, String b2, String b3) {
+            this.cur_match = cur_match;
+            this.r1 = r1;
+            this.r2 = r2;
+            this.r3 = r3;
+            this.b1 = r1;
+            this.b2 = b2;
+            this.b3 = b3;
+        }
+        public String getCur_match() {
+            return cur_match;
         }
 
-        public void setMatch(String match) {
-            this.match = match;
+        public void setCur_match(String cur_match) {
+            this.cur_match = cur_match;
+        }
+        public String getR1() {
+            return r1;
+        }
+
+        public void setR1(String r1) {
+            this.r1 = r1;
+        }
+
+        public String getR2() {
+            return r2;
+        }
+
+        public void setR2(String r2) {
+            this.r2 = r2;
+        }
+
+        public String getR3() {
+            return r3;
+        }
+
+        public void setR3(String r3) {
+            this.r3 = r3;
+        }
+
+        public String getB1() {
+            return b1;
+        }
+
+        public void setB1(String b1) {
+            this.b1 = b1;
+        }
+
+        public String getB2() {
+            return b2;
+        }
+
+        public void setB2(String b2) {
+            this.b2 = b2;
+        }
+
+            public String getB3() {
+            return b3;
+        }
+
+        public void setB3(String b3) {
+            this.b3 = b3;
         }
     }
 

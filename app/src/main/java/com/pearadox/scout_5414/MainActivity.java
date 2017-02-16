@@ -374,6 +374,7 @@ private void preReqs() {
                                    View view, int pos, long id) {
             devSelected = parent.getItemAtPosition(pos).toString();
             Log.d(TAG, ">>>>>  '" + devSelected + "'");
+            Pearadox.FRC514_Device = devSelected;
             RadioGroup radgrp_Scout = (RadioGroup) findViewById(R.id.radgrp_Scout);
             switch (devSelected) {
                 case "Scout Master": 	            // Scout Master

@@ -1,5 +1,6 @@
 package com.pearadox.scout_5414;
 
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,9 +26,14 @@ import java.util.Iterator;
 public class MatchScoutActivity extends AppCompatActivity {
 
     String TAG = "MatchScout_Activity";      // This CLASS name
+    boolean onStart = false;
+    public static String device = " ";
+    public static String studID = " ";
     TextView txt_dev, txt_stud, txt_Match, txt_MyTeam;
     ImageView imgScoutLogo;
     public String matchID = "T00";      // Type + #
+    String team_num, team_name, team_loc;
+    p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name, team_loc);
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfTeam_DBReference;
     private DatabaseReference pfMatch_DBReference;
@@ -41,11 +48,12 @@ public class MatchScoutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "<< Match Scout >>");
+        onStart = false;
         setContentView(R.layout.activity_match_scout);
         Bundle bundle = this.getIntent().getExtras();
-        String param1 = bundle.getString("dev");
-        String param2 = bundle.getString("stud");
-        Log.d(TAG, param1 + " " + param2);      // ** DEBUG **
+        String device = bundle.getString("dev");
+        String studID = bundle.getString("stud");
+        Log.d(TAG, device + " " + studID);      // ** DEBUG **
         pfDatabase = FirebaseDatabase.getInstance();
         pfTeam_DBReference = pfDatabase.getReference("teams");              // Tteam data from Firebase D/B
 //        pfStudent_DBReference = pfDatabase.getReference("students");        // List of Students
@@ -80,12 +88,12 @@ public class MatchScoutActivity extends AppCompatActivity {
         txt_MyTeam = (TextView) findViewById(R.id.txt_MyTeam);
         txt_TeamName = (TextView) findViewById(R.id.txt_TeamName);
         ImageView imgScoutLogo = (ImageView) findViewById(R.id.imageView_MS);
-        txt_dev.setText(param1);
-        txt_stud.setText(param2);
+        txt_dev.setText(device);
+        txt_stud.setText(studID);
         txt_Match.setText("");
         txt_MyTeam.setText("");
         txt_TeamName.setText("");
-        String devcol = param1.substring(0,3);
+        String devcol = device.substring(0,3);
         Log.d(TAG, "color=" + devcol);
         if (devcol.equals("Red")) {
             imgScoutLogo.setImageDrawable(getResources().getDrawable(R.drawable.red_scout));
@@ -102,13 +110,46 @@ public class MatchScoutActivity extends AppCompatActivity {
                 Log.d(TAG, "Current Match - onDataChange  %%%%");
                 txt_Match = (TextView) findViewById(R.id.txt_Match);
                 txt_MyTeam = (TextView) findViewById(R.id.txt_MyTeam);
+                txt_TeamName = (TextView) findViewById(R.id.txt_TeamName);
                 Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
                 Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
                 while (iterator.hasNext()) {
                     p_Firebase.curMatch match_Obj = iterator.next().getValue(p_Firebase.curMatch.class);
-                    matchID = match_Obj.getMatch();
-                    Log.d(TAG, "***Current Match = " + matchID);
-                    txt_Match.setText(matchID);
+                    matchID = match_Obj.getCur_match();
+//                    Log.d(TAG, "***>  Current Match = " + matchID + " " + match_Obj.getR1() + " " + match_Obj.getB3());
+                    if (matchID.equals(null)) {
+                        txt_Match.setText(" ");
+                        txt_MyTeam.setText(" ");
+                        txt_TeamName.setText(" ");
+                    } else {        // OK!!  Match has started
+                        txt_Match.setText(matchID);
+//                        Log.d(TAG, "Device = " + Pearadox.FRC514_Device + " ->" + onStart);
+                        switch (Pearadox.FRC514_Device) {          // Who am I?!?
+                            case ("Red-1"):             //#Red or Blue Scout
+                                txt_MyTeam.setText(match_Obj.getR1());
+                                break;
+                            case ("Red-2"):             //#
+                                txt_MyTeam.setText(match_Obj.getR2());
+                                break;
+                            case ("Red-3"):             //#
+                                txt_MyTeam.setText(match_Obj.getR3());
+                                break;
+                            case ("Blue-1"):            //#
+                                txt_MyTeam.setText(match_Obj.getB1());
+                                break;
+                            case ("Blue-2"):            //#
+                                txt_MyTeam.setText(match_Obj.getB2());
+                                break;
+                            case ("Blue-3"):            //#####
+                                txt_MyTeam.setText(match_Obj.getB3());
+                                break;
+                            default:                //
+                                Log.d(TAG, "device is _NOT_ a Scout ->" + device );
+                        }
+                        String tn = (String) txt_MyTeam.getText();
+                        findTeam(tn);   // Find Team info
+                        txt_TeamName.setText(team_inst.getTeam_name());
+                    }
                 }
             }
             @Override
@@ -116,6 +157,21 @@ public class MatchScoutActivity extends AppCompatActivity {
                 /*listener failed or was removed for security reasons*/
             }
         });
+    }
+    private void findTeam(String tnum) {
+        Log.i(TAG, "$$$$$  findTeam " + tnum);
+        boolean found = false;
+        for (int i = 0; i < Pearadox.numTeams; i++) {        // check each team entry
+            if (Pearadox.team_List.get(i).getTeam_num().equals(tnum)) {
+                team_inst = Pearadox.team_List.get(i);
+//                Log.d(TAG, "===  Team " + team_inst.getTeam_num() + " " + team_inst.getTeam_name() + " " + team_inst.getTeam_loc());
+                found = true;
+                break;  // found it!
+            }
+        }  // end For
+        if (!found) {
+            Log.e(TAG, "****** ERROR - Team _NOT_ found!! = " + tnum);
+        }
     }
 
 //###################################################################
@@ -125,15 +181,33 @@ public class MatchScoutActivity extends AppCompatActivity {
 public void onStart() {
     super.onStart();
     Log.v(TAG, "onStart");
+
+    onStart = true;
     getMatch();      // Get current match
+    Log.d(TAG, "onStart Device = " + device + " ->" + onStart);
 }
 
+    public void onPause() {
+        super.onPause();
+        Log.v(TAG, "onPause");
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("Device", device);
+        editor.putString("Student", studID);
+        editor.commit(); 		// keep same data
+    }
 
     @Override
     public void onResume() {
         super.onResume();
         Log.v(TAG, "onResume");
+        onStart = false;
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        String device = prefs.getString("Device", "");
+        String studID = prefs.getString("Student", "");
+        Log.d(TAG, "Dev=" + device + "  " + "Student=" + studID);
     }
+
     @Override
     public void onStop() {
         super.onStop();
