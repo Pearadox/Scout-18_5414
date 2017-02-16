@@ -60,6 +60,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
     private DatabaseReference pfDevice_DBReference;
     private DatabaseReference pfTeam_DBReference;
     private DatabaseReference pfMatch_DBReference;
+    private DatabaseReference pfCur_Match_DBReference;
     public static String[] signedStudents = new String[]
             {" ", " ", " ", " ", " ", " "};
     String team_num, team_name, team_loc;
@@ -104,10 +105,11 @@ public class ScoutMaster_Activity extends AppCompatActivity {
         spinner_MatchNum.setSelection(0, false);
         spinner_MatchNum.setOnItemSelectedListener(new mNum_OnItemSelectedListener());
         pfDatabase = FirebaseDatabase.getInstance();
-        pfTeam_DBReference = pfDatabase.getReference("teams");          // Tteam data from Firebase D/B
-        pfStudent_DBReference = pfDatabase.getReference("students");    // List of Students
-        pfDevice_DBReference = pfDatabase.getReference("devices");      // List of Students
-        pfMatch_DBReference = pfDatabase.getReference("matches");       // List of Students
+        pfTeam_DBReference = pfDatabase.getReference("teams");              // Tteam data from Firebase D/B
+        pfStudent_DBReference = pfDatabase.getReference("students");        // List of Students
+        pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Students
+        pfMatch_DBReference = pfDatabase.getReference("matches");           // List of Students
+        pfCur_Match_DBReference = pfDatabase.getReference("current-match"); // _THE_ current Match
         clearTeamData();
         clearDevData();
 
@@ -118,13 +120,22 @@ public class ScoutMaster_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 Spinner spinner_MatchType = (Spinner) findViewById(R.id.spinner_MatchType);
                 Spinner spinner_MatchNum = (Spinner) findViewById(R.id.spinner_MatchNum);
+                String key = "0";
                 if (toggleStartStop.isChecked()) {      // See what state we are in
+                    pfCur_Match_DBReference.child(key).child("cur_match").setValue(matchID);
                     getTeams();
 
                 } else {        // Stop Session - Clear data
                     matchID = "";
                     spinner_MatchType.setSelection(0);       //Reset to NO selection
                     spinner_MatchNum.setSelection(0);        //*
+                    pfCur_Match_DBReference.child(key).child("cur_match").setValue("");  // set to null
+                    pfCur_Match_DBReference.child(key).child("r1").setValue("");
+                    pfCur_Match_DBReference.child(key).child("r2").setValue("");
+                    pfCur_Match_DBReference.child(key).child("r3").setValue("");
+                    pfCur_Match_DBReference.child(key).child("b1").setValue("");
+                    pfCur_Match_DBReference.child(key).child("b2").setValue("");
+                    pfCur_Match_DBReference.child(key).child("b3").setValue("");
                     clearTeamData();
                 }
             }
@@ -195,27 +206,21 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                 Log.i(TAG, "Paired device " + i + " = '" + paired_dev + "'");
                 switch (paired_dev) {
                     case ("5414_Red-1"):
-                        txt_scoutR1.setText(signedStudents[0]);
                         imgBT_R1.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth_on));
                         break;
                     case ("5414_Red-2"):
-                        txt_scoutR2.setText(signedStudents[1]);
                         imgBT_R2.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth_on));
                         break;
                     case ("5414_Red-3"):
-                        txt_scoutR3.setText(signedStudents[2]);
                         imgBT_R3.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth_on));
                         break;
                     case ("5414_Blue-1"):
-                        txt_scoutB1.setText(signedStudents[3]);
                         imgBT_B1.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth_on));
                         break;
                     case ("5414_Blue-2"):
-                        txt_scoutB2.setText(signedStudents[4]);
                         imgBT_B2.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth_on));
                         break;
                     case ("5414_Blue-3"):
-                        txt_scoutB3.setText(signedStudents[5]);
                         imgBT_B3.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth_on));
                         break;
                     default:                // ????
@@ -343,9 +348,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
         txt_teamB3_Name = (TextView) findViewById(R.id.txt_teamB3_Name);
         int z = matchID.length();
         if (z == 3) {
-            //          ToDo - Get "real" Red & Blue Alliance Teams from Firebase D/B for _THIS_ Match
             Log.i(TAG, "   Q U E R Y  ");
-//            p_Firebase.matchObj mobj = new p_Firebase.matchObj();
             String child = "match";
             String key = matchID;
             Query query = pfMatch_DBReference.orderByChild(child).equalTo(key);
@@ -375,26 +378,31 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                     findTeam(tn);
                     Log.d(TAG, ">>>> # team instances = " + teams.size());  //** DEBUG
                     // Put the teams for this match on screen
+                    String key = "0";   // Since only 1, key is zero
                     team_inst = teams.get(0);
                     txt_teamR1.setText(team_inst.getTeam_num());
                     txt_teamR1_Name.setText(team_inst.getTeam_name());
-                    Log.i(TAG, " AFTER 0 - " + team_inst.getTeam_num() + " " + team_inst.getTeam_name());
+                    pfCur_Match_DBReference.child(key).child("r1").setValue(team_inst.getTeam_num());
                     team_inst = teams.get(1);
                     txt_teamR2.setText(team_inst.getTeam_num());
                     txt_teamR2_Name.setText(team_inst.getTeam_name());
-                    Log.i(TAG, " AFTER 1 - " + team_inst.getTeam_num() + " " + team_inst.getTeam_name());
+                    pfCur_Match_DBReference.child(key).child("r2").setValue(team_inst.getTeam_num());
                     team_inst = teams.get(2);
                     txt_teamR3.setText(team_inst.getTeam_num());
                     txt_teamR3_Name.setText(team_inst.getTeam_name());
+                    pfCur_Match_DBReference.child(key).child("r3").setValue(team_inst.getTeam_num());
                     team_inst = teams.get(3);
                     txt_teamB1.setText(team_inst.getTeam_num());
                     txt_teamB1_Name.setText(team_inst.getTeam_name());
+                    pfCur_Match_DBReference.child(key).child("b1").setValue(team_inst.getTeam_num());
                     team_inst = teams.get(4);
                     txt_teamB2.setText(team_inst.getTeam_num());
                     txt_teamB2_Name.setText(team_inst.getTeam_name());
+                    pfCur_Match_DBReference.child(key).child("b2").setValue(team_inst.getTeam_num());
                     team_inst = teams.get(5);
                     txt_teamB3.setText(team_inst.getTeam_num());
                     txt_teamB3_Name.setText(team_inst.getTeam_name());
+                    pfCur_Match_DBReference.child(key).child("b3").setValue(team_inst.getTeam_num());
                 }
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -425,7 +433,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
             if (Pearadox.team_List.get(i).getTeam_num().equals(tnum)) {
                 team_inst = Pearadox.team_List.get(i);
                 teams.add(team_inst);
-                Log.d(TAG, "===  Team " + team_inst.getTeam_num() + " " + team_inst.getTeam_name() + " " + team_inst.getTeam_loc());
+//                Log.d(TAG, "===  Team " + team_inst.getTeam_num() + " " + team_inst.getTeam_name() + " " + team_inst.getTeam_loc());
                 found = true;
                 break;  // found it!
             }
@@ -572,10 +580,17 @@ public class ScoutMaster_Activity extends AppCompatActivity {
 
     public void FindDevItem() {
         Log.d(TAG, "%%%%  FindDevItem  %%%%");
-        String child = "dev_name";
+//        String child = "dev_name";
         pfDevice_DBReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "Device onDataChange  %%%%");
+                txt_scoutR1 = (TextView) findViewById(R.id.txt_scoutR1);
+                txt_scoutR2 = (TextView) findViewById(R.id.txt_scoutR2);
+                txt_scoutR3 = (TextView) findViewById(R.id.txt_scoutR3);
+                txt_scoutB1 = (TextView) findViewById(R.id.txt_scoutB1);
+                txt_scoutB2 = (TextView) findViewById(R.id.txt_scoutB2);
+                txt_scoutB3 = (TextView) findViewById(R.id.txt_scoutB3);
                 int numDevs = 0;
                 String device = "";
                 String  studname = "";
@@ -586,7 +601,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                     dev_Obj = iterator.next().getValue(p_Firebase.devicesObj.class);
                     device = dev_Obj.getDev_name();
                     studname = dev_Obj.getStud_id();
-                    Log.d(TAG, "%%%%  " + studname + " is logged onto " + device);
+//                    Log.d(TAG, "%%%%  " + studname + " is logged onto " + device);
                     numDevs++;
                     switch (device) {
                         case "Scout Master":         // Scout Master
@@ -594,21 +609,27 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                             break;
                         case ("Red-1"):             //#Red or Blue Scout
                             signedStudents[0] = studname;
+                            txt_scoutR1.setText(signedStudents[0]);
                             break;
                         case ("Red-2"):             //#
                             signedStudents[1] = studname;
+                            txt_scoutR2.setText(signedStudents[1]);
                             break;
                         case ("Red-3"):             //#
                             signedStudents[2] = studname;
+                            txt_scoutR3.setText(signedStudents[2]);
                             break;
                         case ("Blue-1"):            //#
                             signedStudents[3] = studname;
+                            txt_scoutB1.setText(signedStudents[3]);
                             break;
                         case ("Blue-2"):            //#
                             signedStudents[4] = studname;
+                            txt_scoutB2.setText(signedStudents[4]);
                             break;
                         case ("Blue-3"):            //#####
                             signedStudents[5] = studname;
+                            txt_scoutB3.setText(signedStudents[5]);
                             break;
                         case "Visualizer":          // Visualizer
                             // only interested in Scouts
@@ -619,7 +640,6 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                 }
                 Log.d(TAG, "*****  # of devices = " + numDevs);
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 /*listener failed or was removed for security reasons*/

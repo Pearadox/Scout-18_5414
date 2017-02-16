@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference pfTeam_DBReference;
     String team_num, team_name, team_loc;
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name, team_loc);
+    String key = null;
 
 
     @Override
@@ -186,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateDev(boolean x) {     // x=true LOGON  x=false LOGOFF
         Log.i(TAG, "#### updateDev #### " + x);
-        String key = null;
         switch (devSelected) {
             case "Scout Master":         // Scout Master
                 key = "0";
@@ -456,7 +456,13 @@ public void onResume() {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.v(TAG, "OnDestroy");
+        Log.v(TAG, "OnDestroy" + key);
+        if (logged_On) {
+            Toast toast = Toast.makeText(getBaseContext(), "Don't forget to _ALWAYS_ log OFF before exiting", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
+            pfDevice_DBReference.child(key).child("stud_id").setValue(" ");
+        }
     }
 
 }
