@@ -116,7 +116,7 @@
             android:layout_width="25sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/orange"
             android:text="Team 1"
             android:layout_below="@+id/spinner_MatchNum"
@@ -127,7 +127,7 @@
             android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/red"
             android:text="0001" />
 
@@ -136,7 +136,7 @@
             android:layout_width="25sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/orange"
             android:text="Team 2"
             android:layout_below="@+id/lbl_team1"
@@ -147,7 +147,7 @@
             android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/red"
             android:text="0002" />
         <TextView
@@ -155,7 +155,7 @@
             android:layout_width="25sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/orange"
             android:text="Team 3" />
         <TextView
@@ -163,7 +163,7 @@
             android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/red"
             android:text="0003" />
         <!--<TextView-->
@@ -184,7 +184,7 @@
             android:layout_width="180sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/red"
             android:text="Long Name of Red Team # 1 :::::::::::"
             android:layout_below="@+id/teams_sectR"
@@ -195,7 +195,7 @@
             android:layout_width="180sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/red"
             android:text="Long Name of Red Team # 2 :::::::::::"
             android:layout_marginStart="11dp"
@@ -207,7 +207,7 @@
             android:layout_width="180sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/red"
             android:text="Long Name of Red Team # 3 :::::::::::"
             android:layout_marginStart="75dp"
@@ -228,7 +228,7 @@
             android:layout_width="25sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/blue"
             android:text="Team 1"
             android:layout_below="@+id/spinner_MatchNum"
@@ -239,7 +239,7 @@
             android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/cyan"
             android:text="0001" />
         <TextView
@@ -247,7 +247,7 @@
             android:layout_width="25sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/blue"
             android:text="Team 2"
             android:layout_below="@+id/lbl_team1"
@@ -258,7 +258,7 @@
             android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/cyan"
             android:text="0002" />
 
@@ -267,7 +267,7 @@
             android:layout_width="25sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/blue"
             android:text="Team 3" />
         <TextView
@@ -275,7 +275,7 @@
             android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/cyan"
             android:text="0003" />
         <!--<TextView-->
@@ -297,7 +297,7 @@
             android:id="@+id/txt_teamB1_Name"
             android:layout_width="180sp"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:layout_weight="1"
             android:textColor="@color/cyan"
             android:text="Long Name of Blue Team # 1 :::::::::::"
@@ -307,7 +307,7 @@
             android:id="@+id/txt_teamB2_Name"
             android:layout_width="180sp"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:layout_weight="1"
             android:textColor="@color/cyan"
             android:text="Long Name of Blue Team # 2 :::::::::::"
@@ -318,7 +318,7 @@
             android:id="@+id/txt_teamB3_Name"
             android:layout_width="180sp"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:layout_weight="1"
             android:textColor="@color/cyan"
             android:text="Long Name of Blue Team # 3 :::::::::::"
@@ -334,11 +334,11 @@
         android:id="@+id/lbl_Divider"
         android:text="@string/lbl_Divider"
         android:layout_width="wrap_content"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:textColor="@color/white"
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14sp"
+        android:layout_marginTop="16sp"
         android:layout_below="@+id/teams_sectB1"
         android:layout_alignParentStart="true" />
 
@@ -350,24 +350,24 @@
         android:layout_below="@+id/lbl_Divider" >
         <TextView
             android:id="@+id/lbl_scoutR1"
-            android:layout_width="90sp"
-            android:layout_height="24dp"
-            android:textSize="14sp"
+            android:layout_width="110dp"
+            android:layout_height="30sp"
+            android:textSize="16sp"
             android:textColor="@color/red"
             android:text="Scout Red-1"
             android:layout_below="@+id/devList" />
         <ImageView
-            android:id="@+id/imgBT_R1"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:id="@+id/imgStat_R1"
+            android:layout_width="60sp"
+            android:layout_height="30sp"
             android:layout_gravity="center_horizontal"
-            android:contentDescription="Bluetoot Status"
-            android:src="@drawable/bluetooth_off" />
+            android:contentDescription="Match Period Status"
+            android:src="@drawable/traffic_light_off" />
         <TextView
             android:id="@+id/txt_scoutR1"
-            android:layout_width="180dp"
-            android:layout_height="24dp"
-            android:textSize="14sp"
+            android:layout_width="210dp"
+            android:layout_height="30sp"
+            android:textSize="16sp"
             android:textColor="@color/orange"
             android:text="Johnathan L. Zimmerwhistle"  />
     </LinearLayout>
@@ -380,23 +380,23 @@
         android:layout_below="@+id/devListR1" >
         <TextView
             android:id="@+id/lbl_scoutR2"
-            android:layout_width="90sp"
-            android:layout_height="24dp"
-            android:textSize="14sp"
+            android:layout_width="110dp"
+            android:layout_height="30sp"
+            android:textSize="16sp"
             android:textColor="@color/red"
             android:text="Scout Red-2" />
         <ImageView
-            android:id="@+id/imgBT_R2"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:id="@+id/imgStat_R2"
+            android:layout_width="60sp"
+            android:layout_height="30sp"
             android:layout_gravity="center_horizontal"
-            android:contentDescription="Bluetoot Status"
-            android:src="@drawable/bluetooth_off" />
+            android:contentDescription="Match Period Status"
+            android:src="@drawable/traffic_light_off" />
         <TextView
             android:id="@+id/txt_scoutR2"
-            android:layout_width="180dp"
-            android:layout_height="24dp"
-            android:textSize="14sp"
+            android:layout_width="210dp"
+            android:layout_height="30sp"
+            android:textSize="16sp"
             android:textColor="@color/orange"
             android:text="Johnathan L. Zimmerwhistle" />
     </LinearLayout>
@@ -408,23 +408,23 @@
         android:layout_below="@+id/devListR2" >
         <TextView
             android:id="@+id/lbl_scoutR3"
-            android:layout_width="90sp"
-            android:layout_height="24dp"
-            android:textSize="14sp"
+            android:layout_width="110dp"
+            android:layout_height="30sp"
+            android:textSize="16sp"
             android:textColor="@color/red"
             android:text="Scout Red-3" />
         <ImageView
-            android:id="@+id/imgBT_R3"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:id="@+id/imgStat_R3"
+            android:layout_width="60sp"
+            android:layout_height="30sp"
             android:layout_gravity="center_horizontal"
-            android:contentDescription="Bluetoot Status"
-            android:src="@drawable/bluetooth_off" />
+            android:contentDescription="Match Period Status"
+            android:src="@drawable/traffic_light_off" />
         <TextView
             android:id="@+id/txt_scoutR3"
-            android:layout_width="180dp"
-            android:layout_height="24dp"
-            android:textSize="14sp"
+            android:layout_width="210dp"
+            android:layout_height="30sp"
+            android:textSize="16sp"
             android:textColor="@color/orange"
             android:text="Johnathan L. Zimmerwhistle" />
     </LinearLayout>
@@ -436,24 +436,24 @@
         android:layout_below="@+id/devListR3" >
         <TextView
             android:id="@+id/lbl_scoutB1"
-            android:layout_width="90sp"
-            android:layout_height="24dp"
-            android:textSize="14sp"
+            android:layout_width="110dp"
+            android:layout_height="30sp"
+            android:textSize="16sp"
             android:textColor="@color/blue"
             android:text="Scout Blue-1"
             android:layout_below="@+id/devList" />
         <ImageView
-            android:id="@+id/imgBT_B1"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:id="@+id/imgStat_B1"
+            android:layout_width="60sp"
+            android:layout_height="30sp"
             android:layout_gravity="center_horizontal"
-            android:contentDescription="Bluetoot Status"
-            android:src="@drawable/bluetooth_off" />
+            android:contentDescription="Match Period Status"
+            android:src="@drawable/traffic_light_off" />
         <TextView
             android:id="@+id/txt_scoutB1"
-            android:layout_width="180dp"
-            android:layout_height="24dp"
-            android:textSize="14sp"
+            android:layout_width="210dp"
+            android:layout_height="30sp"
+            android:textSize="16sp"
             android:textColor="@color/cyan"
             android:text="Johnathan L. Zimmerwhistle"  />
     </LinearLayout>
@@ -466,23 +466,23 @@
         android:layout_below="@+id/devListB1" >
         <TextView
             android:id="@+id/lbl_scoutB2"
-            android:layout_width="90sp"
-            android:layout_height="24dp"
-            android:textSize="14sp"
+            android:layout_width="110dp"
+            android:layout_height="30sp"
+            android:textSize="16sp"
             android:textColor="@color/blue"
             android:text="Scout Blue-2" />
         <ImageView
-            android:id="@+id/imgBT_B2"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:id="@+id/imgStat_B2"
+            android:layout_width="60sp"
+            android:layout_height="30sp"
             android:layout_gravity="center_horizontal"
-            android:contentDescription="Bluetoot Status"
-            android:src="@drawable/bluetooth_off" />
+            android:contentDescription="Match Period Status"
+            android:src="@drawable/traffic_light_off" />
         <TextView
             android:id="@+id/txt_scoutB2"
-            android:layout_width="180dp"
-            android:layout_height="24dp"
-            android:textSize="14sp"
+            android:layout_width="210dp"
+            android:layout_height="30sp"
+            android:textSize="16sp"
             android:textColor="@color/cyan"
             android:text="Johnathan L. Zimmerwhistle" />
     </LinearLayout>
@@ -494,23 +494,23 @@
         android:layout_below="@+id/devListB2" >
         <TextView
             android:id="@+id/lbl_scoutB3"
-            android:layout_width="90sp"
-            android:layout_height="24dp"
-            android:textSize="14sp"
+            android:layout_width="110dp"
+            android:layout_height="30sp"
+            android:textSize="16sp"
             android:textColor="@color/blue"
             android:text="Scout Blue-3" />
         <ImageView
-            android:id="@+id/imgBT_B3"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:id="@+id/imgStat_B3"
+            android:layout_width="60sp"
+            android:layout_height="30sp"
             android:layout_gravity="center_horizontal"
-            android:contentDescription="Bluetoot Status"
-            android:src="@drawable/bluetooth_off" />
+            android:contentDescription="Match Period Status"
+            android:src="@drawable/traffic_light_off" />
         <TextView
             android:id="@+id/txt_scoutB3"
-            android:layout_width="180dp"
-            android:layout_height="24dp"
-            android:textSize="14sp"
+            android:layout_width="210dp"
+            android:layout_height="30sp"
+            android:textSize="16sp"
             android:textColor="@color/cyan"
             android:text="Johnathan L. Zimmerwhistle" />
     </LinearLayout>

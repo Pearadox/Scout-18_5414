@@ -54,7 +54,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
     TextView txt_teamR1, txt_teamR2, txt_teamR3, txt_teamB1, txt_teamB2, txt_teamB3;
     TextView txt_teamR1_Name, txt_teamR2_Name, txt_teamR3_Name, txt_teamB1_Name, txt_teamB2_Name, txt_teamB3_Name;
     TextView txt_scoutR1, txt_scoutR2, txt_scoutR3, txt_scoutB1, txt_scoutB2, txt_scoutB3;
-    ImageView imgBT_R1, imgBT_R2, imgBT_R3, imgBT_B1, imgBT_B2, imgBT_B3;
+    ImageView imgStat_R1, imgStat_R2, imgStat_R3, imgStat_B1, imgStat_B2, imgStat_B3;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfStudent_DBReference;
     private DatabaseReference pfDevice_DBReference;
@@ -68,20 +68,20 @@ public class ScoutMaster_Activity extends AppCompatActivity {
     ArrayList<p_Firebase.teamsObj> teams = new ArrayList<p_Firebase.teamsObj>();
 
     //  Bluetooth
-    BluetoothAdapter myBluetoothAdapter;
-    BroadcastReceiver myBTReceiver;
-    IntentFilter filter;
-    ArrayList<String> devList = new ArrayList<String>();
-    int numBT_connects = 0;     //# of Bluetooth connections
-    public static String EXTRA_DEVICE_ADDRESS = "device_address";
-    String BTdevName = null;
-    String MACaddr = null;
-    private static final int REQUEST_CONNECT_DEVICE_SECURE = 1;
-    private static final int REQUEST_CONNECT_DEVICE_INSECURE = 2;
-    private static final int REQUEST_ENABLE_BT = 3;
-    private BluetoothChatService mChatService = null;   // Member object for the chat services
-    private String mConnectedDeviceName = null;         // Name of the connected device
-    private StringBuffer mOutStringBuffer;              // String buffer for outgoing messages
+//    BluetoothAdapter myBluetoothAdapter;
+//    BroadcastReceiver myBTReceiver;
+//    IntentFilter filter;
+//    ArrayList<String> devList = new ArrayList<String>();
+//    int numBT_connects = 0;     //# of Bluetooth connections
+//    public static String EXTRA_DEVICE_ADDRESS = "device_address";
+//    String BTdevName = null;
+//    String MACaddr = null;
+//    private static final int REQUEST_CONNECT_DEVICE_SECURE = 1;
+//    private static final int REQUEST_CONNECT_DEVICE_INSECURE = 2;
+//    private static final int REQUEST_ENABLE_BT = 3;
+//    private BluetoothChatService mChatService = null;   // Member object for the chat services
+//    private String mConnectedDeviceName = null;         // Name of the connected device
+//    private StringBuffer mOutStringBuffer;              // String buffer for outgoing messages
 
 
     @Override
@@ -113,7 +113,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
         clearTeamData();
         clearDevData();
 
-        startBluetooth();       // Start BT as Master & listen for connections
+//        startBluetooth();       // Start BT as Master & listen for connections
         toggleStartStop = (ToggleButton) findViewById(R.id.toggleStartStop);
         toggleStartStop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,142 +150,130 @@ public class ScoutMaster_Activity extends AppCompatActivity {
     }
 
 
-    private void startBluetooth() {
-        Log.d(TAG, "<<<<<  Bluetooth  >>>>>>");
-        BluetoothAdapter myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        devList.clear();
-        if (myBluetoothAdapter != null) {
-            Log.i(TAG, "Bluetooth is available");
-            if (!myBluetoothAdapter.isEnabled()) {
-                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-            }
-            Log.i(TAG, "Bluetooth is enabled");
-            Set<BluetoothDevice> pairedDevices = myBluetoothAdapter.getBondedDevices();
-            // If there are paired devices
-            if (pairedDevices.size() > 0) {
-                // Loop through paired devices
-                for (BluetoothDevice device : pairedDevices) {
-                    // Add the name and address to an array adapter to show in a ListView
-                    Log.d(TAG, "*** Already Paired " + device.getName() + " - " + device.getAddress());
-                    devList.add(device.getName());
-                }
-                Log.d(TAG, "# Bluetooth devices paired = " + devList.size());
-            } else {
-                Log.i(TAG, "No paired devices");
-            }
+//    private void startBluetooth() {
+//        Log.d(TAG, "<<<<<  Bluetooth  >>>>>>");
+//        BluetoothAdapter myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+//        devList.clear();
+//        if (myBluetoothAdapter != null) {
+//            Log.i(TAG, "Bluetooth is available");
+//            if (!myBluetoothAdapter.isEnabled()) {
+//                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+//            }
+//            Log.i(TAG, "Bluetooth is enabled");
+//            Set<BluetoothDevice> pairedDevices = myBluetoothAdapter.getBondedDevices();
+//            // If there are paired devices
+//            if (pairedDevices.size() > 0) {
+//                // Loop through paired devices
+//                for (BluetoothDevice device : pairedDevices) {
+//                    // Add the name and address to an array adapter to show in a ListView
+//                    Log.d(TAG, "*** Already Paired " + device.getName() + " - " + device.getAddress());
+//                    devList.add(device.getName());
+//                }
+//                Log.d(TAG, "# Bluetooth devices paired = " + devList.size());
+//            } else {
+//                Log.i(TAG, "No paired devices");
+//            }
+//
+//            final BroadcastReceiver myBTReceiver = new BroadcastReceiver() {  // Create a BroadcastReceiver for ACTION_FOUND
+//                public void onReceive(Context context, Intent intent) {
+//                    String action = intent.getAction();
+//                    // When discovery finds a device
+//                    if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+//                        // Get the BluetoothDevice object from the Intent
+//                        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+//                        // Add the name and address to an array adapter to show in a ListView
+////                        devList.add(device.getName() + "\n" + device.getAddress());
+////                        Log.d(TAG, "*** Added device " + device.getName() + " - " + device.getAddress());
+//                    }
+//                }
+//            };
+//
+//            for (int i = 0; i < devList.size(); i++) {
+//                String paired_dev = devList.get(i);
+//                Log.i(TAG, "Paired device " + i + " = '" + paired_dev + "'");
+//                switch (paired_dev) {
+//                    case ("5414_Red-1"):
+//                        imgStat_R1.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth_on));
+//                        break;
+//                    case ("5414_Red-2"):
+//                        imgStat_R2.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth_on));
+//                        break;
+//                    case ("5414_Red-3"):
+//                        imgStat_R3.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth_on));
+//                        break;
+//                    case ("5414_Blue-1"):
+//                        imgStat_B1.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth_on));
+//                        break;
+//                    case ("5414_Blue-2"):
+//                        imgStat_B2.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth_on));
+//                        break;
+//                    case ("5414_Blue-3"):
+//                        imgStat_B3.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth_on));
+//                        break;
+//                    default:                // ????
+//                        Log.e(TAG, "*** Error - Invalid Bluetooth Device Name (e.g., '5414_<Color>-#'  *** " + paired_dev);
+//                }
+//            }
+//
+//            // Register the BroadcastReceiver
+//            IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+//            registerReceiver(myBTReceiver, filter);   // Don't forget to unregister during onDestroy
+//
+//            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+//            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+//            startActivity(discoverableIntent);
+//
+//        } else {        // Device does not support Bluetooth
+//            Log.d(TAG, "** Bluetooth is not availible ** ");
+//            Toast.makeText(getBaseContext(), "** Bluetooth is not availible ** ",
+//                    Toast.LENGTH_LONG).show();
+//
+//        }
+//    }
 
-            final BroadcastReceiver myBTReceiver = new BroadcastReceiver() {  // Create a BroadcastReceiver for ACTION_FOUND
-                public void onReceive(Context context, Intent intent) {
-                    String action = intent.getAction();
-                    // When discovery finds a device
-                    if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                        // Get the BluetoothDevice object from the Intent
-                        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                        // Add the name and address to an array adapter to show in a ListView
-//                        devList.add(device.getName() + "\n" + device.getAddress());
-//                        Log.d(TAG, "*** Added device " + device.getName() + " - " + device.getAddress());
-                    }
-                }
-            };
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        Log.i(TAG, "$$$$$$$$  onActivityResult  $$$$$$$$ " + requestCode);
+//        switch (requestCode) {
+//            case REQUEST_CONNECT_DEVICE_SECURE:
+//                Log.d(TAG, "<CONNECT>");
+//                // When DeviceListActivity returns with a device to connect
+//                if (resultCode == Activity.RESULT_OK) {
+//                    Log.d(TAG, "####### RESULT_OK " + Activity.RESULT_OK);
+//                    connectDevice(data, true);
+//                } else {        // No BT devices found
+//                    Log.d(TAG, "******* No BT deviices ******" + Activity.RESULT_OK);
+//                }
+//                break;
+//            case REQUEST_ENABLE_BT:
+//                Log.d(TAG, "[ENABLE]");
+//                // When the request to enable Bluetooth returns
+//                if (resultCode == Activity.RESULT_OK) {
+//                    Log.d(TAG, "setUpChat");
+////                    setupChat();  // Bluetooth is now enabled, so set up a chat session
+//                } else {
+//                    // User did not enable Bluetooth or an error occurred
+//                    Log.d(TAG, "BT not enabled");
+//                    Toast.makeText(getBaseContext(), "** Bluetooth is not availible ** ",
+//                            Toast.LENGTH_LONG).show();
+////                    finish();         //EXIT
+//                }
+//            default:                // ????
+//                Log.e(TAG, "*** Error - bad Request Code  *** " + requestCode);
+//        }
+//    }
 
-            txt_scoutR1 = (TextView) findViewById(R.id.txt_scoutR1);
-            txt_scoutR2 = (TextView) findViewById(R.id.txt_scoutR2);
-            txt_scoutR3 = (TextView) findViewById(R.id.txt_scoutR3);
-            txt_scoutB1 = (TextView) findViewById(R.id.txt_scoutB1);
-            txt_scoutB2 = (TextView) findViewById(R.id.txt_scoutB2);
-            txt_scoutB3 = (TextView) findViewById(R.id.txt_scoutB3);
-            ImageView imgBT_R1 = (ImageView) findViewById(R.id.imgBT_R1);
-            ImageView imgBT_R2 = (ImageView) findViewById(R.id.imgBT_R2);
-            ImageView imgBT_R3 = (ImageView) findViewById(R.id.imgBT_R3);
-            ImageView imgBT_B1 = (ImageView) findViewById(R.id.imgBT_B1);
-            ImageView imgBT_B2 = (ImageView) findViewById(R.id.imgBT_B2);
-            ImageView imgBT_B3 = (ImageView) findViewById(R.id.imgBT_B3);
-            for (int i = 0; i < devList.size(); i++) {
-                String paired_dev = devList.get(i);
-                Log.i(TAG, "Paired device " + i + " = '" + paired_dev + "'");
-                switch (paired_dev) {
-                    case ("5414_Red-1"):
-                        imgBT_R1.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth_on));
-                        break;
-                    case ("5414_Red-2"):
-                        imgBT_R2.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth_on));
-                        break;
-                    case ("5414_Red-3"):
-                        imgBT_R3.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth_on));
-                        break;
-                    case ("5414_Blue-1"):
-                        imgBT_B1.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth_on));
-                        break;
-                    case ("5414_Blue-2"):
-                        imgBT_B2.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth_on));
-                        break;
-                    case ("5414_Blue-3"):
-                        imgBT_B3.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth_on));
-                        break;
-                    default:                // ????
-                        Log.e(TAG, "*** Error - Invalid Bluetooth Device Name (e.g., '5414_<Color>-#'  *** " + paired_dev);
-                }
-            }
-
-            // Register the BroadcastReceiver
-            IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-            registerReceiver(myBTReceiver, filter);   // Don't forget to unregister during onDestroy
-
-            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
-            startActivity(discoverableIntent);
-
-        } else {        // Device does not support Bluetooth
-            Log.d(TAG, "** Bluetooth is not availible ** ");
-            Toast.makeText(getBaseContext(), "** Bluetooth is not availible ** ",
-                    Toast.LENGTH_LONG).show();
-
-        }
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i(TAG, "$$$$$$$$  onActivityResult  $$$$$$$$ " + requestCode);
-        switch (requestCode) {
-            case REQUEST_CONNECT_DEVICE_SECURE:
-                Log.d(TAG, "<CONNECT>");
-                // When DeviceListActivity returns with a device to connect
-                if (resultCode == Activity.RESULT_OK) {
-                    Log.d(TAG, "####### RESULT_OK " + Activity.RESULT_OK);
-                    connectDevice(data, true);
-                } else {        // No BT devices found
-                    Log.d(TAG, "******* No BT deviices ******" + Activity.RESULT_OK);
-                }
-                break;
-            case REQUEST_ENABLE_BT:
-                Log.d(TAG, "[ENABLE]");
-                // When the request to enable Bluetooth returns
-                if (resultCode == Activity.RESULT_OK) {
-                    Log.d(TAG, "setUpChat");
-//                    setupChat();  // Bluetooth is now enabled, so set up a chat session
-                } else {
-                    // User did not enable Bluetooth or an error occurred
-                    Log.d(TAG, "BT not enabled");
-                    Toast.makeText(getBaseContext(), "** Bluetooth is not availible ** ",
-                            Toast.LENGTH_LONG).show();
-//                    finish();         //EXIT
-                }
-            default:                // ????
-                Log.e(TAG, "*** Error - bad Request Code  *** " + requestCode);
-        }
-    }
-
-    private void connectDevice(Intent data, boolean secure) {
-        Log.i(TAG, "connectDevice");
-        String address = data.getExtras()
-                .getString(ScoutMaster_Activity.EXTRA_DEVICE_ADDRESS);  // Get the information
-        Log.d(TAG, "Returned address = " + address);
-        BTdevName = address.substring(0, address.length() - 18);    // Get The Device name
-        MACaddr = address.substring(address.length() - 17);         // Get the device MAC address
-        Log.d(TAG, "DEV=" + BTdevName + " MAC addr = " + MACaddr);
+//    private void connectDevice(Intent data, boolean secure) {
+//        Log.i(TAG, "connectDevice");
+//        String address = data.getExtras()
+//                .getString(ScoutMaster_Activity.EXTRA_DEVICE_ADDRESS);  // Get the information
+//        Log.d(TAG, "Returned address = " + address);
+//        BTdevName = address.substring(0, address.length() - 18);    // Get The Device name
+//        MACaddr = address.substring(address.length() - 17);         // Get the device MAC address
+//        Log.d(TAG, "DEV=" + BTdevName + " MAC addr = " + MACaddr);
 //        BluetoothDevice device = myBluetoothAdapter.getRemoteDevice(address);
 //        mChatService.connect(device, secure);   // Attempt to connect to the device
-    }
+//    }
 
     private void clearTeamData() {
         Log.i(TAG, "$$$$$  Clear Team Data");
@@ -358,11 +346,11 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                     Log.d(TAG, "%%%  ChildAdded");
                     System.out.println(dataSnapshot.getValue());
                     p_Firebase.matchObj mobj = dataSnapshot.getValue(p_Firebase.matchObj.class);
-                    System.out.println("Match: " + mobj.getMatch());
-                    System.out.println("Type: " + mobj.getMtype());
-                    System.out.println("Date: " + mobj.getDate());
-                    System.out.println("R1: " + mobj.getR1());
-                    System.out.println("B3: " + mobj.getB3());
+//                    System.out.println("Match: " + mobj.getMatch());
+//                    System.out.println("Type: " + mobj.getMtype());
+//                    System.out.println("Date: " + mobj.getDate());
+//                    System.out.println("R1: " + mobj.getR1());
+//                    System.out.println("B3: " + mobj.getB3());
                     teams.clear();          // empty the list
                     String tn = mobj.getR1();
                     findTeam(tn);
@@ -478,109 +466,107 @@ public class ScoutMaster_Activity extends AppCompatActivity {
             Log.d(TAG, ">>>>>  '" + NumSelected + "'");
             matchID = matchID + NumSelected;
         }
-
         public void onNothingSelected(AdapterView<?> parent) {
             // Do nothing.
         }
     }
 
-    private void ensureDiscoverable() {
-        Log.d(TAG, "******* Discoverable");
-        BluetoothAdapter myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (myBluetoothAdapter.getScanMode() !=
-                BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
-            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
-            startActivity(discoverableIntent);
-        } else {
-            Toast.makeText(getBaseContext(), "Your device is already 'Discoverable' ", Toast.LENGTH_LONG).show();
-        }
-    }
+//    private void ensureDiscoverable() {
+//        Log.d(TAG, "******* Discoverable");
+//        BluetoothAdapter myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+//        if (myBluetoothAdapter.getScanMode() !=
+//                BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+//            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+//            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+//            startActivity(discoverableIntent);
+//        } else {
+//            Toast.makeText(getBaseContext(), "Your device is already 'Discoverable' ", Toast.LENGTH_LONG).show();
+//        }
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i(TAG, ">>>>> onOptionsItemSelected  ");
-        switch (item.getItemId()) {
-            case R.id.BTconnect_scan: {
-                // Launch the DeviceListActivity to see devices and do scan
-                Intent BTdev_Intent = new Intent(ScoutMaster_Activity.this, BTdevices_Activity.class);
-                startActivityForResult(BTdev_Intent, REQUEST_CONNECT_DEVICE_SECURE);   // Find BT devices
-                return true;
-            }
-            case R.id.BTdiscoverable: {
-                // Ensure this device is discoverable by others
-                ensureDiscoverable();
-                return true;
-            }
-            default:                // ????
-                Log.e(TAG, "*** Error - bad MENU indicator  ***");
-        }
-        return false;
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        Log.i(TAG, ">>>>> onOptionsItemSelected  ");
+//        switch (item.getItemId()) {
+//            case R.id.BTconnect_scan: {
+//                // Launch the DeviceListActivity to see devices and do scan
+//                Intent BTdev_Intent = new Intent(ScoutMaster_Activity.this, BTdevices_Activity.class);
+//                startActivityForResult(BTdev_Intent, REQUEST_CONNECT_DEVICE_SECURE);   // Find BT devices
+//                return true;
+//            }
+//            case R.id.BTdiscoverable: {
+//                // Ensure this device is discoverable by others
+//                ensureDiscoverable();
+//                return true;
+//            }
+//            default:                // ????
+//                Log.e(TAG, "*** Error - bad MENU indicator  ***");
+//        }
+//        return false;
+//    }
 
     /**
      * The Handler that gets information back from the BluetoothChatService
      */
-    private final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            String activity = "BTC_Handler";
-            switch (msg.what) {
-                case Constants.MESSAGE_STATE_CHANGE:
-                    switch (msg.arg1) {
-                        case BluetoothChatService.STATE_CONNECTED:
-//                            setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
-//                            mConversationArrayAdapter.clear();
-                            break;
-                        case BluetoothChatService.STATE_CONNECTING:
-//                            setStatus(R.string.title_connecting);
-                            break;
-                        case BluetoothChatService.STATE_LISTEN:
-                        case BluetoothChatService.STATE_NONE:
-//                            setStatus(R.string.title_not_connected);
-                            break;
-                    }
-                    break;
-                case Constants.MESSAGE_WRITE:
-                    byte[] writeBuf = (byte[]) msg.obj;
-                    // construct a string from the buffer
-                    String writeMessage = new String(writeBuf);
-//                    mConversationArrayAdapter.add("Me:  " + writeMessage);
-                    break;
-                case Constants.MESSAGE_READ:
-                    byte[] readBuf = (byte[]) msg.obj;
-                    // construct a string from the valid bytes in the buffer
-                    String readMessage = new String(readBuf, 0, msg.arg1);
-//                    mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage);
-                    break;
-                case Constants.MESSAGE_DEVICE_NAME:
-                    // save the connected device's name
-                    mConnectedDeviceName = msg.getData().getString(Constants.DEVICE_NAME);
-                    Toast.makeText(getBaseContext(), "Connected to "
-                            + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
-                    break;
-                case Constants.MESSAGE_TOAST:
-                    Toast.makeText(getBaseContext(), msg.getData().getString(Constants.TOAST),
-                            Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    };
+//    private final Handler mHandler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            String activity = "BTC_Handler";
+//            switch (msg.what) {
+//                case Constants.MESSAGE_STATE_CHANGE:
+//                    switch (msg.arg1) {
+//                        case BluetoothChatService.STATE_CONNECTED:
+////                            setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
+////                            mConversationArrayAdapter.clear();
+//                            break;
+//                        case BluetoothChatService.STATE_CONNECTING:
+////                            setStatus(R.string.title_connecting);
+//                            break;
+//                        case BluetoothChatService.STATE_LISTEN:
+//                        case BluetoothChatService.STATE_NONE:
+////                            setStatus(R.string.title_not_connected);
+//                            break;
+//                    }
+//                    break;
+//                case Constants.MESSAGE_WRITE:
+//                    byte[] writeBuf = (byte[]) msg.obj;
+//                    // construct a string from the buffer
+//                    String writeMessage = new String(writeBuf);
+////                    mConversationArrayAdapter.add("Me:  " + writeMessage);
+//                    break;
+//                case Constants.MESSAGE_READ:
+//                    byte[] readBuf = (byte[]) msg.obj;
+//                    // construct a string from the valid bytes in the buffer
+//                    String readMessage = new String(readBuf, 0, msg.arg1);
+////                    mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage);
+//                    break;
+//                case Constants.MESSAGE_DEVICE_NAME:
+//                    // save the connected device's name
+//                    mConnectedDeviceName = msg.getData().getString(Constants.DEVICE_NAME);
+//                    Toast.makeText(getBaseContext(), "Connected to "
+//                            + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+//                    break;
+//                case Constants.MESSAGE_TOAST:
+//                    Toast.makeText(getBaseContext(), msg.getData().getString(Constants.TOAST),
+//                            Toast.LENGTH_SHORT).show();
+//                    break;
+//            }
+//        }
+//    };
 
 
-    private void setupChat() {
-        Log.d(TAG, "%%%%  setupChat  %%%%");
-        // Initialize the BluetoothChatService to perform bluetooth connections
-        mChatService = new BluetoothChatService(getBaseContext(), mHandler);
-
-        // Initialize the buffer for outgoing messages
-        mOutStringBuffer = new StringBuffer("");
-
-    }
+//    private void setupChat() {
+//        Log.d(TAG, "%%%%  setupChat  %%%%");
+//        // Initialize the BluetoothChatService to perform bluetooth connections
+//        mChatService = new BluetoothChatService(getBaseContext(), mHandler);
+//
+//        // Initialize the buffer for outgoing messages
+//        mOutStringBuffer = new StringBuffer("");
+//
+//    }
 
     public void FindDevItem() {
         Log.d(TAG, "%%%%  FindDevItem  %%%%");
-//        String child = "dev_name";
         pfDevice_DBReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -591,6 +577,12 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                 txt_scoutB1 = (TextView) findViewById(R.id.txt_scoutB1);
                 txt_scoutB2 = (TextView) findViewById(R.id.txt_scoutB2);
                 txt_scoutB3 = (TextView) findViewById(R.id.txt_scoutB3);
+                ImageView imgStat_R1 = (ImageView) findViewById(R.id.imgStat_R1);
+                ImageView imgStat_R2 = (ImageView) findViewById(R.id.imgStat_R2);
+                ImageView imgStat_R3 = (ImageView) findViewById(R.id.imgStat_R3);
+                ImageView imgStat_B1 = (ImageView) findViewById(R.id.imgStat_B1);
+                ImageView imgStat_B2 = (ImageView) findViewById(R.id.imgStat_B2);
+                ImageView imgStat_B3 = (ImageView) findViewById(R.id.imgStat_B3);
                 int numDevs = 0;
                 String device = "";
                 String  studname = "";
@@ -601,41 +593,49 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                     dev_Obj = iterator.next().getValue(p_Firebase.devicesObj.class);
                     device = dev_Obj.getDev_name();
                     studname = dev_Obj.getStud_id();
-//                    Log.d(TAG, "%%%%  " + studname + " is logged onto " + device);
+                    Log.d(TAG, "%%%%  " + studname + " is logged onto " + device);
                     numDevs++;
-                    switch (device) {
-                        case "Scout Master":         // Scout Master
-                            // only interested in Scouts
-                            break;
-                        case ("Red-1"):             //#Red or Blue Scout
-                            signedStudents[0] = studname;
-                            txt_scoutR1.setText(signedStudents[0]);
-                            break;
-                        case ("Red-2"):             //#
-                            signedStudents[1] = studname;
-                            txt_scoutR2.setText(signedStudents[1]);
-                            break;
-                        case ("Red-3"):             //#
-                            signedStudents[2] = studname;
-                            txt_scoutR3.setText(signedStudents[2]);
-                            break;
-                        case ("Blue-1"):            //#
-                            signedStudents[3] = studname;
-                            txt_scoutB1.setText(signedStudents[3]);
-                            break;
-                        case ("Blue-2"):            //#
-                            signedStudents[4] = studname;
-                            txt_scoutB2.setText(signedStudents[4]);
-                            break;
-                        case ("Blue-3"):            //#####
-                            signedStudents[5] = studname;
-                            txt_scoutB3.setText(signedStudents[5]);
-                            break;
-                        case "Visualizer":          // Visualizer
-                            // only interested in Scouts
-                            break;
-                        default:                //
-                            Log.d(TAG, "DEV = NULL" );
+                    if (studname.length() > 2) {
+                        switch (device) {
+                            case "Scout Master":         // Scout Master
+                                // only interested in Scouts
+                                break;
+                            case ("Red-1"):             //#Red or Blue Scout
+                                signedStudents[0] = studname;
+                                txt_scoutR1.setText(signedStudents[0]);
+                                imgStat_R1.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_red));
+                                break;
+                            case ("Red-2"):             //#
+                                signedStudents[1] = studname;
+                                txt_scoutR2.setText(signedStudents[1]);
+                                imgStat_R2.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_red));
+                                break;
+                            case ("Red-3"):             //#
+                                signedStudents[2] = studname;
+                                txt_scoutR3.setText(signedStudents[2]);
+                                imgStat_R3.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_red));
+                                break;
+                            case ("Blue-1"):            //#
+                                signedStudents[3] = studname;
+                                txt_scoutB1.setText(signedStudents[3]);
+                                imgStat_B1.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_red));
+                                break;
+                            case ("Blue-2"):            //#
+                                signedStudents[4] = studname;
+                                txt_scoutB2.setText(signedStudents[4]);
+                                imgStat_B2.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_red));
+                                break;
+                            case ("Blue-3"):            //#####
+                                signedStudents[5] = studname;
+                                txt_scoutB3.setText(signedStudents[5]);
+                                imgStat_B3.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_red));
+                                break;
+                            case "Visualizer":          // Visualizer
+                                // only interested in Scouts
+                                break;
+                            default:                //
+                                Log.d(TAG, "DEV = NULL");
+                        }
                     }
                 }
                 Log.d(TAG, "*****  # of devices = " + numDevs);
@@ -657,16 +657,16 @@ public class ScoutMaster_Activity extends AppCompatActivity {
         Log.v(TAG, "onStart");
         FindDevItem();  // Get devices that are logged on
 
-        BluetoothAdapter myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        // If BT is not on, request that it be enabled.
-        // setupChat() will then be called during onActivityResult
-        if (!myBluetoothAdapter.isEnabled()) {
-            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-            // Otherwise, setup the chat session
-        } else if (mChatService == null) {
-            setupChat();
-        }
+//        BluetoothAdapter myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+//        // If BT is not on, request that it be enabled.
+//        // setupChat() will then be called during onActivityResult
+//        if (!myBluetoothAdapter.isEnabled()) {
+//            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+//            // Otherwise, setup the chat session
+//        } else if (mChatService == null) {
+//            setupChat();
+//        }
     }
 
     @Override
@@ -683,11 +683,11 @@ public class ScoutMaster_Activity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         Log.v(TAG, "OnDestroy");
-        BluetoothAdapter myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        // Make sure we're not doing discovery anymore
-        if (myBluetoothAdapter != null) {
-            myBluetoothAdapter.cancelDiscovery();
-        }
+//        BluetoothAdapter myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+//        // Make sure we're not doing discovery anymore
+//        if (myBluetoothAdapter != null) {
+//            myBluetoothAdapter.cancelDiscovery();
+//        }
         // Unregister broadcast listeners
 //        this.unregisterReceiver(myBTReceiver);
     }

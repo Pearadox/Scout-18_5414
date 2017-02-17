@@ -113,8 +113,6 @@ public class MainActivity extends AppCompatActivity {
                 if (toggleLogon.isChecked()) {      // See what state we are in
                     Log.d(TAG, "!!!  Logged IN  !!!");
                     logged_On = true;       // Logged ON
-                    updateDev(true);        // Update firebase with LOGON
-
                     switch (devSelected) {          // Who you gonna call?!?
                     case "Scout Master":         // Scout Master
                         Intent sm_intent = new Intent(MainActivity.this, ScoutMaster_Activity.class);
@@ -136,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
                     case ("Blue-3"):            //#####
                         Log.d(TAG, "### Red/Blue Scout ### " + devSelected);
                         if (Scout_Match) {
+                            updateDev(true);        // Update firebase with LOGON
                             Intent smast_intent = new Intent(MainActivity.this, MatchScoutActivity.class);
                             Bundle SMbundle = new Bundle();
                             SMbundle.putString("dev", devSelected);             // Pass data
@@ -162,7 +161,9 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Log.d(TAG, "---  Logged OFF  ---");
                     logged_On = false;       // Logged OFF
-                    updateDev(false);        // Update firebase with LOGOFF
+                    if (Scout_Match) {
+                        updateDev(false);        // Update firebase with LOGOFF
+                    }
                     devSelected = "";       // Null
                     radgrp_Scout.setVisibility(View.GONE);    // Hide scout group
                     radgrp_Scout.setEnabled(false);
