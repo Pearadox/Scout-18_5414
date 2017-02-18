@@ -40,26 +40,6 @@ public class p_Firebase {
         public void setTeam_loc(String team_loc) {
             this.team_loc = team_loc;
         }
-
-
-//        public String getTeamNum() {
-//            return team_num;
-//        }
-//        public String getTeamName() {
-//            return team_name;
-//        }
-//        public String getTeamLoc() {
-//            return team_loc;
-//        }
-//        public void setTeamName(String teamName) {
-//            this.team_name = teamName;
-//        }
-//        public void setTeamNumber(String teamNumber) {
-//            this.team_num = teamNumber;
-//        }
-//        public void setTeamLoc(String teamLoc) {
-//            this.team_loc = teamLoc;
-//        }
     }
 
 // ==========================================================
@@ -69,58 +49,54 @@ public class p_Firebase {
         private String dev_desc;
         private String dev_id;
         private String stud_id;
+        private String phase;
         private String btUUID;
         public devicesObj() {
         }
-
-
-    public devicesObj(String dev_name, String dev_desc, String dev_id, String stud_id, String btUUID) {
+    public devicesObj(String dev_name, String dev_desc, String dev_id, String stud_id, String phase, String btUUID) {
         this.dev_name = dev_name;
         this.dev_desc = dev_desc;
         this.dev_id = dev_id;
         this.stud_id = stud_id;
+        this.phase = phase;
         this.btUUID = btUUID;
     }
-
-    public String getDev_desc() {
-        return dev_desc;
-    }
-
-    public void setDev_desc(String dev_desc) {
-        this.dev_desc = dev_desc;
-    }
-
-    public String getDev_id() {
-        return dev_id;
-    }
-
-    public void setDev_id(String dev_id) {
-        this.dev_id = dev_id;
-    }
-
-    public String getStud_id() {
-        return stud_id;
-    }
-
-    public void setStud_id(String stud_id) {
-        this.stud_id = stud_id;
-    }
-
-    public String getBtUUID() {
-        return btUUID;
-    }
-
-    public void setBtUUID(String btUUID) {
-        this.btUUID = btUUID;
-    }
-
 
     public String getDev_name() {
         return dev_name;
     }
-
     public void setDev_name(String dev_name) {
         this.dev_name = dev_name;
+    }
+    public String getDev_desc() {
+        return dev_desc;
+    }
+    public void setDev_desc(String dev_desc) {
+        this.dev_desc = dev_desc;
+    }
+    public String getDev_id() {
+        return dev_id;
+    }
+    public void setDev_id(String dev_id) {
+        this.dev_id = dev_id;
+    }
+    public String getStud_id() {
+        return stud_id;
+    }
+    public void setStud_id(String stud_id) {
+        this.stud_id = stud_id;
+    }
+    public String getPhase() {
+        return phase;
+    }
+    public void setPhase(String phase) {
+        this.phase = phase;
+    }
+    public String getBtUUID() {
+        return btUUID;
+    }
+    public void setBtUUID(String btUUID) {
+        this.btUUID = btUUID;
     }
 }
 
