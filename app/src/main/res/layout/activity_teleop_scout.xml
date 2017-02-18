@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:text="TeleOp Mode"
+        android:layout_width="276dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_TeleopPageTest"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="-"
+        android:layout_height="40dp"
+        android:id="@+id/button_GearPlacedT"
+        android:layout_width="30dp"
+        android:layout_marginEnd="81dp"
+        android:layout_alignBottom="@+id/button_GearPlacedTPlus"
+        android:layout_alignEnd="@+id/text_TeleopPageTest" />
+
+    <Button
+        android:text="Comments"
+        android:layout_width="162dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_GoToFinalActivity"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:text="+"
+        android:layout_marginTop="59dp"
+        android:id="@+id/button_GearPlacedTPlus"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/text_TeleopPageTest"
+        android:layout_toStartOf="@+id/button_GearPlacedT" />
+
+    <TextView
+        android:layout_width="30dp"
+        android:id="@+id/lbl_GearNUMT"
+        android:layout_height="25dp"
+        android:textColor="@color/orange"
+        android:layout_alignBaseline="@+id/button_GearPlacedTPlus"
+        android:layout_alignBottom="@+id/button_GearPlacedTPlus"
+        android:layout_toStartOf="@+id/button_GearPlacedTPlus" />
+
+    <TextView
+        android:text="Gear(s) Placed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_GearPLACED"
+        android:layout_alignBaseline="@+id/lbl_GearNUMT"
+        android:layout_alignBottom="@+id/lbl_GearNUMT"
+        android:layout_alignParentStart="true" />
+
+
+    android: l
+
+</RelativeLayout>
