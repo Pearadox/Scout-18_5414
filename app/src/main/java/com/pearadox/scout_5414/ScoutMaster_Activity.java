@@ -775,12 +775,5 @@ public class ScoutMaster_Activity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         Log.v(TAG, "OnDestroy");
-//        BluetoothAdapter myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-//        // Make sure we're not doing discovery anymore
-//        if (myBluetoothAdapter != null) {
-//            myBluetoothAdapter.cancelDiscovery();
-//        }
-        // Unregister broadcast listeners
-//        this.unregisterReceiver(myBTReceiver);
     }
 }
