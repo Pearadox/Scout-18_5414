@@ -31,7 +31,7 @@
         android:layout_alignStart="@+id/lbl_Dev" />
 
     <TextView
-        android:id="@+id/txt_Student"
+        android:id="@+id/txt_TeamName"
         android:text="Student's Name"
         android:layout_width="180sp"
         android:layout_height="25dp"
@@ -110,8 +110,8 @@
         android:onClick="buttonView_Click"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txt_Student"
-        android:layout_toEndOf="@+id/txt_Student"
+        android:layout_below="@+id/txt_TeamName"
+        android:layout_toEndOf="@+id/txt_TeamName"
         android:layout_marginStart="53dp" />
 
 
@@ -240,7 +240,7 @@
             android:text="Long Name of Red Team # 3 :::::::::::"
             android:layout_marginStart="75dp"
             android:layout_below="@+id/teams_sectB"
-            android:layout_toEndOf="@+id/txt_Student" />
+            android:layout_toEndOf="@+id/txt_TeamName" />
     </LinearLayout>
 
 

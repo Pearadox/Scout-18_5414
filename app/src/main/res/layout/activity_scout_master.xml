@@ -212,7 +212,7 @@
             android:text="Long Name of Red Team # 3 :::::::::::"
             android:layout_marginStart="75dp"
             android:layout_below="@+id/teams_sectB"
-            android:layout_toEndOf="@+id/txt_Student" />
+            android:layout_toEndOf="@+id/txt_TeamName" />
     </LinearLayout>
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

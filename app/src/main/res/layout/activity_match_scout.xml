@@ -70,7 +70,7 @@
         android:layout_alignStart="@+id/lbl_Dev" />
 
     <TextView
-        android:id="@+id/txt_Student"
+        android:id="@+id/txt_TeamName"
         android:text="Student's Name"
         android:layout_width="150dp"
         android:layout_height="25dp"

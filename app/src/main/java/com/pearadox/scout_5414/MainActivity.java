@@ -458,12 +458,14 @@ public void onResume() {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.v(TAG, "OnDestroy" + key);
+        Log.v(TAG, "OnDestroy key-> " + key);
         if (logged_On) {
             Toast toast = Toast.makeText(getBaseContext(), "Don't forget to _ALWAYS_ log OFF before exiting", Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             toast.show();
-            pfDevice_DBReference.child(key).child("stud_id").setValue(" ");
+            if (key != null) {
+                pfDevice_DBReference.child(key).child("stud_id").setValue(" ");
+            }
         }
     }
 

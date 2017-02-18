@@ -52,7 +52,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         Log.d(TAG, param1 + " " + param2);      // ** DEBUG **
 
         txt_dev = (TextView) findViewById(R.id.txt_Dev);
-        txt_stud = (TextView) findViewById(R.id.txt_Student);
+        txt_stud = (TextView) findViewById(R.id.txt_TeamName);
         txt_dev.setText(param1);
         txt_stud.setText(param2);
         matchID = "";
