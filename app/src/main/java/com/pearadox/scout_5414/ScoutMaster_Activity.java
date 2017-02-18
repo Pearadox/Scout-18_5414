@@ -595,7 +595,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                     device = dev_Obj.getDev_name();
                     studname = dev_Obj.getStud_id();
                     status = dev_Obj.getPhase();
-                    Log.d(TAG, "%%%%  " + studname + " is logged onto " + device + " at Phase '" + statusa + "' ");
+                    Log.d(TAG, "%%%%  " + studname + " is logged onto " + device + " at Phase '" + status + "' ");
                     numDevs++;
                     if (studname.length() > 2) {
                         switch (device) {
