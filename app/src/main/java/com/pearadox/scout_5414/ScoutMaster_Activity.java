@@ -586,6 +586,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                 int numDevs = 0;
                 String device = "";
                 String  studname = "";
+                String  status = "";
                 p_Firebase.devicesObj dev_Obj = new p_Firebase.devicesObj();
                 Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
                 Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
@@ -593,7 +594,8 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                     dev_Obj = iterator.next().getValue(p_Firebase.devicesObj.class);
                     device = dev_Obj.getDev_name();
                     studname = dev_Obj.getStud_id();
-                    Log.d(TAG, "%%%%  " + studname + " is logged onto " + device);
+                    status = dev_Obj.getPhase();
+                    Log.d(TAG, "%%%%  " + studname + " is logged onto " + device + " at Phase '" + statusa + "' ");
                     numDevs++;
                     if (studname.length() > 2) {
                         switch (device) {
@@ -603,38 +605,128 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                             case ("Red-1"):             //#Red or Blue Scout
                                 signedStudents[0] = studname;
                                 txt_scoutR1.setText(signedStudents[0]);
-                                imgStat_R1.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_red));
+                                switch(status) {
+                                    case ("Auto"):
+                                        imgStat_R1.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_red));
+                                        break;
+                                    case ("Tele"):
+                                        imgStat_R1.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_yellow));
+                                        break;
+                                    case ("Final"):
+                                        imgStat_R1.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_green));
+                                        break;
+                                    case ("Saved"):
+                                        imgStat_R1.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_all));
+                                        break;
+                                    default:                //
+                                        Log.d(TAG, "***** Unknown Device Status ***** -> " + status);
+                                }
                                 break;
                             case ("Red-2"):             //#
                                 signedStudents[1] = studname;
                                 txt_scoutR2.setText(signedStudents[1]);
-                                imgStat_R2.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_red));
+                                switch(status) {
+                                    case ("Auto"):
+                                        imgStat_R2.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_red));
+                                        break;
+                                    case ("Tele"):
+                                        imgStat_R2.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_yellow));
+                                        break;
+                                    case ("Final"):
+                                        imgStat_R2.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_green));
+                                        break;
+                                    case ("Saved"):
+                                        imgStat_R2.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_all));
+                                        break;
+                                    default:                //
+                                        Log.d(TAG, "***** Unknown Device Status ***** -> " + status);
+                                }
                                 break;
                             case ("Red-3"):             //#
                                 signedStudents[2] = studname;
                                 txt_scoutR3.setText(signedStudents[2]);
-                                imgStat_R3.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_red));
+                                switch(status) {
+                                    case ("Auto"):
+                                        imgStat_R3.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_red));
+                                        break;
+                                    case ("Tele"):
+                                        imgStat_R3.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_yellow));
+                                        break;
+                                    case ("Final"):
+                                        imgStat_R3.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_green));
+                                        break;
+                                    case ("Saved"):
+                                        imgStat_R3.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_all));
+                                        break;
+                                    default:                //
+                                        Log.d(TAG, "***** Unknown Device Status ***** -> " + status);
+                                }
                                 break;
                             case ("Blue-1"):            //#
                                 signedStudents[3] = studname;
                                 txt_scoutB1.setText(signedStudents[3]);
-                                imgStat_B1.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_red));
+                                switch(status) {
+                                    case ("Auto"):
+                                        imgStat_B1.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_red));
+                                        break;
+                                    case ("Tele"):
+                                        imgStat_B1.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_yellow));
+                                        break;
+                                    case ("Final"):
+                                        imgStat_B1.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_green));
+                                        break;
+                                    case ("Saved"):
+                                        imgStat_B1.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_all));
+                                        break;
+                                    default:                //
+                                        Log.d(TAG, "***** Unknown Device Status ***** -> " + status);
+                                }
                                 break;
                             case ("Blue-2"):            //#
                                 signedStudents[4] = studname;
                                 txt_scoutB2.setText(signedStudents[4]);
-                                imgStat_B2.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_red));
+                                switch(status) {
+                                    case ("Auto"):
+                                        imgStat_B2.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_red));
+                                        break;
+                                    case ("Tele"):
+                                        imgStat_B2.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_yellow));
+                                        break;
+                                    case ("Final"):
+                                        imgStat_B2.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_green));
+                                        break;
+                                    case ("Saved"):
+                                        imgStat_B2.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_all));
+                                        break;
+                                    default:                //
+                                        Log.d(TAG, "***** Unknown Device Status ***** -> " + status);
+                                }
                                 break;
                             case ("Blue-3"):            //#####
                                 signedStudents[5] = studname;
                                 txt_scoutB3.setText(signedStudents[5]);
-                                imgStat_B3.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_red));
+                                switch(status) {
+                                    case ("Auto"):
+                                        imgStat_B3.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_red));
+                                        break;
+                                    case ("Tele"):
+                                        imgStat_B3.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_yellow));
+                                        break;
+                                    case ("Final"):
+                                        imgStat_B3.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_green));
+                                        break;
+                                    case ("Saved"):
+                                        imgStat_B3.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_all));
+                                        break;
+                                    default:                //
+                                        Log.d(TAG, "***** Unknown Device Status ***** -> " + status);
+                                }
                                 break;
                             case "Visualizer":          // Visualizer
                                 // only interested in Scouts
                                 break;
                             default:                //
-                                Log.d(TAG, "DEV = NULL");
+                                Log.d(TAG, "*** Error DEV = " + device);
                         }
                     }
                 }
