@@ -1,5 +1,6 @@
 package com.pearadox.scout_5414;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,13 +33,16 @@ public class MatchScoutActivity extends AppCompatActivity {
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfTeam_DBReference;
     private DatabaseReference pfMatch_DBReference;
+    private DatabaseReference pfDevice_DBReference;
     private DatabaseReference pfCur_Match_DBReference;
     TextView txt_TeamName;
     TextView txt_GearsPlaced;
-    private Button button_GearsMinus, button_GearsPlus;
+    private Button button_GearsMinus, button_GearsPlus, button_GoToTeleopActivity, button_GoToArenaLayoutActivity, button_GoToOtherActivityFromAuto;
     int gearNum = 0;
+    String key = null;
 
-//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
+    //    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,16 +59,21 @@ public class MatchScoutActivity extends AppCompatActivity {
 //        pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Students
         pfMatch_DBReference = pfDatabase.getReference("matches");           // List of Students
         pfCur_Match_DBReference = pfDatabase.getReference("current-match"); // _THE_ current Match
-
+        pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Students
         txt_GearsPlaced = (TextView) findViewById(R.id.txt_GearsPlaced);
         button_GearsMinus = (Button) findViewById(R.id.button_GearsMinus);
         button_GearsPlus = (Button) findViewById(R.id.button_GearsPlus);
+        button_GoToTeleopActivity = (Button) findViewById(R.id.button_GoToTeleopActivity);
+        button_GoToArenaLayoutActivity = (Button) findViewById(R.id.button_GoToArenaLayoutActivity);
+        button_GoToOtherActivityFromAuto = (Button) findViewById(R.id.button_GoToFinalActivity);
         txt_GearsPlaced.setText(Integer.toString(gearNum));
 
         button_GearsPlus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // ToDo check to ensure not over MAX # gears
-                gearNum++;
+                if (gearNum < 12) {
+                    gearNum++;
+                }
                 Log.d(TAG, "Gears = " + gearNum);      // ** DEBUG **
                 txt_GearsPlaced.setText(Integer.toString(gearNum));    // Perform action on click
             }
@@ -72,11 +81,45 @@ public class MatchScoutActivity extends AppCompatActivity {
         button_GearsMinus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // ToDo make sure not already at zero
-                gearNum--;
+                if (gearNum >= 1) {
+                    gearNum--;
+                }
                 Log.d(TAG, "Gears = " + gearNum);      // ** DEBUG **
                 txt_GearsPlaced.setText(Integer.toString(gearNum));    // Perform action on click
             }
         });
+        button_GoToTeleopActivity.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                updateDev("Tele");
+
+                Intent smast_intent = new Intent(MatchScoutActivity.this, TeleopScoutActivity.class);
+                Bundle SMbundle = new Bundle();
+                smast_intent.putExtras(SMbundle);
+                startActivity(smast_intent);
+            }
+        });
+        Log.i(TAG, "About to Click Button");
+
+        button_GoToArenaLayoutActivity.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                Log.i(TAG, "Clicked Sidebar");
+                Intent smast_intent = new Intent(MatchScoutActivity.this, ArenaLayoutActivity.class);
+                Bundle SMbundle = new Bundle();
+                smast_intent.putExtras(SMbundle);
+                startActivity(smast_intent);
+            }
+        });
+        Button button_GoToFinalActivityFromAuto = (Button) findViewById(R.id.button_GoToFinalActivityFromAuto);
+        button_GoToFinalActivityFromAuto.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent smast_intent = new Intent(MatchScoutActivity.this, FinalActivity.class);
+                Bundle SMbundle = new Bundle();
+                smast_intent.putExtras(SMbundle);
+                startActivity(smast_intent);            }
+        });
+
         txt_dev = (TextView) findViewById(R.id.txt_Dev);
         txt_stud = (TextView) findViewById(R.id.txt_TeamName);
         txt_Match = (TextView) findViewById(R.id.txt_Match);
@@ -168,8 +211,41 @@ public class MatchScoutActivity extends AppCompatActivity {
             Log.e(TAG, "****** ERROR - Team _NOT_ found!! = " + tnum);
         }
     }
+    private void updateDev(String phase) {     //
+        Log.i(TAG, "#### updateDev #### " + phase);
+        switch (Pearadox.FRC514_Device) {
+            case "Scout Master":         // Scout Master
+                key = "0";
+                break;
+            case ("Red-1"):             //#Red or Blue Scout
+                key = "1";
+                break;
+            case ("Red-2"):             //#
+                key = "2";
+                break;
+            case ("Red-3"):             //#
+                key = "3";
+                break;
+            case ("Blue-1"):            //#
+                key = "4";
+                break;
+            case ("Blue-2"):            //#
+                key = "5";
+                break;
+            case ("Blue-3"):            //#####
+                key = "6";
+                break;
+            case "Visualizer":          // Visualizer
+                key = "7";
+                break;
+            default:                //
+                Log.d(TAG, "DEV = NULL" );
+        }
+             pfDevice_DBReference.child(key).child("phase").setValue(phase);
+    }
 
-//###################################################################
+
+    //###################################################################
 //###################################################################
 //###################################################################
 @Override

@@ -29,7 +29,10 @@
         <activity android:name=".MatchScoutActivity" />
         <activity android:name=".PitScoutActivity" />
         <activity android:name=".Visualizer_Activity" />
-        <activity android:name=".BTdevices_Activity"></activity>
+        <activity android:name=".FinalActivity" />
+        <activity android:name=".ArenaLayoutActivity" />
+        <activity android:name=".TeleopScoutActivity" />
+
     </application>
 
 </manifest>
