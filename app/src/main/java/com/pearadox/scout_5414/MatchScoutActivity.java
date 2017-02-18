@@ -1,18 +1,13 @@
 package com.pearadox.scout_5414;
 
 import android.content.SharedPreferences;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -83,7 +78,7 @@ public class MatchScoutActivity extends AppCompatActivity {
             }
         });
         txt_dev = (TextView) findViewById(R.id.txt_Dev);
-        txt_stud = (TextView) findViewById(R.id.txt_Student);
+        txt_stud = (TextView) findViewById(R.id.txt_TeamName);
         txt_Match = (TextView) findViewById(R.id.txt_Match);
         txt_MyTeam = (TextView) findViewById(R.id.txt_MyTeam);
         txt_TeamName = (TextView) findViewById(R.id.txt_TeamName);
