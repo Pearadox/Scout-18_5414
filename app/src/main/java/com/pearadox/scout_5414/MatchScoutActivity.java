@@ -35,7 +35,7 @@ public class MatchScoutActivity extends AppCompatActivity {
     public static String device = " ";
     public static String studID = " ";
     TextView txt_dev, txt_stud, txt_Match, txt_MyTeam;
-    CheckBox chk_baseline, chk_highGoal, chkBox_balls, chkBox_gears, chkBox_rope, chk_lowGoal;
+    CheckBox chk_baseline, chk_highGoal, chkBox_balls, chkBox_gears, chkBox_rope, chk_lowGoal, checkbox_automode;
     SeekBar seekBar_HighGoal, seekBar_LowGoal;
     ImageView imgScoutLogo;
     public String matchID = "T00";      // Type + #
@@ -84,6 +84,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         chk_lowGoal = (CheckBox) findViewById(R.id.chk_LowGoal);
         seekBar_HighGoal = (SeekBar) findViewById(R.id.seekBar_HighGoal);
         seekBar_LowGoal = (SeekBar) findViewById(R.id.seekBar_LowGoal);
+        checkbox_automode = (CheckBox) findViewById(R.id.checkbox_automode);
         chkBox_balls = (CheckBox) findViewById(R.id.chk_balls);
         chkBox_gears = (CheckBox) findViewById(R.id.chk_gears);
         chkBox_rope = (CheckBox) findViewById(R.id.chk_rope);
@@ -118,11 +119,41 @@ public class MatchScoutActivity extends AppCompatActivity {
 
 
 
+        checkbox_automode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.i(TAG, "checkbox_automode Listener");
+                if (buttonView.isChecked()) {
+                    //checked
+                    Log.i(TAG,"TextBox is checked.");
+
+                }
+                else
+                {
+                    //not checked
+                    Log.i(TAG,"TextBox is unchecked.");
+
+                }
+            }
+        }
+        );
         chk_baseline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                 Log.i(TAG, "chk_baseline Listener");
+                if (buttonView.isChecked()) {
+                    //checked
+                    Log.i(TAG,"TextBox is checked.");
+
+                }
+                else
+                {
+                    //not checked
+                    Log.i(TAG,"TextBox is unchecked.");
+
+                }
             }
         }
         );
@@ -131,6 +162,17 @@ public class MatchScoutActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                 Log.i(TAG, "chkBox_balls Listener");
+                if (buttonView.isChecked()) {
+                    //checked
+                    Log.i(TAG,"TextBox is checked.");
+
+                }
+                else
+                {
+                    //not checked
+                    Log.i(TAG,"TextBox is unchecked.");
+
+                }
             }
         }
         );
@@ -139,6 +181,17 @@ public class MatchScoutActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                 Log.i(TAG, "chkBox_gears Listener");
+                if (buttonView.isChecked()) {
+                    //checked
+                    Log.i(TAG,"TextBox is checked.");
+
+                }
+                else
+                {
+                    //not checked
+                    Log.i(TAG,"TextBox is unchecked.");
+
+                }
             }
         }
         );
@@ -147,6 +200,17 @@ public class MatchScoutActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                 Log.i(TAG, "chkBox_rope Listener");
+                if (buttonView.isChecked()) {
+                    //checked
+                    Log.i(TAG,"TextBox is checked.");
+
+                }
+                else
+                {
+                    //not checked
+                    Log.i(TAG,"TextBox is unchecked.");
+
+                }
             }
         }
         );
@@ -155,6 +219,17 @@ public class MatchScoutActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                 Log.i(TAG, "chk_highGoal Listener");
+                if (buttonView.isChecked()) {
+                    //checked
+                    Log.i(TAG,"TextBox is checked.");
+
+                }
+                else
+                {
+                    //not checked
+                    Log.i(TAG,"TextBox is unchecked.");
+
+                }
                 if (buttonView.isChecked()) {
                     //checked
                     seekBar_HighGoal.setEnabled(true);
@@ -177,6 +252,17 @@ public class MatchScoutActivity extends AppCompatActivity {
                 Log.i(TAG, "chk_lowGoal Listener");
                 if (buttonView.isChecked()) {
                     //checked
+                    Log.i(TAG,"TextBox is checked.");
+
+                }
+                else
+                {
+                    //not checked
+                    Log.i(TAG,"TextBox is unchecked.");
+
+                }
+                if (buttonView.isChecked()) {
+                    //checked
                     seekBar_LowGoal.setEnabled(true);
                     seekBar_LowGoal.setVisibility(View.VISIBLE);
                 }
@@ -195,7 +281,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         button_GearsPlus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // ToDo check to ensure not over MAX # gears
-                if (gearNum < 12) {
+                if (gearNum < 3) {
                     gearNum++;
                 }
                 Log.d(TAG, "Gears = " + gearNum);      // ** DEBUG **

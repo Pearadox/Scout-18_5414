@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.app.Activity;
@@ -17,6 +19,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import static com.pearadox.scout_5414.R.id.button_GoToFinalActivity;
+import static com.pearadox.scout_5414.R.id.chk_climbsuccess;
+import static com.pearadox.scout_5414.R.id.chk_touchpad;
+import static com.pearadox.scout_5414.R.id.chk_touchpadpts;
 
 /**
  * Created by mlm.02000 on 2/5/2017.
@@ -26,9 +31,11 @@ public class TeleopScoutActivity extends Activity {
 
 
     String TAG = "TeleopScoutActivity";      // This CLASS name
-    TextView txt_dev, txt_stud, txt_match, txt_MyTeam, lbl_GearNUMT;
-    private Button button_GoToFinalActivity,button_GearPlacedT, button_GearPlacedTPlus;
+    TextView txt_dev, txt_stud, txt_match, txt_MyTeam, lbl_GearNUMT, lbl_GearsAttempted;
+    private Button button_GoToFinalActivity,button_GearPlacedT, button_GearPlacedTPlus, button_GearAttemptedP, button_GearAttemptedM;
+    CheckBox chk_climbsuccessful, chk_climbfailed, chk_touchpad, chk_touchpadpts;
     int gearNumT = 0;
+    int gearNumA = 0;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfTeam_DBReference;
     private DatabaseReference pfMatch_DBReference;
@@ -58,7 +65,37 @@ public class TeleopScoutActivity extends Activity {
 //        pfMatch_DBReference = pfDatabase.getReference("matches");           // List of Students
 //        pfCur_Match_DBReference = pfDatabase.getReference("current-match"); // _THE_ current Match
         pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Students
+        lbl_GearsAttempted = (TextView) findViewById(R.id.lbl_GearsAttempted);
+        button_GearAttemptedP = (Button) findViewById(R.id.button_GearAttemptedP);
+        button_GearAttemptedM = (Button) findViewById(R.id.button_GearAttemptedM);
+        chk_climbsuccessful = (CheckBox) findViewById(R.id.chk_climbsuccess);
+        chk_climbfailed = (CheckBox) findViewById(R.id.chk_climbfailed);
+        chk_touchpad = (CheckBox) findViewById(R.id.chk_touchpad);
+        chk_touchpadpts = (CheckBox) findViewById(R.id.chk_touchpadpts);
 
+
+
+
+        lbl_GearsAttempted.setText(Integer.toString(gearNumA));
+
+        button_GearAttemptedP.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (gearNumA < 50) {
+                    gearNumA++;
+                }
+                Log.d(TAG, "Gears = " + gearNumA);      // ** DEBUG **
+                lbl_GearsAttempted.setText(Integer.toString(gearNumA));    // Perform action on click
+            }
+        });
+        button_GearAttemptedM.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (gearNumA >= 1) {
+                    gearNumA--;
+                }
+                Log.d(TAG, "Gears = " + gearNumA);      // ** DEBUG **
+                lbl_GearsAttempted.setText(Integer.toString(gearNumA));    // Perform action on click
+            }
+        });
 
         button_GearPlacedTPlus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -92,6 +129,104 @@ public class TeleopScoutActivity extends Activity {
                 startActivity(smast_intent);
             }
         });
+
+        chk_climbfailed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+               Log.i(TAG, "chk_climbfailed Listener");
+                if (buttonView.isChecked()) {
+                    //checked
+                    Log.i(TAG,"TextBox is checked.");
+
+                }
+                else
+                {
+                    //not checked
+                    Log.i(TAG,"TextBox is unchecked.");
+
+                }
+                if (buttonView.isChecked()) {
+                    //checked
+                    chk_climbsuccessful.setEnabled(false);
+                }
+                else
+                {
+                    //not checked
+                    chk_climbsuccessful.setEnabled(true);
+
+                }
+            }
+        }
+        );
+        chk_climbsuccessful.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.i(TAG, "chk_climbsuccssful Listener");
+                if (buttonView.isChecked()) {
+                    //checked
+                    Log.i(TAG,"TextBox is checked.");
+
+                }
+                else
+                {
+                    //not checked
+                    Log.i(TAG,"TextBox is unchecked.");
+
+                }
+                if (buttonView.isChecked()) {
+                    //checked
+                    chk_climbfailed.setEnabled(false);
+                }
+                else
+                {
+                    //not checked
+                    chk_climbfailed.setEnabled(true);
+
+                }
+            }
+
+        }
+        );
+        chk_touchpad.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+            Log.i(TAG, "chkBox_gears Listener");
+            if (buttonView.isChecked()) {
+                //checked
+                Log.i(TAG,"TextBox is checked.");
+
+            }
+            else
+            {
+                //not checked
+                Log.i(TAG,"TextBox is unchecked.");
+
+            }
+            }
+        }
+        );
+        chk_touchpadpts.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.i(TAG, "chkBox_gears Listener");
+                if (buttonView.isChecked()) {
+                    //checked
+                    Log.i(TAG,"TextBox is checked.");
+
+                }
+                else
+                {
+                    //not checked
+                    Log.i(TAG,"TextBox is unchecked.");
+
+                }
+            }
+        }
+        );
 
 
         String param1 = bundle.getString("dev");

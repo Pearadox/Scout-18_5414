@@ -14,15 +14,6 @@
         android:layout_alignParentStart="true" />
 
     <Button
-        android:text="-"
-        android:layout_height="40dp"
-        android:id="@+id/button_GearPlacedT"
-        android:layout_width="30dp"
-        android:layout_marginEnd="81dp"
-        android:layout_alignBottom="@+id/button_GearPlacedTPlus"
-        android:layout_alignEnd="@+id/text_TeleopPageTest" />
-
-    <Button
         android:text="Comments"
         android:layout_width="162dp"
         android:layout_height="wrap_content"
@@ -30,14 +21,78 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
 
+    <TextView
+        android:id="@+id/txt_PRICEtextViewProgressID"
+        android:layout_height="wrap_content"
+        android:layout_width="25dp"
+        android:layout_alignBaseline="@+id/txt_FuelM"
+        android:layout_alignBottom="@+id/txt_FuelM"
+        android:layout_toStartOf="@+id/PRICEseekBarID" />
+
+    <TextView
+        android:text="Fuel Made"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_FuelM"
+        android:layout_marginTop="24dp"
+        android:layout_below="@+id/button_GearAttemptedP"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Gear(s) Placed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_GearPLACED"
+        android:layout_below="@+id/text_TeleopPageTest"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="19dp" />
+
     <Button
         android:text="+"
-        android:layout_marginTop="59dp"
         android:id="@+id/button_GearPlacedTPlus"
         android:layout_width="30dp"
         android:layout_height="40dp"
-        android:layout_below="@+id/text_TeleopPageTest"
+        android:layout_alignBaseline="@+id/txt_GearPLACED"
+        android:layout_alignBottom="@+id/txt_GearPLACED"
         android:layout_toStartOf="@+id/button_GearPlacedT" />
+
+    <Button
+        android:text="-"
+        android:layout_height="40dp"
+        android:id="@+id/button_GearPlacedT"
+        android:layout_width="30dp"
+        android:layout_alignBaseline="@+id/txt_GearPLACED"
+        android:layout_alignBottom="@+id/txt_GearPLACED"
+        android:layout_alignEnd="@+id/text_TeleopPageTest" />
+
+    <TextView
+        android:text="Gear(s) Attempted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_GearsAttempted"
+        android:layout_marginTop="22dp"
+        android:layout_below="@+id/button_GearPlacedTPlus"
+        android:layout_alignParentStart="true" />
+
+    <SeekBar
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:max="10"
+        android:progress="0"
+        android:id="@+id/PRICEseekBarID"
+        android:layout_alignTop="@+id/txt_PRICEtextViewProgressID"
+        android:layout_alignEnd="@+id/chk_touchpadpts"
+        android:layout_toEndOf="@+id/txt_GearPLACED" />
+
+    <TextView
+        android:layout_height="25dp"
+        android:id="@+id/lbl_GearsAttempted"
+        android:layout_width="30dp"
+        android:textColor="@color/orange"
+        android:layout_alignBaseline="@+id/button_GearAttemptedP"
+        android:layout_alignBottom="@+id/button_GearAttemptedP"
+        android:layout_toStartOf="@+id/button_GearAttemptedP" />
 
     <TextView
         android:layout_width="30dp"
@@ -48,15 +103,56 @@
         android:layout_alignBottom="@+id/button_GearPlacedTPlus"
         android:layout_toStartOf="@+id/button_GearPlacedTPlus" />
 
-    <TextView
-        android:text="Gear(s) Placed"
+    <Button
+        android:text="-"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:id="@+id/button_GearAttemptedM"
+        android:layout_below="@+id/button_GearPlacedTPlus"
+        android:layout_toEndOf="@+id/button_GearPlacedTPlus" />
+
+    <Button
+        android:text="+"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:id="@+id/button_GearAttemptedP"
+        android:layout_below="@+id/button_GearPlacedTPlus"
+        android:layout_toStartOf="@+id/button_GearAttemptedM" />
+
+    <CheckBox
+        android:text="Touchpad Activated"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txt_GearPLACED"
-        android:layout_alignBaseline="@+id/lbl_GearNUMT"
-        android:layout_alignBottom="@+id/lbl_GearNUMT"
+        android:id="@+id/chk_touchpad"
+        android:layout_marginTop="217dp"
         android:layout_alignParentStart="true" />
 
+    <CheckBox
+        android:text="Climb Successful"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chk_climbsuccess"
+        android:layout_below="@+id/chk_touchpad"
+        android:layout_alignEnd="@+id/txt_GearsAttempted"
+        android:layout_marginTop="22dp" />
+
+    <CheckBox
+        android:text="Touchpad points Awarded"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chk_touchpadpts"
+        android:layout_marginStart="18dp"
+        android:layout_alignBaseline="@+id/chk_touchpad"
+        android:layout_alignBottom="@+id/chk_touchpad"
+        android:layout_toEndOf="@+id/chk_touchpad" />
+
+    <CheckBox
+        android:text="Climb Failed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chk_climbfailed"
+        android:layout_alignTop="@+id/chk_climbsuccess"
+        android:layout_alignStart="@+id/chk_touchpadpts" />
 
     android: l
 
