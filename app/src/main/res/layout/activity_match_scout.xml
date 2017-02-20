@@ -161,14 +161,6 @@
         android:layout_alignBottom="@+id/text_automode"
         android:layout_toEndOf="@+id/text_automode" />
 
-    <Button
-        android:text="Comments"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/button_GoToTeleopActivity"
-        android:layout_alignParentStart="true"
-        android:id="@+id/button_GoToFinalActivityFromAuto" />
-
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
     <TextView
@@ -210,16 +202,6 @@
         android:layout_alignBottom="@+id/txt_GearsPlaced"
         android:layout_toEndOf="@+id/button_GearsPlus" />
 
-    <TextView
-        android:id="@+id/lbl_Dev"
-        android:layout_width="70dp"
-        android:layout_height="25dp"
-        android:textSize="14dp"
-        android:textColor="@color/white"
-        android:text="Device"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/button_GoToFinalActivityFromAuto" />
-
     <CheckBox
         android:id="@+id/chk_rope"
         android:text="Rope"
@@ -229,35 +211,6 @@
         android:layout_alignBaseline="@+id/chk_gears"
         android:layout_alignBottom="@+id/chk_gears"
         android:layout_toEndOf="@+id/lbl_MyTeam" />
-
-    <CheckBox
-        android:id="@+id/chk_balls"
-        android:text="Balls"
-        android:layout_weight="1"
-        android:layout_width="90dp"
-        android:layout_height="30dp"
-        android:layout_alignBaseline="@+id/chk_gears"
-        android:layout_alignBottom="@+id/chk_gears"
-        android:layout_alignParentStart="true" />
-
-    <CheckBox
-        android:id="@+id/chk_gears"
-        android:text="Gears"
-        android:layout_weight="1.38"
-        android:layout_width="90dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="16dp"
-        android:layout_below="@+id/checkbox_automode"
-        android:layout_toStartOf="@+id/chk_rope" />
-
-    <CheckBox
-        android:text="Cross Baseline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/lbl_GearPlaced"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="21dp"
-        android:id="@+id/chk_baseline" />
 
     <CheckBox
         android:text="Low Goal"
@@ -362,8 +315,80 @@
         android:layout_marginTop="23dp"
         android:id="@+id/spinner_gearposition"
         android:layout_below="@+id/spinner_stopPos"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/spinner_stopPos" />
+        android:layout_alignEnd="@+id/spinner_stopPos"
+        android:layout_alignStart="@+id/spinner_stopPos" />
+
+    <CheckBox
+        android:text="Cross Baseline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:id="@+id/chk_baseline"
+        android:layout_below="@+id/lbl_GearPlaced"
+        android:layout_toEndOf="@+id/lbl_space1" />
+
+    <TextView
+        android:text="Gear(s) Attempted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_GearPlaced"
+        android:layout_toEndOf="@+id/lbl_space1"
+        android:layout_marginTop="11dp"
+        android:id="@+id/lbl_gearsAttempted" />
+
+    <Button
+        android:text="+"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:id="@+id/button_GearsAttemptedPlus"
+        android:layout_below="@+id/txt_GearsPlaced"
+        android:layout_toStartOf="@+id/button_GearsAttemptedMinus" />
+
+    <Button
+        android:text="-"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:id="@+id/button_GearsAttemptedMinus"
+        android:layout_below="@+id/button_GearsMinus"
+        android:layout_toEndOf="@+id/button_GearsMinus" />
+
+    <TextView
+        android:layout_width="30dp"
+        android:layout_height="25dp"
+        android:id="@+id/txt_GearsAttempted"
+        android:layout_alignBaseline="@+id/lbl_gearsAttempted"
+        android:layout_alignBottom="@+id/lbl_gearsAttempted"
+        android:layout_toEndOf="@+id/chk_baseline" />
+
+    <CheckBox
+        android:id="@+id/chk_balls"
+        android:text="Fuel"
+        android:layout_weight="1"
+        android:layout_width="90dp"
+        android:layout_height="30dp"
+        android:layout_alignBaseline="@+id/chk_gears"
+        android:layout_alignBottom="@+id/chk_gears"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/lbl_Dev"
+        android:layout_width="70dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+        android:text="Device"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/imageView_MS" />
+
+    <CheckBox
+        android:id="@+id/chk_gears"
+        android:text="Gears"
+        android:layout_weight="1.38"
+        android:layout_width="90dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="13dp"
+        android:layout_below="@+id/checkbox_automode"
+        android:layout_toEndOf="@+id/chk_balls" />
 
 
     <!--</LinearLayout>-->
