@@ -22,14 +22,6 @@
         android:layout_alignParentEnd="true" />
 
     <TextView
-        android:id="@+id/txt_PRICEtextViewProgressID"
-        android:layout_height="wrap_content"
-        android:layout_width="25dp"
-        android:layout_alignBaseline="@+id/txt_FuelM"
-        android:layout_alignBottom="@+id/txt_FuelM"
-        android:layout_toStartOf="@+id/PRICEseekBarID" />
-
-    <TextView
         android:text="Fuel Made"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -128,15 +120,6 @@
         android:layout_alignParentStart="true" />
 
     <CheckBox
-        android:text="Climb Successful"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/chk_climbsuccess"
-        android:layout_below="@+id/chk_touchpad"
-        android:layout_alignEnd="@+id/txt_GearsAttempted"
-        android:layout_marginTop="22dp" />
-
-    <CheckBox
         android:text="Touchpad points Awarded"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -153,6 +136,25 @@
         android:id="@+id/chk_climbfailed"
         android:layout_alignTop="@+id/chk_climbsuccess"
         android:layout_alignStart="@+id/chk_touchpadpts" />
+
+    <TextView
+        android:id="@+id/txt_PRICEtextViewProgressID"
+        android:layout_height="wrap_content"
+        android:layout_width="25dp"
+        android:textColor="@color/orange"
+        android:layout_alignBaseline="@+id/txt_FuelM"
+        android:layout_alignBottom="@+id/txt_FuelM"
+        android:layout_alignEnd="@+id/txt_GearsAttempted"
+        android:layout_marginEnd="12dp" />
+
+    <CheckBox
+        android:text="Climb Successful"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chk_climbsuccess"
+        android:layout_marginTop="22dp"
+        android:layout_below="@+id/chk_touchpad"
+        android:layout_alignParentStart="true" />
 
     android: l
 

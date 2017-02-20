@@ -11,12 +11,15 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.app.Activity;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.w3c.dom.Text;
 
 import static com.pearadox.scout_5414.R.id.button_GoToFinalActivity;
 import static com.pearadox.scout_5414.R.id.chk_climbsuccess;
@@ -31,18 +34,19 @@ public class TeleopScoutActivity extends Activity {
 
 
     String TAG = "TeleopScoutActivity";      // This CLASS name
-    TextView txt_dev, txt_stud, txt_match, txt_MyTeam, lbl_GearNUMT, lbl_GearsAttempted;
+    TextView txt_dev, txt_stud, txt_match, txt_MyTeam, lbl_GearNUMT, lbl_GearsAttempted, txt_PRICEtextViewProgressID;
     private Button button_GoToFinalActivity,button_GearPlacedT, button_GearPlacedTPlus, button_GearAttemptedP, button_GearAttemptedM;
     CheckBox chk_climbsuccessful, chk_climbfailed, chk_touchpad, chk_touchpadpts;
+    SeekBar PRICEseekBarID;
     int gearNumT = 0;
     int gearNumA = 0;
+    int seekbarvalue = 0;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfTeam_DBReference;
     private DatabaseReference pfMatch_DBReference;
     private DatabaseReference pfDevice_DBReference;
     private DatabaseReference pfCur_Match_DBReference;
     String key = null;
-
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -72,7 +76,8 @@ public class TeleopScoutActivity extends Activity {
         chk_climbfailed = (CheckBox) findViewById(R.id.chk_climbfailed);
         chk_touchpad = (CheckBox) findViewById(R.id.chk_touchpad);
         chk_touchpadpts = (CheckBox) findViewById(R.id.chk_touchpadpts);
-
+        PRICEseekBarID = (SeekBar) findViewById(R.id.PRICEseekBarID);
+        txt_PRICEtextViewProgressID = (TextView) findViewById(R.id.txt_PRICEtextViewProgressID);
 
 
 
@@ -227,6 +232,30 @@ public class TeleopScoutActivity extends Activity {
             }
         }
         );
+        PRICEseekBarID.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar PRICEseekBarID) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar PRICEseekBarID) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar PRICEseekBarID, int progress,
+                                          boolean fromUser) {
+                // TODO Auto-generated method stub
+
+                seekbarvalue=progress;	//we can use the progress value of pro as anywhere
+                txt_PRICEtextViewProgressID.setText(Integer.toString(seekbarvalue));
+            }
+
+        });
 
 
         String param1 = bundle.getString("dev");

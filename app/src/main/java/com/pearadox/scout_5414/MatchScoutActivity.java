@@ -16,6 +16,10 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.app.Activity;
+import android.view.Menu;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,7 +38,7 @@ public class MatchScoutActivity extends AppCompatActivity {
     boolean onStart = false;
     public static String device = " ";
     public static String studID = " ";
-    TextView txt_dev, txt_stud, txt_Match, txt_MyTeam;
+    TextView txt_dev, txt_stud, txt_Match, txt_MyTeam, text_HGSeekBarValue, text_LGSeekBarValue;
     CheckBox chk_baseline, chk_highGoal, chkBox_balls, chkBox_gears, chkBox_rope, chk_lowGoal, checkbox_automode;
     SeekBar seekBar_HighGoal, seekBar_LowGoal;
     ImageView imgScoutLogo;
@@ -50,11 +54,16 @@ public class MatchScoutActivity extends AppCompatActivity {
     TextView txt_GearsPlaced;
     private Button button_GearsMinus, button_GearsPlus, button_GoToTeleopActivity, button_GoToArenaLayoutActivity, button_GoToOtherActivityFromAuto;
     int gearNum = 0;
+    int HGSvalue = 0;
+    int LGSvalue = 0;
     String key = null;
     ArrayAdapter<String> adapter_autostartpos;
     ArrayAdapter<String> adapter_autostoppos;
+    ArrayAdapter<String> adapter_auto_gear_placement;
     public String startPos = " ";
     public String stopPos = " ";
+    public String gearPos = " ";
+
 
 
 
@@ -100,6 +109,10 @@ public class MatchScoutActivity extends AppCompatActivity {
         seekBar_LowGoal.setEnabled(false);
         seekBar_LowGoal.setVisibility(View.GONE);
         chk_lowGoal.setChecked(false);
+        text_HGSeekBarValue = (TextView) findViewById(R.id.text_HGSeekBarValue);
+        text_LGSeekBarValue = (TextView) findViewById(R.id.text_LGSeekBarValue);
+        text_HGSeekBarValue.setVisibility(View.GONE);
+        text_LGSeekBarValue.setVisibility(View.GONE);
 
         Spinner spinner_startPos = (Spinner) findViewById(R.id.spinner_startPos);
         String[] autostartPos = getResources().getStringArray(R.array.auto_start_array);
@@ -107,7 +120,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         adapter_autostartpos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_startPos.setAdapter(adapter_autostartpos);
         spinner_startPos.setSelection(0, false);
-        spinner_startPos.setOnItemSelectedListener(new MatchScoutActivity.startPosOnClickListener());
+        spinner_startPos.setOnItemSelectedListener(new startPosOnClickListener());
 
         Spinner spinner_stopPos = (Spinner) findViewById(R.id.spinner_stopPos);
         String[] autostopPos = getResources().getStringArray(R.array.auto_stop_array);
@@ -115,7 +128,17 @@ public class MatchScoutActivity extends AppCompatActivity {
         adapter_autostoppos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_stopPos.setAdapter(adapter_autostoppos);
         spinner_stopPos.setSelection(0, false);
-        spinner_stopPos.setOnItemSelectedListener(new MatchScoutActivity.stopPosOnClickListener());
+        spinner_stopPos.setOnItemSelectedListener(new stopPosOnClickListener());
+
+
+        Spinner spinner_GearPlacement = (Spinner) findViewById(R.id.spinner_gearposition);
+        String[] auto_gear_placement = getResources().getStringArray(R.array.auto_gear_placement);
+        adapter_auto_gear_placement = new ArrayAdapter<String>(this, R.layout.dev_list_layout, auto_gear_placement);
+        adapter_auto_gear_placement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_GearPlacement.setAdapter(adapter_auto_gear_placement);
+        spinner_GearPlacement.setSelection(0, false);
+        spinner_GearPlacement.setOnItemSelectedListener(new gearPosOnClickListener());
+        
 
 
 
@@ -234,12 +257,15 @@ public class MatchScoutActivity extends AppCompatActivity {
                     //checked
                     seekBar_HighGoal.setEnabled(true);
                     seekBar_HighGoal.setVisibility(View.VISIBLE);
+                    text_HGSeekBarValue.setVisibility(View.VISIBLE);
+
                 }
                 else
                 {
                     //not checked
                     seekBar_HighGoal.setEnabled(false);
                     seekBar_HighGoal.setVisibility(View.GONE);
+                    text_HGSeekBarValue.setVisibility(View.GONE);
 
                 }
             }
@@ -265,12 +291,16 @@ public class MatchScoutActivity extends AppCompatActivity {
                     //checked
                     seekBar_LowGoal.setEnabled(true);
                     seekBar_LowGoal.setVisibility(View.VISIBLE);
+                    text_LGSeekBarValue.setVisibility(View.VISIBLE);
+
                 }
                 else
                 {
                     //not checked
                     seekBar_LowGoal.setEnabled(false);
                     seekBar_LowGoal.setVisibility(View.GONE);
+                    text_LGSeekBarValue.setVisibility(View.GONE);
+
 
                 }
             }
@@ -348,6 +378,57 @@ public class MatchScoutActivity extends AppCompatActivity {
         } else {
             imgScoutLogo.setImageDrawable(getResources().getDrawable(R.drawable.blue_scout));
         }
+
+        seekBar_HighGoal.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar_HighGoal) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar_HighGoal) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar_HighGoal, int progress,
+                                          boolean fromUser) {
+                // TODO Auto-generated method stub
+
+                HGSvalue=progress;	//we can use the progress value of pro as anywhere
+                text_HGSeekBarValue.setText(Integer.toString(HGSvalue));
+            }
+
+        });
+        seekBar_LowGoal.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar_LowGoal) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar_LowGoal) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar_LowGoal, int progress,
+                                          boolean fromUser) {
+                // TODO Auto-generated method stub
+
+                LGSvalue=progress;	//we can use the progress value of pro as anywhere
+                text_LGSeekBarValue.setText(Integer.toString(LGSvalue));
+            }
+
+        });
+
+
 
     }
     private void getMatch() {
@@ -476,6 +557,19 @@ public class MatchScoutActivity extends AppCompatActivity {
             // Do nothing.
         }
     }
+
+    private class gearPosOnClickListener implements android.widget.AdapterView.OnItemSelectedListener {
+        public void onItemSelected(AdapterView<?> parent,
+                                   View view, int pos, long id) {
+            gearPos = parent.getItemAtPosition(pos).toString();
+            Log.d(TAG, ">>>>>  '" + gearPos + "'");
+
+        }
+        public void onNothingSelected(AdapterView<?> parent) {
+            // Do nothing.
+        }
+    }
+
 
 
     //###################################################################
