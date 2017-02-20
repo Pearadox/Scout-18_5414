@@ -52,10 +52,12 @@ public class MatchScoutActivity extends AppCompatActivity {
     private DatabaseReference pfCur_Match_DBReference;
     TextView txt_TeamName;
     TextView txt_GearsPlaced;
-    private Button button_GearsMinus, button_GearsPlus, button_GoToTeleopActivity, button_GoToArenaLayoutActivity, button_GoToOtherActivityFromAuto;
+    TextView txt_GearsAttempted;
+    private Button button_GearsMinus, button_GearsPlus, button_GoToTeleopActivity, button_GoToArenaLayoutActivity, button_GearsAttemptedMinus, button_GearsAttemptedPlus;
     int gearNum = 0;
     int HGSvalue = 0;
     int LGSvalue = 0;
+    int gearAttemptNum = 0;
     String key = null;
     ArrayAdapter<String> adapter_autostartpos;
     ArrayAdapter<String> adapter_autostoppos;
@@ -88,6 +90,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         pfCur_Match_DBReference = pfDatabase.getReference("current-match"); // _THE_ current Match
         pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Students
         txt_GearsPlaced = (TextView) findViewById(R.id.txt_GearsPlaced);
+        txt_GearsAttempted = (TextView) findViewById(R.id.txt_GearsAttempted);
         chk_baseline = (CheckBox) findViewById(R.id.chk_baseline);
         chk_highGoal = (CheckBox) findViewById(R.id.chk_highGoal);
         chk_lowGoal = (CheckBox) findViewById(R.id.chk_LowGoal);
@@ -99,10 +102,12 @@ public class MatchScoutActivity extends AppCompatActivity {
         chkBox_rope = (CheckBox) findViewById(R.id.chk_rope);
         button_GearsMinus = (Button) findViewById(R.id.button_GearsMinus);
         button_GearsPlus = (Button) findViewById(R.id.button_GearsPlus);
+        button_GearsAttemptedMinus = (Button) findViewById(R.id.button_GearsAttemptedMinus);
+        button_GearsAttemptedPlus = (Button) findViewById(R.id.button_GearsAttemptedPlus);
         button_GoToTeleopActivity = (Button) findViewById(R.id.button_GoToTeleopActivity);
         button_GoToArenaLayoutActivity = (Button) findViewById(R.id.button_GoToArenaLayoutActivity);
-        button_GoToOtherActivityFromAuto = (Button) findViewById(R.id.button_GoToFinalActivity);
         txt_GearsPlaced.setText(Integer.toString(gearNum));
+        txt_GearsAttempted.setText(Integer.toString(gearAttemptNum));
         seekBar_HighGoal.setEnabled(false);
         seekBar_HighGoal.setVisibility(View.GONE);
         chk_highGoal.setChecked(false);
@@ -310,24 +315,49 @@ public class MatchScoutActivity extends AppCompatActivity {
 
         button_GearsPlus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // ToDo check to ensure not over MAX # gears
                 if (gearNum < 3) {
                     gearNum++;
+                    gearAttemptNum++;
                 }
                 Log.d(TAG, "Gears = " + gearNum);      // ** DEBUG **
+                Log.d(TAG, "Gears Attempted = " + gearAttemptNum);
                 txt_GearsPlaced.setText(Integer.toString(gearNum));    // Perform action on click
+                txt_GearsAttempted.setText(Integer.toString(gearAttemptNum));
             }
         });
         button_GearsMinus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // ToDo make sure not already at zero
-                if (gearNum >= 1) {
+                if (gearNum >= 1 && gearAttemptNum >= gearNum) {
                     gearNum--;
+                    gearAttemptNum--;
                 }
                 Log.d(TAG, "Gears = " + gearNum);      // ** DEBUG **
+                Log.d(TAG, "Gears Attempted = " + gearAttemptNum);
                 txt_GearsPlaced.setText(Integer.toString(gearNum));    // Perform action on click
+                txt_GearsAttempted.setText(Integer.toString(gearAttemptNum));
             }
         });
+
+        button_GearsAttemptedPlus.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (gearAttemptNum < 10) {
+                    gearAttemptNum++;
+                }
+                Log.d(TAG, "Gears Attempted = " + gearAttemptNum);      // ** DEBUG **
+                txt_GearsAttempted.setText(Integer.toString(gearAttemptNum));    // Perform action on click
+            }
+        });
+        button_GearsAttemptedMinus.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (gearAttemptNum >= 1) {
+                    gearAttemptNum--;
+                }
+                Log.d(TAG, "Gears Attempted = " + gearAttemptNum);      // ** DEBUG **
+                txt_GearsAttempted.setText(Integer.toString(gearAttemptNum));    // Perform action on click
+            }
+        });
+
+
         button_GoToTeleopActivity.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
@@ -351,14 +381,7 @@ public class MatchScoutActivity extends AppCompatActivity {
                 startActivity(smast_intent);
             }
         });
-        Button button_GoToFinalActivityFromAuto = (Button) findViewById(R.id.button_GoToFinalActivityFromAuto);
-        button_GoToFinalActivityFromAuto.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent smast_intent = new Intent(MatchScoutActivity.this, FinalActivity.class);
-                Bundle SMbundle = new Bundle();
-                smast_intent.putExtras(SMbundle);
-                startActivity(smast_intent);            }
-        });
+
 
         txt_dev = (TextView) findViewById(R.id.txt_Dev);
         txt_stud = (TextView) findViewById(R.id.txt_TeamName);
