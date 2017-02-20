@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_pit_scout"
     android:layout_width="match_parent"
@@ -86,6 +87,113 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_stud"
         android:layout_alignStart="@+id/txt_stud" />
+
+    <TextView
+        android:id="@+id/lbl_Divider"
+        android:text="_________________________  Robot Characteristics  _________________________"
+        android:layout_width="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_below="@+id/imageView_PS"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="18dp" />
+
+    <TextView
+        android:id="@+id/lbl_Wheels"
+        android:layout_width="60sp"
+        android:layout_height="30sp"
+        android:textSize="16sp"
+        android:layout_below="@+id/radgrp_Dim"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="29dp"
+        android:text="Wheels" />
+
+    <Spinner
+        android:id="@+id/spinner_Mecanum"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_alignBottom="@+id/txt_NumWheels"
+        android:layout_toEndOf="@+id/imgView_Mecanum" />
+
+    <Spinner
+        android:id="@+id/spinner_Omni"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="19dp"
+        android:layout_alignTop="@+id/spinner_Mecanum"
+        android:layout_toEndOf="@+id/imgView_Omni" />
+
+    <TextView
+        android:id="@+id/txt_NumWheels"
+        android:text="00"
+        android:layout_width="40dp"
+        android:layout_height="30sp"
+        android:textSize="16dp"
+        android:textColor="@color/yellow"
+        android:layout_alignBaseline="@+id/lbl_Wheels"
+        android:layout_alignBottom="@+id/lbl_Wheels"
+        android:layout_toStartOf="@+id/lbl_Team" />
+
+    <ImageView
+        android:id="@+id/imgView_Traction"
+        android:layout_width="75sp"
+        android:layout_height="75sp"
+        app:srcCompat="@drawable/wheel_traction"
+        android:layout_alignTop="@+id/txt_NumWheels"
+        android:layout_toEndOf="@+id/txt_NumWheels" />
+
+    <Spinner
+        android:id="@+id/spinner_Traction"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txt_NumWheels"
+        android:layout_alignEnd="@+id/txt_Dev" />
+
+    <ImageView
+        android:id="@+id/imgView_Omni"
+        android:layout_width="75sp"
+        android:layout_height="75sp"
+        app:srcCompat="@drawable/wheel_omni"
+        android:layout_marginStart="11dp"
+        android:layout_alignTop="@+id/imgView_Traction"
+        android:layout_toEndOf="@+id/spinner_Traction" />
+
+    <ImageView
+        android:id="@+id/imgView_Mecanum"
+        android:layout_width="75sp"
+        android:layout_height="75sp"
+        app:srcCompat="@drawable/wheel_mecanum"
+        android:layout_alignTop="@+id/imgView_Omni"
+        android:layout_toEndOf="@+id/spinner_Omni" />
+
+    <RadioGroup
+        android:id="@+id/radgrp_Dim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/lbl_Divider"  >
+
+        <RadioButton
+            android:id="@+id/radio_Short"
+            android:text="Short"
+            android:onClick="RadioClick_Dim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="20dp"
+            android:layout_below="@+id/radgrp_Dim" />
+        <RadioButton
+            android:id="@+id/radio_Tall"
+            android:text="Tall"
+            android:onClick="RadioClick_Dim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_Divider"
+            android:layout_toEndOf="@+id/radgrp_Dim" />
+    </RadioGroup>
 
 
 </RelativeLayout>

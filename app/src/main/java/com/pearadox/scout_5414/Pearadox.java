@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Pearadox {
 
     public static boolean  is_Network; 								// Internet available?
-    public static int maxTeams = 40; 								// Maximum # of Teams per event
+    public static int maxTeams = 60; 								// Maximum # of Teams per event
     public static int maxStudents = 80; 						    // Maximum # of Students
     public static ArrayList<p_Firebase.teamsObj> team_List = new ArrayList<p_Firebase.teamsObj>();
     public static int numTeams = 0; 						        // Actual # of Teams
