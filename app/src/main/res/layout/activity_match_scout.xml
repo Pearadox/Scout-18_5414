@@ -260,15 +260,6 @@
         android:id="@+id/chk_baseline" />
 
     <CheckBox
-        android:text="High Goal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/chk_baseline"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="18dp"
-        android:id="@+id/chk_highGoal" />
-
-    <CheckBox
         android:text="Low Goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -276,30 +267,6 @@
         android:id="@+id/chk_LowGoal"
         android:layout_below="@+id/chk_highGoal"
         android:layout_alignParentStart="true" />
-
-    <SeekBar
-        style="@style/Widget.AppCompat.SeekBar.Discrete"
-        android:layout_width="200sp"
-        android:layout_height="wrap_content"
-        android:max="100"
-        android:progress="100"
-        android:id="@+id/seekBar_HighGoal"
-        android:clickable="false"
-        android:visibility="visible"
-        android:layout_alignBottom="@+id/chk_highGoal"
-        android:layout_alignEnd="@+id/txt_TeamName" />
-
-    <SeekBar
-        style="@style/Widget.AppCompat.SeekBar.Discrete"
-        android:layout_width="200sp"
-        android:layout_height="wrap_content"
-        android:max="100"
-        android:progress="100"
-        android:id="@+id/seekBar_LowGoal"
-        android:clickable="false"
-        android:visibility="visible"
-        android:layout_alignBottom="@+id/chk_LowGoal"
-        android:layout_alignEnd="@+id/txt_TeamName" />
 
     <Spinner
         android:layout_width="40sp"
@@ -323,6 +290,61 @@
         android:id="@+id/txt_stopPos"
         android:layout_alignBottom="@+id/spinner_stopPos"
         android:layout_alignParentStart="true" />
+
+    <CheckBox
+        android:text="High Goal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:id="@+id/chk_highGoal"
+        android:layout_below="@+id/chk_baseline"
+        android:layout_toEndOf="@+id/lbl_space1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_HGSeekBarValue"
+        android:textColor="@color/orange"
+        android:layout_alignBaseline="@+id/chk_highGoal"
+        android:layout_alignBottom="@+id/chk_highGoal"
+        android:layout_toEndOf="@+id/spinner_startPos"
+        android:text="100" />
+
+    <SeekBar
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="200sp"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="100"
+        android:id="@+id/seekBar_HighGoal"
+        android:clickable="false"
+        android:visibility="visible"
+        android:layout_alignTop="@+id/chk_highGoal"
+        android:layout_toEndOf="@+id/button_GearsMinus"
+        android:layout_alignBottom="@+id/text_HGSeekBarValue" />
+
+    <SeekBar
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="200sp"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="100"
+        android:id="@+id/seekBar_LowGoal"
+        android:clickable="false"
+        android:visibility="visible"
+        android:layout_alignTop="@+id/chk_LowGoal"
+        android:layout_toEndOf="@+id/button_GearsMinus"
+        android:layout_alignBottom="@+id/text_LGSeekBarValue" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_LGSeekBarValue"
+        android:textColor="@color/orange"
+        android:layout_toEndOf="@+id/spinner_startPos"
+        android:layout_alignTop="@+id/chk_LowGoal"
+        android:layout_alignBottom="@+id/chk_LowGoal"
+        android:text="100" />
 
 
     <!--</LinearLayout>-->
