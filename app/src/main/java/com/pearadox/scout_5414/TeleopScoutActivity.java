@@ -5,26 +5,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.app.Activity;
-import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.w3c.dom.Text;
-
-import static com.pearadox.scout_5414.R.id.button_GoToFinalActivity;
-import static com.pearadox.scout_5414.R.id.chk_climbsuccess;
-import static com.pearadox.scout_5414.R.id.chk_touchpad;
-import static com.pearadox.scout_5414.R.id.chk_touchpadpts;
 
 /**
  * Created by mlm.02000 on 2/5/2017.
@@ -34,13 +24,14 @@ public class TeleopScoutActivity extends Activity {
 
 
     String TAG = "TeleopScoutActivity";      // This CLASS name
-    TextView txt_dev, txt_stud, txt_match, txt_MyTeam, lbl_GearNUMT, lbl_GearsAttempted, txt_PRICEtextViewProgressID;
+    TextView txt_dev, txt_stud, txt_match, txt_MyTeam, lbl_GearNUMT, lbl_GearsAttempted, txt_seekBarHGvalue, txt_seekBarLGvalue;
     private Button button_GoToFinalActivity,button_GearPlacedT, button_GearPlacedTPlus, button_GearAttemptedP, button_GearAttemptedM;
-    CheckBox chk_climbsuccessful, chk_climbfailed, chk_touchpad, chk_touchpadpts;
-    SeekBar PRICEseekBarID;
+    CheckBox chk_climbsuccessful, chk_climbfailed, chk_touchpad, chk_touchpadpts, chkBox_highGoal, chkBox_lowGoal;
+    SeekBar seekBar_HighGoal_Teleop, seekBar_LowGoal_Teleop;
     int gearNumT = 0;
     int gearNumA = 0;
-    int seekbarvalue = 0;
+    int seekbarvalueHigh = 0;
+    int seekbarvalueLow = 0;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfTeam_DBReference;
     private DatabaseReference pfMatch_DBReference;
@@ -76,8 +67,18 @@ public class TeleopScoutActivity extends Activity {
         chk_climbfailed = (CheckBox) findViewById(R.id.chk_climbfailed);
         chk_touchpad = (CheckBox) findViewById(R.id.chk_touchpad);
         chk_touchpadpts = (CheckBox) findViewById(R.id.chk_touchpadpts);
-        PRICEseekBarID = (SeekBar) findViewById(R.id.PRICEseekBarID);
-        txt_PRICEtextViewProgressID = (TextView) findViewById(R.id.txt_PRICEtextViewProgressID);
+        chkBox_highGoal = (CheckBox) findViewById(R.id.chkBox_highGoal);
+        chkBox_lowGoal = (CheckBox) findViewById(R.id.chkBox_lowGoal);
+        seekBar_HighGoal_Teleop = (SeekBar) findViewById(R.id.seekBar_HighGoal_Teleop);
+        txt_seekBarHGvalue = (TextView) findViewById(R.id.txt_seekBarHGvalue);
+        txt_seekBarHGvalue.setVisibility(View.GONE);
+        seekBar_LowGoal_Teleop = (SeekBar) findViewById(R.id.seekBar_LowGoal_Teleop);
+        txt_seekBarLGvalue = (TextView) findViewById(R.id.txt_seekBarLGvalue);
+        txt_seekBarLGvalue.setVisibility(View.GONE);
+        seekBar_HighGoal_Teleop.setEnabled(false);
+        seekBar_HighGoal_Teleop.setVisibility(View.GONE);
+        seekBar_LowGoal_Teleop.setEnabled(false);
+        seekBar_LowGoal_Teleop.setVisibility(View.GONE);
 
 
 
@@ -232,30 +233,123 @@ public class TeleopScoutActivity extends Activity {
             }
         }
         );
-        PRICEseekBarID.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        seekBar_HighGoal_Teleop.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
-            public void onStopTrackingTouch(SeekBar PRICEseekBarID) {
+            public void onStopTrackingTouch(SeekBar seekBar_HighGoal_Teleop) {
                 // TODO Auto-generated method stub
 
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar PRICEseekBarID) {
+            public void onStartTrackingTouch(SeekBar seekBar_HighGoal_Teleop) {
                 // TODO Auto-generated method stub
 
             }
 
             @Override
-            public void onProgressChanged(SeekBar PRICEseekBarID, int progress,
+            public void onProgressChanged(SeekBar seekBar_HighGoal_Teleop, int progress,
                                           boolean fromUser) {
                 // TODO Auto-generated method stub
 
-                seekbarvalue=progress;	//we can use the progress value of pro as anywhere
-                txt_PRICEtextViewProgressID.setText(Integer.toString(seekbarvalue));
+                seekbarvalueHigh=progress;	//we can use the progress value of pro as anywhere
+                txt_seekBarHGvalue.setText(Integer.toString(seekbarvalueHigh));
             }
 
         });
+
+        chkBox_highGoal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+            Log.i(TAG, "chkBox_highGoal Listener");
+            if (buttonView.isChecked()) {
+                //checked
+                Log.i(TAG,"TextBox is checked.");
+
+            }
+            else
+            {
+                //not checked
+                Log.i(TAG,"TextBox is unchecked.");
+
+            }
+            if (buttonView.isChecked()) {
+                //checked
+                seekBar_HighGoal_Teleop.setEnabled(true);
+                seekBar_HighGoal_Teleop.setVisibility(View.VISIBLE);
+                txt_seekBarHGvalue.setVisibility(View.VISIBLE);
+
+            }
+            else
+            {
+                //not checked
+                seekBar_HighGoal_Teleop.setEnabled(false);
+                seekBar_HighGoal_Teleop.setVisibility(View.GONE);
+                txt_seekBarHGvalue.setVisibility(View.GONE);
+
+            }
+            }
+        }
+        );
+        seekBar_LowGoal_Teleop.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar_LowGoal_Teleop) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar_LowGoal_Teleop) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar_LowGoal_Teleop, int progress,
+                                          boolean fromUser) {
+                // TODO Auto-generated method stub
+
+                seekbarvalueLow=progress;	//we can use the progress value of pro as anywhere
+                txt_seekBarLGvalue.setText(Integer.toString(seekbarvalueLow));
+            }
+
+        });
+        chkBox_lowGoal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+           @Override
+           public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+               Log.i(TAG, "chkBox_lowGoal Listener");
+               if (buttonView.isChecked()) {
+                   //checked
+                   Log.i(TAG,"TextBox is checked.");
+
+               }
+               else
+               {
+                   //not checked
+                   Log.i(TAG,"TextBox is unchecked.");
+
+               }
+               if (buttonView.isChecked()) {
+                   //checked
+                   seekBar_LowGoal_Teleop.setEnabled(true);
+                   seekBar_LowGoal_Teleop.setVisibility(View.VISIBLE);
+                   txt_seekBarLGvalue.setVisibility(View.VISIBLE);
+
+               }
+               else
+               {
+                   //not checked
+                   seekBar_LowGoal_Teleop.setEnabled(false);
+                   seekBar_LowGoal_Teleop.setVisibility(View.GONE);
+                   txt_seekBarLGvalue.setVisibility(View.GONE);
+
+               }
+           }
+       }
+        );
 
 
         String param1 = bundle.getString("dev");
