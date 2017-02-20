@@ -1,14 +1,19 @@
 package com.pearadox.scout_5414;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.AudioManager;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
 import android.media.ToneGenerator;
-import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,18 +31,23 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.ByteArrayOutputStream;
+
+import static android.app.PendingIntent.getActivity;
+
 public class PitScoutActivity extends AppCompatActivity {
 
     String TAG = "PitScout_Activity";      // This CLASS name
     TextView txt_dev, txt_stud, txt_TeamName, txt_NumWheels;
-    ImageView imgScoutLogo;
+    ImageView imgScoutLogo, img_Photo;
     Spinner spinner_Team, spinner_Traction, spinner_Omni, spinner_Mecanum;
     ArrayAdapter<String> adapter;
     ArrayAdapter<String> adapter_Trac, adapter_Omni, adapter_Mac ;
     RadioGroup radgrp_Dim;      RadioButton radio_Dim;
     CheckBox chkBox_Gear, chkBox_Fuel, chkBox_Shooter, chkBox_Vision;
     Button btn_Save;
-    public static String[] team_List = new String[Pearadox.maxTeams+1];  // Team list (array of just Team Names)
+    int REQUEST_IMAGE_CAPTURE = 2;
+    public static String[] teams = new String[Pearadox.maxTeams+1];  // Team list (array of just Team Names)
     public static String[] wheels = new String[]
             {"0","1","2","3","4","5","6", "7", "8"};
 
@@ -48,17 +58,21 @@ public class PitScoutActivity extends AppCompatActivity {
     boolean dataSaved = false;      // Make sure they save before exiting
 
     // ===================  Data Elements for Pit Scout object ===================
-    public String teamSelected = " ";
-    public boolean dim_Tall = false;
-    public int totalWheels = 0;
-    public int numTraction = 0;
-    public int numOmni = 0;
-    public int numMecanum = 0;
-    public boolean gear_Collecter = false;
-    public boolean fuel_Container = false;
-    public boolean shooter = false;
-    public boolean vision = false;
-    public String scout = " ";
+    public String teamSelected = " ";           // Team #
+    public boolean dim_Tall = false;            // Dimension
+    public int totalWheels = 0;                 // Total # of wheels
+    public int numTraction = 0;                 // Num. of Traction wheels
+    public int numOmni = 0;                     // Num. of Omni wheels
+    public int numMecanum = 0;                  // Num. of Mecanum wheels
+    public boolean gear_Collecter = false;      // presence of gear collector
+    public boolean fuel_Container = false;      // presence of
+    public boolean shooter = false;             // presence of Shooter
+    public boolean vision = false;              // presence of Vision Camera
+    public boolean storageBin = false;          // presence of Storage bin
+    public int storSize = 0;                    // estimate of # of balls
+    public boolean fuelManip = false;           // presence of a way to pick up fuel from floor
+    /* */
+    public String scout = " ";                  // Student who collected the data
 // ===========================================================================
 
 
@@ -85,7 +99,7 @@ public class PitScoutActivity extends AppCompatActivity {
         txt_stud.setText(param2);
         txt_TeamName.setText(" ");
         Spinner spinner_Team = (Spinner) findViewById(R.id.spinner_Team);
-        adapter = new ArrayAdapter<String>(this, R.layout.team_list_layout, team_List);
+        adapter = new ArrayAdapter<String>(this, R.layout.team_list_layout, teams);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_Team.setAdapter(adapter);
         spinner_Team.setSelection(0, false);
@@ -175,11 +189,63 @@ public class PitScoutActivity extends AppCompatActivity {
             }
         });
 
+
     }
+
+    /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_photo, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_photo:
+                onLaunchCamera();
+            default:
+                break;
+        }
+        return false;
+    }
+
+    private void onLaunchCamera() {
+        Log.i(TAG, "►►►►►  LaunchCamera  ◄◄◄◄◄");
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        if (takePictureIntent.resolveActivity(PitScoutActivity.getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+//        }
+        Log.d(TAG, ">>>>>  '" + teamSelected + "'");
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i(TAG, "*****  onActivityResult " + requestCode);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == PitScoutActivity.RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            img_Photo.setImageBitmap(imageBitmap);
+            encodeBitmapAndSaveToFirebase(imageBitmap);
+        }
+    }
+    public void encodeBitmapAndSaveToFirebase(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        String picname = "robot_" + teamSelected;
+        Log.d(TAG, "Photo = '" + picname + "'");
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);     // ByteArrayOutputStream
+        String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference("gs://paradox-2017.appspot.com ")
+                .child("images");
+        ref.setValue(imageEncoded);
+    }
+
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
     public class team_OnItemSelectedListener implements OnItemSelectedListener {
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {
+            Log.i(TAG, "*****  team_OnItemSelectedListener " + pos);
             teamSelected = parent.getItemAtPosition(pos).toString();
             Log.d(TAG, ">>>>>  '" + teamSelected + "'");
             txt_TeamName = (TextView) findViewById(R.id.txt_TeamName);
@@ -236,7 +302,7 @@ public class PitScoutActivity extends AppCompatActivity {
         int x = numTraction + numOmni + numMecanum;
         txt_NumWheels.setText(String.valueOf(x));      // Total # of wheels
         if (x < 4){
-            Toast.makeText(getBaseContext(), "Robot should have at leasst 4 wheels", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "Robot should have at least 4 wheels", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -260,11 +326,16 @@ public class PitScoutActivity extends AppCompatActivity {
 
     private void loadTeams() {
         Log.i(TAG, "$$$$$  loadTeams $$$$$");
-        team_List[0] = " ";     // Make the 1st one BLANK for dropdown
+        int tNum = 0;
+        teams[0] = " ";     // Make the 1st one BLANK for dropdown
+        tNum ++;
         for (int i = 0; i < Pearadox.numTeams; i++) {        // get each team entry
             team_inst = Pearadox.team_List.get(i);
-            team_List[i+1] = team_inst.getTeam_num();
+            teams[i+1] = team_inst.getTeam_num();
+            tNum ++;
         }  // end For
+        Log.d(TAG, "# of teams = " + tNum);
+
     }
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
     public void RadioClick_Dim(View view) {
