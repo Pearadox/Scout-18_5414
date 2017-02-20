@@ -59,8 +59,11 @@ public class MatchScoutActivity extends AppCompatActivity {
     String key = null;
     ArrayAdapter<String> adapter_autostartpos;
     ArrayAdapter<String> adapter_autostoppos;
+    ArrayAdapter<String> adapter_auto_gear_placement;
     public String startPos = " ";
     public String stopPos = " ";
+    public String gearPos = " ";
+
 
 
 
@@ -117,7 +120,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         adapter_autostartpos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_startPos.setAdapter(adapter_autostartpos);
         spinner_startPos.setSelection(0, false);
-        spinner_startPos.setOnItemSelectedListener(new MatchScoutActivity.startPosOnClickListener());
+        spinner_startPos.setOnItemSelectedListener(new startPosOnClickListener());
 
         Spinner spinner_stopPos = (Spinner) findViewById(R.id.spinner_stopPos);
         String[] autostopPos = getResources().getStringArray(R.array.auto_stop_array);
@@ -125,7 +128,17 @@ public class MatchScoutActivity extends AppCompatActivity {
         adapter_autostoppos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_stopPos.setAdapter(adapter_autostoppos);
         spinner_stopPos.setSelection(0, false);
-        spinner_stopPos.setOnItemSelectedListener(new MatchScoutActivity.stopPosOnClickListener());
+        spinner_stopPos.setOnItemSelectedListener(new stopPosOnClickListener());
+
+
+        Spinner spinner_GearPlacement = (Spinner) findViewById(R.id.spinner_gearposition);
+        String[] auto_gear_placement = getResources().getStringArray(R.array.auto_gear_placement);
+        adapter_auto_gear_placement = new ArrayAdapter<String>(this, R.layout.dev_list_layout, auto_gear_placement);
+        adapter_auto_gear_placement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_GearPlacement.setAdapter(adapter_auto_gear_placement);
+        spinner_GearPlacement.setSelection(0, false);
+        spinner_GearPlacement.setOnItemSelectedListener(new gearPosOnClickListener());
+        
 
 
 
@@ -366,7 +379,7 @@ public class MatchScoutActivity extends AppCompatActivity {
             imgScoutLogo.setImageDrawable(getResources().getDrawable(R.drawable.blue_scout));
         }
 
-        seekBar_HighGoal.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        seekBar_HighGoal.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar_HighGoal) {
@@ -390,7 +403,7 @@ public class MatchScoutActivity extends AppCompatActivity {
             }
 
         });
-        seekBar_LowGoal.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        seekBar_LowGoal.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar_LowGoal) {
@@ -538,6 +551,18 @@ public class MatchScoutActivity extends AppCompatActivity {
                                    View view, int pos, long id) {
             stopPos = parent.getItemAtPosition(pos).toString();
             Log.d(TAG, ">>>>>  '" + stopPos + "'");
+
+        }
+        public void onNothingSelected(AdapterView<?> parent) {
+            // Do nothing.
+        }
+    }
+
+    private class gearPosOnClickListener implements android.widget.AdapterView.OnItemSelectedListener {
+        public void onItemSelected(AdapterView<?> parent,
+                                   View view, int pos, long id) {
+            gearPos = parent.getItemAtPosition(pos).toString();
+            Log.d(TAG, ">>>>>  '" + gearPos + "'");
 
         }
         public void onNothingSelected(AdapterView<?> parent) {

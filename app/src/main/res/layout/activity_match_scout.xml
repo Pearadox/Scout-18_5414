@@ -346,6 +346,24 @@
         android:layout_alignBottom="@+id/chk_LowGoal"
         android:text="100" />
 
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner_stopPos"
+        android:layout_marginTop="17dp"
+        android:id="@+id/spinner_gearposition"
+        android:layout_alignEnd="@+id/spinner_stopPos"
+        android:layout_alignStart="@+id/lbl_MyTeam" />
+
+    <TextView
+        android:text="Gear Position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView4"
+        android:layout_alignTop="@+id/spinner_gearposition"
+        android:layout_alignEnd="@+id/txt_stopPos"
+        android:layout_toEndOf="@+id/lbl_space1" />
+
 
     <!--</LinearLayout>-->
 
