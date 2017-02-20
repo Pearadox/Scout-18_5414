@@ -230,6 +230,12 @@
         android:layout_alignBottom="@+id/chkBox_Shooter"
         android:layout_alignStart="@+id/imgView_Mecanum" />
 
+    // ======================================================
+
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
     <Button
         android:id="@+id/btn_Save"
         android:text="Save"
@@ -237,5 +243,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:id="@+id/img_Photo"
+        android:layout_width="512sp"
+        android:layout_height="320sp"
+        app:srcCompat="@drawable/photo_missing"
+        android:layout_marginBottom="65dp"
+        android:layout_above="@+id/btn_Save"
+        android:layout_toEndOf="@+id/spinner_Team" />
 
 </RelativeLayout>
