@@ -21,6 +21,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -34,20 +35,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.io.ByteArrayOutputStream;
 
 import static android.app.PendingIntent.getActivity;
+import static android.view.View.VISIBLE;
 
 public class PitScoutActivity extends AppCompatActivity {
 
     String TAG = "PitScout_Activity";      // This CLASS name
-    TextView txt_dev, txt_stud, txt_TeamName, txt_NumWheels;
+    TextView txt_dev, txt_stud, txt_TeamName, txt_NumWheels, lbl_FuelEst;
+    EditText txtEd_FuelCap;
     ImageView imgScoutLogo, img_Photo;
     Spinner spinner_Team, spinner_Traction, spinner_Omni, spinner_Mecanum;
     ArrayAdapter<String> adapter;
     ArrayAdapter<String> adapter_Trac, adapter_Omni, adapter_Mac ;
     RadioGroup radgrp_Dim;      RadioButton radio_Dim;
-    CheckBox chkBox_Gear, chkBox_Fuel, chkBox_Shooter, chkBox_Vision;
+    CheckBox chkBox_Gear, chkBox_Fuel, chkBox_Shooter, chkBox_Vision, chkBox_Pneumatics, chkBox_FuelManip, chkBox_Climb;
     Button btn_Save;
     int REQUEST_IMAGE_CAPTURE = 2;
-    public static String[] teams = new String[Pearadox.maxTeams+1];  // Team list (array of just Team Names)
+    public static String[] teams = new String[Pearadox.numTeams+1];  // Team list (array of just Team Names)
     public static String[] wheels = new String[]
             {"0","1","2","3","4","5","6", "7", "8"};
 
@@ -65,12 +68,13 @@ public class PitScoutActivity extends AppCompatActivity {
     public int numOmni = 0;                     // Num. of Omni wheels
     public int numMecanum = 0;                  // Num. of Mecanum wheels
     public boolean gear_Collecter = false;      // presence of gear collector
-    public boolean fuel_Container = false;      // presence of
+    public boolean fuel_Container = false;      // presence of Storage bin
+    public int storSize = 0;                    // estimate of # of balls
     public boolean shooter = false;             // presence of Shooter
     public boolean vision = false;              // presence of Vision Camera
-    public boolean storageBin = false;          // presence of Storage bin
-    public int storSize = 0;                    // estimate of # of balls
+    public boolean pneumatics = false;          // presence of Pneumatics
     public boolean fuelManip = false;           // presence of a way to pick up fuel from floor
+    public boolean climb = false;               // presence of a Climbing mechanism
     /* */
     public String scout = " ";                  // Student who collected the data
 // ===========================================================================
@@ -91,6 +95,7 @@ public class PitScoutActivity extends AppCompatActivity {
         pfPitData_DBReference = pfDatabase.getReference("pit-data"); // Pit Scout Data
 
         loadTeams();
+        ImageView img_Photo = (ImageView) findViewById(R.id.img_Photo);
         txt_dev = (TextView) findViewById(R.id.txt_Dev);
         txt_stud = (TextView) findViewById(R.id.txt_stud);
         txt_TeamName = (TextView) findViewById(R.id.txt_TeamName);
@@ -124,9 +129,14 @@ public class PitScoutActivity extends AppCompatActivity {
         spinner_Mecanum.setSelection(0, false);
         spinner_Mecanum.setOnItemSelectedListener(new PitScoutActivity.Mecanum_OnItemSelectedListener());
         chkBox_Gear = (CheckBox) findViewById(R.id.chkBox_Gear);
-        chkBox_Fuel = (CheckBox) findViewById(R.id.chkBox_Fuel);
         chkBox_Shooter = (CheckBox) findViewById(R.id.chkBox_Shooter);
         chkBox_Vision = (CheckBox) findViewById(R.id.chkBox_Vision);
+        chkBox_Pneumatics = (CheckBox) findViewById(R.id.chkBox_Pneumatics);
+        chkBox_Fuel = (CheckBox) findViewById(R.id.chkBox_Fuel);
+        lbl_FuelEst = (TextView) findViewById(R.id.lbl_FuelEst);
+        txtEd_FuelCap = (EditText) findViewById(R.id.txtEd_FuelCap);
+        chkBox_FuelManip = (CheckBox) findViewById(R.id.chkBox_FuelManip);
+        chkBox_Climb = (CheckBox) findViewById(R.id.chkBox_Climb);
 
         chkBox_Gear.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -148,9 +158,13 @@ public class PitScoutActivity extends AppCompatActivity {
                if (buttonView.isChecked()) {
                    Log.i(TAG,"Fuel is checked.");
                    fuel_Container = true;
+                   lbl_FuelEst.setVisibility(VISIBLE);
+                   txtEd_FuelCap.setVisibility(VISIBLE);
                } else {
                    Log.i(TAG,"Fuel is unchecked.");
                    fuel_Container = false;
+                   lbl_FuelEst.setVisibility(View.GONE);
+                   txtEd_FuelCap.setVisibility(View.GONE);
                }
            }
         });
@@ -180,6 +194,46 @@ public class PitScoutActivity extends AppCompatActivity {
                }
            }
        });
+        chkBox_Pneumatics.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.i(TAG, "chkBox_Pneumatics Listener");
+                if (buttonView.isChecked()) {
+                    Log.i(TAG,"Pneumatics is checked.");
+                    pneumatics = true;
+                } else {
+                    Log.i(TAG,"Pneumatics is unchecked.");
+                    pneumatics = false;
+                }
+            }
+        });
+        chkBox_FuelManip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.i(TAG, "chkBox_FuelManip Listener");
+                if (buttonView.isChecked()) {
+                    Log.i(TAG,"FuelManip is checked.");
+                    fuelManip = true;
+                } else {
+                    Log.i(TAG,"FuelManip is unchecked.");
+                    fuelManip = false;
+                }
+            }
+        });
+        chkBox_Climb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.i(TAG, "chkBox_Climb Listener");
+                if (buttonView.isChecked()) {
+                    Log.i(TAG,"Climb is checked.");
+                    fuelManip = true;
+                } else {
+                    Log.i(TAG,"Climb is unchecked.");
+                    fuelManip = false;
+                }
+            }
+        });
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Save = (Button) findViewById(R.id.btn_Save);
         btn_Save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -188,7 +242,6 @@ public class PitScoutActivity extends AppCompatActivity {
                 // ToDo - Save data to SD card & Firebase
             }
         });
-
 
     }
 
@@ -212,19 +265,19 @@ public class PitScoutActivity extends AppCompatActivity {
     private void onLaunchCamera() {
         Log.i(TAG, "►►►►►  LaunchCamera  ◄◄◄◄◄");
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        if (takePictureIntent.resolveActivity(PitScoutActivity.getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-//        }
-        Log.d(TAG, ">>>>>  '" + teamSelected + "'");
+        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        Log.d(TAG, "Photo taken" );
 
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i(TAG, "*****  onActivityResult " + requestCode);
+        ImageView img_Photo = (ImageView) findViewById(R.id.img_Photo);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == PitScoutActivity.RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+            Log.d(TAG, "*** data '" + data + "'");
             img_Photo.setImageBitmap(imageBitmap);
             encodeBitmapAndSaveToFirebase(imageBitmap);
         }
@@ -235,10 +288,10 @@ public class PitScoutActivity extends AppCompatActivity {
         Log.d(TAG, "Photo = '" + picname + "'");
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);     // ByteArrayOutputStream
         String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
-        DatabaseReference ref = FirebaseDatabase.getInstance()
-                .getReference("gs://paradox-2017.appspot.com ")
-                .child("images");
-        ref.setValue(imageEncoded);
+//        DatabaseReference ref = FirebaseDatabase.getInstance()
+//                .getReference("gs://paradox-2017.appspot.com")
+//                .child("images");
+//        ref.setValue(imageEncoded);
     }
 
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
