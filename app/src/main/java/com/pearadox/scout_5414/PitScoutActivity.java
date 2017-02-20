@@ -1,12 +1,21 @@
 package com.pearadox.scout_5414;
 
+import android.media.AudioManager;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.media.ToneGenerator;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -26,6 +35,8 @@ public class PitScoutActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     ArrayAdapter<String> adapter_Trac, adapter_Omni, adapter_Mac ;
     RadioGroup radgrp_Dim;      RadioButton radio_Dim;
+    CheckBox chkBox_Gear, chkBox_Fuel, chkBox_Shooter, chkBox_Vision;
+    Button btn_Save;
     public static String[] team_List = new String[Pearadox.maxTeams+1];  // Team list (array of just Team Names)
     public static String[] wheels = new String[]
             {"0","1","2","3","4","5","6", "7", "8"};
@@ -34,6 +45,7 @@ public class PitScoutActivity extends AppCompatActivity {
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name, team_loc);
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfPitData_DBReference;
+    boolean dataSaved = false;      // Make sure they save before exiting
 
     // ===================  Data Elements for Pit Scout object ===================
     public String teamSelected = " ";
@@ -42,6 +54,11 @@ public class PitScoutActivity extends AppCompatActivity {
     public int numTraction = 0;
     public int numOmni = 0;
     public int numMecanum = 0;
+    public boolean gear_Collecter = false;
+    public boolean fuel_Container = false;
+    public boolean shooter = false;
+    public boolean vision = false;
+    public String scout = " ";
 // ===========================================================================
 
 
@@ -54,9 +71,10 @@ public class PitScoutActivity extends AppCompatActivity {
         String param1 = bundle.getString("dev");
         String param2 = bundle.getString("stud");
         Log.d(TAG, param1 + " " + param2);      // ** DEBUG **
+        scout = param2; // Scout of record
 
         pfDatabase = FirebaseDatabase.getInstance();
-        pfPitData_DBReference = pfDatabase.getReference("pit-data"); // _THE_ current Match
+        pfPitData_DBReference = pfDatabase.getReference("pit-data"); // Pit Scout Data
 
         loadTeams();
         txt_dev = (TextView) findViewById(R.id.txt_Dev);
@@ -91,6 +109,71 @@ public class PitScoutActivity extends AppCompatActivity {
         spinner_Mecanum.setAdapter(adapter_Mac);
         spinner_Mecanum.setSelection(0, false);
         spinner_Mecanum.setOnItemSelectedListener(new PitScoutActivity.Mecanum_OnItemSelectedListener());
+        chkBox_Gear = (CheckBox) findViewById(R.id.chkBox_Gear);
+        chkBox_Fuel = (CheckBox) findViewById(R.id.chkBox_Fuel);
+        chkBox_Shooter = (CheckBox) findViewById(R.id.chkBox_Shooter);
+        chkBox_Vision = (CheckBox) findViewById(R.id.chkBox_Vision);
+
+        chkBox_Gear.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.i(TAG, "chkBox_Gear Listener");
+                if (buttonView.isChecked()) {
+                    Log.i(TAG,"Gear is checked.");
+                    gear_Collecter = true;
+                } else {
+                    Log.i(TAG,"Gear is unchecked.");
+                    gear_Collecter = false;
+                }
+            }
+        });
+        chkBox_Fuel.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+           @Override
+           public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+               Log.i(TAG, "chkBox_Fuel Listener");
+               if (buttonView.isChecked()) {
+                   Log.i(TAG,"Fuel is checked.");
+                   fuel_Container = true;
+               } else {
+                   Log.i(TAG,"Fuel is unchecked.");
+                   fuel_Container = false;
+               }
+           }
+        });
+        chkBox_Shooter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+           @Override
+           public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+               Log.i(TAG, "chkBox_Fuel Listener");
+               if (buttonView.isChecked()) {
+                   Log.i(TAG,"shooter is checked.");
+                   shooter = true;
+               } else {
+                   Log.i(TAG,"shooter is unchecked.");
+                   shooter = false;
+               }
+           }
+        });
+        chkBox_Vision.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+           @Override
+           public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+               Log.i(TAG, "chkBox_Vision Listener");
+               if (buttonView.isChecked()) {
+                   Log.i(TAG,"Vision is checked.");
+                   vision = true;
+               } else {
+                   Log.i(TAG,"Vision is unchecked.");
+                   vision = false;
+               }
+           }
+       });
+        btn_Save = (Button) findViewById(R.id.btn_Save);
+        btn_Save.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.i(TAG, "Save Button Listener");
+                dataSaved = true;
+                // ToDo - Save data to SD card & Firebase
+            }
+        });
 
     }
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
@@ -171,6 +254,7 @@ public class PitScoutActivity extends AppCompatActivity {
         }  // end For
         if (!found) {
             Log.e(TAG, "****** ERROR - Team _NOT_ found!! = " + tnum);
+            txt_TeamName.setText(" ");
         }
     }
 
@@ -189,14 +273,23 @@ public class PitScoutActivity extends AppCompatActivity {
         int selectedId = radgrp_Dim.getCheckedRadioButtonId();
         radio_Dim = (RadioButton) findViewById(selectedId);
         String value = radio_Dim.getText().toString();
-        if (value.equals("Short")) { 	    // Match?
-            Log.d(TAG, "Short");
-            dim_Tall = false;
+        if (teamSelected.length() < 4) {        /// Make sure a Team is selected 1st
+            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+            Toast toast = Toast.makeText(getBaseContext(), "*** Select a TEAM first before entering data ***", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
+            radio_Dim.setChecked(false);
         } else {                               // Pit
-            Log.d(TAG, "Tall");
-            dim_Tall = true;
+            if (value.equals("Short")) {        // Match?
+                Log.d(TAG, "Short");
+                dim_Tall = false;
+            } else {                               // Pit
+                Log.d(TAG, "Tall");
+                dim_Tall = true;
+            }
+            Log.d(TAG, "RadioDim - Tall = '" + dim_Tall + "'");
         }
-        Log.d(TAG, "RadioDim - Tall = '" + dim_Tall + "'");
     }
 
 //###################################################################
@@ -211,6 +304,14 @@ public class PitScoutActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         Log.v(TAG, "onStop");
+        if (!dataSaved) {
+            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 200);
+            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+            Toast toast = Toast.makeText(getBaseContext(), ">>> You forgot to SAVE - all data lost!! <<<", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
+
+        }
     }
     @Override
     public void onDestroy() {

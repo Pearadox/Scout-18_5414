@@ -106,10 +106,9 @@
         android:layout_width="60sp"
         android:layout_height="30sp"
         android:textSize="16sp"
-        android:layout_below="@+id/radgrp_Dim"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="29dp"
-        android:text="Wheels" />
+        android:text="Wheels"
+        android:layout_below="@+id/radgrp_Dim" />
 
     <Spinner
         android:id="@+id/spinner_Mecanum"
@@ -195,5 +194,48 @@
             android:layout_toEndOf="@+id/radgrp_Dim" />
     </RadioGroup>
 
+    <CheckBox
+        android:id="@+id/chkBox_Gear"
+        android:text="Gear Collector"
+        android:layout_width="160sp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgView_Traction"
+        android:layout_marginTop="26dp"
+        android:layout_toStartOf="@+id/imgView_Traction"
+        android:layout_alignEnd="@+id/radgrp_Dim" />
+    <CheckBox
+        android:id="@+id/chkBox_Fuel"
+        android:text="Fuel Container"
+        android:layout_width="160sp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/chkBox_Gear"
+        android:layout_alignBottom="@+id/chkBox_Gear"
+        android:layout_toEndOf="@+id/chkBox_Gear" />
+    <CheckBox
+        android:id="@+id/chkBox_Shooter"
+        android:text="Shooter"
+        android:layout_width="160sp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/chkBox_Fuel"
+        android:layout_alignBottom="@+id/chkBox_Fuel"
+        android:layout_toEndOf="@+id/chkBox_Fuel" />
+
+    <CheckBox
+        android:id="@+id/chkBox_Vision"
+        android:text="Vision Camera"
+        android:layout_width="160sp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_alignBaseline="@+id/chkBox_Shooter"
+        android:layout_alignBottom="@+id/chkBox_Shooter"
+        android:layout_alignStart="@+id/imgView_Mecanum" />
+
+    <Button
+        android:id="@+id/btn_Save"
+        android:text="Save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
