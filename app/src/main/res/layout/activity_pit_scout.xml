@@ -101,6 +101,33 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="18dp" />
 
+    // ======================================================
+
+    <RadioGroup
+        android:id="@+id/radgrp_Dim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/lbl_Divider"  >
+
+        <RadioButton
+            android:id="@+id/radio_Short"
+            android:text="Short"
+            android:onClick="RadioClick_Dim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="20dp"
+            android:layout_below="@+id/radgrp_Dim" />
+        <RadioButton
+            android:id="@+id/radio_Tall"
+            android:text="Tall"
+            android:onClick="RadioClick_Dim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_Divider"
+            android:layout_toEndOf="@+id/radgrp_Dim" />
+    </RadioGroup>
+
     <TextView
         android:id="@+id/lbl_Wheels"
         android:layout_width="60sp"
@@ -169,30 +196,7 @@
         android:layout_alignTop="@+id/imgView_Omni"
         android:layout_toEndOf="@+id/spinner_Omni" />
 
-    <RadioGroup
-        android:id="@+id/radgrp_Dim"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/lbl_Divider"  >
-
-        <RadioButton
-            android:id="@+id/radio_Short"
-            android:text="Short"
-            android:onClick="RadioClick_Dim"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="20dp"
-            android:layout_below="@+id/radgrp_Dim" />
-        <RadioButton
-            android:id="@+id/radio_Tall"
-            android:text="Tall"
-            android:onClick="RadioClick_Dim"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/lbl_Divider"
-            android:layout_toEndOf="@+id/radgrp_Dim" />
-    </RadioGroup>
+    // ======================================================
 
     <CheckBox
         android:id="@+id/chkBox_Gear"
@@ -203,38 +207,95 @@
         android:layout_marginTop="26dp"
         android:layout_toStartOf="@+id/imgView_Traction"
         android:layout_alignEnd="@+id/radgrp_Dim" />
+
     <CheckBox
         android:id="@+id/chkBox_Fuel"
         android:text="Fuel Container"
         android:layout_width="160sp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/chkBox_Gear"
-        android:layout_alignBottom="@+id/chkBox_Gear"
-        android:layout_toEndOf="@+id/chkBox_Gear" />
-    <CheckBox
-        android:id="@+id/chkBox_Shooter"
-        android:text="Shooter"
-        android:layout_width="160sp"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/chkBox_Gear"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/lbl_FuelEst"
+        android:text="Fuel Capacity"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:visibility="gone"
         android:layout_height="wrap_content"
+        android:layout_width="120sp"
         android:layout_alignBaseline="@+id/chkBox_Fuel"
         android:layout_alignBottom="@+id/chkBox_Fuel"
         android:layout_toEndOf="@+id/chkBox_Fuel" />
 
+    <EditText
+        android:id="@+id/txtEd_FuelCap"
+        android:layout_width="50sp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:textColor="@color/limegreen"
+        android:ems="12"
+        android:visibility="gone"
+        android:layout_alignBaseline="@+id/lbl_FuelEst"
+        android:layout_alignBottom="@+id/lbl_FuelEst"
+        android:layout_alignStart="@+id/imgView_Omni" />
+
+    <CheckBox
+        android:id="@+id/chkBox_FuelManip"
+        android:text="Fuel Pickup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/chkBox_Fuel"
+        android:layout_alignParentStart="true" />
+    <CheckBox
+        android:id="@+id/chkBox_Pneumatics"
+        android:text="Pneumatics"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/chkBox_Shooter"
+        android:layout_alignBottom="@+id/chkBox_Shooter"
+        android:layout_toStartOf="@+id/chkBox_Vision"
+        android:layout_width="140sp" />
+
+    <CheckBox
+        android:id="@+id/chkBox_Shooter"
+        android:text="Shooter"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/chkBox_Gear"
+        android:layout_alignBottom="@+id/chkBox_Gear"
+        android:layout_toEndOf="@+id/chkBox_Gear"
+        android:layout_width="90sp" />
+
     <CheckBox
         android:id="@+id/chkBox_Vision"
         android:text="Vision Camera"
-        android:layout_width="160sp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="27dp"
-        android:layout_alignBaseline="@+id/chkBox_Shooter"
-        android:layout_alignBottom="@+id/chkBox_Shooter"
-        android:layout_alignStart="@+id/imgView_Mecanum" />
+        android:layout_alignBaseline="@+id/chkBox_Pneumatics"
+        android:layout_alignBottom="@+id/chkBox_Pneumatics"
+        android:layout_alignStart="@+id/imgView_Mecanum"
+        android:layout_width="140sp" />
 
-    // ======================================================
+    <CheckBox
+        android:id="@+id/chkBox_Climb"
+        android:text="Climber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/chkBox_FuelManip"
+        android:layout_toEndOf="@+id/chkBox_Gear"  />
 
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <ImageView
+        android:id="@+id/img_Photo"
+        android:layout_width="450sp"
+        android:layout_height="300sp"
+        android:background="@drawable/border"
+        app:srcCompat="@drawable/photo_missing"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:id="@+id/btn_Save"
@@ -242,15 +303,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
-
-    <ImageView
-        android:id="@+id/img_Photo"
-        android:layout_width="512sp"
-        android:layout_height="320sp"
-        app:srcCompat="@drawable/photo_missing"
-        android:layout_marginBottom="65dp"
-        android:layout_above="@+id/btn_Save"
-        android:layout_toEndOf="@+id/spinner_Team" />
+        android:layout_alignEnd="@+id/spinner_Mecanum"
+        android:layout_marginBottom="25dp" />
 
 </RelativeLayout>
