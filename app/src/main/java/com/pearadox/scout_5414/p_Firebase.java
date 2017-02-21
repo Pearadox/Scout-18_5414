@@ -347,6 +347,7 @@ public class p_Firebase {
 // ==========================================================
 
     public class matchData implements Serializable {
+        private static final long serialVersionUID = -54145414541400L;
         // ============= AUTO ================
         private String match;                   // Matcj ID (e.g., 'T00' where T = X(Practice), Q(ualifying) or P(Playoff) and '00' - match #
         private String team_num;                // Team Number (e.gg., '5414'
