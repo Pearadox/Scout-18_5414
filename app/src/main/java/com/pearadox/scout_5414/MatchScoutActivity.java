@@ -1,15 +1,21 @@
 package com.pearadox.scout_5414;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -28,6 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Iterator;
+import java.util.concurrent.RunnableFuture;
 
 import static android.view.View.VISIBLE;
 
@@ -40,6 +47,7 @@ public class MatchScoutActivity extends AppCompatActivity {
     public static String studID = " ";
     TextView txt_dev, txt_stud, txt_Match, txt_MyTeam, text_HGSeekBarValue, text_LGSeekBarValue;
     CheckBox chk_baseline, chk_highGoal, chkBox_balls, chkBox_gears, chkBox_rope, chk_lowGoal, checkbox_automode;
+    EditText editText_Fuel;
     SeekBar seekBar_HighGoal, seekBar_LowGoal;
     ImageView imgScoutLogo;
     public String matchID = "T00";      // Type + #
@@ -65,13 +73,9 @@ public class MatchScoutActivity extends AppCompatActivity {
     public String startPos = " ";
     public String stopPos = " ";
     public String gearPos = " ";
+    public String fuel = " ";
 
 
-
-
-
-
-    //    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +102,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         seekBar_LowGoal = (SeekBar) findViewById(R.id.seekBar_LowGoal);
         checkbox_automode = (CheckBox) findViewById(R.id.checkbox_automode);
         chkBox_balls = (CheckBox) findViewById(R.id.chk_balls);
+        editText_Fuel = (EditText) findViewById(R.id.editText_Fuel);
         chkBox_gears = (CheckBox) findViewById(R.id.chk_gears);
         chkBox_rope = (CheckBox) findViewById(R.id.chk_rope);
         button_GearsMinus = (Button) findViewById(R.id.button_GearsMinus);
@@ -118,6 +123,10 @@ public class MatchScoutActivity extends AppCompatActivity {
         text_LGSeekBarValue = (TextView) findViewById(R.id.text_LGSeekBarValue);
         text_HGSeekBarValue.setVisibility(View.GONE);
         text_LGSeekBarValue.setVisibility(View.GONE);
+        editText_Fuel.setVisibility(View.GONE);
+        editText_Fuel.setEnabled(false);
+        editText_Fuel.setText("");
+
 
         Spinner spinner_startPos = (Spinner) findViewById(R.id.spinner_startPos);
         String[] autostartPos = getResources().getStringArray(R.array.auto_start_array);
@@ -193,36 +202,37 @@ public class MatchScoutActivity extends AppCompatActivity {
                 if (buttonView.isChecked()) {
                     //checked
                     Log.i(TAG,"TextBox is checked.");
+                    editText_Fuel.setVisibility(View.VISIBLE);
+                    editText_Fuel.setEnabled(true);
+
 
                 }
                 else
                 {
                     //not checked
                     Log.i(TAG,"TextBox is unchecked.");
+                    editText_Fuel.setVisibility(View.GONE);
+                    editText_Fuel.setEnabled(false);
 
                 }
             }
         }
         );
-        chkBox_gears.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                Log.i(TAG, "chkBox_gears Listener");
-                if (buttonView.isChecked()) {
-                    //checked
-                    Log.i(TAG,"TextBox is checked.");
+        editText_Fuel.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
 
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                    (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                        Log.d(TAG, " editText_Fuel listener");
+                        Log.d(TAG, "Fuel = " + editText_Fuel.getText());
+                        fuel = String.valueOf(editText_Fuel.getText());
+                    return true;
                 }
-                else
-                {
-                    //not checked
-                    Log.i(TAG,"TextBox is unchecked.");
+                return false;
 
-                }
             }
-        }
-        );
+        });
         chkBox_rope.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
@@ -362,6 +372,7 @@ public class MatchScoutActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 updateDev("Tele");
+//TODO save auto data                 //updateDev("Saved");
 
                 Intent smast_intent = new Intent(MatchScoutActivity.this, TeleopScoutActivity.class);
                 Bundle SMbundle = new Bundle();
@@ -592,6 +603,56 @@ public class MatchScoutActivity extends AppCompatActivity {
             // Do nothing.
         }
     }
+
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exitByBackKey();
+
+            //moveTaskToBack(false);
+
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    protected void exitByBackKey() {
+
+        AlertDialog alertbox = new AlertDialog.Builder(this)
+                .setMessage("Do you want to exit without saving? All of your data will be lost!")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                    // do something when the button is clicked
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                        finish();
+                        //close();
+
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                    // do something when the button is clicked
+                    public void onClick(DialogInterface arg0, int arg1) {
+                    }
+                })
+                .show();
+
+    }
+//    private TextWatcher tw = new TextWatcher() {
+//        public void afterTextChanged(Editable s){
+//
+//        }
+//        public void  beforeTextChanged(CharSequence s, int start, int count, int after){
+//            // you can check for enter key here
+//        }
+//        public void  onTextChanged (CharSequence s, int start, int before,int count) {
+//        }
+//    };
+//
+//    EditText et = (EditText) findViewById(R.id.editText_Fuel);
+//    et.addTextChangedListener(tw)
 
 
 

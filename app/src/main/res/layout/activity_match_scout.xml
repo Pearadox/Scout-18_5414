@@ -203,16 +203,6 @@
         android:layout_toEndOf="@+id/button_GearsPlus" />
 
     <CheckBox
-        android:id="@+id/chk_rope"
-        android:text="Rope"
-        android:layout_weight="1"
-        android:layout_width="90dp"
-        android:layout_height="30dp"
-        android:layout_alignBaseline="@+id/chk_gears"
-        android:layout_alignBottom="@+id/chk_gears"
-        android:layout_toEndOf="@+id/lbl_MyTeam" />
-
-    <CheckBox
         android:text="Low Goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -360,16 +350,6 @@
         android:layout_alignBottom="@+id/lbl_gearsAttempted"
         android:layout_toEndOf="@+id/chk_baseline" />
 
-    <CheckBox
-        android:id="@+id/chk_balls"
-        android:text="Fuel"
-        android:layout_weight="1"
-        android:layout_width="90dp"
-        android:layout_height="30dp"
-        android:layout_alignBaseline="@+id/chk_gears"
-        android:layout_alignBottom="@+id/chk_gears"
-        android:layout_alignParentStart="true" />
-
     <TextView
         android:id="@+id/lbl_Dev"
         android:layout_width="70dp"
@@ -381,14 +361,45 @@
         android:layout_toEndOf="@+id/imageView_MS" />
 
     <CheckBox
+        android:id="@+id/chk_balls"
+        android:text="Fuel"
+        android:layout_weight="1"
+        android:layout_width="90dp"
+        android:layout_height="30dp"
+        android:layout_alignBaseline="@+id/chk_gears"
+        android:layout_alignBottom="@+id/chk_gears"
+        android:layout_toEndOf="@+id/chk_rope" />
+
+    <CheckBox
         android:id="@+id/chk_gears"
         android:text="Gears"
         android:layout_weight="1.38"
         android:layout_width="90dp"
         android:layout_height="30dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="19dp"
         android:layout_below="@+id/checkbox_automode"
-        android:layout_toEndOf="@+id/chk_balls" />
+        android:layout_toEndOf="@+id/lbl_space1" />
+
+    <CheckBox
+        android:id="@+id/chk_rope"
+        android:text="Rope"
+        android:layout_weight="1"
+        android:layout_width="90dp"
+        android:layout_height="30dp"
+        android:layout_alignBaseline="@+id/chk_gears"
+        android:layout_alignBottom="@+id/chk_gears"
+        android:layout_toEndOf="@+id/chk_highGoal" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editText_Fuel"
+        android:layout_alignBaseline="@+id/chk_gears"
+        android:layout_alignBottom="@+id/chk_gears"
+        android:layout_alignEnd="@+id/checkbox_automode"
+        android:layout_toEndOf="@+id/txt_Dev" />
 
 
     <!--</LinearLayout>-->

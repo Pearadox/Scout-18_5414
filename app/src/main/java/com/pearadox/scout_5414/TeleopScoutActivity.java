@@ -1,10 +1,13 @@
 package com.pearadox.scout_5414;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -352,10 +355,15 @@ public class TeleopScoutActivity extends Activity {
         );
 
 
+
+
+
+
         String param1 = bundle.getString("dev");
         String param2 = bundle.getString("stud");
         Log.d(TAG, param1 + " " + param2);      // ** DEBUG **
         Log.i(TAG, "<< before calling Other Activty >>");
+
 
     }
     private void updateDev(String phase) {     //
@@ -389,6 +397,42 @@ public class TeleopScoutActivity extends Activity {
                 Log.d(TAG, "DEV = NULL" );
         }
         pfDevice_DBReference.child(key).child("phase").setValue(phase);
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exitByBackKey();
+
+            //moveTaskToBack(false);
+
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    protected void exitByBackKey() {
+
+        AlertDialog alertbox = new AlertDialog.Builder(this)
+                .setMessage("Do you want to exit without saving? All of your data will be lost!")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                    // do something when the button is clicked
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                        finish();
+                        //close();
+
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                    // do something when the button is clicked
+                    public void onClick(DialogInterface arg0, int arg1) {
+                    }
+                })
+                .show();
+
     }
 
 //    public void onClick(View view) {
