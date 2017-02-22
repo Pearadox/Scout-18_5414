@@ -3,16 +3,26 @@ package com.pearadox.scout_5414;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.app.Activity;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 
 import static com.pearadox.scout_5414.R.id.button_GoToFinalActivity;
 
@@ -23,7 +33,7 @@ import static com.pearadox.scout_5414.R.id.button_GoToFinalActivity;
 public class FinalActivity extends Activity {
 
 
-    String TAG = "OtherActivity";      // This CLASS name
+    String TAG = "FinalActivity";      // This CLASS name
     TextView txt_dev, txt_stud, txt_match, txt_MyTeam;
     Button button_Saved;
     private FirebaseDatabase pfDatabase;
@@ -33,7 +43,13 @@ public class FinalActivity extends Activity {
     private DatabaseReference pfCur_Match_DBReference;
     String key = null;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+// ===================  Final Elements for Match Scout Data object ===================
+    /* */
+    public String finalComment = " ";
+
+// ===========================================================================
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,13 +74,51 @@ public class FinalActivity extends Activity {
         button_Saved.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                updateDev("Saved");
+                updateDev("Saved");         // Update "traffic light" status for Scout Master
+                storeFinalData();       // Put all the Final data collected in Match object
                 //TODO Save all data to frebase.
+                finish();       // Exit
             }
         });
 
 
     }
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private void storeFinalData() {
+        Log.i(TAG, ">>>>  storeFinalData  <<<<");
+        //ToDo - add remaining Final elements
+         /* */
+        Pearadox.Match_Data.setFinal_comment(finalComment);
+
+        saveDatatoSDcard();     //Save loacally
+        //ToDo - write to Firebase
+    }
+
+    private void saveDatatoSDcard() {
+        Log.i(TAG, "@@@@  saveDatatoSDcard  @@@@");
+        String filename = Pearadox.Match_Data.getMatch() + "_" + Pearadox.Match_Data.getTeam_num() + ".dat";
+        ObjectOutput out = null;
+        File directMatch = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/" + filename);
+        Log.d(TAG, "SD card Path = " + directMatch);
+        if(directMatch.exists())  {
+            // Todo - Replace TOAST with Dialog Box  - "Do you really ..."
+            Toast toast = Toast.makeText(getBaseContext(), "Data for " + filename + " already exists!!", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
+        }
+
+        try {
+            out = new ObjectOutputStream(new FileOutputStream(directMatch));
+            out.writeObject(Pearadox.Match_Data);
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void updateDev(String phase) {     //
         Log.i(TAG, "#### updateDev #### " + phase);
         switch (Pearadox.FRC514_Device) {

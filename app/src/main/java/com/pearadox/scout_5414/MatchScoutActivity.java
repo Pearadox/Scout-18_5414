@@ -44,13 +44,11 @@ public class MatchScoutActivity extends AppCompatActivity {
     String TAG = "MatchScout_Activity";      // This CLASS name
     boolean onStart = false;
     public static String device = " ";
-    public static String studID = " ";
     TextView txt_dev, txt_stud, txt_Match, txt_MyTeam, text_HGSeekBarValue, text_LGSeekBarValue;
     CheckBox chk_baseline, chk_highGoal, chkBox_balls, chkBox_gears, chkBox_rope, chk_lowGoal, checkbox_automode;
     EditText editText_Fuel;
     SeekBar seekBar_HighGoal, seekBar_LowGoal;
     ImageView imgScoutLogo;
-    public String matchID = "T00";      // Type + #
     String team_num, team_name, team_loc;
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name, team_loc);
     private FirebaseDatabase pfDatabase;
@@ -62,18 +60,34 @@ public class MatchScoutActivity extends AppCompatActivity {
     TextView txt_GearsPlaced;
     TextView txt_GearsAttempted;
     private Button button_GearsMinus, button_GearsPlus, button_GoToTeleopActivity, button_GoToArenaLayoutActivity, button_GearsAttemptedMinus, button_GearsAttemptedPlus;
-    int gearNum = 0;
-    int HGSvalue = 0;
-    int LGSvalue = 0;
-    int gearAttemptNum = 0;
     String key = null;
     ArrayAdapter<String> adapter_autostartpos;
     ArrayAdapter<String> adapter_autostoppos;
     ArrayAdapter<String> adapter_auto_gear_placement;
+
+// ===================  Autonomous Elements for Match Scout Data object ===================
+    public String matchID = "T00";          // Type + #
+    public String tn = "";                  // Team #
+    public boolean auto = false;
+    public boolean carry_fuel = false;
+    public boolean carry_gear = false;
+    int gearNum = 0;
+    int gearAttemptNum = 0;
+    public boolean baseline = false;
+    public boolean hg = false;
+    int HGSvalue = 0;
+    public boolean lg = false;
+    int LGSvalue = 0;
+    int fuel = 0;
     public String startPos = " ";
     public String stopPos = " ";
     public String gearPos = " ";
-    public String fuel = " ";
+    public boolean pu_Fuel = false;
+    public boolean pu_Gear = false;
+    public String autoComment = " ";
+    /* */
+    public static String studID = " ";
+// ===========================================================================
 
 
     @Override
@@ -164,13 +178,11 @@ public class MatchScoutActivity extends AppCompatActivity {
                 if (buttonView.isChecked()) {
                     //checked
                     Log.i(TAG,"TextBox is checked.");
-
-                }
-                else
-                {
+                    auto = true;
+                } else {
                     //not checked
                     Log.i(TAG,"TextBox is unchecked.");
-
+                    auto = false;
                 }
             }
         }
@@ -204,8 +216,7 @@ public class MatchScoutActivity extends AppCompatActivity {
                     Log.i(TAG,"TextBox is checked.");
                     editText_Fuel.setVisibility(View.VISIBLE);
                     editText_Fuel.setEnabled(true);
-
-
+                    carry_fuel = true;
                 }
                 else
                 {
@@ -213,8 +224,7 @@ public class MatchScoutActivity extends AppCompatActivity {
                     Log.i(TAG,"TextBox is unchecked.");
                     editText_Fuel.setVisibility(View.GONE);
                     editText_Fuel.setEnabled(false);
-
-                }
+                    carry_fuel = false;                }
             }
         }
         );
@@ -226,7 +236,7 @@ public class MatchScoutActivity extends AppCompatActivity {
                     (keyCode == KeyEvent.KEYCODE_ENTER)) {
                         Log.d(TAG, " editText_Fuel listener");
                         Log.d(TAG, "Fuel = " + editText_Fuel.getText());
-                        fuel = String.valueOf(editText_Fuel.getText());
+                        fuel = Integer.valueOf(String.valueOf(editText_Fuel.getText()));
                     return true;
                 }
                 return false;
@@ -372,7 +382,8 @@ public class MatchScoutActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 updateDev("Tele");
-//TODO save auto data                 //updateDev("Saved");
+                //TODO save auto data
+                storeAutoData();        // Put all the Autonomous data collected in Match object
 
                 Intent smast_intent = new Intent(MatchScoutActivity.this, TeleopScoutActivity.class);
                 Bundle SMbundle = new Bundle();
@@ -395,7 +406,7 @@ public class MatchScoutActivity extends AppCompatActivity {
 
 
         txt_dev = (TextView) findViewById(R.id.txt_Dev);
-        txt_stud = (TextView) findViewById(R.id.txt_TeamName);
+        txt_stud = (TextView) findViewById(R.id.txt_stud);
         txt_Match = (TextView) findViewById(R.id.txt_Match);
         txt_MyTeam = (TextView) findViewById(R.id.txt_MyTeam);
         txt_TeamName = (TextView) findViewById(R.id.txt_TeamName);
@@ -448,25 +459,46 @@ public class MatchScoutActivity extends AppCompatActivity {
             @Override
             public void onStartTrackingTouch(SeekBar seekBar_LowGoal) {
                 // TODO Auto-generated method stub
-
             }
-
             @Override
             public void onProgressChanged(SeekBar seekBar_LowGoal, int progress,
                                           boolean fromUser) {
                 // TODO Auto-generated method stub
-
                 LGSvalue=progress;	//we can use the progress value of pro as anywhere
                 text_LGSeekBarValue.setText(Integer.toString(LGSvalue));
             }
-
         });
-
-
-
     }
+
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private void storeAutoData() {
+        Log.i(TAG, ">>>>  storeAutoData  <<<<");
+        Pearadox.Match_Data.setMatch(matchID);
+        Pearadox.Match_Data.setTeam_num(tn);
+        Pearadox.Match_Data.setAuto_mode(auto);
+        Pearadox.Match_Data.setAuto_carry_fuel(carry_fuel);
+        Pearadox.Match_Data.setAuto_gear(carry_gear);
+        Pearadox.Match_Data.setAuto_gears_placed(gearNum);
+        Pearadox.Match_Data.setAuto_gears_attempt(gearAttemptNum);
+        Pearadox.Match_Data.setAuto_baseline(baseline);
+        Pearadox.Match_Data.setAuto_hg(hg);
+        Pearadox.Match_Data.setAuto_hg_percent(HGSvalue);
+        Pearadox.Match_Data.setAuto_lg(lg);
+        Pearadox.Match_Data.setAuto_lg_percent(LGSvalue);
+        Pearadox.Match_Data.setAuto_start(startPos);
+        Pearadox.Match_Data.setAuto_stop(stopPos);
+        Pearadox.Match_Data.setAuto_gear_pos(gearPos);
+        Pearadox.Match_Data.setAuto_pu_fuel(pu_Fuel);
+        Pearadox.Match_Data.setAuto_pu_gear(pu_Gear);
+        Pearadox.Match_Data.setAuto_comment(autoComment);
+
+        Pearadox.Match_Data.setFinal_studID(studID);
+    }
+
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
     private void getMatch() {
-        Log.d(TAG, "%%%%  getMatch  %%%%");
+        Log.i(TAG, "%%%%  getMatch  %%%%");
         pfCur_Match_DBReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -509,7 +541,7 @@ public class MatchScoutActivity extends AppCompatActivity {
                             default:                //
                                 Log.d(TAG, "device is _NOT_ a Scout ->" + device );
                         }
-                        String tn = (String) txt_MyTeam.getText();
+                        tn = (String) txt_MyTeam.getText();
                         findTeam(tn);   // Find Team info
                         txt_TeamName.setText(team_inst.getTeam_name());
                     }
@@ -656,7 +688,7 @@ public class MatchScoutActivity extends AppCompatActivity {
 
 
 
-    //###################################################################
+//###################################################################
 //###################################################################
 //###################################################################
 @Override
@@ -672,11 +704,6 @@ public void onStart() {
     public void onPause() {
         super.onPause();
         Log.v(TAG, "onPause");
-        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("Device", device);
-        editor.putString("Student", studID);
-        editor.commit(); 		// keep same data
     }
 
     @Override
@@ -684,10 +711,6 @@ public void onStart() {
         super.onResume();
         Log.v(TAG, "onResume");
         onStart = false;
-        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-        String device = prefs.getString("Device", "");
-        String studID = prefs.getString("Student", "");
-        Log.d(TAG, "Dev=" + device + "  " + "Student=" + studID);
     }
 
     @Override
@@ -701,7 +724,5 @@ public void onStart() {
         Log.v(TAG, "OnDestroy");
         // ToDo - ??????
     }
-
-
 
 }

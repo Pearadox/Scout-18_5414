@@ -31,10 +31,6 @@ public class TeleopScoutActivity extends Activity {
     private Button button_GoToFinalActivity,button_GearPlacedT, button_GearPlacedTPlus, button_GearAttemptedP, button_GearAttemptedM;
     CheckBox chk_climbsuccessful, chk_climbfailed, chk_touchpad, chk_touchpadpts, chkBox_highGoal, chkBox_lowGoal;
     SeekBar seekBar_HighGoal_Teleop, seekBar_LowGoal_Teleop;
-    int gearNumT = 0;
-    int gearNumA = 0;
-    int seekbarvalueHigh = 0;
-    int seekbarvalueLow = 0;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfTeam_DBReference;
     private DatabaseReference pfMatch_DBReference;
@@ -42,14 +38,25 @@ public class TeleopScoutActivity extends Activity {
     private DatabaseReference pfCur_Match_DBReference;
     String key = null;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    // ===================  TeleOps Elements for Match Scout Data object ===================
+    int gearNumT = 0;                   // # Gears placed
+    int gearNumA = 0;                   // # Gears attempted
+    int seekbarvalueHigh = 0;
+    int seekbarvalueLow = 0;
+    /* */
+    public String teleComment = " ";    // Tele Comment
+    // ===========================================================================
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "<< Teleop Scout >>");
         setContentView(R.layout.activity_teleop_scout);
         Bundle bundle = this.getIntent().getExtras();
-
+        String param1 = bundle.getString("dev");
+        String param2 = bundle.getString("stud");
+        Log.d(TAG, param1 + " " + param2);      // ** DEBUG **
 
         button_GoToFinalActivity = (Button) findViewById(R.id.button_GoToFinalActivity);
         button_GearPlacedT= (Button) findViewById(R.id.button_GearPlacedT);
@@ -128,9 +135,10 @@ public class TeleopScoutActivity extends Activity {
         button_GoToFinalActivity.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Log.i(TAG, "Clicked Comments");
+                Log.i(TAG, "Clicked Final");
 
                 updateDev("Final");
+                storeTeleData();        // Put all the TeleOps data collected in Match object
 
                 Intent smast_intent = new Intent(TeleopScoutActivity.this, FinalActivity.class);
                 Bundle SMbundle = new Bundle();
@@ -355,17 +363,18 @@ public class TeleopScoutActivity extends Activity {
         );
 
 
-
-
-
-
-        String param1 = bundle.getString("dev");
-        String param2 = bundle.getString("stud");
-        Log.d(TAG, param1 + " " + param2);      // ** DEBUG **
-        Log.i(TAG, "<< before calling Other Activty >>");
-
-
     }
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private void storeTeleData() {
+        Log.i(TAG, ">>>>  storeTeleData  <<<<");
+        Pearadox.Match_Data.setTele_gears_placed(gearNumT);
+        Pearadox.Match_Data.setTele_gears_attempt(gearNumA);
+        //ToDo - add remaining TeleOps elements
+
+        Pearadox.Match_Data.setTele_comment(teleComment);
+    }
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
     private void updateDev(String phase) {     //
         Log.i(TAG, "#### updateDev #### " + phase);
         switch (Pearadox.FRC514_Device) {
@@ -466,9 +475,6 @@ public class TeleopScoutActivity extends Activity {
     public void onDestroy() {
         super.onDestroy();
         Log.v(TAG, "OnDestroy");
-
     }
-
-
 
 }
