@@ -44,7 +44,8 @@ public class MatchScoutActivity extends AppCompatActivity {
     String TAG = "MatchScout_Activity";      // This CLASS name
     boolean onStart = false;
     public static String device = " ";
-    TextView txt_dev, txt_stud, txt_Match, txt_MyTeam, text_HGSeekBarValue, text_LGSeekBarValue;
+    TextView txt_dev, txt_stud, txt_Match, txt_MyTeam, txt_TeamName, text_HGSeekBarValue, text_LGSeekBarValue;
+    TextView txt_GearsPlaced, txt_GearsAttempted;
     CheckBox chk_baseline, chk_highGoal, chkBox_balls, chkBox_gears, chkBox_rope, chk_lowGoal, checkbox_automode;
     EditText editText_Fuel;
     SeekBar seekBar_HighGoal, seekBar_LowGoal;
@@ -56,11 +57,8 @@ public class MatchScoutActivity extends AppCompatActivity {
     private DatabaseReference pfMatch_DBReference;
     private DatabaseReference pfDevice_DBReference;
     private DatabaseReference pfCur_Match_DBReference;
-    TextView txt_TeamName;
-    TextView txt_GearsPlaced;
-    TextView txt_GearsAttempted;
     private Button button_GearsMinus, button_GearsPlus, button_GoToTeleopActivity, button_GoToArenaLayoutActivity, button_GearsAttemptedMinus, button_GearsAttemptedPlus;
-    String key = null;
+    String key = null;      /// key for Devices Firebase
     ArrayAdapter<String> adapter_autostartpos;
     ArrayAdapter<String> adapter_autostoppos;
     ArrayAdapter<String> adapter_auto_gear_placement;
@@ -109,6 +107,25 @@ public class MatchScoutActivity extends AppCompatActivity {
         pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Students
         updateDev("Auto");      // Update 'Phase' for stoplight indicator in ScoutM aster
 
+        txt_dev = (TextView) findViewById(R.id.txt_Dev);
+        txt_stud = (TextView) findViewById(R.id.txt_stud);
+        txt_Match = (TextView) findViewById(R.id.txt_Match);
+        txt_MyTeam = (TextView) findViewById(R.id.txt_MyTeam);
+        txt_TeamName = (TextView) findViewById(R.id.txt_TeamName);
+        ImageView imgScoutLogo = (ImageView) findViewById(R.id.imageView_MS);
+        txt_dev.setText(device);
+        txt_stud.setText(studID);
+        txt_Match.setText("");
+        txt_MyTeam.setText("");
+        txt_TeamName.setText("");
+        String devcol = device.substring(0,3);
+        Log.d(TAG, "color=" + devcol);
+        if (devcol.equals("Red")) {
+            imgScoutLogo.setImageDrawable(getResources().getDrawable(R.drawable.red_scout));
+        } else {
+            imgScoutLogo.setImageDrawable(getResources().getDrawable(R.drawable.blue_scout));
+        }
+
         txt_GearsPlaced = (TextView) findViewById(R.id.txt_GearsPlaced);
         txt_GearsAttempted = (TextView) findViewById(R.id.txt_GearsAttempted);
         chk_baseline = (CheckBox) findViewById(R.id.chk_baseline);
@@ -143,7 +160,6 @@ public class MatchScoutActivity extends AppCompatActivity {
         editText_Fuel.setEnabled(false);
         editText_Fuel.setText("");
 
-
         Spinner spinner_startPos = (Spinner) findViewById(R.id.spinner_startPos);
         String[] autostartPos = getResources().getStringArray(R.array.auto_start_array);
         adapter_autostartpos = new ArrayAdapter<String>(this, R.layout.dev_list_layout, autostartPos);
@@ -170,8 +186,8 @@ public class MatchScoutActivity extends AppCompatActivity {
         spinner_GearPlacement.setOnItemSelectedListener(new gearPosOnClickListener());
         
 
-
-
+// Start Listners
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         checkbox_automode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
@@ -307,9 +323,7 @@ public class MatchScoutActivity extends AppCompatActivity {
                     //checked
                     Log.i(TAG,"TextBox is checked.");
 
-                }
-                else
-                {
+                } else {
                     //not checked
                     Log.i(TAG,"TextBox is unchecked.");
 
@@ -382,18 +396,22 @@ public class MatchScoutActivity extends AppCompatActivity {
 
         button_GoToTeleopActivity.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Log.i(TAG, "Clicked 'NEXT' Button");
+                if (matchID.length() < 3) {     // Between matches??
+                    Toast.makeText(getBaseContext(),"*** Match has _NOT_ started; wait until you have a Team #  *** ", Toast.LENGTH_LONG).show();
 
-                updateDev("Tele");      // Update 'Phase' for stoplight indicator in ScoutM aster
-                //TODO save auto data
-                storeAutoData();        // Put all the Autonomous data collected in Match object
+                } else {        // It's OK - Match has started
+                    updateDev("Tele");      // Update 'Phase' for stoplight indicator in ScoutM aster
+                    //TODO save auto data
+                    storeAutoData();        // Put all the Autonomous data collected in Match object
 
-                Intent smast_intent = new Intent(MatchScoutActivity.this, TeleopScoutActivity.class);
-                Bundle SMbundle = new Bundle();
-                smast_intent.putExtras(SMbundle);
-                startActivity(smast_intent);
+                    Intent smast_intent = new Intent(MatchScoutActivity.this, TeleopScoutActivity.class);
+                    Bundle SMbundle = new Bundle();
+                    smast_intent.putExtras(SMbundle);
+                    startActivity(smast_intent);
+                }
             }
         });
-        Log.i(TAG, "About to Click Button");
 
         button_GoToArenaLayoutActivity.setOnClickListener(new View.OnClickListener() {
 
@@ -406,25 +424,6 @@ public class MatchScoutActivity extends AppCompatActivity {
             }
         });
 
-
-        txt_dev = (TextView) findViewById(R.id.txt_Dev);
-        txt_stud = (TextView) findViewById(R.id.txt_stud);
-        txt_Match = (TextView) findViewById(R.id.txt_Match);
-        txt_MyTeam = (TextView) findViewById(R.id.txt_MyTeam);
-        txt_TeamName = (TextView) findViewById(R.id.txt_TeamName);
-        ImageView imgScoutLogo = (ImageView) findViewById(R.id.imageView_MS);
-        txt_dev.setText(device);
-        txt_stud.setText(studID);
-        txt_Match.setText("");
-        txt_MyTeam.setText("");
-        txt_TeamName.setText("");
-        String devcol = device.substring(0,3);
-        Log.d(TAG, "color=" + devcol);
-        if (devcol.equals("Red")) {
-            imgScoutLogo.setImageDrawable(getResources().getDrawable(R.drawable.red_scout));
-        } else {
-            imgScoutLogo.setImageDrawable(getResources().getDrawable(R.drawable.blue_scout));
-        }
 
         seekBar_HighGoal.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
@@ -514,12 +513,14 @@ public class MatchScoutActivity extends AppCompatActivity {
                     p_Firebase.curMatch match_Obj = iterator.next().getValue(p_Firebase.curMatch.class);
                     matchID = match_Obj.getCur_match();
                     Log.d(TAG, "***>  Current Match = " + matchID + " " + match_Obj.getR1() + " " + match_Obj.getB3());
-                    if (matchID.equals(null)) {
-                        Log.d(TAG, "MatchID NULL");
+                    if (matchID.length() < 3) {
+//                        Log.d(TAG, "MatchID NULL");
                         txt_Match.setText(" ");
                         txt_MyTeam.setText(" ");
                         txt_TeamName.setText(" ");
+                        updateDev("Auto");      // Update 'Phase' for stoplight indicator in ScoutM aster
                     } else {        // OK!!  Match has started
+//                        Log.d(TAG, "Match started " + matchID);
                         txt_Match.setText(matchID);
 //                        Log.d(TAG, "Device = " + Pearadox.FRC514_Device + " ->" + onStart);
                         switch (Pearadox.FRC514_Device) {          // Who am I?!?
@@ -702,7 +703,7 @@ public void onStart() {
 
     onStart = true;
     getMatch();      // Get current match
-    Log.d(TAG, "onStart Device = " + device + " ->" + onStart);
+    Log.d(TAG, "*** onStart  ->" + onStart);
 }
 
     public void onPause() {
