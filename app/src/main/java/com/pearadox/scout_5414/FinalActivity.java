@@ -32,7 +32,6 @@ import static com.pearadox.scout_5414.R.id.button_GoToFinalActivity;
 
 public class FinalActivity extends Activity {
 
-
     String TAG = "FinalActivity";      // This CLASS name
     TextView txt_dev, txt_stud, txt_match, txt_MyTeam;
     Button button_Saved;
@@ -41,9 +40,11 @@ public class FinalActivity extends Activity {
     private DatabaseReference pfMatch_DBReference;
     private DatabaseReference pfDevice_DBReference;
     private DatabaseReference pfCur_Match_DBReference;
+    private DatabaseReference pfMatchData_DBReference;
     String key = null;
 
 // ===================  Final Elements for Match Scout Data object ===================
+    // ToDo - add any remaining FINAL elements
     /* */
     public String finalComment = " ";
 
@@ -63,21 +64,20 @@ public class FinalActivity extends Activity {
 //        pfMatch_DBReference = pfDatabase.getReference("matches");           // List of Students
 //        pfCur_Match_DBReference = pfDatabase.getReference("current-match"); // _THE_ current Match
         pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Students
-        button_Saved = (Button) findViewById(R.id.button_Saved);
-
-
+        pfMatchData_DBReference = pfDatabase.getReference("match-data");    // Match Data
 
         String param1 = bundle.getString("dev");
         String param2 = bundle.getString("stud");
         Log.d(TAG, param1 + " " + param2);      // ** DEBUG **
 
+        button_Saved = (Button) findViewById(R.id.button_Saved);
         button_Saved.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
                 updateDev("Saved");         // Update "traffic light" status for Scout Master
                 storeFinalData();       // Put all the Final data collected in Match object
                 //TODO Save all data to frebase.
-                finish();       // Exit
+//                finish();       // Exit
             }
         });
 
@@ -90,8 +90,10 @@ public class FinalActivity extends Activity {
          /* */
         Pearadox.Match_Data.setFinal_comment(finalComment);
 
-        saveDatatoSDcard();     //Save loacally
+        saveDatatoSDcard();     //Save locally
         //ToDo - write to Firebase
+        String matchID = pfMatchData_DBReference.push().getKey();
+        pfMatchData_DBReference.child(matchID).setValue(Pearadox.Match_Data);
     }
 
     private void saveDatatoSDcard() {

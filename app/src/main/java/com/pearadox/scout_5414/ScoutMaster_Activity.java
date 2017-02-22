@@ -619,6 +619,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                                         imgStat_R1.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_all));
                                         break;
                                     default:                //
+                                        imgStat_R1.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_off));
                                         Log.d(TAG, "***** Unknown Device Status ***** -> " + status);
                                 }
                                 break;
@@ -639,6 +640,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                                         imgStat_R2.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_all));
                                         break;
                                     default:                //
+                                        imgStat_R2.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_off));
                                         Log.d(TAG, "***** Unknown Device Status ***** -> " + status);
                                 }
                                 break;
@@ -659,6 +661,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                                         imgStat_R3.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_all));
                                         break;
                                     default:                //
+                                        imgStat_R3.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_off));
                                         Log.d(TAG, "***** Unknown Device Status ***** -> " + status);
                                 }
                                 break;
@@ -679,6 +682,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                                         imgStat_B1.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_all));
                                         break;
                                     default:                //
+                                        imgStat_B1.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_off));
                                         Log.d(TAG, "***** Unknown Device Status ***** -> " + status);
                                 }
                                 break;
@@ -699,6 +703,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                                         imgStat_B2.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_all));
                                         break;
                                     default:                //
+                                        imgStat_B2.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_off));
                                         Log.d(TAG, "***** Unknown Device Status ***** -> " + status);
                                 }
                                 break;
@@ -719,6 +724,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                                         imgStat_B3.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_all));
                                         break;
                                     default:                //
+                                        imgStat_B3.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_off));
                                         Log.d(TAG, "***** Unknown Device Status ***** -> " + status);
                                 }
                                 break;
@@ -749,16 +755,6 @@ public class ScoutMaster_Activity extends AppCompatActivity {
         Log.v(TAG, "onStart");
         FindDevItem();  // Get devices that are logged on
 
-//        BluetoothAdapter myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-//        // If BT is not on, request that it be enabled.
-//        // setupChat() will then be called during onActivityResult
-//        if (!myBluetoothAdapter.isEnabled()) {
-//            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-//            // Otherwise, setup the chat session
-//        } else if (mChatService == null) {
-//            setupChat();
-//        }
     }
 
     @Override

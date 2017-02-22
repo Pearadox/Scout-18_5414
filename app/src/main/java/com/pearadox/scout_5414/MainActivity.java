@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
         pfDatabase = FirebaseDatabase.getInstance();
         pfTeam_DBReference = pfDatabase.getReference("teams");          // Team data from Firebase D/B
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);     // Enable 'Offline' Database
         addTeam_VE_Listener(pfTeam_DBReference);
         pfStudent_DBReference = pfDatabase.getReference("students");    // Get list of Students
         addStud_VE_Listener(pfStudent_DBReference);
@@ -217,9 +218,11 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "DEV = NULL" );
         }
         if (x) {
+            Log.d(TAG, "updating KEY = " + key);
             pfDevice_DBReference.child(key).child("stud_id").setValue(studentSelected);
             pfDevice_DBReference.child(key).child("phase").setValue("Auto");
           } else {
+            Log.d(TAG, "Nulling KEY = " + key);
             pfDevice_DBReference.child(key).child("stud_id").setValue(" ");
             pfDevice_DBReference.child(key).child("phase").setValue(" ");
         }
@@ -382,7 +385,7 @@ private void preReqs() {
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {
             devSelected = parent.getItemAtPosition(pos).toString();
-            Log.d(TAG, ">>>>>  '" + devSelected + "'");
+            Log.d(TAG, ">>>>> Device '" + devSelected + "'");
             Pearadox.FRC514_Device = devSelected;
             RadioGroup radgrp_Scout = (RadioGroup) findViewById(R.id.radgrp_Scout);
             switch (devSelected) {
@@ -421,7 +424,7 @@ private void preReqs() {
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {
             studentSelected = parent.getItemAtPosition(pos).toString();
-            Log.d(TAG, ">>>>>  '" + studentSelected + "'");
+            Log.d(TAG, ">>>>> Student  '" + studentSelected + "'");
             Pearadox.Student_ID = studentSelected;
         }
         public void onNothingSelected(AdapterView<?> parent) {
