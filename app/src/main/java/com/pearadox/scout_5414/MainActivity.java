@@ -218,8 +218,10 @@ public class MainActivity extends AppCompatActivity {
         }
         if (x) {
             pfDevice_DBReference.child(key).child("stud_id").setValue(studentSelected);
+            pfDevice_DBReference.child(key).child("phase").setValue("Auto");
           } else {
             pfDevice_DBReference.child(key).child("stud_id").setValue(" ");
+            pfDevice_DBReference.child(key).child("phase").setValue(" ");
         }
     }
 

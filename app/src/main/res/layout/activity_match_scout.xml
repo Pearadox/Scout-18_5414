@@ -82,7 +82,7 @@
 
     <TextView
         android:id="@+id/lbl_MyTeam"
-        android:layout_width="70dp"
+        android:layout_width="10dp"
         android:layout_height="25dp"
         android:textSize="14dp"
         android:textColor="@color/white"
@@ -101,8 +101,8 @@
         android:layout_toEndOf="@+id/lbl_Match" />
     <TextView
         android:id="@+id/txt_TeamName"
-        android:text="Team Name 12345"
-        android:layout_width="150dp"
+        android:text="Really Long Team Name 1234567890 Robotics Consortium"
+        android:layout_width="400sp"
         android:layout_height="wrap_content"
         android:textColor="@color/cyan"
         android:textSize="14dp"

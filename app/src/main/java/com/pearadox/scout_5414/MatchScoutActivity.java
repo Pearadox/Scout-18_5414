@@ -107,6 +107,8 @@ public class MatchScoutActivity extends AppCompatActivity {
         pfMatch_DBReference = pfDatabase.getReference("matches");           // List of Students
         pfCur_Match_DBReference = pfDatabase.getReference("current-match"); // _THE_ current Match
         pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Students
+        updateDev("Auto");      // Update 'Phase' for stoplight indicator in ScoutM aster
+
         txt_GearsPlaced = (TextView) findViewById(R.id.txt_GearsPlaced);
         txt_GearsAttempted = (TextView) findViewById(R.id.txt_GearsAttempted);
         chk_baseline = (CheckBox) findViewById(R.id.chk_baseline);
@@ -381,7 +383,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         button_GoToTeleopActivity.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                updateDev("Tele");
+                updateDev("Tele");      // Update 'Phase' for stoplight indicator in ScoutM aster
                 //TODO save auto data
                 storeAutoData();        // Put all the Autonomous data collected in Match object
 
@@ -511,8 +513,9 @@ public class MatchScoutActivity extends AppCompatActivity {
                 while (iterator.hasNext()) {
                     p_Firebase.curMatch match_Obj = iterator.next().getValue(p_Firebase.curMatch.class);
                     matchID = match_Obj.getCur_match();
-//                    Log.d(TAG, "***>  Current Match = " + matchID + " " + match_Obj.getR1() + " " + match_Obj.getB3());
+                    Log.d(TAG, "***>  Current Match = " + matchID + " " + match_Obj.getR1() + " " + match_Obj.getB3());
                     if (matchID.equals(null)) {
+                        Log.d(TAG, "MatchID NULL");
                         txt_Match.setText(" ");
                         txt_MyTeam.setText(" ");
                         txt_TeamName.setText(" ");
@@ -566,6 +569,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         }  // end For
         if (!found) {
             Log.e(TAG, "****** ERROR - Team _NOT_ found!! = " + tnum);
+            txt_TeamName.setText("");
         }
     }
     private void updateDev(String phase) {     //

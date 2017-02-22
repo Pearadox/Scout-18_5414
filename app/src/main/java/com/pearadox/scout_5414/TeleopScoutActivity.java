@@ -137,8 +137,8 @@ public class TeleopScoutActivity extends Activity {
             public void onClick(View v) {
                 Log.i(TAG, "Clicked Final");
 
-                updateDev("Final");
-                storeTeleData();        // Put all the TeleOps data collected in Match object
+                updateDev("Final");         // Update 'Phase' for stoplight indicator in ScoutM aster
+                storeTeleData();            // Put all the TeleOps data collected in Match object
 
                 Intent smast_intent = new Intent(TeleopScoutActivity.this, FinalActivity.class);
                 Bundle SMbundle = new Bundle();
