@@ -366,6 +366,12 @@ private void preReqs() {
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == R.id.action_about) {
+            Toast toast = Toast.makeText(getBaseContext(), "Pearadox Scouting App ©2017  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
