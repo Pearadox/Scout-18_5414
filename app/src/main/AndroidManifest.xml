@@ -32,7 +32,9 @@
         <activity android:name=".PitScoutActivity" />
         <activity android:name=".Visualizer_Activity" />
         <activity android:name=".FinalActivity" />
-        <activity android:name=".ArenaLayoutActivity" />
+        <activity android:name=".ArenaLayoutActivity"
+            android:windowSoftInputMode="adjustNothing"
+            />
         <activity android:name=".TeleopScoutActivity" />
 
     </application>

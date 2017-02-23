@@ -1,27 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1">
 
     <TextView
-        android:text="Final Activity"
+        android:id="@+id/TextView"
+        android:text="Final period"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/green"
+        tools:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:textAlignment="center" />
+
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <CheckBox
+        android:id="@+id/chk_lostPart"
+        android:text="Lost Parts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/TextView"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display2" />
+        android:layout_below="@+id/TextView"
+        android:layout_alignStart="@+id/editText_Comments"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="58dp" />
 
-    <EditText
-        android:layout_width="match_parent"
+    <CheckBox
+        android:id="@+id/chk_lostComm"
+        android:text="Lost Comms"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/editText_Comments"
-        android:hint="Tap to add any additional comments." />
+        android:layout_marginStart="52dp"
+        android:layout_alignBaseline="@+id/chk_lostPart"
+        android:layout_alignBottom="@+id/chk_lostPart"
+        android:layout_toEndOf="@+id/chk_lostPart" />
+
+    //============ DEFENSE==============
+    <TextView
+        android:id="@+id/lbl_Defense"
+        android:text="Defense(s)"
+        android:layout_width="70dp"
+        android:layout_height="35dp"
+        android:textSize="14sp"
+        android:layout_below="@+id/chk_lostPart"
+        android:layout_alignStart="@+id/chk_lostPart"
+        android:layout_marginTop="76dp" />
+
+    <CheckBox
+        android:id="@+id/chk_block"
+        android:text="Blocking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/chk_starve"
+        android:layout_alignBottom="@+id/chk_starve"
+        android:layout_alignStart="@+id/chk_lostComm" />
+
+    <CheckBox
+        android:id="@+id/chk_starve"
+        android:text="Lane Starvation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_alignTop="@+id/lbl_Defense"
+        android:layout_alignStart="@+id/lbl_Defense" />
+
+    <CheckBox
+        android:id="@+id/chk_dump"
+        android:text="Hopper Dump"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/chk_block"
+        android:layout_alignBottom="@+id/chk_block"
+        android:layout_alignStart="@+id/chk_whatever" />
+
+    <CheckBox
+        android:id="@+id/chk_whatever"
+        android:text=" ???????"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_alignBaseline="@+id/chk_lostComm"
+        android:layout_alignBottom="@+id/chk_lostComm"
+        android:layout_toEndOf="@+id/chk_lostComm" />
 
     <Button
         android:text="SAVE"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button_Saved" />
-</LinearLayout>
+        android:id="@+id/button_Saved"
+        android:layout_below="@+id/scrollv_comm"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="173dp" />
+
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <ScrollView
+        android:id="@+id/scrollv_comm"
+        android:layout_width="fill_parent"
+        android:layout_height="300sp"
+        android:isScrollContainer="false"
+        android:layout_below="@+id/chk_block"
+        android:layout_marginTop="23dp">
+
+            <EditText
+            android:id="@+id/editText_Comments"
+            android:layout_width="700sp"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:lines="4"
+            android:scrollbars="vertical"
+            android:ems="12"
+            android:textColor="@color/green"
+            android:background="@drawable/border"
+            android:hint="Tap to add any additional comments."
+            android:layout_alignTop="@+id/scrollv_comm"
+            android:layout_toEndOf="@+id/chk_dump" />
+    </ScrollView>
+
+</RelativeLayout>
+

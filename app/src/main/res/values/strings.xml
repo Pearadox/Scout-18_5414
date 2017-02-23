@@ -7,14 +7,6 @@
     <string name="student_prompt">Student Name?</string>
     <string name="mtchtyp_prompt">Match Type?</string>
     <string name="lbl_Divider">______________________  Device Status  ______________________</string>
-    <string name="BT_connect">Connect a device</string>
-    <string name="BT_discover">Make this device discoverable</string>
-    <string name="scanning">Scanning for BT devices...</string>
-    <string name="select_device">Select a device to connect</string>
-    <string name="none_paired">No devices have been paired</string>
-    <string name="none_found">No BT devices found</string>
-    <string name="bt_not_enabled">Bluetooth was not enabled. </string>
-
 
     <!-- ##### DEVICES ##### -->
     <string-array name="device_array">
@@ -30,7 +22,7 @@
         <item>Visualizer</item>
     </string-array>
 
-
+    <!-- ##### Start Position for Autononous ##### -->
     <string-array name="auto_start_array">
         <item> </item>
         <item>B1</item>
@@ -40,6 +32,7 @@
         <item>B5</item>
     </string-array>
 
+    <!-- ##### Stop Position for Autononous ##### -->
     <string-array name="auto_stop_array">
         <item> </item>
 
@@ -71,6 +64,7 @@
         <item>B9</item>
     </string-array>
 
+    <!-- ##### Gear Placement for Autononous ##### -->
     <string-array name="auto_gear_placement">
         <item> </item>
         <item>1</item>
@@ -88,18 +82,24 @@
         <item>Playoff</item>
     </string-array>
 
-    <!-- Options Menu -->
-    <string name="connect">Connect a BT device</string>
-    <string name="discoverable">Make discoverable</string>
-
-    <!--  BluetoothChat -->
-    <string name="send">Send</string>
-    <string name="not_connected">You are not connected to a device</string>
-    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
-    <string name="title_connecting">connecting...</string>
-    <string name="title_connected_to">connected to <xliff:g id="device_name">%1$s</xliff:g></string>
-    <string name="title_not_connected">not connected</string>
-
+    <!-- ##### Students list (used for Pit Scout _only_) since NO internet ##### -->
+    <string-array name="student_array">
+        <item> </item>
+        <item>Burnaman, Kaleb</item>
+        <item>Butts, Faith</item>
+        <item>Dizon, Lauren</item>
+        <item>De Jesus, Alexander"</item>
+        <item>F, Danny</item>
+        <item>Monaghan, Matthew</item>
+        <item>Roy, Jacob</item>
+        <item>Sauter, Harrison</item>
+        <item>Van Hoose, Lori</item>
+        <item>Weaver, Jared</item>
+        // ...
+        <item>French, Gale</item>
+        <item>Hartnett, Andrew</item>
+        <item>Hood, Laura"</item>
+    </string-array>
 
 
 
@@ -109,6 +109,7 @@
     <color name="darkred">#8b0000</color>
     <color name="orange">#FF8300</color>
     <color name="maroon">#800000</color>
+    <color name="purple">#800080</color>
     <color name="yellow">#ffff00</color>
     <color name="green">#00ff00</color>
     <color name="darkgreen">#006400</color>

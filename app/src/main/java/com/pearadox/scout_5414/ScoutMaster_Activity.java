@@ -597,7 +597,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                     status = dev_Obj.getPhase();
                     Log.d(TAG, "%%%%  " + studname + " is logged onto " + device + " at Phase '" + status + "' ");
                     numDevs++;
-                    if (studname.length() > 2) {
+//                    if (studname.length() > 2) {
                         switch (device) {
                             case "Scout Master":         // Scout Master
                                 // only interested in Scouts
@@ -733,9 +733,9 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                                 break;
                             default:                //
                                 Log.d(TAG, "*** Error DEV = " + device);
-                        }
-                    }
-                }
+                        } // End Switch - Device
+//                    }
+                } // End While
                 Log.d(TAG, "*****  # of devices = " + numDevs);
             }
             @Override

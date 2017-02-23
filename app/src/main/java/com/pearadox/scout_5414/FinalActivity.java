@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.app.Activity;
@@ -34,6 +35,7 @@ public class FinalActivity extends Activity {
 
     String TAG = "FinalActivity";      // This CLASS name
     TextView txt_dev, txt_stud, txt_match, txt_MyTeam;
+    CheckBox chk_lostPart;
     Button button_Saved;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfTeam_DBReference;
@@ -70,6 +72,8 @@ public class FinalActivity extends Activity {
         String param2 = bundle.getString("stud");
         Log.d(TAG, param1 + " " + param2);      // ** DEBUG **
 
+        chk_lostPart = (CheckBox) findViewById(R.id.chk_lostPart);
+        chk_lostPart.requestFocus();        // Don't let EditText mess up layout!!
         button_Saved = (Button) findViewById(R.id.button_Saved);
         button_Saved.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
