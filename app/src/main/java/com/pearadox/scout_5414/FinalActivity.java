@@ -35,7 +35,7 @@ public class FinalActivity extends Activity {
 
     String TAG = "FinalActivity";      // This CLASS name
     TextView txt_dev, txt_stud, txt_match, txt_MyTeam;
-    CheckBox chk_lostPart;
+    CheckBox chk_lostPart, chk_lostComm, chk_block, chk_starve, chk_dump;
     Button button_Saved;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfTeam_DBReference;
@@ -47,6 +47,8 @@ public class FinalActivity extends Activity {
 
 // ===================  Final Elements for Match Scout Data object ===================
     // ToDo - add any remaining FINAL elements
+    public boolean lost_Parts = false;
+    public boolean lost_Comms = false;
     /* */
     public String finalComment = " ";
 
@@ -74,13 +76,17 @@ public class FinalActivity extends Activity {
 
         chk_lostPart = (CheckBox) findViewById(R.id.chk_lostPart);
         chk_lostPart.requestFocus();        // Don't let EditText mess up layout!!
+        chk_lostComm = (CheckBox) findViewById(R.id.chk_lostComm);
+        chk_block = (CheckBox) findViewById(R.id.chk_block);
+        chk_starve = (CheckBox) findViewById(R.id.chk_starve);
+        chk_dump = (CheckBox) findViewById(R.id.chk_dump);
         button_Saved = (Button) findViewById(R.id.button_Saved);
         button_Saved.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
                 updateDev("Saved");         // Update "traffic light" status for Scout Master
-                storeFinalData();       // Put all the Final data collected in Match object
-                //TODO Save all data to frebase.
+                storeFinalData();           // Put all the Final data collected in Match object
+                Pearadox.MatchData_Saved = true;    // Set flag to show saved
 //                finish();       // Exit
             }
         });
@@ -92,10 +98,15 @@ public class FinalActivity extends Activity {
         Log.i(TAG, ">>>>  storeFinalData  <<<<");
         //ToDo - add remaining Final elements
          /* */
+//        Pearadox.Match_Data.setFinal_????? = lost_Parts;
+         /* Lost Comms*/
+         /* Defense checkboxes*/
+         /* ???*/
+
+         /* */
         Pearadox.Match_Data.setFinal_comment(finalComment);
 
         saveDatatoSDcard();     //Save locally
-        //ToDo - write to Firebase
         String matchID = pfMatchData_DBReference.push().getKey();
         pfMatchData_DBReference.child(matchID).setValue(Pearadox.Match_Data);
     }

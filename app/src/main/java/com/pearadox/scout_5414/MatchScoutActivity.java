@@ -98,6 +98,9 @@ public class MatchScoutActivity extends AppCompatActivity {
         String device = bundle.getString("dev");
         String studID = bundle.getString("stud");
         Log.d(TAG, device + " " + studID);      // ** DEBUG **
+
+        Pearadox.MatchData_Saved = false;    // Set flag to show need to saved
+
         pfDatabase = FirebaseDatabase.getInstance();
         pfTeam_DBReference = pfDatabase.getReference("teams");              // Tteam data from Firebase D/B
 //        pfStudent_DBReference = pfDatabase.getReference("students");        // List of Students
@@ -396,13 +399,13 @@ public class MatchScoutActivity extends AppCompatActivity {
 
         button_GoToTeleopActivity.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.i(TAG, "Clicked 'NEXT' Button");
+                Log.i(TAG, "Clicked 'NEXT/TeleOps' Button  match=" + matchID);
                 if (matchID.length() < 3) {     // Between matches??
                     Toast.makeText(getBaseContext(),"*** Match has _NOT_ started; wait until you have a Team #  *** ", Toast.LENGTH_LONG).show();
 
                 } else {        // It's OK - Match has started
+                    // ToDo - check to see if ALL required fields entered (Start-pos, stop, gear, ....)
                     updateDev("Tele");      // Update 'Phase' for stoplight indicator in ScoutM aster
-                    //TODO save auto data
                     storeAutoData();        // Put all the Autonomous data collected in Match object
 
                     Intent smast_intent = new Intent(MatchScoutActivity.this, TeleopScoutActivity.class);

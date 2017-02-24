@@ -21,6 +21,12 @@ public class Pearadox {
             {"","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20"};
 
 //*********************************************************
+// Inter-Activity for saving data
+    public static boolean  MatchData_Saved; 			// Data from Match saved to disk and Firebase
+
+
+
+    //*********************************************************
 // Firebase Obects used by Scouts for saving data
     private  static String match;                   // Matcj ID (e.g., 'T00' where T = X(Practice), Q(ualifying) or P(Playoff) and '00' - match #
     private  static String team_num;                // Team Number (e.gg., '5414'
