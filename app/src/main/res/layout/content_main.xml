@@ -13,15 +13,17 @@
     tools:context="com.pearadox.scout_5414.MainActivity"
     tools:showIn="@layout/activity_main">
 
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
     <ImageView
         android:id="@+id/imageView_Pearadox"
         android:layout_width="fill_parent"
-        android:layout_height="100dp"
+        android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
         android:contentDescription="Pearadox logo"
-        android:src="@drawable/pearadox_logo" />
+        android:src="@drawable/pearadox_logo"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
     <TextView
         android:id="@+id/txt_messageLine"
@@ -38,10 +40,10 @@
 
     <TextView
         android:id="@+id/lbl_Device"
-        android:layout_width="50dp"
+        android:layout_width="70dp"
         android:layout_height="35dp"
         android:layout_weight="1"
-        android:textSize="14dp"
+        android:textSize="18sp"
         android:textColor="@color/white"
         android:text="Device"
         android:layout_alignBottom="@+id/spinner_Device"
@@ -62,10 +64,10 @@
 
     <TextView
         android:id="@+id/lbl_Student"
-        android:layout_width="50dp"
+        android:layout_width="70dp"
         android:layout_height="35dp"
         android:layout_weight="1"
-        android:textSize="14dp"
+        android:textSize="18sp"
         android:textColor="@color/white"
         android:text="Student"
         android:layout_below="@+id/lbl_Device"
@@ -122,5 +124,13 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
+    <ImageView
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        app:srcCompat="@drawable/wifi_bad"
+        android:id="@+id/imageView"
+        android:layout_marginBottom="72dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
