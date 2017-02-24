@@ -124,11 +124,13 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
     <ImageView
+        android:id="@+id/img_netStatus"
         android:layout_width="100sp"
         android:layout_height="100sp"
-        app:srcCompat="@drawable/wifi_bad"
-        android:id="@+id/imageView"
+        app:srcCompat="@drawable/no_connection"
         android:layout_marginBottom="72dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />

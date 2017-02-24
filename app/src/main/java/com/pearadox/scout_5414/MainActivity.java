@@ -7,7 +7,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
@@ -23,6 +26,7 @@ import java.util.Iterator;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.ToggleButton;
 import android.widget.RadioGroup;
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private String deviceId;            // Android Device ID
     TextView txt_messageLine;
     Spinner spinner_Device;
+    ImageView img_netStatus;            // Internet Status
     public String deviceSelected = " ";
     ArrayAdapter<String> adapter_dev;
     public String devSelected = " ";
@@ -90,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         spinner_Device.setAdapter(adapter_dev);
         spinner_Device.setSelection(0, false);
         spinner_Device.setOnItemSelectedListener(new device_OnItemSelectedListener());
+        ImageView img_netStatus = (ImageView) findViewById(R.id.img_netStatus);
 
         preReqs(); 				        // Check for pre-requisites
         isInternetAvailable();          // See if device has Internet
@@ -335,22 +341,55 @@ private void preReqs() {
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public boolean isInternetAvailable() {
         Log.i(TAG, "<<<< Checking Internet Status >>>>");
+        boolean status = false;
+        ImageView img_netStatus = (ImageView) findViewById(R.id.img_netStatus);
+
         try {
-            InetAddress ipAddr = InetAddress.getByName("google.com"); 	//test a site
+            final ConnectivityManager connMgr = (ConnectivityManager)
+                    this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-            if (ipAddr.equals("")) {
-                Log.d(TAG, "** No Internet available ** ");
-                Toast.makeText(getBaseContext(), "There is no Internet available", Toast.LENGTH_LONG).show();
-                return false;
-            } else {
-                Log.d(TAG, "** Internet is acccessible ** ");
-                Toast.makeText(getBaseContext(), "Internet OK", Toast.LENGTH_LONG).show();
-                return true;
+            NetworkInfo wifi = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            Log.d(TAG, ">>>>> wifi = " + wifi);
+
+            NetworkInfo mobile = connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+            Log.d(TAG, ">>>>> mobile = " + mobile);
+            NetworkInfo bt = connMgr.getNetworkInfo(ConnectivityManager.TYPE_BLUETOOTH);
+            Log.d(TAG, ">>>>> Bluetooth = " + bt);
+
+            // ========= Test it =========
+            if( wifi.isAvailable() && wifi.isConnected()){
+                Log.d(TAG, "$$$ Wi-Fi $$$ " + wifi.getExtraInfo());
+//                Toast.makeText(this, "Wifi" , Toast.LENGTH_LONG).show();
+                img_netStatus.setImageDrawable(getResources().getDrawable(R.drawable.wifi_bad));
+                status = true;
             }
-
+            else if( mobile.isAvailable() ){
+                Log.d(TAG, "*** Mobile ###");
+                Log.d(TAG, "### Bluetooth ***");
+//                Toast.makeText(this, "Mobile 3/4G " , Toast.LENGTH_LONG).show();
+                img_netStatus.setImageDrawable(getResources().getDrawable(R.drawable.net_4g));
+                status = true;
+            }
+            else if( bt.isAvailable() ){
+                Log.d(TAG, "### Bluetooth ***");
+//                Toast.makeText(this, " Bluetooth " , Toast.LENGTH_LONG).show();
+                img_netStatus.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth));
+                status = true;
+            }
+            else
+            {
+                Log.d(TAG, "@@@ No Network @@@");
+//                Toast.makeText(this, "No Network " , Toast.LENGTH_LONG).show();
+                img_netStatus.setImageDrawable(getResources().getDrawable(R.drawable.no_connection));
+            }
         } catch (Exception e) {
+            Log.e(TAG, "*****  Error in Communication Manager  *****" );
+            e.printStackTrace();
             return false;
         }
+
+        Log.d(TAG, "@@@@@ Network Status = " + status);
+        return status;
     }
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     @Override
