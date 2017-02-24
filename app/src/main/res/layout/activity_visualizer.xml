@@ -40,7 +40,6 @@
         android:layout_alignBaseline="@+id/lbl_Student"
         android:layout_alignBottom="@+id/lbl_Student"
         android:layout_alignStart="@+id/txt_Dev" />
-
     <TextView
         android:id="@+id/lbl_Dev"
         android:layout_width="70dp"
@@ -48,9 +47,11 @@
         android:textSize="14sp"
         android:textColor="@color/white"
         android:text="Device"
-        android:layout_alignParentTop="true"
+        android:layout_marginStart="14dp"
+        android:layout_above="@+id/lbl_Student"
         android:layout_toEndOf="@+id/imageView_VZ"
-        android:layout_marginStart="14sp" />
+        android:layout_marginBottom="11dp" />
+
 
     <TextView
         android:id="@+id/txt_Dev"
@@ -123,13 +124,22 @@
         android:textColor="@color/darkred"
         android:background="@color/red"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/lbl_MatchNum"
         android:text="Red Alliance"
         android:gravity="center_horizontal"
-        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/spinner_MatchNum"
         android:layout_alignParentStart="true" />
 
+    <TextView
+        android:id="@+id/lbl_spacer1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_marginTop="13dp"
+        android:layout_below="@+id/teams_sectB1"
+        android:layout_toEndOf="@+id/spinner_MatchType" />
+
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -384,15 +394,6 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="10dp" />
 
-    <TextView
-        android:id="@+id/lbl_spacer1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_below="@+id/teams_sectB1"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="31dp" />
-
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -401,8 +402,8 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:stretchColumns="*"
-        android:layout_alignTop="@+id/lbl_spacer1"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/teams_sectB1">
 
         /***  HEADER  ***/
         <TableRow>
@@ -411,27 +412,27 @@
                 android:text="TEAM"
                 android:gravity="left"
                 android:layout_width="0px"
-                android:layout_weight="0.15"
+                android:layout_weight="0.10"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border"
+                android:textStyle="bold"
                 android:padding="3dip" />
             <TextView
                 android:id="@+id/hdr_robot"
-                android:text="ROBOT PHOTO"
+                android:text="      ROBOT PHOTO"
                 android:gravity="left"
                 android:layout_width="0px"
                 android:layout_weight="0.20"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border"
+                android:textStyle="bold"
                 android:padding="3dip" />
             <TextView
                 android:id="@+id/hdr_attr"
-                android:text="ATTRIBUTES"
+                android:text="                                           ATTRIBUTES"
                 android:gravity="left"
                 android:layout_width="0px"
-                android:layout_weight="0.70"
+                android:layout_weight="0.75"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border"
+                android:textStyle="bold"
                 android:padding="3dip" />
         </TableRow>
         // ==================================================================
@@ -439,35 +440,33 @@
         <TableRow>
             <TextView
                 android:id="@+id/tbl_teamR1"
-                android:text="1111 "
+                android:text="1111"
                 android:textColor="@color/red"
                 android:layout_width="0px"
-                android:layout_weight="0.15"
+                android:layout_weight="0.10"
                 android:background="@drawable/border"
                 android:padding="3dip" />
             <ImageView
                 android:id="@+id/tbl_robotR1"
-                android:src="@drawable/robot_1296"
                 android:layout_width="100dp"
                 android:layout_weight="0.20"
-                android:layout_height="90dp"
+                android:layout_height="80dp"
                 android:gravity="start"
                 android:background="@drawable/border"
                 android:padding="3dip" />
 
             <TextView
                 android:id="@+id/tbl_shootR1"
-                android:text="Shooting %"
+                android:text="Statistics"
                 android:gravity="start"
-                android:background="@drawable/border"
-                android:layout_weight="0.22"
+                android:layout_weight="0.75"
                 android:padding="3dip" />
-            <TextView
-                android:text="Gears Placed"
-                android:gravity="start"
-                android:background="@drawable/border"
-                android:layout_weight="0.22"
-                android:padding="3dip" />
+            <!--<TextView-->
+                <!--android:text="Gears Placed"-->
+                <!--android:gravity="start"-->
+                <!--android:background="@drawable/border"-->
+                <!--android:layout_weight="0.22"-->
+                <!--android:padding="3dip" />-->
             <!--<TextView-->
                 <!--android:text="???????"-->
                 <!--android:gravity="start"-->
@@ -480,167 +479,162 @@
         <TableRow>
             <TextView
                 android:id="@+id/tbl_teamR2"
-                android:text="2222 "
+                android:text="2222"
                 android:textColor="@color/red"
                 android:layout_width="0px"
-                android:layout_weight="0.15"
+                android:layout_weight="0.10"
                 android:background="@drawable/border"
                 android:padding="3dip" />
             <ImageView
                 android:id="@+id/tbl_robotR2"
-                android:src="@drawable/robot_5414"
                 android:layout_width="100dp"
                 android:layout_weight="0.20"
-                android:layout_height="90dp"
+                android:layout_height="80dp"
                 android:gravity="start"
                 android:background="@drawable/border"
                 android:padding="3dip" />
             <TextView
-                android:text="Shooting %"
+                android:text="Statistics"
                 android:gravity="start"
-                android:background="@drawable/border"
-                android:layout_weight="0.22"
+                android:layout_weight="0.75"
                 android:padding="3dip" />
-            <TextView
-                android:text="Gears Placed"
-                android:gravity="start"
-                android:background="@drawable/border"
-                android:layout_weight="0.22"
-                android:padding="3dip" />
+            <!--android:background="@drawable/border"-->
+            <!--<TextView-->
+                <!--android:text="Gears Placed"-->
+                <!--android:gravity="start"-->
+                <!--android:background="@drawable/border"-->
+                <!--android:layout_weight="0.22"-->
+                <!--android:padding="3dip" />-->
         </TableRow>
         // ==================================================================
         /*  Row #3   */
         <TableRow>
             <TextView
                 android:id="@+id/tbl_teamR3"
-                android:text="3333 "
+                android:text="3333"
                 android:textColor="@color/red"
                 android:layout_width="0px"
-                android:layout_weight="0.15"
+                android:layout_weight="0.10"
                 android:background="@drawable/border"
                 android:padding="3dip" />
             <ImageView
                 android:id="@+id/tbl_robotR3"
-                android:src="@drawable/photo_missing"
                 android:layout_width="100dp"
-                android:layout_height="90dp"
+                android:layout_height="80dp"
                 android:layout_weight="0.20"
                 android:gravity="start"
                 android:background="@drawable/border"
                 android:padding="3dip" />
             <TextView
-                android:text="Shooting %"
+                android:text="Statistics"
                 android:gravity="start"
-                android:background="@drawable/border"
-                android:layout_weight="0.22"
+                android:layout_weight="0.75"
                 android:padding="3dip" />
-            <TextView
-                android:text="Gears Placed"
-                android:gravity="start"
-                android:background="@drawable/border"
-                android:layout_weight="0.22"
-                android:padding="3dip" />
+            <!--<TextView-->
+                <!--android:text="Gears Placed"-->
+                <!--android:gravity="start"-->
+                <!--android:background="@drawable/border"-->
+                <!--android:layout_weight="0.22"-->
+                <!--android:padding="3dip" />-->
         </TableRow>
         // ==================================================================
         /*  Row #4   */
         <TableRow>
             <TextView
                 android:id="@+id/tbl_teamB1"
-                android:text="1111 "
+                android:text="1111"
                 android:textColor="@color/cyan"
                 android:layout_width="0px"
-                android:layout_weight="0.15"
+                android:layout_weight="0.10"
                 android:background="@drawable/border"
                 android:padding="3dip" />
             <ImageView
                 android:id="@+id/tbl_robotB1"
                 android:layout_width="100dp"
-                android:layout_height="90dp"
+                android:layout_height="80dp"
                 android:text="second"
                 android:layout_weight="0.20"
                 android:gravity="start"
                 android:background="@drawable/border"
                 android:padding="3dip" />
             <TextView
-                android:text="Shooting %"
+                android:text="Statistics"
                 android:gravity="start"
-                android:background="@drawable/border"
-                android:layout_weight="0.22"
+                android:layout_weight="0.75"
                 android:padding="3dip" />
-            <TextView
-                android:text="Gears Placed"
-                android:gravity="start"
-                android:background="@drawable/border"
-                android:layout_weight="0.22"
-                android:padding="3dip" />
+            <!--<TextView-->
+                <!--android:text="Gears Placed"-->
+                <!--android:gravity="start"-->
+                <!--android:background="@drawable/border"-->
+                <!--android:layout_weight="0.22"-->
+                <!--android:padding="3dip" />-->
         </TableRow>
         // ==================================================================
         /*  Row #5   */
         <TableRow>
             <TextView
                 android:id="@+id/tbl_teamB2"
-                android:text="2222 "
+                android:text="2222"
                 android:textColor="@color/cyan"
                 android:layout_width="0px"
-                android:layout_weight="0.15"
+                android:layout_weight="0.10"
                 android:background="@drawable/border"
                 android:padding="3dip" />
             <ImageView
                 android:id="@+id/tbl_robotB2"
                 android:layout_width="100dp"
-                android:layout_height="90dp"
+                android:layout_height="80dp"
                 android:text="second"
                 android:layout_weight="0.20"
                 android:gravity="start"
                 android:background="@drawable/border"
                 android:padding="3dip" />
             <TextView
-                android:text="Shooting %"
+                android:text="Statistics"
                 android:gravity="start"
-                android:background="@drawable/border"
-                android:layout_weight="0.22"
+                android:layout_weight="0.75"
                 android:padding="3dip" />
-            <TextView
-                android:text="Gears Placed"
-                android:gravity="start"
-                android:background="@drawable/border"
-                android:layout_weight="0.22"
-                android:padding="3dip" />
+            <!--<TextView-->
+                <!--android:text="Gears Placed"-->
+                <!--android:gravity="start"-->
+                <!--android:background="@drawable/border"-->
+                <!--android:layout_weight="0.22"-->
+                <!--android:padding="3dip" />-->
         </TableRow>
         // ==================================================================
         <TableRow>
         /*  Row #6   */
             <TextView
                 android:id="@+id/tbl_teamB3"
-                android:text="3333 "
+                android:text="3333"
                 android:textColor="@color/cyan"
                 android:layout_width="0px"
-                android:layout_weight="0.15"
+                android:layout_weight="0.10"
                 android:background="@drawable/border"
                 android:padding="3dip" />
             <ImageView
                 android:id="@+id/tbl_robotB3"
                 android:layout_width="100dp"
-                android:layout_height="90dp"
+                android:layout_height="80dp"
                 android:text="second"
                 android:layout_weight="0.20"
                 android:gravity="start"
                 android:background="@drawable/border"
                 android:padding="3dip" />
             <TextView
-                android:text="Shooting %"
+                android:text="Statistics"
                 android:gravity="start"
-                android:background="@drawable/border"
-                android:layout_weight="0.22"
+                android:layout_weight="0.75"
                 android:padding="3dip" />
-            <TextView
-                android:text="Gears Placed"
-                android:gravity="start"
-                android:background="@drawable/border"
-                android:layout_weight="0.22"
-                android:padding="3dip" />
+            <!--<TextView-->
+                <!--android:text="Gears Placed"-->
+                <!--android:gravity="start"-->
+                <!--android:background="@drawable/border"-->
+                <!--android:layout_weight="0.22"-->
+                <!--android:padding="3dip" />-->
         </TableRow>
     </TableLayout>
+
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 

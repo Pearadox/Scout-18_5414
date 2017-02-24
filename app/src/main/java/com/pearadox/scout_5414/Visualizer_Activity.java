@@ -13,6 +13,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -36,8 +42,15 @@ public class Visualizer_Activity extends AppCompatActivity {
     Button button_View;
     String team_num, team_name, team_loc;
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name,  team_loc);
+    private FirebaseDatabase pfDatabase;
+//    private DatabaseReference pfStudent_DBReference;
+//    private DatabaseReference pfDevice_DBReference;
+//    private DatabaseReference pfTeam_DBReference;
+    private DatabaseReference pfMatch_DBReference;
+//    private DatabaseReference pfCur_Match_DBReference;
     ArrayList<p_Firebase.teamsObj> teams = new ArrayList<p_Firebase.teamsObj>();
     ImageView tbl_robotR1, tbl_robotR2, tbl_robotR3, tbl_robotB1, tbl_robotB2, tbl_robotB3;
+    String tnum = "";
     Bitmap img;
     String FB_url ="";
 
@@ -56,6 +69,14 @@ public class Visualizer_Activity extends AppCompatActivity {
         txt_dev.setText(param1);
         txt_stud.setText(param2);
         matchID = "";
+
+        pfDatabase = FirebaseDatabase.getInstance();
+//        pfTeam_DBReference = pfDatabase.getReference("teams");              // Tteam data from Firebase D/B
+//        pfStudent_DBReference = pfDatabase.getReference("students");        // List of Students
+//        pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Students
+        pfMatch_DBReference = pfDatabase.getReference("matches");           // List of Students
+//        pfCur_Match_DBReference = pfDatabase.getReference("current-match"); // _THE_ current Match
+
         Spinner spinner_MatchType = (Spinner) findViewById(R.id.spinner_MatchType);
         String[] devices = getResources().getStringArray(R.array.mtchtyp_array);
         adapter_typ = new ArrayAdapter<String>(this, R.layout.dev_list_layout, devices);
@@ -88,6 +109,12 @@ public class Visualizer_Activity extends AppCompatActivity {
         txt_teamB1_Name = (TextView) findViewById(R.id.txt_teamB1_Name);
         txt_teamB2_Name = (TextView) findViewById(R.id.txt_teamB2_Name);
         txt_teamB3_Name = (TextView) findViewById(R.id.txt_teamB3_Name);
+        tbl_teamR1 = (TextView) findViewById(R.id.tbl_teamR1);
+        tbl_teamR2 = (TextView) findViewById(R.id.tbl_teamR2);
+        tbl_teamR3 = (TextView) findViewById(R.id.tbl_teamR3);
+        tbl_teamB1 = (TextView) findViewById(R.id.tbl_teamB1);
+        tbl_teamB2 = (TextView) findViewById(R.id.tbl_teamB2);
+        tbl_teamB3 = (TextView) findViewById(R.id.tbl_teamB3);
 
         txt_teamR1.setText("");
         txt_teamR2.setText("");
@@ -102,6 +129,13 @@ public class Visualizer_Activity extends AppCompatActivity {
         txt_teamB1_Name.setText("");
         txt_teamB2_Name.setText("");
         txt_teamB3_Name.setText("");
+
+        tbl_teamR1.setText("");
+        tbl_teamR2.setText("");
+        tbl_teamR3.setText("");
+        tbl_teamB1.setText("");
+        tbl_teamB2.setText("");
+        tbl_teamB3.setText("");
 
     }
 
@@ -138,6 +172,7 @@ public class Visualizer_Activity extends AppCompatActivity {
             NumSelected = parent.getItemAtPosition(pos).toString();
             Log.d(TAG, ">>>>>  '" + NumSelected + "'");
             matchID = matchID + NumSelected;
+            Log.d(TAG, ">>>>>  Match = '" + matchID + "'");
         }
         public void onNothingSelected(AdapterView<?> parent) {
             // Do nothing.
@@ -146,61 +181,11 @@ public class Visualizer_Activity extends AppCompatActivity {
 
     public void buttonView_Click(View view) {
         Log.d(TAG, " VIEW Button Click  ");
-        String tnum = "";
-        //          ToDo - Get Red & Blue Alliance Teams from Firebase D/B
-        teams.clear();          // empty the list
-        teams.add(new p_Firebase.teamsObj("1296 ","Full Metal Jackets",""));   //** DEBUG
-        teams.add(new p_Firebase.teamsObj("5414 ","Pearadox","Pearland, TX"));
-        teams.add(new p_Firebase.teamsObj("1642 ","Techno-Cats",""));
-        teams.add(new p_Firebase.teamsObj("1745 ","P-51 Mustangs",""));
-        teams.add(new p_Firebase.teamsObj("1817 ","Llano Estcado RoboRaiders",""));
-        teams.add(new p_Firebase.teamsObj("2333 ","S.C.R.E.E.C.H",""));
-        Log.d(TAG, ">>>> # team instances = " + teams.size());  //** DEBUG
 
-        txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
-        txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
-        txt_teamR3 = (TextView) findViewById(R.id.txt_teamR3);
-        txt_teamB1 = (TextView) findViewById(R.id.txt_teamB1);
-        txt_teamB2 = (TextView) findViewById(R.id.txt_teamB2);
-        txt_teamB3 = (TextView) findViewById(R.id.txt_teamB3);
-        txt_teamR1_Name = (TextView) findViewById(R.id.txt_teamR1_Name);
-        txt_teamR2_Name = (TextView) findViewById(R.id.txt_teamR2_Name);
-        txt_teamR3_Name = (TextView) findViewById(R.id.txt_teamR3_Name);
-        txt_teamB1_Name = (TextView) findViewById(R.id.txt_teamB1_Name);
-        txt_teamB2_Name = (TextView) findViewById(R.id.txt_teamB2_Name);
-        txt_teamB3_Name = (TextView) findViewById(R.id.txt_teamB3_Name);
-        tbl_teamR1 = (TextView) findViewById(R.id.tbl_teamR1);
-        tbl_teamR2 = (TextView) findViewById(R.id.tbl_teamR2);
-        tbl_teamR3 = (TextView) findViewById(R.id.tbl_teamR3);
-        tbl_teamB1 = (TextView) findViewById(R.id.tbl_teamB1);
-        tbl_teamB2 = (TextView) findViewById(R.id.tbl_teamB2);
-        tbl_teamB3 = (TextView) findViewById(R.id.tbl_teamB3);
-
-        team_inst = teams.get(0);
-        txt_teamR1.setText(team_inst.getTeam_num());
-        txt_teamR1_Name.setText(team_inst.getTeam_name());
-        tbl_teamR1.setText(team_inst.getTeam_num());
-        team_inst = teams.get(1);
-        txt_teamR2.setText(team_inst.getTeam_num());
-        txt_teamR2_Name.setText(team_inst.getTeam_name());
-        tbl_teamR2.setText(team_inst.getTeam_num());
-        team_inst = teams.get(2);
-        txt_teamR3.setText(team_inst.getTeam_num());
-        txt_teamR3_Name.setText(team_inst.getTeam_name());
-        tbl_teamR3.setText(team_inst.getTeam_num());
-        team_inst = teams.get(3);
-        txt_teamB1.setText(team_inst.getTeam_num());
-        txt_teamB1_Name.setText(team_inst.getTeam_name());
-        tbl_teamB1.setText(team_inst.getTeam_num());
-        team_inst = teams.get(4);
-        txt_teamB2.setText(team_inst.getTeam_num());
-        txt_teamB2_Name.setText(team_inst.getTeam_name());
-        tbl_teamB2.setText(team_inst.getTeam_num());
-        team_inst = teams.get(5);
-        txt_teamB3.setText(team_inst.getTeam_num());
-        txt_teamB3_Name.setText(team_inst.getTeam_name());
-        tbl_teamB3.setText(team_inst.getTeam_num());
-
+        getTeams();         // Get the teams for match selected
+    }
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private void loadTblData () {
         // Start getting data for Table
         Log.d(TAG, " Loading Table Data ");          //** DEBUG
         ImageView tbl_robotR1 = (ImageView) findViewById(R.id.tbl_robotR1);
@@ -233,7 +218,140 @@ public class Visualizer_Activity extends AppCompatActivity {
         FB_url = "gs://paradox-2017.appspot.com/images/robot_" + tnum + ".jpg";
         Picasso.with(this).load(FB_url).into(tbl_robotB3);
         Toast.makeText(getBaseContext(), "Robot images loaded", Toast.LENGTH_LONG).show();  //** DEBUG
+    }
 
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private void getTeams() {
+        Log.i(TAG, "$$$$$  getTeams");
+        Log.d(TAG, ">>>>>  Match = '" + matchID + "'");
+        txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
+        txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
+        txt_teamR3 = (TextView) findViewById(R.id.txt_teamR3);
+        txt_teamB1 = (TextView) findViewById(R.id.txt_teamB1);
+        txt_teamB2 = (TextView) findViewById(R.id.txt_teamB2);
+        txt_teamB3 = (TextView) findViewById(R.id.txt_teamB3);
+        txt_teamR1_Name = (TextView) findViewById(R.id.txt_teamR1_Name);
+        txt_teamR2_Name = (TextView) findViewById(R.id.txt_teamR2_Name);
+        txt_teamR3_Name = (TextView) findViewById(R.id.txt_teamR3_Name);
+        txt_teamB1_Name = (TextView) findViewById(R.id.txt_teamB1_Name);
+        txt_teamB2_Name = (TextView) findViewById(R.id.txt_teamB2_Name);
+        txt_teamB3_Name = (TextView) findViewById(R.id.txt_teamB3_Name);
+//        int z = matchID.length();
+        if (matchID.length() == 3) {
+            Log.i(TAG, "   Q U E R Y  ");
+            String child = "match";
+            String key = matchID;
+            Query query = pfMatch_DBReference.orderByChild(child).equalTo(key);
+            query.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Log.d(TAG, "%%%  ChildAdded");
+                    System.out.println(dataSnapshot.getValue());
+                    p_Firebase.matchObj mobj = dataSnapshot.getValue(p_Firebase.matchObj.class);
+                    System.out.println("Match: " + mobj.getMatch());
+                    System.out.println("Type: " + mobj.getMtype());
+                    System.out.println("Date: " + mobj.getDate());
+                    System.out.println("R1: " + mobj.getR1());
+                    System.out.println("B3: " + mobj.getB3());
+                    teams.clear();          // empty the list
+                    String tn = mobj.getR1();
+                    findTeam(tn);
+                    tn = mobj.getR2();
+                    findTeam(tn);
+                    tn = mobj.getR3();
+                    findTeam(tn);
+                    tn = mobj.getB1();
+                    findTeam(tn);
+                    tn = mobj.getB2();
+                    findTeam(tn);
+                    tn = mobj.getB3();
+                    findTeam(tn);
+                    Log.d(TAG, ">>>> # team instances = " + teams.size());  //** DEBUG
+                    Log.d(TAG, ">>>> # team instances = " + teams.size());  //** DEBUG
+
+                    txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
+                    txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
+                    txt_teamR3 = (TextView) findViewById(R.id.txt_teamR3);
+                    txt_teamB1 = (TextView) findViewById(R.id.txt_teamB1);
+                    txt_teamB2 = (TextView) findViewById(R.id.txt_teamB2);
+                    txt_teamB3 = (TextView) findViewById(R.id.txt_teamB3);
+                    txt_teamR1_Name = (TextView) findViewById(R.id.txt_teamR1_Name);
+                    txt_teamR2_Name = (TextView) findViewById(R.id.txt_teamR2_Name);
+                    txt_teamR3_Name = (TextView) findViewById(R.id.txt_teamR3_Name);
+                    txt_teamB1_Name = (TextView) findViewById(R.id.txt_teamB1_Name);
+                    txt_teamB2_Name = (TextView) findViewById(R.id.txt_teamB2_Name);
+                    txt_teamB3_Name = (TextView) findViewById(R.id.txt_teamB3_Name);
+                    tbl_teamR1 = (TextView) findViewById(R.id.tbl_teamR1);
+                    tbl_teamR2 = (TextView) findViewById(R.id.tbl_teamR2);
+                    tbl_teamR3 = (TextView) findViewById(R.id.tbl_teamR3);
+                    tbl_teamB1 = (TextView) findViewById(R.id.tbl_teamB1);
+                    tbl_teamB2 = (TextView) findViewById(R.id.tbl_teamB2);
+                    tbl_teamB3 = (TextView) findViewById(R.id.tbl_teamB3);
+
+                    team_inst = teams.get(0);
+                    txt_teamR1.setText(team_inst.getTeam_num());
+                    txt_teamR1_Name.setText(team_inst.getTeam_name());
+                    tbl_teamR1.setText(team_inst.getTeam_num());
+                    team_inst = teams.get(1);
+                    txt_teamR2.setText(team_inst.getTeam_num());
+                    txt_teamR2_Name.setText(team_inst.getTeam_name());
+                    tbl_teamR2.setText(team_inst.getTeam_num());
+                    team_inst = teams.get(2);
+                    txt_teamR3.setText(team_inst.getTeam_num());
+                    txt_teamR3_Name.setText(team_inst.getTeam_name());
+                    tbl_teamR3.setText(team_inst.getTeam_num());
+                    team_inst = teams.get(3);
+                    txt_teamB1.setText(team_inst.getTeam_num());
+                    txt_teamB1_Name.setText(team_inst.getTeam_name());
+                    tbl_teamB1.setText(team_inst.getTeam_num());
+                    team_inst = teams.get(4);
+                    txt_teamB2.setText(team_inst.getTeam_num());
+                    txt_teamB2_Name.setText(team_inst.getTeam_name());
+                    tbl_teamB2.setText(team_inst.getTeam_num());
+                    team_inst = teams.get(5);
+                    txt_teamB3.setText(team_inst.getTeam_num());
+                    txt_teamB3_Name.setText(team_inst.getTeam_name());
+                    tbl_teamB3.setText(team_inst.getTeam_num());
+                }
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    Log.d(TAG, "%%%  ChildChanged");
+                }
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    Log.d(TAG, "%%%  ChildRemoved");
+                }
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    Log.d(TAG, "%%%  ChildMoved");
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+        } else {
+            Toast.makeText(getBaseContext(), "** Select both Match TYPE & NUMBER ** ", Toast.LENGTH_LONG).show();
+            // ToDo - turn toggle back to logon
+        }
+    }
+
+    private void findTeam(String tnum) {
+        Log.i(TAG, "$$$$$  findTeam " + tnum);
+        boolean found = false;
+        for (int i = 0; i < Pearadox.numTeams; i++) {        // check each team entry
+            if (Pearadox.team_List.get(i).getTeam_num().equals(tnum)) {
+                team_inst = Pearadox.team_List.get(i);
+                teams.add(team_inst);
+//                Log.d(TAG, "===  Team " + team_inst.getTeam_num() + " " + team_inst.getTeam_name() + " " + team_inst.getTeam_loc());
+                found = true;
+                break;  // found it!
+            }
+        }  // end For
+        if (!found) {
+            Toast.makeText(getBaseContext(),"** Team '" + tnum + "' from Matches table _NOT_ found in Team list  ** ", Toast.LENGTH_LONG).show();
+            p_Firebase.teamsObj team_dummy = new p_Firebase.teamsObj("****", "team _NOT_ found in Team list - Check for TYPOs in Match Sched."," ");
+            teams.add(team_dummy);
+        }
     }
 
 
