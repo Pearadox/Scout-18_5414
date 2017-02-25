@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
     TextView txt_messageLine;
     Spinner spinner_Device;
     ImageView img_netStatus;            // Internet Status
-    public String deviceSelected = " ";
-    ArrayAdapter<String> adapter_dev;
+//    public String deviceSelected = " ";
+    ArrayAdapter<String> adapter_dev, adapter_StudStr;
     public String devSelected = " ";
     Spinner spinner_Student;
     public String studentSelected = " ";
@@ -84,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
 //        Toast.makeText(this,"Device ID: " + deviceId, Toast.LENGTH_LONG).show();    // ** DEBUG
         Log.d(TAG, "Device ID: " + deviceId);                                       // ** DEBUG
         Pearadox.FRC514_Device = deviceId; 		// Save device ID
-
         setContentView(R.layout.activity_main);
+
         txt_messageLine = (TextView) findViewById(R.id.txt_messageLine);
         txt_messageLine.setText("Hello Pearadox!  Please Log yourself into Device. ");
         Spinner spinner_Device = (Spinner) findViewById(R.id.spinner_Device);
@@ -101,12 +101,16 @@ public class MainActivity extends AppCompatActivity {
         isInternetAvailable();          // See if device has Internet
 
         pfDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);     // Enable 'Offline' Database
         pfTeam_DBReference = pfDatabase.getReference("teams");          // Team data from Firebase D/B
-//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);     // Enable 'Offline' Database
         addTeam_VE_Listener(pfTeam_DBReference);
-        pfStudent_DBReference = pfDatabase.getReference("students");    // Get list of Students
-        addStud_VE_Listener(pfStudent_DBReference);
-        pfDevice_DBReference = pfDatabase.getReference("devices");      // List of Devices
+        if (Pearadox.is_Network) {      // is Internet available?
+            pfStudent_DBReference = pfDatabase.getReference("students");    // Get list of Students
+            addStud_VE_Listener(pfStudent_DBReference);
+            pfDevice_DBReference = pfDatabase.getReference("devices");      // List of Devices
+        } else {        // Use smaller list in 'Values/strings'
+            loadStudentString();
+        }
 
         Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
 
@@ -223,14 +227,16 @@ public class MainActivity extends AppCompatActivity {
             default:                //
                 Log.d(TAG, "DEV = NULL" );
         }
-        if (x) {
-            Log.d(TAG, "updating KEY = " + key);
-            pfDevice_DBReference.child(key).child("stud_id").setValue(studentSelected);
-            pfDevice_DBReference.child(key).child("phase").setValue("Auto");
-          } else {
-            Log.d(TAG, "Nulling KEY = " + key);
-            pfDevice_DBReference.child(key).child("stud_id").setValue(" ");
-            pfDevice_DBReference.child(key).child("phase").setValue(" ");
+        if (Pearadox.is_Network) {      // Got Internet?
+            if (x) {
+                Log.d(TAG, "updating KEY = " + key);
+                pfDevice_DBReference.child(key).child("stud_id").setValue(studentSelected);
+                pfDevice_DBReference.child(key).child("phase").setValue("Auto");
+              } else {
+                Log.d(TAG, "Nulling KEY = " + key);
+                pfDevice_DBReference.child(key).child("stud_id").setValue(" ");
+                pfDevice_DBReference.child(key).child("phase").setValue(" ");
+            }
         }
     }
 
@@ -300,6 +306,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private void loadStudentString() {
+        Log.d(TAG, " loadStudentString " + Pearadox.is_Network);
+        Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
+        String[] studs = getResources().getStringArray(R.array.student_array);
+        adapter_StudStr = new ArrayAdapter<String>(this, R.layout.dev_list_layout, studs);
+        adapter_StudStr.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_Student.setAdapter(adapter_StudStr);
+        spinner_Student.setSelection(0, false);
+        spinner_Student.setOnItemSelectedListener(new student_OnItemSelectedListener());
+    }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 private void preReqs() {
@@ -339,6 +356,7 @@ private void preReqs() {
 }
 
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // ToDo - Add broadcast receiver to tell when internet status changes
     public boolean isInternetAvailable() {
         Log.i(TAG, "<<<< Checking Internet Status >>>>");
         boolean status = false;
@@ -350,7 +368,6 @@ private void preReqs() {
 
             NetworkInfo wifi = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
             Log.d(TAG, ">>>>> wifi = " + wifi);
-
             NetworkInfo mobile = connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
             Log.d(TAG, ">>>>> mobile = " + mobile);
             NetworkInfo bt = connMgr.getNetworkInfo(ConnectivityManager.TYPE_BLUETOOTH);
@@ -361,19 +378,21 @@ private void preReqs() {
                 Log.d(TAG, "$$$ Wi-Fi $$$ " + wifi.getExtraInfo());
 //                Toast.makeText(this, "Wifi" , Toast.LENGTH_LONG).show();
                 img_netStatus.setImageDrawable(getResources().getDrawable(R.drawable.wifi_bad));
+                Pearadox.is_Network = true;
                 status = true;
             }
             else if( mobile.isAvailable() ){
-                Log.d(TAG, "*** Mobile ###");
-                Log.d(TAG, "### Bluetooth ***");
+                Log.d(TAG, "*** Mobile ***");
 //                Toast.makeText(this, "Mobile 3/4G " , Toast.LENGTH_LONG).show();
                 img_netStatus.setImageDrawable(getResources().getDrawable(R.drawable.net_4g));
+                Pearadox.is_Network = true;
                 status = true;
             }
             else if( bt.isAvailable() ){
-                Log.d(TAG, "### Bluetooth ***");
+                Log.d(TAG, "### Bluetooth ###");
 //                Toast.makeText(this, " Bluetooth " , Toast.LENGTH_LONG).show();
                 img_netStatus.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth));
+                Pearadox.is_Network = true;
                 status = true;
             }
             else
@@ -381,10 +400,12 @@ private void preReqs() {
                 Log.d(TAG, "@@@ No Network @@@");
 //                Toast.makeText(this, "No Network " , Toast.LENGTH_LONG).show();
                 img_netStatus.setImageDrawable(getResources().getDrawable(R.drawable.no_connection));
+                Pearadox.is_Network = false;
             }
         } catch (Exception e) {
             Log.e(TAG, "*****  Error in Communication Manager  *****" );
             e.printStackTrace();
+            Pearadox.is_Network = false;
             return false;
         }
 
