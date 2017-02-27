@@ -48,10 +48,10 @@ public class MainActivity extends AppCompatActivity {
     String Pearadox_Version = " ";      // initialize
     private String deviceId;            // Android Device ID
     TextView txt_messageLine;
-    Spinner spinner_Device;
+    Spinner spinner_Device, spinner_Event;
     ImageView img_netStatus;            // Internet Status
 //    public String deviceSelected = " ";
-    ArrayAdapter<String> adapter_dev, adapter_StudStr;
+    ArrayAdapter<String> adapter_dev, adapter_StudStr, adapter_Event;
     public String devSelected = " ";
     Spinner spinner_Student;
     public String studentSelected = " ";
@@ -87,7 +87,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         txt_messageLine = (TextView) findViewById(R.id.txt_messageLine);
-        txt_messageLine.setText("Hello Pearadox!  Please Log yourself into Device. ");
+        txt_messageLine.setText("Hello Pearadox!  Please select Event and then Log yourself into Device.    ");
+        Spinner spinner_Event = (Spinner) findViewById(R.id.spinner_Event);
+        String[] events = getResources().getStringArray(R.array.event_array);
+        adapter_Event = new ArrayAdapter<String>(this, R.layout.dev_list_layout, events);
+        adapter_Event.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_Event.setAdapter(adapter_Event);
+        spinner_Event.setSelection(0, false);
+        spinner_Event.setOnItemSelectedListener(new event_OnItemSelectedListener());
+
         Spinner spinner_Device = (Spinner) findViewById(R.id.spinner_Device);
         String[] devices = getResources().getStringArray(R.array.device_array);
         adapter_dev = new ArrayAdapter<String>(this, R.layout.dev_list_layout, devices);
@@ -99,13 +107,9 @@ public class MainActivity extends AppCompatActivity {
 
         preReqs(); 				        // Check for pre-requisites
         isInternetAvailable();          // See if device has Internet
-        Pearadox.FRC_Event = "txwa";                            // Hardocde for now
-        Pearadox.FRC_EventName = "Brazos Valley Regional";      // Hardocde for now
 
 //        FirebaseDatabase.getInstance().setPersistenceEnabled(true);     // Enable 'Offline' Database
         pfDatabase = FirebaseDatabase.getInstance();
-        pfTeam_DBReference = pfDatabase.getReference("teams");          // Team data from Firebase D/B
-        addTeam_VE_Listener(pfTeam_DBReference);
         if (Pearadox.is_Network) {      // is Internet available?
             pfStudent_DBReference = pfDatabase.getReference("students");    // Get list of Students
             addStud_VE_Listener(pfStudent_DBReference);
@@ -273,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
         pfStudent_DBReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(TAG, "******* retrieveStudents  *******");
+                Log.d(TAG, "******* Firebase retrieveStudents  *******");
                 Pearadox.stud_Lst.clear();
                 p_Firebase.students student_Obj = new p_Firebase.students();
                 Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
@@ -310,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
     }
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void loadStudentString() {
-        Log.d(TAG, " loadStudentString " + Pearadox.is_Network);
+        Log.d(TAG, "++++++ loadStudentString ++++++ " + Pearadox.is_Network);
         Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
         String[] studs = getResources().getStringArray(R.array.student_array);
         adapter_StudStr = new ArrayAdapter<String>(this, R.layout.dev_list_layout, studs);
@@ -492,6 +496,40 @@ private void preReqs() {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+    private class event_OnItemSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {
+        public void onItemSelected(AdapterView<?> parent,
+                                   View view, int pos, long id) {
+            String ev = parent.getItemAtPosition(pos).toString();
+            Pearadox.FRC_EventName = ev;
+            Log.d(TAG, ">>>>> Event '" + Pearadox.FRC_EventName + "'");
+            Spinner spinner_Device = (Spinner) findViewById(R.id.spinner_Device);
+            Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
+            spinner_Device.setClickable(true);
+            spinner_Student.setClickable(true);
+            switch (ev) {
+                case "Brazos Valley Regional":          // txwa
+                    Pearadox.FRC_Event = "txwa";
+                    break;
+                case ("Lone Star Central Regional"):    // txho
+                    Pearadox.FRC_Event = "txho";
+                    break;
+                case ("Hub City Regional"):             // txlu
+                    Pearadox.FRC_Event = "txlu";
+                    break;
+                default:                // ?????
+                    Toast.makeText(getBaseContext(), "Event code not recognized", Toast.LENGTH_LONG).show();
+                    Pearadox.FRC_Event = "zzzz";
+            }
+            Log.d(TAG, " Event code = '" + Pearadox.FRC_Event + "'");
+            pfTeam_DBReference = pfDatabase.getReference("teams/" + Pearadox.FRC_Event);   // Team data from Firebase D/B
+            addTeam_VE_Listener(pfTeam_DBReference);        // Load Teams since we now know event
+        }
+        public void onNothingSelected(AdapterView<?> parent) {
+            // Do nothing.
+        }
     }
 
     private class device_OnItemSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {

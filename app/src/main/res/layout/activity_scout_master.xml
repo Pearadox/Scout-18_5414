@@ -72,18 +72,6 @@
         android:layout_toEndOf="@+id/lbl_Divider"
         android:layout_marginStart="67dp" />
 
-    <TextClock
-        android:id="@+id/textClock"
-        android:layout_width="200sp"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:textColor="@color/limegreen"
-        android:textSize="44sp"
-        android:textStyle="bold"
-        android:layout_marginEnd="23dp"
-        android:layout_alignBottom="@+id/imageView_SM"
-        android:layout_alignParentEnd="true" />
-
     <TextView
         android:id="@+id/lbl_space1"
         android:layout_width="0dp"
@@ -527,6 +515,28 @@
         android:layout_marginTop="14dp"
         android:layout_below="@+id/teams_sectR1"
         android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/txt_EventName"
+        android:text="Event Name which might be very long!!"
+        android:layout_width="270sp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/yellow"
+        android:textAlignment="viewEnd"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextClock
+        android:id="@+id/textClock"
+        android:layout_width="200sp"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:textColor="@color/limegreen"
+        android:textSize="44sp"
+        android:textStyle="bold"
+        android:layout_alignBottom="@+id/imageView_SM"
+        android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>

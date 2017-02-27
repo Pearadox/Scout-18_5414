@@ -20,7 +20,7 @@
     <TextView
         android:id="@+id/txt_EventName"
         android:text="Event Name which might be very long!!"
-        android:layout_width="300dp"
+        android:layout_width="270sp"
         android:layout_height="25dp"
         android:textSize="14dp"
         android:textColor="@color/green"

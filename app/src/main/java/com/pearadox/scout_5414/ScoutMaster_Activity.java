@@ -51,6 +51,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
     public String NumSelected = " ";
     public String matchID = "T00";      // Type + #
     ToggleButton toggleStartStop;
+    TextView txt_EventName;
     TextView txt_teamR1, txt_teamR2, txt_teamR3, txt_teamB1, txt_teamB2, txt_teamB3;
     TextView txt_teamR1_Name, txt_teamR2_Name, txt_teamR3_Name, txt_teamB1_Name, txt_teamB2_Name, txt_teamB3_Name;
     TextView txt_scoutR1, txt_scoutR2, txt_scoutR3, txt_scoutB1, txt_scoutB2, txt_scoutB3;
@@ -67,22 +68,6 @@ public class ScoutMaster_Activity extends AppCompatActivity {
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name, team_loc);
     ArrayList<p_Firebase.teamsObj> teams = new ArrayList<p_Firebase.teamsObj>();
 
-    //  Bluetooth
-//    BluetoothAdapter myBluetoothAdapter;
-//    BroadcastReceiver myBTReceiver;
-//    IntentFilter filter;
-//    ArrayList<String> devList = new ArrayList<String>();
-//    int numBT_connects = 0;     //# of Bluetooth connections
-//    public static String EXTRA_DEVICE_ADDRESS = "device_address";
-//    String BTdevName = null;
-//    String MACaddr = null;
-//    private static final int REQUEST_CONNECT_DEVICE_SECURE = 1;
-//    private static final int REQUEST_CONNECT_DEVICE_INSECURE = 2;
-//    private static final int REQUEST_ENABLE_BT = 3;
-//    private BluetoothChatService mChatService = null;   // Member object for the chat services
-//    private String mConnectedDeviceName = null;         // Name of the connected device
-//    private StringBuffer mOutStringBuffer;              // String buffer for outgoing messages
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +76,8 @@ public class ScoutMaster_Activity extends AppCompatActivity {
 
         Log.i(TAG, "******* Scout Master  *******");
         matchID = "";
+        txt_EventName = (TextView) findViewById(R.id.txt_EventName);
+        txt_EventName.setText(Pearadox.FRC_EventName);          // Event Name
         Spinner spinner_MatchType = (Spinner) findViewById(R.id.spinner_MatchType);
         String[] devices = getResources().getStringArray(R.array.mtchtyp_array);
         adapter_typ = new ArrayAdapter<String>(this, R.layout.dev_list_layout, devices);
@@ -105,15 +92,14 @@ public class ScoutMaster_Activity extends AppCompatActivity {
         spinner_MatchNum.setSelection(0, false);
         spinner_MatchNum.setOnItemSelectedListener(new mNum_OnItemSelectedListener());
         pfDatabase = FirebaseDatabase.getInstance();
-        pfTeam_DBReference = pfDatabase.getReference("teams");              // Tteam data from Firebase D/B
-        pfStudent_DBReference = pfDatabase.getReference("students");        // List of Students
-        pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Students
-        pfMatch_DBReference = pfDatabase.getReference("matches");           // List of Students
-        pfCur_Match_DBReference = pfDatabase.getReference("current-match"); // _THE_ current Match
+        pfTeam_DBReference = pfDatabase.getReference("teams/" + Pearadox.FRC_Event);    // Team data from Firebase D/B
+        pfStudent_DBReference = pfDatabase.getReference("students");                    // List of Students
+        pfDevice_DBReference = pfDatabase.getReference("devices");                      // List of Students
+        pfMatch_DBReference = pfDatabase.getReference("matches/" + Pearadox.FRC_Event); // List of Students
+        pfCur_Match_DBReference = pfDatabase.getReference("current-match");             // _THE_ current Match
         clearTeamData();
         clearDevData();
 
-//        startBluetooth();       // Start BT as Master & listen for connections
         toggleStartStop = (ToggleButton) findViewById(R.id.toggleStartStop);
         toggleStartStop.setOnClickListener(new View.OnClickListener() {
             @Override
