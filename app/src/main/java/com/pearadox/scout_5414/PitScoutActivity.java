@@ -1,19 +1,27 @@
 package com.pearadox.scout_5414;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,6 +41,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 
 import static android.app.PendingIntent.getActivity;
 import static android.view.View.VISIBLE;
@@ -40,8 +54,8 @@ import static android.view.View.VISIBLE;
 public class PitScoutActivity extends AppCompatActivity {
 
     String TAG = "PitScout_Activity";      // This CLASS name
-    TextView txt_dev, txt_stud, txt_TeamName, txt_NumWheels, lbl_FuelEst;
-    EditText txtEd_FuelCap;
+    TextView txt_EventName, txt_dev, txt_stud, txt_TeamName, txt_NumWheels, lbl_FuelEst;
+    EditText editTxt_Team, txtEd_FuelCap, editText_Comments;
     ImageView imgScoutLogo, img_Photo;
     Spinner spinner_Team, spinner_Traction, spinner_Omni, spinner_Mecanum;
     ArrayAdapter<String> adapter;
@@ -65,8 +79,8 @@ public class PitScoutActivity extends AppCompatActivity {
     public boolean dim_Tall = false;            // Dimension
     public int totalWheels = 0;                 // Total # of wheels
     public int numTraction = 0;                 // Num. of Traction wheels
-    public int numOmni = 0;                     // Num. of Omni wheels
-    public int numMecanum = 0;                  // Num. of Mecanum wheels
+    public int numOmnis = 0;                     // Num. of Omni wheels
+    public int numMecanums = 0;                  // Num. of Mecanum wheels
     public boolean gear_Collecter = false;      // presence of gear collector
     public boolean fuel_Container = false;      // presence of Storage bin
     public int storSize = 0;                    // estimate of # of balls
@@ -76,8 +90,10 @@ public class PitScoutActivity extends AppCompatActivity {
     public boolean fuelManip = false;           // presence of a way to pick up fuel from floor
     public boolean climb = false;               // presence of a Climbing mechanism
     /* */
-    public String scout = " ";                  // Student who collected the data
+    public String comments = "Nothing";         // Comment(s)
+    public String scout = "";                   // Student who collected the data
 // ===========================================================================
+pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,numOmnis,numMecanums,gear_Collecter,fuel_Container,storSize,shooter,vision,pneumatics,fuelManip,climb,comments,scout);
 
 
     @Override
@@ -91,10 +107,11 @@ public class PitScoutActivity extends AppCompatActivity {
         Log.d(TAG, param1 + " " + param2);      // ** DEBUG **
         scout = param2; // Scout of record
 
+        txt_EventName = (TextView) findViewById(R.id.txt_EventName);
+        txt_EventName.setText(Pearadox.FRC_EventName);          // Event Name
         pfDatabase = FirebaseDatabase.getInstance();
-        pfPitData_DBReference = pfDatabase.getReference("pit-data"); // Pit Scout Data
+        pfPitData_DBReference = pfDatabase.getReference("pit-data/" + Pearadox.FRC_Event); // Pit Scout Data
 
-        loadTeams();
         ImageView img_Photo = (ImageView) findViewById(R.id.img_Photo);
         txt_dev = (TextView) findViewById(R.id.txt_Dev);
         txt_stud = (TextView) findViewById(R.id.txt_stud);
@@ -104,11 +121,37 @@ public class PitScoutActivity extends AppCompatActivity {
         txt_stud.setText(param2);
         txt_TeamName.setText(" ");
         Spinner spinner_Team = (Spinner) findViewById(R.id.spinner_Team);
-        adapter = new ArrayAdapter<String>(this, R.layout.team_list_layout, teams);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_Team.setAdapter(adapter);
-        spinner_Team.setSelection(0, false);
-        spinner_Team.setOnItemSelectedListener(new team_OnItemSelectedListener());
+        editTxt_Team = (EditText) findViewById(R.id.editTxt_Team);
+        editTxt_Team.setFocusable(true);
+        editTxt_Team.setFocusableInTouchMode(true);
+        if (Pearadox.is_Network) {      // is Internet available?
+            loadTeams();
+            spinner_Team.setVisibility(View.VISIBLE);
+            editTxt_Team.setVisibility(View.GONE);
+            adapter = new ArrayAdapter<String>(this, R.layout.team_list_layout, teams);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner_Team.setAdapter(adapter);
+            spinner_Team.setSelection(0, false);
+            spinner_Team.setOnItemSelectedListener(new team_OnItemSelectedListener());
+        } else {        // Have the user type in Team #
+            editTxt_Team.setText("");
+            editTxt_Team.setVisibility(View.VISIBLE);
+            editTxt_Team.setEnabled(true);
+            editTxt_Team.requestFocus();        // Don't let EditText mess up layout!!
+            spinner_Team.setVisibility(View.GONE);
+            editTxt_Team.setOnKeyListener(new View.OnKeyListener() {
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    Log.d(TAG, " editTxt_Team listener; Team = " + editTxt_Team.getText());
+                    teamSelected = (String.valueOf(editTxt_Team.getText()));
+                    chkForPhoto(teamSelected);      // see if photo already exists
+                    return true;
+                }
+                return false;
+                }
+            });
+        }
 
         Spinner spinner_Traction = (Spinner) findViewById(R.id.spinner_Traction);
         ArrayAdapter adapter_Trac = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, wheels);
@@ -137,6 +180,8 @@ public class PitScoutActivity extends AppCompatActivity {
         txtEd_FuelCap = (EditText) findViewById(R.id.txtEd_FuelCap);
         chkBox_FuelManip = (CheckBox) findViewById(R.id.chkBox_FuelManip);
         chkBox_Climb = (CheckBox) findViewById(R.id.chkBox_Climb);
+        editText_Comments = (EditText) findViewById(R.id.editText_Comments);
+        editText_Comments.setClickable(true);
 
         chkBox_Gear.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -160,6 +205,7 @@ public class PitScoutActivity extends AppCompatActivity {
                    fuel_Container = true;
                    lbl_FuelEst.setVisibility(VISIBLE);
                    txtEd_FuelCap.setVisibility(VISIBLE);
+                   txtEd_FuelCap.requestFocus();
                } else {
                    Log.i(TAG,"Fuel is unchecked.");
                    fuel_Container = false;
@@ -226,24 +272,63 @@ public class PitScoutActivity extends AppCompatActivity {
                 Log.i(TAG, "chkBox_Climb Listener");
                 if (buttonView.isChecked()) {
                     Log.i(TAG,"Climb is checked.");
-                    fuelManip = true;
+                    climb = true;
                 } else {
                     Log.i(TAG,"Climb is unchecked.");
-                    fuelManip = false;
+                    climb = false;
                 }
             }
         });
+
+        editText_Comments.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.i(TAG, "******  onTextChanged TextWatcher  ******" + s);
+                comments = String.valueOf(s);
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Log.i(TAG, "******  beforeTextChanged TextWatcher  ******");
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                Log.i(TAG, "******  onTextChanged TextWatcher  ******" + s );
+                comments = String.valueOf(s);
+            }
+        });
+
+        txtEd_FuelCap.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                Log.i(TAG, "******  txtEd_FuelCap listener  ******");
+
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    Log.d(TAG, " txtEd_FuelCap listener"  + txtEd_FuelCap.getText());
+                    storSize = Integer.valueOf(String.valueOf(txtEd_FuelCap.getText()));
+                    return true;
+                }
+                return false;
+            }
+        });
+
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         btn_Save = (Button) findViewById(R.id.btn_Save);
         btn_Save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.i(TAG, "Save Button Listener");
+                Spinner spinner_Team = (Spinner) findViewById(R.id.spinner_Team);
+                storePitData();           // Put all the Pit data collected in Pit object
                 dataSaved = true;
-                // ToDo - Save data to SD card & Firebase
+                if (Pearadox.is_Network) {      // is Internet available?
+                    spinner_Team.setSelection(0);       //Reset to NO selection
+                    txt_TeamName.setText(" ");
+                }
+                finish();       // Exit  <<<<<<<<
             }
         });
-
     }
+
 
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
     @Override
@@ -255,7 +340,7 @@ public class PitScoutActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_photo:
-                onLaunchCamera();
+                onLaunchCamera();       // Start Camera
             default:
                 break;
         }
@@ -279,7 +364,9 @@ public class PitScoutActivity extends AppCompatActivity {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             Log.d(TAG, "*** data '" + data + "'");
             img_Photo.setImageBitmap(imageBitmap);
-            encodeBitmapAndSaveToFirebase(imageBitmap);
+            if (Pearadox.is_Network) {      // is Internet available?
+                encodeBitmapAndSaveToFirebase(imageBitmap);
+            }
         }
     }
     public void encodeBitmapAndSaveToFirebase(Bitmap bitmap) {
@@ -304,12 +391,36 @@ public class PitScoutActivity extends AppCompatActivity {
             txt_TeamName = (TextView) findViewById(R.id.txt_TeamName);
             findTeam(teamSelected);
             txt_TeamName.setText(team_inst.getTeam_name());
+            // ToDo - see if photo already exists
+            chkForPhoto(teamSelected);
         }
         public void onNothingSelected(AdapterView<?> parent) {
             // Do nothing.
         }
     }
-/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+
+// =============================================================================
+    private void chkForPhoto(String team) {
+        Log.i(TAG, "*****  chkForPhoto - team = " + team);
+
+        // First check SD card
+        String filename = "robot_" + team + ".png";
+        File directPhotos = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/" + Pearadox.FRC_Event + "/" + filename);
+        Log.d(TAG, "SD card Path = " + directPhotos);
+        if(directPhotos.exists())  {
+            Bitmap imageBitmap = BitmapFactory.decodeFile(directPhotos.getAbsolutePath());
+            img_Photo.setImageBitmap(imageBitmap);
+
+        } else {
+            if (Pearadox.is_Network) {      // is Internet available?
+                //ToDo - check on Firebase (if internet is up)
+            }
+        }
+
+
+    }
+
+    /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
     public class Traction_OnItemSelectedListener implements OnItemSelectedListener {
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {
@@ -328,8 +439,8 @@ public class PitScoutActivity extends AppCompatActivity {
                                    View view, int pos, long id) {
             String num = " ";
             num = parent.getItemAtPosition(pos).toString();
-            numOmni = Integer.parseInt(num);
-            Log.d(TAG, ">>>>>  '" + numOmni + "'");
+            numOmnis = Integer.parseInt(num);
+            Log.d(TAG, ">>>>>  '" + numOmnis + "'");
             updateNumWhls();
         }
         public void onNothingSelected(AdapterView<?> parent) {
@@ -341,8 +452,8 @@ public class PitScoutActivity extends AppCompatActivity {
                                    View view, int pos, long id) {
             String num = " ";
             num = parent.getItemAtPosition(pos).toString();
-            numMecanum = Integer.parseInt(num);
-            Log.d(TAG, ">>>>>  '" + numMecanum + "'");
+            numMecanums = Integer.parseInt(num);
+            Log.d(TAG, ">>>>>  '" + numMecanums + "'");
             updateNumWhls();
         }
         public void onNothingSelected(AdapterView<?> parent) {
@@ -351,9 +462,10 @@ public class PitScoutActivity extends AppCompatActivity {
     }
 
     private void updateNumWhls() {
-        Log.i(TAG, "######  updateNumWhls ###### T-O-M" + numTraction + numOmni + numMecanum);
-        int x = numTraction + numOmni + numMecanum;
+        Log.i(TAG, "######  updateNumWhls ###### T-O-M" + numTraction + numOmnis + numMecanums);
+        int x = numTraction + numOmnis + numMecanums;
         txt_NumWheels.setText(String.valueOf(x));      // Total # of wheels
+        totalWheels = x;
         if (x < 4){
             Toast.makeText(getBaseContext(), "Robot should have at least 4 wheels", Toast.LENGTH_LONG).show();
         }
@@ -415,6 +527,87 @@ public class PitScoutActivity extends AppCompatActivity {
             Log.d(TAG, "RadioDim - Tall = '" + dim_Tall + "'");
         }
     }
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private void storePitData() {
+        Log.i(TAG, ">>>>  storePitData  <<<< " + teamSelected );
+
+        Pit_Data.setPit_team(teamSelected);
+        Pit_Data.setPit_tall(dim_Tall);
+        Pit_Data.setPit_totWheels(totalWheels);
+        Pit_Data.setPit_numTrac(numTraction);
+        Pit_Data.setPit_numOmni(numOmnis);
+        Pit_Data.setPit_numMecanum(numMecanums);
+        Pit_Data.setPit_gear_Collect(gear_Collecter);
+        Pit_Data.setPit_fuel_Container(fuel_Container);
+        Pit_Data.setPit_storSize(storSize);
+        Pit_Data.setPit_shooter(shooter);
+        Pit_Data.setPit_vision(vision);
+        Pit_Data.setPit_pneumatics(pneumatics);
+        Pit_Data.setPit_fuelManip(fuelManip);
+        Pit_Data.setPit_climb(climb);
+         /* */
+        Pit_Data.setPit_comment(comments);
+        Pit_Data.setPit_scout(scout);
+// -----------------------------------------------
+        saveDatatoSDcard();             //Save locally
+        if (Pearadox.is_Network) {      // is Internet available?
+            String keyID = teamSelected;
+            pfPitData_DBReference.child(keyID).setValue(Pit_Data);
+        }
+    }
+    private void saveDatatoSDcard() {
+        Log.i(TAG, "@@@@  saveDatatoSDcard  @@@@");
+        String filename = Pit_Data.getPit_team() + ".dat";
+        ObjectOutput out = null;
+        File directMatch = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/" + Pearadox.FRC_Event + "/" + filename);
+        Log.d(TAG, "SD card Path = " + directMatch);
+        if(directMatch.exists())  {
+            // Todo - Replace TOAST with Dialog Box  - "Do you really ..."
+            Toast toast = Toast.makeText(getBaseContext(), "Data for " + filename + " already exists!!", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
+        }
+
+        try {
+            out = new ObjectOutputStream(new FileOutputStream(directMatch));
+            out.writeObject(Pearadox.Match_Data);
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+// ################################################################
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 200);
+            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+
+            exitByBackKey();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    protected void exitByBackKey() {
+        AlertDialog alertbox = new AlertDialog.Builder(this)
+                .setMessage("Are you sure you want to exit without saving?  All data will be lost!")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        dataSaved = true;
+                        finish();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                    }
+                })
+                .show();
+
+    }
 
 //###################################################################
 //###################################################################
@@ -429,14 +622,14 @@ public class PitScoutActivity extends AppCompatActivity {
         super.onStop();
         Log.v(TAG, "onStop");
         if (!dataSaved) {
-            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 200);
-            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
-            Toast toast = Toast.makeText(getBaseContext(), ">>> You forgot to SAVE - all data lost!! <<<", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-            toast.show();
-
+//            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 200);
+//            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+//            Toast toast = Toast.makeText(getBaseContext(), ">>> You forgot to SAVE - all data lost!! <<<", Toast.LENGTH_LONG);
+//            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+//            toast.show();
         }
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

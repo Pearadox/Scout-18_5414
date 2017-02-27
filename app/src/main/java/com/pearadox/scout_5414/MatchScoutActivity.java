@@ -719,6 +719,11 @@ public void onStart() {
         super.onResume();
         Log.v(TAG, "onResume");
         onStart = false;
+        if (Pearadox.MatchData_Saved) {
+            // ToDo - Clear all data back to priginal settings
+            Log.d(TAG, "#### Data was saved in Final #### ");
+            Toast.makeText(getBaseContext(), "Data was saved in Final - probably should clear data and wait for next match", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

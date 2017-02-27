@@ -5,11 +5,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.app.Activity;
@@ -35,6 +38,7 @@ public class FinalActivity extends Activity {
 
     String TAG = "FinalActivity";      // This CLASS name
     TextView txt_dev, txt_stud, txt_match, txt_MyTeam;
+    EditText editText_Comments;
     CheckBox chk_lostPart, chk_lostComm, chk_block, chk_starve, chk_dump;
     Button button_Saved;
     private FirebaseDatabase pfDatabase;
@@ -67,8 +71,8 @@ public class FinalActivity extends Activity {
 //        pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Students
 //        pfMatch_DBReference = pfDatabase.getReference("matches");           // List of Students
 //        pfCur_Match_DBReference = pfDatabase.getReference("current-match"); // _THE_ current Match
-        pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Students
-        pfMatchData_DBReference = pfDatabase.getReference("match-data");    // Match Data
+        pfDevice_DBReference = pfDatabase.getReference("devices");              // List of Students
+        pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
 
         String param1 = bundle.getString("dev");
         String param2 = bundle.getString("stud");
@@ -80,6 +84,8 @@ public class FinalActivity extends Activity {
         chk_block = (CheckBox) findViewById(R.id.chk_block);
         chk_starve = (CheckBox) findViewById(R.id.chk_starve);
         chk_dump = (CheckBox) findViewById(R.id.chk_dump);
+        editText_Comments = (EditText) findViewById(R.id.editText_Comments);
+        editText_Comments.setClickable(true);
         button_Saved = (Button) findViewById(R.id.button_Saved);
         button_Saved.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -87,7 +93,26 @@ public class FinalActivity extends Activity {
                 updateDev("Saved");         // Update "traffic light" status for Scout Master
                 storeFinalData();           // Put all the Final data collected in Match object
                 Pearadox.MatchData_Saved = true;    // Set flag to show saved
+                // ToDo - Clear all data back to priginal settings
 //                finish();       // Exit
+            }
+        });
+
+        editText_Comments.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.i(TAG, "******  onTextChanged TextWatcher  ******" + s);
+                finalComment = String.valueOf(s);
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Log.i(TAG, "******  beforeTextChanged TextWatcher  ******");
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                Log.i(TAG, "******  onTextChanged TextWatcher  ******" + s );
+                finalComment = String.valueOf(s);
             }
         });
 
@@ -107,8 +132,9 @@ public class FinalActivity extends Activity {
         Pearadox.Match_Data.setFinal_comment(finalComment);
 
         saveDatatoSDcard();     //Save locally
-        String matchID = pfMatchData_DBReference.push().getKey();
-        pfMatchData_DBReference.child(matchID).setValue(Pearadox.Match_Data);
+
+        String keyID = Pearadox.Match_Data.getMatch() + "-" + Pearadox.Match_Data.getTeam_num();
+        pfMatchData_DBReference.child(keyID).setValue(Pearadox.Match_Data);
     }
 
     private void saveDatatoSDcard() {

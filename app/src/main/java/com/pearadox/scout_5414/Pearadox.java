@@ -8,6 +8,8 @@ import java.util.ArrayList;
 public class Pearadox {
 
     public static boolean  is_Network; 								// Internet available?
+    public static String FRC_Event;                                 // FIRST Event Code (e.g., txwa)
+    public static String FRC_EventName;                             // FIRST Event Code (e.g., 'Hub City')
     public static int maxTeams = 60; 								// Maximum # of Teams per event
     public static int maxStudents = 80; 						    // Maximum # of Students
     public static ArrayList<p_Firebase.teamsObj> team_List = new ArrayList<p_Firebase.teamsObj>();

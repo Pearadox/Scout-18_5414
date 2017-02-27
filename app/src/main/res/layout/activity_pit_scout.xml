@@ -12,12 +12,37 @@
     tools:context="com.pearadox.scout_5414.PitScoutActivity">
 
     <TextView
+        android:id="@+id/lbl_Event"
+        android:layout_width="50dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+        android:text="Event"
+        android:textStyle="bold"
+        android:textAlignment="viewEnd"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/spinner_Mecanum"
+        android:layout_marginStart="12dp" />
+
+    <TextView
+        android:id="@+id/txt_EventName"
+        android:text="Event Name which might be very long!!"
+        android:layout_width="300dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/green"
+        android:textAlignment="viewEnd"
+        android:layout_alignBaseline="@+id/txt_stud"
+        android:layout_alignBottom="@+id/txt_stud"
+        android:layout_alignStart="@+id/chkBox_Pneumatics"
+        android:layout_marginStart="17dp" />
+    <TextView
         android:id="@+id/txt_stud"
         android:text="Student's Name"
         android:layout_width="150dp"
         android:layout_height="25dp"
         android:textSize="14dp"
-        android:textColor="@color/yellow"
+        android:textColor="@color/magenta"
         android:layout_alignBaseline="@+id/lbl_Student"
         android:layout_alignBottom="@+id/lbl_Student"
         android:layout_alignStart="@+id/txt_Dev" />
@@ -35,7 +60,7 @@
         android:layout_width="80dp"
         android:layout_height="25dp"
         android:textSize="14dp"
-        android:textColor="@color/magenta"
+        android:textColor="@color/yellow"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/imageView_PS"
         android:layout_marginStart="70sp" />
@@ -81,12 +106,27 @@
         android:layout_below="@+id/lbl_Team"
         android:layout_alignStart="@+id/txt_stud" />
 
+// =======  Either Spinner or EditText visible (depending on Internet status) =======
     <Spinner
         android:id="@+id/spinner_Team"
         android:layout_width="50dp"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_stud"
         android:layout_alignStart="@+id/txt_stud" />
+    <EditText
+        android:id="@+id/editTxt_Team"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:inputType="number"
+        android:ems="10"
+        android:textColor="@color/brightblue"
+        android:text=""
+        android:layout_alignBaseline="@+id/lbl_Team"
+        android:layout_alignBottom="@+id/lbl_Team"
+        android:layout_alignEnd="@+id/txt_Dev" />
+
+    // ===================================================================================
 
     <TextView
         android:id="@+id/lbl_Divider"
@@ -96,12 +136,11 @@
         android:textColor="@color/white"
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_below="@+id/imageView_PS"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="18dp" />
+        android:layout_alignParentStart="true" />
 
-    // ======================================================
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
     <RadioGroup
         android:id="@+id/radgrp_Dim"
@@ -208,15 +247,6 @@
         android:layout_toStartOf="@+id/imgView_Traction"
         android:layout_alignEnd="@+id/radgrp_Dim" />
 
-    <CheckBox
-        android:id="@+id/chkBox_Fuel"
-        android:text="Fuel Container"
-        android:layout_width="160sp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_below="@+id/chkBox_Gear"
-        android:layout_alignParentStart="true" />
-
     <TextView
         android:id="@+id/lbl_FuelEst"
         android:text="Fuel Capacity"
@@ -284,6 +314,17 @@
         android:layout_alignTop="@+id/chkBox_FuelManip"
         android:layout_toEndOf="@+id/chkBox_Gear"  />
 
+    <CheckBox
+        android:id="@+id/chkBox_Fuel"
+        android:text="Fuel Container"
+        android:layout_width="160sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/chkBox_Gear"
+        android:layout_alignParentStart="true" />
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -306,5 +347,30 @@
         android:layout_alignParentBottom="true"
         android:layout_alignEnd="@+id/spinner_Mecanum"
         android:layout_marginBottom="25dp" />
+
+    <ScrollView
+        android:id="@+id/scrollv_comm"
+        android:layout_width="500sp"
+        android:layout_height="100sp"
+        android:isScrollContainer="false"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/chkBox_FuelManip"
+        android:layout_alignEnd="@+id/lbl_Divider">
+
+        <EditText
+            android:id="@+id/editText_Comments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:lines="2"
+            android:scrollbars="vertical"
+            android:ems="12"
+            android:textColor="@color/green"
+            android:background="@drawable/border"
+            android:hint="Tap to add any comments about robot"
+            android:layout_alignTop="@+id/scrollv_comm"
+            android:layout_toEndOf="@+id/chk_dump" />
+
+    </ScrollView>
 
 </RelativeLayout>

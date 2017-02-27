@@ -28,14 +28,20 @@
             </intent-filter>
         </activity>
         <activity android:name=".ScoutMaster_Activity" />
-        <activity android:name=".MatchScoutActivity" />
-        <activity android:name=".PitScoutActivity" />
-        <activity android:name=".Visualizer_Activity" />
-        <activity android:name=".FinalActivity" />
-        <activity android:name=".ArenaLayoutActivity"
+        <activity android:name=".MatchScoutActivity"
             android:windowSoftInputMode="adjustNothing"
             />
-        <activity android:name=".TeleopScoutActivity" />
+        <activity android:name=".PitScoutActivity"
+            android:windowSoftInputMode="adjustNothing"
+            />
+        <activity android:name=".Visualizer_Activity" />
+        <activity android:name=".FinalActivity"
+            android:windowSoftInputMode="adjustNothing"
+            />
+        <activity android:name=".ArenaLayoutActivity" />
+        <activity android:name=".TeleopScoutActivity"
+            android:windowSoftInputMode="adjustNothing"
+            />
 
     </application>
 

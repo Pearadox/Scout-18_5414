@@ -15,6 +15,7 @@ import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.app.Activity;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -464,6 +465,15 @@ public class TeleopScoutActivity extends Activity {
     public void onResume() {
         super.onResume();
         Log.v(TAG, "onResume");
+
+        if (Pearadox.MatchData_Saved) {
+            // ToDo - Clear all data back to priginal settings
+            Log.d(TAG, "#### Data was saved in Final #### ");
+            Toast.makeText(getBaseContext(), "Data was saved in Final - probably should Exit", Toast.LENGTH_LONG).show();
+
+            //                finish();       // Exit
+
+        }
     }
     @Override
     public void onStop() {

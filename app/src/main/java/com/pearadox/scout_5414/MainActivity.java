@@ -99,9 +99,11 @@ public class MainActivity extends AppCompatActivity {
 
         preReqs(); 				        // Check for pre-requisites
         isInternetAvailable();          // See if device has Internet
+        Pearadox.FRC_Event = "txwa";                            // Hardocde for now
+        Pearadox.FRC_EventName = "Brazos Valley Regional";      // Hardocde for now
 
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);     // Enable 'Offline' Database
         pfDatabase = FirebaseDatabase.getInstance();
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);     // Enable 'Offline' Database
         pfTeam_DBReference = pfDatabase.getReference("teams");          // Team data from Firebase D/B
         addTeam_VE_Listener(pfTeam_DBReference);
         if (Pearadox.is_Network) {      // is Internet available?
@@ -335,14 +337,65 @@ private void preReqs() {
             if(directImg.mkdir())
             { }        //directory is created;
         }
+        File direct_iLub = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txlu");
+        if(!direct_iLub.exists())  {
+            if(direct_iLub.mkdir())
+            {
+            } else {
+                Log.d(TAG, " ****>>> ERROR creating directory  <<<<**** " + direct_iLub);
+
+            }        //directory is created;
+        }
+        File direct_iHou = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txho");
+        if(!direct_iHou.exists())  {
+            if(direct_iHou.mkdir())
+            { }        //directory is created;
+        }
+        File direct_iWaco = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txwa");
+        if(!direct_iWaco.exists())  {
+            if(direct_iWaco.mkdir())
+            { }        //directory is created;
+        }
+//=================================================================
         File directMatch = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match");
         if(!directMatch.exists())  {
             if(directMatch.mkdir())
             { }        //directory is created;
         }
+        File direct_mLub = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txlu");
+        if(!direct_mLub.exists())  {
+            if(direct_mLub.mkdir())
+            { }        //directory is created;
+        }
+        File direct_mHou = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txho");
+        if(!direct_mHou.exists())  {
+            if(direct_mHou.mkdir())
+            { }        //directory is created;
+        }
+        File direct_mWaco = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txwa");
+        if(!direct_mWaco.exists())  {
+            if(direct_mWaco.mkdir())
+            { }        //directory is created;
+        }
+//=================================================================
         File directPit = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit");
         if(!directPit.exists())  {
             if(directPit.mkdir())
+            { }        //directory is created;
+        }
+        File direct_pLub = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txlu");
+        if(!direct_pLub.exists())  {
+            if(direct_pLub.mkdir())
+            { }        //directory is created;
+        }
+        File direct_pHou = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txho");
+        if(!direct_pHou.exists())  {
+            if(direct_pHou.mkdir())
+            { }        //directory is created;
+        }
+        File direct_pWaco = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txwa");
+        if(!direct_pWaco.exists())  {
+            if(direct_pWaco.mkdir())
             { }        //directory is created;
         }
         Log.i(TAG, "FRC files created");
