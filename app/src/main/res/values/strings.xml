@@ -6,7 +6,16 @@
     <string name="device_prompt">Device?</string>
     <string name="student_prompt">Student Name?</string>
     <string name="mtchtyp_prompt">Match Type?</string>
+    <string name="event_prompt">Event?</string>
     <string name="lbl_Divider">______________________  Device Status  ______________________</string>
+
+    <!-- ##### Events ##### -->
+    <string-array name="event_array">
+        <item> </item>
+        <item>Brazos Valley Regional</item>
+        <!--<item>Lone Star Central Regional</item>-->
+        <!--<item>Hub City Regional</item>-->
+    </string-array>
 
     <!-- ##### DEVICES ##### -->
     <string-array name="device_array">
@@ -22,6 +31,38 @@
         <item>Visualizer</item>
     </string-array>
 
+    <!-- ##### Students list (used for Pit Scout _only_) since NO internet ##### -->
+    <string-array name="student_array">
+        <item> </item>
+        <item>Burnaman, Kaleb</item>
+        <item>Butts, Faith</item>
+        <item>Dizon, Lauren</item>
+        <item>De Jesus, Alexander"</item>
+        <item>F, Danny</item>
+        <item>Monaghan, Matthew</item>
+        <item>Sauter, Harrison</item>
+        <item>Van Hoose, Lori</item>
+        <item>Weaver, Jared</item>
+        // ...
+        <item>French, Gale</item>
+        <item>Hartnett, Andrew</item>
+        <item>Hood, Laura"</item>
+    </string-array>
+
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// String Values for 'non-Main' Activities
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    <!--  Scout Master -->
+    <!-- ##### Match Types ##### -->
+    <string-array name="mtchtyp_array">
+        <item> </item>
+        <item>Practice</item>
+        <item>Qualifying</item>
+        <item>Playoff</item>
+    </string-array>
+
+
+    <!--  Match Scout  -->
     <!-- ##### Start Position for Autononous ##### -->
     <string-array name="auto_start_array">
         <item> </item>
@@ -72,33 +113,6 @@
         <item>3</item>
     </string-array>
 
-
-    <!-- -->
-    <!-- ##### Match Types ##### -->
-    <string-array name="mtchtyp_array">
-        <item> </item>
-        <item>Practice</item>
-        <item>Qualifying</item>
-        <item>Playoff</item>
-    </string-array>
-
-    <!-- ##### Students list (used for Pit Scout _only_) since NO internet ##### -->
-    <string-array name="student_array">
-        <item> </item>
-        <item>Burnaman, Kaleb</item>
-        <item>Butts, Faith</item>
-        <item>Dizon, Lauren</item>
-        <item>De Jesus, Alexander"</item>
-        <item>F, Danny</item>
-        <item>Monaghan, Matthew</item>
-        <item>Sauter, Harrison</item>
-        <item>Van Hoose, Lori</item>
-        <item>Weaver, Jared</item>
-        // ...
-        <item>French, Gale</item>
-        <item>Hartnett, Andrew</item>
-        <item>Hood, Laura"</item>
-    </string-array>
 
 
 

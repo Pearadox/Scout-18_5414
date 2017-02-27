@@ -44,7 +44,7 @@ public class MatchScoutActivity extends AppCompatActivity {
     String TAG = "MatchScout_Activity";      // This CLASS name
     boolean onStart = false;
     public static String device = " ";
-    TextView txt_dev, txt_stud, txt_Match, txt_MyTeam, txt_TeamName, text_HGSeekBarValue, text_LGSeekBarValue;
+    TextView txt_EventName, txt_dev, txt_stud, txt_Match, txt_MyTeam, txt_TeamName, text_HGSeekBarValue, text_LGSeekBarValue;
     TextView txt_GearsPlaced, txt_GearsAttempted;
     CheckBox chk_baseline, chk_highGoal, chkBox_balls, chkBox_gears, chkBox_rope, chk_lowGoal, checkbox_automode;
     EditText editText_Fuel;
@@ -100,6 +100,8 @@ public class MatchScoutActivity extends AppCompatActivity {
         Log.d(TAG, device + " " + studID);      // ** DEBUG **
 
         Pearadox.MatchData_Saved = false;    // Set flag to show need to saved
+        txt_EventName = (TextView) findViewById(R.id.txt_EventName);
+        txt_EventName.setText(Pearadox.FRC_EventName);          // Event Name
 
         pfDatabase = FirebaseDatabase.getInstance();
         pfTeam_DBReference = pfDatabase.getReference("teams");              // Tteam data from Firebase D/B

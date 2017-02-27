@@ -18,6 +18,31 @@
         android:contentDescription="Match Scout logo" />
 
     <TextView
+        android:id="@+id/txt_EventName"
+        android:text="Event Name which might be very long!!"
+        android:layout_width="300dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/green"
+        android:textAlignment="viewEnd"
+        android:layout_alignBaseline="@+id/txt_stud"
+        android:layout_alignBottom="@+id/txt_stud"
+        android:layout_toEndOf="@+id/seekBar_HighGoal"
+        android:layout_marginStart="13dp" />
+
+    <TextView
+        android:id="@+id/lbl_Event"
+        android:layout_width="50dp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+        android:text="Event"
+        android:textStyle="bold"
+        android:textAlignment="viewEnd"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/txt_EventName" />
+
+    <TextView
         android:id="@+id/txt_Dev"
         android:text="Dev. Name"
         android:layout_width="80dp"
