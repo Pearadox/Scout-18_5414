@@ -13,8 +13,8 @@
     <string-array name="event_array">
         <item> </item>
         <item>Brazos Valley Regional</item>
-        <!--<item>Lone Star Central Regional</item>-->
-        <!--<item>Hub City Regional</item>-->
+        <item>Lone Star Central Regional</item>
+        <item>Hub City Regional</item>
     </string-array>
 
     <!-- ##### DEVICES ##### -->
