@@ -9,10 +9,13 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.app.Activity;
 import android.widget.Toast;
@@ -90,7 +93,6 @@ public class TeleopScoutActivity extends Activity {
         seekBar_HighGoal_Teleop.setVisibility(View.GONE);
         seekBar_LowGoal_Teleop.setEnabled(false);
         seekBar_LowGoal_Teleop.setVisibility(View.GONE);
-
 
 
         lbl_GearsAttempted.setText(Integer.toString(gearNumA));
@@ -442,6 +444,7 @@ public class TeleopScoutActivity extends Activity {
                     }
                 })
                 .show();
+
 
     }
 

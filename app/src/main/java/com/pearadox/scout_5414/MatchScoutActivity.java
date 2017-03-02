@@ -46,7 +46,7 @@ public class MatchScoutActivity extends AppCompatActivity {
     public static String device = " ";
     TextView txt_EventName, txt_dev, txt_stud, txt_Match, txt_MyTeam, txt_TeamName, text_HGSeekBarValue, text_LGSeekBarValue;
     TextView txt_GearsPlaced, txt_GearsAttempted;
-    CheckBox chk_baseline, chk_highGoal, chkBox_balls, chkBox_gears, chkBox_rope, chk_lowGoal, checkbox_automode;
+    CheckBox chk_baseline, chk_highGoal, chkBox_balls, chk_gears, chkBox_rope, chk_lowGoal, checkbox_automode, chk_activate_hopper, chk_PU_gear;
     EditText editText_Fuel;
     SeekBar seekBar_HighGoal, seekBar_LowGoal;
     ImageView imgScoutLogo;
@@ -62,8 +62,10 @@ public class MatchScoutActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter_autostartpos;
     ArrayAdapter<String> adapter_autostoppos;
     ArrayAdapter<String> adapter_auto_gear_placement;
+    ArrayAdapter<String> adapter_balls_collected;
 
-// ===================  Autonomous Elements for Match Scout Data object ===================
+
+    // ===================  Autonomous Elements for Match Scout Data object ===================
     public String matchID = "T00";          // Type + #
     public String tn = "";                  // Team #
     public boolean auto = false;
@@ -80,6 +82,7 @@ public class MatchScoutActivity extends AppCompatActivity {
     public String startPos = " ";
     public String stopPos = " ";
     public String gearPos = " ";
+    public String ballsCollected = " ";
     public boolean pu_Fuel = false;
     public boolean pu_Gear = false;
     public String autoComment = " ";
@@ -141,7 +144,9 @@ public class MatchScoutActivity extends AppCompatActivity {
         checkbox_automode = (CheckBox) findViewById(R.id.checkbox_automode);
         chkBox_balls = (CheckBox) findViewById(R.id.chk_balls);
         editText_Fuel = (EditText) findViewById(R.id.editText_Fuel);
-        chkBox_gears = (CheckBox) findViewById(R.id.chk_gears);
+        chk_gears = (CheckBox) findViewById(R.id.chk_gears);
+        chk_activate_hopper = (CheckBox) findViewById(R.id.chk_activate_hopper);
+        chk_PU_gear = (CheckBox) findViewById(R.id.chk_PU_gear);
         chkBox_rope = (CheckBox) findViewById(R.id.chk_rope);
         button_GearsMinus = (Button) findViewById(R.id.button_GearsMinus);
         button_GearsPlus = (Button) findViewById(R.id.button_GearsPlus);
@@ -164,6 +169,15 @@ public class MatchScoutActivity extends AppCompatActivity {
         editText_Fuel.setVisibility(View.GONE);
         editText_Fuel.setEnabled(false);
         editText_Fuel.setText("");
+        fuel = 10;
+
+        Spinner spinner_balls_collected = (Spinner) findViewById(R.id.spinner_balls_collected);
+        String[] balls_collected = getResources().getStringArray(R.array.spinner_balls_collected);
+        adapter_balls_collected = new ArrayAdapter<String>(this, R.layout.dev_list_layout, balls_collected);
+        adapter_balls_collected.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_balls_collected.setAdapter(adapter_balls_collected);
+        spinner_balls_collected.setSelection(0, false);
+        spinner_balls_collected.setOnItemSelectedListener(new MatchScoutActivity.ballsCollectedOnClickListener());
 
         Spinner spinner_startPos = (Spinner) findViewById(R.id.spinner_startPos);
         String[] autostartPos = getResources().getStringArray(R.array.auto_start_array);
@@ -240,6 +254,7 @@ public class MatchScoutActivity extends AppCompatActivity {
                     editText_Fuel.setVisibility(View.VISIBLE);
                     editText_Fuel.setEnabled(true);
                     carry_fuel = true;
+                    Log.d(TAG, "Fuel = " + fuel);
                 }
                 else
                 {
@@ -284,6 +299,25 @@ public class MatchScoutActivity extends AppCompatActivity {
                 }
             }
         }
+        );
+        chk_gears.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+           @Override
+           public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+               Log.i(TAG, "chk_gears Listener");
+               if (buttonView.isChecked()) {
+                   //checked
+                   Log.i(TAG,"TextBox is checked.");
+
+               }
+               else
+               {
+                   //not checked
+                   Log.i(TAG,"TextBox is unchecked.");
+
+               }
+           }
+       }
         );
         chk_highGoal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -350,6 +384,44 @@ public class MatchScoutActivity extends AppCompatActivity {
 
                 }
             }
+        }
+        );
+        chk_activate_hopper.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+             @Override
+             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                 Log.i(TAG, "chk_activate_hopper Listener");
+                 if (buttonView.isChecked()) {
+                     //checked
+                     Log.i(TAG,"TextBox is checked.");
+
+                 }
+                 else
+                 {
+                     //not checked
+                     Log.i(TAG,"TextBox is unchecked.");
+
+                 }
+             }
+         }
+        );
+
+        chk_PU_gear.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+             @Override
+             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                 Log.i(TAG, "chk_PU_gear Listener");
+                 if (buttonView.isChecked()) {
+                     //checked
+                     Log.i(TAG,"TextBox is checked.");
+
+                 }
+                 else
+                 {
+                     //not checked
+                     Log.i(TAG,"TextBox is unchecked.");
+
+                 }
+             }
         }
         );
 
@@ -681,6 +753,17 @@ public class MatchScoutActivity extends AppCompatActivity {
                 })
                 .show();
 
+    }
+    private class ballsCollectedOnClickListener implements android.widget.AdapterView.OnItemSelectedListener {
+        public void onItemSelected(AdapterView<?> parent,
+                                   View view, int pos, long id) {
+            ballsCollected = parent.getItemAtPosition(pos).toString();
+            Log.d(TAG, ">>>>>  '" + ballsCollected + "'");
+
+        }
+        public void onNothingSelected(AdapterView<?> parent) {
+            // Do nothing.
+        }
     }
 //    private TextWatcher tw = new TextWatcher() {
 //        public void afterTextChanged(Editable s){

@@ -31,6 +31,15 @@
         <item>Visualizer</item>
     </string-array>
 
+    <string-array name="spinner_balls_collected">
+        <item> </item>
+        <item>0-10</item>
+        <item>11-20</item>
+        <item>21-30</item>
+        <item>31-40</item>
+        <item>41-50</item>
+    </string-array>
+
     <!-- ##### Students list (used for Pit Scout _only_) since NO internet ##### -->
     <string-array name="student_array">
         <item> </item>
