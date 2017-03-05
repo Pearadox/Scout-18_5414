@@ -5,23 +5,25 @@ import java.io.Serializable;
 public class matchData implements Serializable {
     private static final long serialVersionUID = -54145414541400L;
     // ============= AUTO ================
-    private String match;                   // Matcj ID (e.g., 'T00' where T = X(Practice), Q(ualifying) or P(Playoff) and '00' - match #
+    private String match;                   // Match ID (e.g., 'T00' where T = X(Practice), Q(ualifying) and '00' - match #
     private String team_num;                // Team Number (e.gg., '5414'
     private boolean auto_mode;              // Do they have Autonamous mode?
+    private boolean auto_rope;              // Do they have their own rope?
     private boolean auto_carry_fuel;        // Do they carry fuel
+    private int auto_fuel_amount;           // Amount of fuel they carry
     private boolean auto_gear;              // Do they carry a gear
     private int auto_gears_placed;          // # gears placed during Auto
     private int auto_gears_attempt;         // # gears attempted during Auto
     private boolean auto_baseline;          // Did they cross Baseline
-    private boolean auto_hg;                // Did they shoor at High Goal
+    private boolean auto_hg;                // Did they shoot at High Goal
     private int auto_hg_percent;            // What percentage HG made?
     private boolean auto_lg;                // Did they shoor at Low Goal
     private int auto_lg_percent;            // What percentage LG made?
     private String auto_start;              // Where they started Auto
     private String auto_stop;               // Where they stopped at end of Auto
     private String auto_gear_pos;           // Where they placed their gear(s)
-    private boolean auto_pu_fuel;           // Did they pick up a gear
-    private boolean auto_pu_gear;           // Did they pick up a gear
+    private boolean auto_act_hopper;        // Did they activate hopper
+    private String auto_fuel_collected;     // Fuel Collected Range
     private String auto_comment;            // Auto comment
     // ============== TELE =================
     private int tele_gears_placed;
@@ -32,15 +34,14 @@ public class matchData implements Serializable {
 
     private String final_comment;           // Final comment
     private String final_studID;            // Student doing the scouting
-    // =====================================
 
-
-
-    public matchData(String match, String team_num, boolean auto_mode, boolean auto_carry_fuel, boolean auto_gear, int auto_gears_placed, int auto_gears_attempt, boolean auto_baseline, boolean auto_hg, int auto_hg_percent, boolean auto_lg, int auto_lg_percent, String auto_start, String auto_stop, String auto_gear_pos, boolean auto_pu_fuel, boolean auto_pu_gear, String auto_comment, int tele_gears_placed, int tele_gears_attempt, String tele_comment, String final_comment, String final_studID) {
+    public matchData(String match, String team_num, boolean auto_mode, boolean auto_rope, boolean auto_carry_fuel, int auto_fuel_amount, boolean auto_gear, int auto_gears_placed, int auto_gears_attempt, boolean auto_baseline, boolean auto_hg, int auto_hg_percent, boolean auto_lg, int auto_lg_percent, String auto_start, String auto_stop, String auto_gear_pos, boolean auto_act_hopper, String auto_fuel_collected, String auto_comment, int tele_gears_placed, int tele_gears_attempt, String tele_comment, String final_comment, String final_studID) {
         this.match = match;
         this.team_num = team_num;
         this.auto_mode = auto_mode;
+        this.auto_rope = auto_rope;
         this.auto_carry_fuel = auto_carry_fuel;
+        this.auto_fuel_amount = auto_fuel_amount;
         this.auto_gear = auto_gear;
         this.auto_gears_placed = auto_gears_placed;
         this.auto_gears_attempt = auto_gears_attempt;
@@ -52,8 +53,8 @@ public class matchData implements Serializable {
         this.auto_start = auto_start;
         this.auto_stop = auto_stop;
         this.auto_gear_pos = auto_gear_pos;
-        this.auto_pu_fuel = auto_pu_fuel;
-        this.auto_pu_gear = auto_pu_gear;
+        this.auto_act_hopper = auto_act_hopper;
+        this.auto_fuel_collected = auto_fuel_collected;
         this.auto_comment = auto_comment;
         this.tele_gears_placed = tele_gears_placed;
         this.tele_gears_attempt = tele_gears_attempt;
@@ -62,6 +63,12 @@ public class matchData implements Serializable {
         this.final_studID = final_studID;
     }
 
+    // =====================================
+
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
     public String getMatch() {
         return match;
@@ -87,12 +94,28 @@ public class matchData implements Serializable {
         this.auto_mode = auto_mode;
     }
 
+    public boolean isAuto_rope() {
+        return auto_rope;
+    }
+
+    public void setAuto_rope(boolean auto_rope) {
+        this.auto_rope = auto_rope;
+    }
+
     public boolean isAuto_carry_fuel() {
         return auto_carry_fuel;
     }
 
     public void setAuto_carry_fuel(boolean auto_carry_fuel) {
         this.auto_carry_fuel = auto_carry_fuel;
+    }
+
+    public int getAuto_fuel_amount() {
+        return auto_fuel_amount;
+    }
+
+    public void setAuto_fuel_amount(int auto_fuel_amount) {
+        this.auto_fuel_amount = auto_fuel_amount;
     }
 
     public boolean isAuto_gear() {
@@ -183,6 +206,22 @@ public class matchData implements Serializable {
         this.auto_gear_pos = auto_gear_pos;
     }
 
+    public boolean isAuto_act_hopper() {
+        return auto_act_hopper;
+    }
+
+    public void setAuto_act_hopper(boolean auto_act_hopper) {
+        this.auto_act_hopper = auto_act_hopper;
+    }
+
+    public String getAuto_fuel_collected() {
+        return auto_fuel_collected;
+    }
+
+    public void setAuto_fuel_collected(String auto_fuel_collected) {
+        this.auto_fuel_collected = auto_fuel_collected;
+    }
+
     public String getAuto_comment() {
         return auto_comment;
     }
@@ -191,21 +230,6 @@ public class matchData implements Serializable {
         this.auto_comment = auto_comment;
     }
 
-    public boolean isAuto_pu_fuel() {
-        return auto_pu_fuel;
-    }
-
-    public void setAuto_pu_fuel(boolean auto_pu_fuel) {
-        this.auto_pu_fuel = auto_pu_fuel;
-    }
-
-    public boolean isAuto_pu_gear() {
-        return auto_pu_gear;
-    }
-
-    public void setAuto_pu_gear(boolean auto_pu_gear) {
-        this.auto_pu_gear = auto_pu_gear;
-    }
     public int getTele_gears_placed() {
         return tele_gears_placed;
     }
@@ -245,7 +269,4 @@ public class matchData implements Serializable {
     public void setFinal_studID(String final_studID) {
         this.final_studID = final_studID;
     }
-
-
-
 }
