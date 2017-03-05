@@ -269,4 +269,7 @@ public class matchData implements Serializable {
     public void setFinal_studID(String final_studID) {
         this.final_studID = final_studID;
     }
+
+// End of Getters/Setters
+
 }

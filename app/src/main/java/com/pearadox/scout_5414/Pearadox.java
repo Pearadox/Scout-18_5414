@@ -60,7 +60,7 @@ public class Pearadox {
     private  static String final_comment;                    // Final comment
     private  static String final_studID;                    // Student doing the scouting
 
-
+// Java Object shared by Auto, Tele & Final
     public matchData Match_Data = new matchData(match, team_num, auto_mode, auto_rope, auto_carry_fuel, auto_fuel_amount, auto_gear, auto_gears_placed, auto_gears_attempt, auto_baseline, auto_hg, auto_hg_percent, auto_lg, auto_lg_percent, auto_start, auto_stop, auto_gear_pos, auto_act_hopper, auto_fuel_collected, auto_comment, tele_gears_placed, tele_gears_attempt, tele_comment, final_comment, final_studID);
 
 }
