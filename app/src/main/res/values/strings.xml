@@ -85,33 +85,9 @@
     <!-- ##### Stop Position for Autononous ##### -->
     <string-array name="auto_stop_array">
         <item> </item>
-
-        <item>N1</item>
-        <item>N2</item>
-        <item>N3</item>
-        <item>N4</item>
-        <item>N5</item>
-        <item>N6</item>
-        <item>N7</item>
-        <item>N8</item>
-        <item>N9</item>
-        <item>L1</item>
-        <item>L2</item>
-        <item>L3</item>
-        <item>L4</item>
-        <item>L5</item>
-        <item>L6</item>
-        <item>L7</item>
-        <item>L8</item>
-        <item>B1</item>
-        <item>B2</item>
-        <item>B3</item>
-        <item>B4</item>
-        <item>B5</item>
-        <item>B6</item>
-        <item>B7</item>
-        <item>B8</item>
-        <item>B9</item>
+        <item>Neutral Zone</item>
+        <item>Past Neutral Zone</item>
+        <item>Near Hopper</item>
     </string-array>
 
     <!-- ##### Gear Placement for Autononous ##### -->

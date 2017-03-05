@@ -186,23 +186,6 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="32dp" />
 
-    <CheckBox
-        android:text="Low Goal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:id="@+id/chk_LowGoal"
-        android:layout_below="@+id/chk_highGoal"
-        android:layout_alignParentStart="true" />
-
-    <Spinner
-        android:layout_width="40sp"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner_stopPos"
-        android:layout_marginTop="12dp"
-        android:layout_below="@+id/spinner_startPos"
-        android:layout_alignStart="@+id/spinner_startPos" />
-
     <TextView
         android:text="Stop Position"
         android:layout_width="wrap_content"
@@ -234,27 +217,8 @@
         android:clickable="false"
         android:visibility="visible"
         android:layout_toEndOf="@+id/button_GearsMinus"
-        android:layout_alignTop="@+id/text_LGSeekBarValue"
-        android:layout_alignBottom="@+id/chk_LowGoal" />
-
-    <TextView
-        android:text="Gear Position"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView4"
-        android:layout_alignTop="@+id/spinner_gearposition"
-        android:layout_alignEnd="@+id/txt_stopPos"
-        android:layout_alignStart="@+id/txt_stopPos"
-        android:layout_toEndOf="@+id/lbl_space1" />
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="23dp"
-        android:id="@+id/spinner_gearposition"
-        android:layout_below="@+id/spinner_stopPos"
-        android:layout_alignEnd="@+id/spinner_stopPos"
-        android:layout_alignStart="@+id/spinner_stopPos" />
+        android:layout_alignBottom="@+id/text_LGSeekBarValue"
+        android:layout_alignTop="@+id/chk_LowGoal" />
 
     <TextView
         android:text="Gear(s) Attempted"
@@ -306,37 +270,12 @@
         android:layout_toStartOf="@+id/chk_balls" />
 
     <TextView
-        android:text="Start Positon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:layout_below="@+id/chk_LowGoal"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="38dp" />
-
-    <TextView
         android:text="Are they missing an autonomous mode?"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/text_automode"
         android:layout_marginTop="35dp"
         android:layout_below="@+id/lbl_Auto"
-        android:layout_alignParentStart="true" />
-
-    <Spinner
-        android:layout_width="40sp"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner_startPos"
-        android:layout_alignTop="@+id/textView2"
-        android:layout_alignStart="@+id/lbl_MyTeam" />
-
-    <CheckBox
-        android:id="@+id/chk_baseline"
-        android:text="Crossed Baseline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="13dp"
-        android:layout_below="@+id/button_GearsAttemptedPlus"
         android:layout_alignParentStart="true" />
 
     <Button
@@ -358,16 +297,6 @@
         android:layout_alignBottom="@+id/chk_gears"
         android:layout_toEndOf="@+id/checkbox_automode"
         android:hint="10" />
-
-    <CheckBox
-        android:id="@+id/chk_activate_hopper"
-        android:text="Activated Hopper"
-        android:layout_width="140dp"
-        android:layout_height="30dp"
-        android:layout_below="@+id/chk_baseline"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/text_HGSeekBarValue"
-        android:layout_alignEnd="@+id/txt_GearsAttempted" />
 
     <TextView
         android:layout_width="30dp"
@@ -399,16 +328,6 @@
         android:layout_alignBottom="@+id/chk_highGoal"
         android:layout_alignEnd="@+id/txt_GearsAttempted" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/text_LGSeekBarValue"
-        android:textColor="@color/magenta"
-        android:text="100"
-        android:layout_alignTop="@+id/chk_LowGoal"
-        android:layout_alignStart="@+id/text_HGSeekBarValue"
-        android:layout_alignEnd="@+id/text_HGSeekBarValue" />
-
     <Button
         android:text="-"
         android:layout_width="30dp"
@@ -434,31 +353,6 @@
         android:layout_alignBottom="@+id/txt_GearsPlaced"
         android:layout_toStartOf="@+id/button_GearsMinus" />
 
-    <CheckBox
-        android:id="@+id/chk_PU_gear"
-        android:text="Picked Up Gear"
-        android:layout_width="140dp"
-        android:layout_height="30dp"
-        android:layout_above="@+id/chk_activate_hopper"
-        android:layout_toEndOf="@+id/button_GearsAttemptedPlus" />
-
-    <CheckBox
-        android:text="High Goal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="47dp"
-        android:id="@+id/chk_highGoal"
-        android:layout_below="@+id/chk_activate_hopper"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:text="How many balls did they collect?"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/text_collected_balls"
-        android:layout_below="@+id/chk_activate_hopper"
-        android:layout_toStartOf="@+id/seekBar_HighGoal" />
-
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -467,5 +361,101 @@
         android:layout_alignEnd="@+id/txt_stud"
         android:layout_toEndOf="@+id/text_collected_balls"
         android:layout_alignStart="@+id/checkbox_automode" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_LGSeekBarValue"
+        android:textColor="@color/magenta"
+        android:text="100"
+        android:layout_alignBaseline="@+id/chk_LowGoal"
+        android:layout_alignBottom="@+id/chk_LowGoal"
+        android:layout_alignEnd="@+id/txt_GearsAttempted" />
+
+    <Spinner
+        android:layout_width="40sp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner_stopPos"
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/spinner_startPos"
+        android:layout_alignEnd="@+id/chk_balls"
+        android:layout_toEndOf="@+id/lbl_GearPlaced"
+        android:layout_alignStart="@+id/spinner_startPos" />
+
+    <CheckBox
+        android:id="@+id/chk_activate_hopper"
+        android:text="Activated Hopper"
+        android:layout_width="140dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="86dp"
+        android:layout_below="@+id/chk_baseline"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/text_LGSeekBarValue"
+        android:layout_alignEnd="@+id/spinner_startPos" />
+
+    <CheckBox
+        android:text="High Goal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chk_highGoal"
+        android:layout_below="@+id/chk_baseline"
+        android:layout_toEndOf="@+id/lbl_space1" />
+
+    <CheckBox
+        android:text="Low Goal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chk_LowGoal"
+        android:layout_below="@+id/chk_highGoal"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="How many balls did they collect?"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_collected_balls"
+        android:layout_below="@+id/chk_activate_hopper"
+        android:layout_toStartOf="@+id/seekBar_LowGoal" />
+
+    <Spinner
+        android:layout_width="40sp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner_startPos"
+        android:layout_alignTop="@+id/text_startpos"
+        android:layout_toEndOf="@+id/lbl_gearsAttempted" />
+
+    <CheckBox
+        android:id="@+id/chk_baseline"
+        android:text="Crossed Baseline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="39dp"
+        android:layout_below="@+id/button_GearsAttemptedPlus"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Gear Position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView4"
+        android:layout_below="@+id/button_GearsAttemptedPlus"
+        android:layout_alignEnd="@+id/chk_LowGoal" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner_gearposition"
+        android:layout_alignTop="@+id/textView4"
+        android:layout_alignEnd="@+id/chk_activate_hopper"
+        android:layout_toEndOf="@+id/lbl_gearsAttempted" />
+
+    <TextView
+        android:text="Start Positon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_startpos"
+        android:layout_marginTop="54dp"
+        android:layout_below="@+id/chk_activate_hopper"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

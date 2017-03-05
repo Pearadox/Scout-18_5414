@@ -93,8 +93,9 @@ public class FinalActivity extends Activity {
                 updateDev("Saved");         // Update "traffic light" status for Scout Master
                 storeFinalData();           // Put all the Final data collected in Match object
                 Pearadox.MatchData_Saved = true;    // Set flag to show saved
-                // ToDo - Clear all data back to priginal settings
-//                finish();       // Exit
+                // ToDo - Clear all data back to original settings
+
+                finish();       // Exit
             }
         });
 

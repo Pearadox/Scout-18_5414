@@ -44,10 +44,11 @@ public class MatchScoutActivity extends AppCompatActivity {
     String TAG = "MatchScout_Activity";      // This CLASS name
     boolean onStart = false;
     public static String device = " ";
-    TextView txt_EventName, txt_dev, txt_stud, txt_Match, txt_MyTeam, txt_TeamName, text_HGSeekBarValue, text_LGSeekBarValue;
+    TextView txt_EventName, txt_dev, txt_stud, txt_Match, txt_MyTeam, txt_TeamName, text_HGSeekBarValue, text_LGSeekBarValue, text_collected_balls;
     TextView txt_GearsPlaced, txt_GearsAttempted;
-    CheckBox chk_baseline, chk_highGoal, chkBox_balls, chk_gears, chkBox_rope, chk_lowGoal, checkbox_automode, chk_activate_hopper, chk_PU_gear;
+    CheckBox chk_baseline, chk_highGoal, chkBox_balls, chk_gears, chkBox_rope, chk_lowGoal, checkbox_automode, chk_activate_hopper;
     EditText editText_Fuel;
+    Spinner spinner_balls_collected;
     SeekBar seekBar_HighGoal, seekBar_LowGoal;
     ImageView imgScoutLogo;
     String team_num, team_name, team_loc;
@@ -135,6 +136,8 @@ public class MatchScoutActivity extends AppCompatActivity {
         }
 
         txt_GearsPlaced = (TextView) findViewById(R.id.txt_GearsPlaced);
+        text_collected_balls = (TextView) findViewById(R.id.text_collected_balls);
+        spinner_balls_collected = (Spinner) findViewById(R.id.spinner_balls_collected);
         txt_GearsAttempted = (TextView) findViewById(R.id.txt_GearsAttempted);
         chk_baseline = (CheckBox) findViewById(R.id.chk_baseline);
         chk_highGoal = (CheckBox) findViewById(R.id.chk_highGoal);
@@ -146,7 +149,6 @@ public class MatchScoutActivity extends AppCompatActivity {
         editText_Fuel = (EditText) findViewById(R.id.editText_Fuel);
         chk_gears = (CheckBox) findViewById(R.id.chk_gears);
         chk_activate_hopper = (CheckBox) findViewById(R.id.chk_activate_hopper);
-        chk_PU_gear = (CheckBox) findViewById(R.id.chk_PU_gear);
         chkBox_rope = (CheckBox) findViewById(R.id.chk_rope);
         button_GearsMinus = (Button) findViewById(R.id.button_GearsMinus);
         button_GearsPlus = (Button) findViewById(R.id.button_GearsPlus);
@@ -170,8 +172,11 @@ public class MatchScoutActivity extends AppCompatActivity {
         editText_Fuel.setEnabled(false);
         editText_Fuel.setText("");
         fuel = 10;
+        text_collected_balls.setVisibility(View.GONE);
+        spinner_balls_collected.setVisibility(View.GONE);
 
-        Spinner spinner_balls_collected = (Spinner) findViewById(R.id.spinner_balls_collected);
+
+        final Spinner spinner_balls_collected = (Spinner) findViewById(R.id.spinner_balls_collected);
         String[] balls_collected = getResources().getStringArray(R.array.spinner_balls_collected);
         adapter_balls_collected = new ArrayAdapter<String>(this, R.layout.dev_list_layout, balls_collected);
         adapter_balls_collected.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -394,37 +399,21 @@ public class MatchScoutActivity extends AppCompatActivity {
                  if (buttonView.isChecked()) {
                      //checked
                      Log.i(TAG,"TextBox is checked.");
+                     spinner_balls_collected.setVisibility(View.VISIBLE);
+                     text_collected_balls.setVisibility(VISIBLE);
 
                  }
                  else
                  {
                      //not checked
                      Log.i(TAG,"TextBox is unchecked.");
+                     spinner_balls_collected.setVisibility(View.INVISIBLE);
+                     text_collected_balls.setVisibility(View.INVISIBLE);
 
                  }
              }
          }
         );
-
-        chk_PU_gear.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-             @Override
-             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                 Log.i(TAG, "chk_PU_gear Listener");
-                 if (buttonView.isChecked()) {
-                     //checked
-                     Log.i(TAG,"TextBox is checked.");
-
-                 }
-                 else
-                 {
-                     //not checked
-                     Log.i(TAG,"TextBox is unchecked.");
-
-                 }
-             }
-        }
-        );
-
 
         button_GearsPlus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
