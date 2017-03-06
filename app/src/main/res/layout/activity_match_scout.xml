@@ -160,9 +160,9 @@
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/chk_rope"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/txt_stopPos"
         android:layout_width="wrap_content"
-        android:layout_alignStart="@+id/button_GoToTeleopActivity" />
+        android:layout_alignStart="@+id/button_GoToTeleopActivity"
+        android:layout_alignBottom="@+id/spinner_balls_collected" />
     <!--android:layout_toEndOf="@+id/txt_Student"-->
 
     <CheckBox
@@ -185,14 +185,6 @@
         android:layout_below="@+id/chk_balls"
         android:layout_alignParentStart="true"
         android:layout_marginTop="32dp" />
-
-    <TextView
-        android:text="Stop Position"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txt_stopPos"
-        android:layout_alignBottom="@+id/spinner_stopPos"
-        android:layout_alignParentStart="true" />
 
     <SeekBar
         style="@style/Widget.AppCompat.SeekBar.Discrete"
@@ -372,27 +364,6 @@
         android:layout_alignBottom="@+id/chk_LowGoal"
         android:layout_alignEnd="@+id/txt_GearsAttempted" />
 
-    <Spinner
-        android:layout_width="40sp"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner_stopPos"
-        android:layout_marginTop="16dp"
-        android:layout_below="@+id/spinner_startPos"
-        android:layout_alignEnd="@+id/chk_balls"
-        android:layout_toEndOf="@+id/lbl_GearPlaced"
-        android:layout_alignStart="@+id/spinner_startPos" />
-
-    <CheckBox
-        android:id="@+id/chk_activate_hopper"
-        android:text="Activated Hopper"
-        android:layout_width="140dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="86dp"
-        android:layout_below="@+id/chk_baseline"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/text_LGSeekBarValue"
-        android:layout_alignEnd="@+id/spinner_startPos" />
-
     <CheckBox
         android:text="High Goal"
         android:layout_width="wrap_content"
@@ -433,14 +404,6 @@
         android:layout_below="@+id/button_GearsAttemptedPlus"
         android:layout_alignParentStart="true" />
 
-    <TextView
-        android:text="Gear Position"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView4"
-        android:layout_below="@+id/button_GearsAttemptedPlus"
-        android:layout_alignEnd="@+id/chk_LowGoal" />
-
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -449,25 +412,61 @@
         android:layout_alignEnd="@+id/chk_activate_hopper"
         android:layout_toEndOf="@+id/lbl_gearsAttempted" />
 
+    <CheckBox
+        android:id="@+id/chk_activate_hopper"
+        android:text="Activated Hopper"
+        android:layout_width="180dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/chk_LowGoal"
+        android:layout_alignParentStart="true" />
+
     <TextView
         android:text="Start Positon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/text_startpos"
-        android:layout_marginTop="54dp"
-        android:layout_below="@+id/chk_activate_hopper"
+        android:layout_marginTop="11dp"
+        android:layout_below="@+id/spinner_balls_collected"
         android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:layout_width="40sp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner_stopPos"
+        android:layout_below="@+id/spinner_startPos"
+        android:layout_alignStart="@+id/spinner_startPos"
+        android:layout_alignEnd="@+id/text_collected_balls" />
+
+    <TextView
+        android:text="Stop Position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_stopPos"
+        android:layout_above="@+id/editText_autoComment"
+        android:layout_toEndOf="@+id/lbl_space1" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
-        android:ems="10"
+        android:lines="2"
+        android:scrollbars="vertical"
+        android:ems="12"
+        android:textColor="@color/red"
+        android:background="@drawable/border"
         android:id="@+id/editText_autoComment"
         android:hint="Tap to add any additional comments."
-        android:layout_above="@+id/button_GoToTeleopActivity"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/txt_stopPos" />
+        android:layout_below="@+id/spinner_stopPos"
+        android:layout_alignStart="@+id/text_collected_balls"
+        android:layout_marginTop="30dp"
+        android:layout_toStartOf="@+id/button_GoToArenaLayoutActivity" />
+
+    <TextView
+        android:text="Gear Position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView4"
+        android:layout_below="@+id/button_GearsAttemptedPlus"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
