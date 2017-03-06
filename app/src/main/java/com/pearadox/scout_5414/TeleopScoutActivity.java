@@ -6,6 +6,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -35,6 +38,7 @@ public class TeleopScoutActivity extends Activity {
     private Button button_GoToFinalActivity,button_GearPlacedT, button_GearPlacedTPlus, button_GearAttemptedP, button_GearAttemptedM;
     CheckBox chk_climbsuccessful, chk_climbfailed, chk_touchpad, chk_touchpadpts, chkBox_highGoal, chkBox_lowGoal;
     SeekBar seekBar_HighGoal_Teleop, seekBar_LowGoal_Teleop;
+    EditText editText_TeleComments;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfTeam_DBReference;
     private DatabaseReference pfMatch_DBReference;
@@ -62,6 +66,7 @@ public class TeleopScoutActivity extends Activity {
         String param2 = bundle.getString("stud");
         Log.d(TAG, param1 + " " + param2);      // ** DEBUG **
 
+        editText_TeleComments = (EditText) findViewById(R.id.editText_teleComments);
         button_GoToFinalActivity = (Button) findViewById(R.id.button_GoToFinalActivity);
         button_GearPlacedT= (Button) findViewById(R.id.button_GearPlacedT);
         button_GearPlacedTPlus = (Button) findViewById(R.id.button_GearPlacedTPlus);
@@ -364,6 +369,25 @@ public class TeleopScoutActivity extends Activity {
            }
        }
         );
+
+        editText_TeleComments.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.i(TAG, "******  onTextChanged TextWatcher  ******" + s);
+                teleComment = String.valueOf(s);
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Log.i(TAG, "******  beforeTextChanged TextWatcher  ******");
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                Log.i(TAG, "******  onTextChanged TextWatcher  ******" + s );
+                teleComment = String.valueOf(s);
+            }
+        });
+
 
 
     }

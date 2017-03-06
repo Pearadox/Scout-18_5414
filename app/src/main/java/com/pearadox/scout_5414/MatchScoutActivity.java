@@ -47,7 +47,7 @@ public class MatchScoutActivity extends AppCompatActivity {
     TextView txt_EventName, txt_dev, txt_stud, txt_Match, txt_MyTeam, txt_TeamName, text_HGSeekBarValue, text_LGSeekBarValue, text_collected_balls;
     TextView txt_GearsPlaced, txt_GearsAttempted;
     CheckBox chk_baseline, chk_highGoal, chkBox_balls, chk_gears, chkBox_rope, chk_lowGoal, checkbox_automode, chk_activate_hopper;
-    EditText editText_Fuel;
+    EditText editText_Fuel, editText_autoComment;
     Spinner spinner_balls_collected;
     SeekBar seekBar_HighGoal, seekBar_LowGoal;
     ImageView imgScoutLogo;
@@ -72,6 +72,8 @@ public class MatchScoutActivity extends AppCompatActivity {
     public boolean auto = false;
     public boolean carry_fuel = false;
     public boolean carry_gear = false;
+    public boolean brought_rope = false;
+    public boolean activate_hopper = false;
     int gearNum = 0;
     int gearAttemptNum = 0;
     public boolean baseline = false;
@@ -79,7 +81,7 @@ public class MatchScoutActivity extends AppCompatActivity {
     int HGSvalue = 0;
     public boolean lg = false;
     int LGSvalue = 0;
-    int fuel = 0;
+    int fuel = 10;
     public String startPos = " ";
     public String stopPos = " ";
     public String gearPos = " ";
@@ -147,6 +149,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         checkbox_automode = (CheckBox) findViewById(R.id.checkbox_automode);
         chkBox_balls = (CheckBox) findViewById(R.id.chk_balls);
         editText_Fuel = (EditText) findViewById(R.id.editText_Fuel);
+        editText_autoComment = (EditText) findViewById(R.id.editText_autoComment);
         chk_gears = (CheckBox) findViewById(R.id.chk_gears);
         chk_activate_hopper = (CheckBox) findViewById(R.id.chk_activate_hopper);
         chkBox_rope = (CheckBox) findViewById(R.id.chk_rope);
@@ -236,13 +239,15 @@ public class MatchScoutActivity extends AppCompatActivity {
                 Log.i(TAG, "chk_baseline Listener");
                 if (buttonView.isChecked()) {
                     //checked
-                    Log.i(TAG,"TextBox is checked.");
+                    baseline = true;
+                    Log.i(TAG,"Cross the baseline = " + baseline);
 
                 }
                 else
                 {
                     //not checked
-                    Log.i(TAG,"TextBox is unchecked.");
+                    baseline = false;
+                    Log.i(TAG,"Cross the baseline = " + baseline);
 
                 }
             }
@@ -255,7 +260,6 @@ public class MatchScoutActivity extends AppCompatActivity {
                 Log.i(TAG, "chkBox_balls Listener");
                 if (buttonView.isChecked()) {
                     //checked
-                    Log.i(TAG,"TextBox is checked.");
                     editText_Fuel.setVisibility(View.VISIBLE);
                     editText_Fuel.setEnabled(true);
                     carry_fuel = true;
@@ -286,6 +290,25 @@ public class MatchScoutActivity extends AppCompatActivity {
 
             }
         });
+
+        editText_autoComment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.i(TAG, "******  onTextChanged TextWatcher  ******" + s);
+                autoComment = String.valueOf(s);
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Log.i(TAG, "******  beforeTextChanged TextWatcher  ******");
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                Log.i(TAG, "******  onTextChanged TextWatcher  ******" + s );
+                autoComment = String.valueOf(s);
+            }
+        });
+
         chkBox_rope.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
@@ -293,13 +316,15 @@ public class MatchScoutActivity extends AppCompatActivity {
                 Log.i(TAG, "chkBox_rope Listener");
                 if (buttonView.isChecked()) {
                     //checked
-                    Log.i(TAG,"TextBox is checked.");
+                    brought_rope = true;
+                    Log.i(TAG,"Brought their own rope = " + brought_rope);
 
                 }
                 else
                 {
                     //not checked
-                    Log.i(TAG,"TextBox is unchecked.");
+                    brought_rope = false;
+                    Log.i(TAG,"Brought their own rope = " + brought_rope);
 
                 }
             }
@@ -312,13 +337,15 @@ public class MatchScoutActivity extends AppCompatActivity {
                Log.i(TAG, "chk_gears Listener");
                if (buttonView.isChecked()) {
                    //checked
-                   Log.i(TAG,"TextBox is checked.");
+                   carry_gear = true;
+                   Log.i(TAG,"Brought their own gear = " + carry_gear);
 
                }
                else
                {
                    //not checked
-                   Log.i(TAG,"TextBox is unchecked.");
+                   carry_gear = false;
+                   Log.i(TAG,"Brought their own gear = " + carry_gear);
 
                }
            }
@@ -331,13 +358,15 @@ public class MatchScoutActivity extends AppCompatActivity {
                 Log.i(TAG, "chk_highGoal Listener");
                 if (buttonView.isChecked()) {
                     //checked
-                    Log.i(TAG,"TextBox is checked.");
+                    hg = true;
+                    Log.i(TAG,"Used the high goal = " + hg);
 
                 }
                 else
                 {
                     //not checked
-                    Log.i(TAG,"TextBox is unchecked.");
+                    hg = false;
+                    Log.i(TAG,"Used the high goal = " + hg);
 
                 }
                 if (buttonView.isChecked()) {
@@ -398,6 +427,8 @@ public class MatchScoutActivity extends AppCompatActivity {
                  Log.i(TAG, "chk_activate_hopper Listener");
                  if (buttonView.isChecked()) {
                      //checked
+                     activate_hopper = true;
+                     Log.i(TAG,"Activated hopper = " + activate_hopper);
                      Log.i(TAG,"TextBox is checked.");
                      spinner_balls_collected.setVisibility(View.VISIBLE);
                      text_collected_balls.setVisibility(VISIBLE);
@@ -406,6 +437,8 @@ public class MatchScoutActivity extends AppCompatActivity {
                  else
                  {
                      //not checked
+                     activate_hopper = false;
+                     Log.i(TAG,"Activate = " + activate_hopper);
                      Log.i(TAG,"TextBox is unchecked.");
                      spinner_balls_collected.setVisibility(View.INVISIBLE);
                      text_collected_balls.setVisibility(View.INVISIBLE);
@@ -555,9 +588,11 @@ public class MatchScoutActivity extends AppCompatActivity {
         Pearadox.Match_Data.setAuto_start(startPos);
         Pearadox.Match_Data.setAuto_stop(stopPos);
         Pearadox.Match_Data.setAuto_gear_pos(gearPos);
-        Pearadox.Match_Data.setAuto_pu_fuel(pu_Fuel);
-        Pearadox.Match_Data.setAuto_pu_gear(pu_Gear);
+        Pearadox.Match_Data.setAuto_rope(brought_rope);
+        Pearadox.Match_Data.setAuto_act_hopper(activate_hopper);
+        Pearadox.Match_Data.setAuto_fuel_collected(ballsCollected);
         Pearadox.Match_Data.setAuto_comment(autoComment);
+        Pearadox.Match_Data.setAuto_fuel_amount(fuel);
 
         Pearadox.Match_Data.setFinal_studID(studID);
     }

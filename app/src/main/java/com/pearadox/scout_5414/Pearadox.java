@@ -30,26 +30,26 @@ public class Pearadox {
 
     //*********************************************************
 // Firebase Obects used by Scouts for saving data
-    private String match;                   // Match ID (e.g., 'T00' where T = X(Practice), Q(ualifying) and '00' - match #
-    private String team_num;                // Team Number (e.gg., '5414'
-    private boolean auto_mode;              // Do they have Autonamous mode?
-    private boolean auto_rope;              // Do they have their own rope?
-    private boolean auto_carry_fuel;        // Do they carry fuel
-    private int auto_fuel_amount;           // Amount of fuel they carry
-    private boolean auto_gear;              // Do they carry a gear
-    private int auto_gears_placed;          // # gears placed during Auto
-    private int auto_gears_attempt;         // # gears attempted during Auto
-    private boolean auto_baseline;          // Did they cross Baseline
-    private boolean auto_hg;                // Did they shoot at High Goal
-    private int auto_hg_percent;            // What percentage HG made?
-    private boolean auto_lg;                // Did they shoor at Low Goal
-    private int auto_lg_percent;            // What percentage LG made?
-    private String auto_start;              // Where they started Auto
-    private String auto_stop;               // Where they stopped at end of Auto
-    private String auto_gear_pos;           // Where they placed their gear(s)
-    private boolean auto_act_hopper;        // Did they activate hopper
-    private String auto_fuel_collected;     // Fuel Collected Range
-    private String auto_comment;            // Auto comment
+    private static String match;                   // Match ID (e.g., 'T00' where T = X(Practice), Q(ualifying) and '00' - match #
+    private static String team_num;                // Team Number (e.gg., '5414'
+    private static boolean auto_mode;              // Do they have Autonamous mode?
+    private static boolean auto_rope;              // Do they have their own rope?
+    private static boolean auto_carry_fuel;        // Do they carry fuel
+    private static int auto_fuel_amount;           // Amount of fuel they carry
+    private static boolean auto_gear;              // Do they carry a gear
+    private static int auto_gears_placed;          // # gears placed during Auto
+    private static int auto_gears_attempt;         // # gears attempted during Auto
+    private static boolean auto_baseline;          // Did they cross Baseline
+    private static boolean auto_hg;                // Did they shoot at High Goal
+    private static int auto_hg_percent;            // What percentage HG made?
+    private static boolean auto_lg;                // Did they shoor at Low Goal
+    private static int auto_lg_percent;            // What percentage LG made?
+    private static String auto_start;              // Where they started Auto
+    private static String auto_stop;               // Where they stopped at end of Auto
+    private static String auto_gear_pos;           // Where they placed their gear(s)
+    private static boolean auto_act_hopper;        // Did they activate hopper
+    private static String auto_fuel_collected;     // Fuel Collected Range
+    private static String auto_comment;            // Auto comment
     // ============== TELE =================
     private  static int tele_gears_placed;          // # gears placed during Tele
     private  static int tele_gears_attempt;         // # gears attempted during ATele
@@ -61,6 +61,6 @@ public class Pearadox {
     private  static String final_studID;                    // Student doing the scouting
 
 // Java Object shared by Auto, Tele & Final
-    public matchData Match_Data = new matchData(match, team_num, auto_mode, auto_rope, auto_carry_fuel, auto_fuel_amount, auto_gear, auto_gears_placed, auto_gears_attempt, auto_baseline, auto_hg, auto_hg_percent, auto_lg, auto_lg_percent, auto_start, auto_stop, auto_gear_pos, auto_act_hopper, auto_fuel_collected, auto_comment, tele_gears_placed, tele_gears_attempt, tele_comment, final_comment, final_studID);
+    public static matchData Match_Data = new matchData(match, team_num, auto_mode, auto_rope, auto_carry_fuel, auto_fuel_amount, auto_gear, auto_gears_placed, auto_gears_attempt, auto_baseline, auto_hg, auto_hg_percent, auto_lg, auto_lg_percent, auto_start, auto_stop, auto_gear_pos, auto_act_hopper, auto_fuel_collected, auto_comment, tele_gears_placed, tele_gears_attempt, tele_comment, final_comment, final_studID);
 
 }

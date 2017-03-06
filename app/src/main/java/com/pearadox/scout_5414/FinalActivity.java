@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -95,7 +96,7 @@ public class FinalActivity extends Activity {
                 Pearadox.MatchData_Saved = true;    // Set flag to show saved
                 // ToDo - Clear all data back to original settings
 
-                finish();       // Exit
+//                finish();       // Exit
             }
         });
 
@@ -116,6 +117,104 @@ public class FinalActivity extends Activity {
                 finalComment = String.valueOf(s);
             }
         });
+        chk_lostPart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.i(TAG, "chk_lostPart Listener");
+                if (buttonView.isChecked()) {
+                    //checked
+                    Log.i(TAG,"TextBox is checked.");
+                    lost_Parts = true;
+                    Log.d(TAG,"Lost Parts = " + lost_Parts);
+                }
+                else
+                {
+                    //not checked
+                    Log.i(TAG,"TextBox is unchecked.");
+                    lost_Parts = false;
+                    Log.d(TAG, "Lost Parts = " + lost_Parts);
+
+                }
+            }
+        }
+        );
+        chk_lostComm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.i(TAG, "chk_lostComm Listener");
+                if (buttonView.isChecked()) {
+                    //checked
+                    Log.i(TAG,"TextBox is checked.");
+
+                }
+                else
+                {
+                    //not checked
+                    Log.i(TAG,"TextBox is unchecked.");
+
+                }
+            }
+        }
+        );
+        chk_starve.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.i(TAG, "chk_starve Listener");
+                if (buttonView.isChecked()) {
+                    //checked
+                    Log.i(TAG,"TextBox is checked.");
+
+                }
+                else
+                {
+                    //not checked
+                    Log.i(TAG,"TextBox is unchecked.");
+
+                }
+            }
+        }
+        );
+        chk_block.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.i(TAG, "chk_block Listener");
+                if (buttonView.isChecked()) {
+                    //checked
+                    Log.i(TAG,"TextBox is checked.");
+
+                }
+                else
+                {
+                    //not checked
+                    Log.i(TAG,"TextBox is unchecked.");
+
+                }
+            }
+        }
+        );
+        chk_dump.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.i(TAG, "chk_dump Listener");
+                if (buttonView.isChecked()) {
+                    //checked
+                    Log.i(TAG,"TextBox is checked.");
+
+                }
+                else
+                {
+                    //not checked
+                    Log.i(TAG,"TextBox is unchecked.");
+
+                }
+            }
+        }
+        );
 
 
     }
