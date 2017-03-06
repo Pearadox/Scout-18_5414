@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(getBaseContext(), "Select _ALL_ items (Event,Device,Student) before logging ON", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
+                    toggleLogon.setChecked(false);  // Set Toggle to Logged Off
                 } else {
                     if (toggleLogon.isChecked()) {      // See what state we are in
                         Log.d(TAG, "!!!  Logged IN  !!!");
