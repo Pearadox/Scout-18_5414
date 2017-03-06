@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     TextView txt_messageLine;
     Spinner spinner_Device, spinner_Event;
     ImageView img_netStatus;            // Internet Status
-//    public String deviceSelected = " ";
     ArrayAdapter<String> adapter_dev, adapter_StudStr, adapter_Event;
     public String devSelected = " ";
     Spinner spinner_Student;
@@ -181,11 +180,11 @@ public class MainActivity extends AppCompatActivity {
                     if (Scout_Match) {
                         updateDev(false);        // Update firebase with LOGOFF
                     }
-                    devSelected = "";       // Null
-                    radgrp_Scout.setVisibility(View.GONE);    // Hide scout group
-                    radgrp_Scout.setEnabled(false);
-                    spinner_Device.setSelection(0);         //Reset to NO selection
-                    spinner_Student.setSelection(0);        //*
+//                    devSelected = "";       // Null
+//                    radgrp_Scout.setVisibility(View.GONE);    // Hide scout group
+//                    radgrp_Scout.setEnabled(false);
+//                    spinner_Device.setSelection(0);         //Reset to NO selection
+//                    spinner_Student.setSelection(0);        //*
                 }
             }
        });
@@ -193,14 +192,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Logging Off " + devSelected , Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
 
     private void updateDev(boolean x) {     // x=true LOGON  x=false LOGOFF
@@ -609,8 +600,17 @@ public void onResume() {
     super.onResume();
     Log.v(TAG, "onResume");
     txt_messageLine = (TextView) findViewById(R.id.txt_messageLine);
-//    txt_messageLine.setText("Log OFF and prepare for next match ");
+    txt_messageLine.setText("Log ON and prepare/wait for next match ");
+
+    if (toggleLogon.isChecked()) {              // See what state we are in
+        logged_On = false;              // Logged OFF
+        if (Scout_Match) {
+            updateDev(false);           // Update firebase with LOGOFF
+        }
+        toggleLogon.setChecked(false);  // Set Toggle to Logged Off
+    }
 }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -622,9 +622,9 @@ public void onResume() {
         super.onDestroy();
         Log.v(TAG, "OnDestroy key-> " + key);
         if (logged_On) {
-            Toast toast = Toast.makeText(getBaseContext(), "Don't forget to _ALWAYS_ log OFF before exiting", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-            toast.show();
+//            Toast toast = Toast.makeText(getBaseContext(), "Don't forget to _ALWAYS_ log OFF before exiting", Toast.LENGTH_LONG);
+//            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+//            toast.show();
             if (key != null) {
                 pfDevice_DBReference.child(key).child("stud_id").setValue(" ");
             }

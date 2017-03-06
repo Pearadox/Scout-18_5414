@@ -7,8 +7,8 @@ android {
         applicationId "com.pearadox.scout_5414"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.6"
+        versionCode 2
+        versionName "2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

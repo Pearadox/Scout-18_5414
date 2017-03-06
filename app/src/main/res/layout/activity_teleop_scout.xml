@@ -225,17 +225,37 @@
         android:layout_alignBottom="@+id/chkBox_lowGoal"
         android:layout_toStartOf="@+id/seekBar_LowGoal_Teleop" />
 
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <ScrollView
+        android:id="@+id/scrollv_comm"
+        android:layout_width="500sp"
+        android:layout_height="150sp"
+        android:isScrollContainer="false"
+        android:layout_marginBottom="300dp"
+        android:layout_above="@+id/button_GoToFinalActivity"
+        android:layout_toEndOf="@+id/space_constrianLowGoal"
+        android:layout_marginStart="53dp">
+
     <EditText
-        android:layout_width="wrap_content"
+        android:id="@+id/editText_teleComments"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/editText_teleComments"
-        android:layout_above="@+id/button_GoToFinalActivity"
-        android:layout_marginBottom="69dp"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/space_constrianLowGoal"
+        android:lines="4"
+        android:scrollbars="vertical"
+        android:ems="12"
+        android:textColor="@color/yellow"
+        android:background="@drawable/border"
         android:hint="Tap to add any additional comments."
-        android:singleLine="false" />
+        android:layout_alignBottom="@+id/scrollv_comm"
+        android:layout_alignStart="@+id/scrollv_comm"
+        android:layout_marginStart="12dp"
+        android:layout_toStartOf="@+id/button_GoToFinalActivity" />
+
+
+
+    </ScrollView>
 
 </RelativeLayout>

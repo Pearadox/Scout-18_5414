@@ -412,6 +412,14 @@
         android:layout_alignEnd="@+id/chk_activate_hopper"
         android:layout_toEndOf="@+id/lbl_gearsAttempted" />
 
+    <TextView
+        android:text="Gear Position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView4"
+        android:layout_below="@+id/button_GearsAttemptedPlus"
+        android:layout_alignParentStart="true" />
+
     <CheckBox
         android:id="@+id/chk_activate_hopper"
         android:text="Activated Hopper"
@@ -430,23 +438,26 @@
         android:layout_alignParentStart="true" />
 
     <Spinner
-        android:layout_width="40sp"
+        android:layout_width="170sp"
         android:layout_height="wrap_content"
         android:id="@+id/spinner_stopPos"
         android:layout_below="@+id/spinner_startPos"
-        android:layout_alignStart="@+id/spinner_startPos"
-        android:layout_alignEnd="@+id/text_collected_balls" />
+        android:layout_alignStart="@+id/spinner_startPos" />
 
-    <TextView
-        android:text="Stop Position"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txt_stopPos"
-        android:layout_above="@+id/editText_autoComment"
-        android:layout_toEndOf="@+id/lbl_space1" />
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <ScrollView
+        android:id="@+id/scrollv_comm"
+        android:layout_width="500sp"
+        android:layout_height="100sp"
+        android:isScrollContainer="false"
+        android:layout_marginBottom="20dp"
+        android:layout_above="@+id/button_GoToTeleopActivity"
+        android:layout_toStartOf="@+id/lbl_Event">
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:lines="2"
@@ -458,15 +469,17 @@
         android:hint="Tap to add any additional comments."
         android:layout_below="@+id/spinner_stopPos"
         android:layout_alignStart="@+id/text_collected_balls"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_toStartOf="@+id/button_GoToArenaLayoutActivity" />
 
+    </ScrollView>
+
     <TextView
-        android:text="Gear Position"
+        android:text="Stop Position"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView4"
-        android:layout_below="@+id/button_GearsAttemptedPlus"
-        android:layout_alignParentStart="true" />
+        android:id="@+id/txt_stopPos"
+        android:layout_below="@+id/spinner_startPos"
+        android:layout_toEndOf="@+id/lbl_space1" />
 
 </RelativeLayout>
