@@ -494,11 +494,11 @@ public class TeleopScoutActivity extends Activity {
         Log.v(TAG, "onResume");
 
         if (Pearadox.MatchData_Saved) {
-            // ToDo - Clear all data back to priginal settings
+            // ToDo - Clear all data back to original settings
             Log.d(TAG, "#### Data was saved in Final #### ");
-            Toast.makeText(getBaseContext(), "Data was saved in Final - probably should Exit", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getBaseContext(), "Data was saved in Final - probably should Exit", Toast.LENGTH_LONG).show();
 
-            //                finish();       // Exit
+            finish();       // Exit
 
         }
     }

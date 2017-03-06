@@ -96,7 +96,7 @@ public class FinalActivity extends Activity {
                 Pearadox.MatchData_Saved = true;    // Set flag to show saved
                 // ToDo - Clear all data back to original settings
 
-//                finish();       // Exit
+                finish();       // Exit
             }
         });
 
