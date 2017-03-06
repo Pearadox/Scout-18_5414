@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
         txt_messageLine = (TextView) findViewById(R.id.txt_messageLine);
         txt_messageLine.setText("Hello Pearadox!  Please select Event and then Log yourself into Device.    ");
-        Spinner spinner_Event = (Spinner) findViewById(R.id.spinner_Event);
+        final Spinner spinner_Event = (Spinner) findViewById(R.id.spinner_Event);
         String[] events = getResources().getStringArray(R.array.event_array);
         adapter_Event = new ArrayAdapter<String>(this, R.layout.dev_list_layout, events);
         adapter_Event.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -126,65 +126,71 @@ public class MainActivity extends AppCompatActivity {
                 RadioGroup radgrp_Scout = (RadioGroup) findViewById(R.id.radgrp_Scout);
                 Spinner spinner_Device = (Spinner) findViewById(R.id.spinner_Device);
                 Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
-                if (toggleLogon.isChecked()) {      // See what state we are in
-                    Log.d(TAG, "!!!  Logged IN  !!!");
-                    logged_On = true;       // Logged ON
-                    switch (devSelected) {          // Who you gonna call?!?
-                    case "Scout Master":         // Scout Master
-                        Intent sm_intent = new Intent(MainActivity.this, ScoutMaster_Activity.class);
-                        startActivity(sm_intent);        // Start the Scout Master activity
-                        break;
-                    case "Visualizer":          // Visualizer
-                        Intent viz_intent = new Intent(MainActivity.this, Visualizer_Activity.class);
-                        Bundle VZbundle = new Bundle();
-                        VZbundle.putString("dev", devSelected);             // Pass data
-                        VZbundle.putString("stud", studentSelected);        //  to activity
-                        viz_intent.putExtras(VZbundle);
-                        startActivity(viz_intent);  	                    // Start Visualizer
-                        break;
-                    case ("Red-1"):             //#Red or Blue Scout
-                    case ("Red-2"):             //#
-                    case ("Red-3"):             //#
-                    case ("Blue-1"):            //#
-                    case ("Blue-2"):            //#
-                    case ("Blue-3"):            //#####
-                        Log.d(TAG, "### Red/Blue Scout ### " + devSelected);
-                        if (Scout_Match) {
-                            updateDev(true);        // Update firebase with LOGON
-                            Intent smast_intent = new Intent(MainActivity.this, MatchScoutActivity.class);
-                            Bundle SMbundle = new Bundle();
-                            SMbundle.putString("dev", devSelected);             // Pass data
-                            SMbundle.putString("stud", studentSelected);        //  to activity
-                            smast_intent.putExtras(SMbundle);
-                            startActivity(smast_intent);  	                    // Start Match Scout
-                        } else {
-                            if (Scout_Pit) {
-                                Intent spit_intent = new Intent(MainActivity.this, PitScoutActivity.class);
-                                Bundle SPbundle = new Bundle();
-                                SPbundle.putString("dev", devSelected);             // Pass data
-                                SPbundle.putString("stud", studentSelected);        //  to activity
-                                spit_intent.putExtras(SPbundle);
-                                startActivity(spit_intent);  	                    // Start Pit Scout
-                            } else {
-                                Log.e(TAG, "*** Error - Red/Blue Scout device selected but no TYPE indicator  ***");
-                            }
-                        }
-                        break;
-                    default:                //
-                        Log.d(TAG, "DEV = NULL" );
-                }
-
+                if (spinner_Event.getSelectedItemPosition() == 0 || spinner_Device.getSelectedItemPosition() == 0 || spinner_Student.getSelectedItemPosition() == 0) {
+                    Toast toast = Toast.makeText(getBaseContext(), "Select _ALL_ items (Event,Device,Student) before logging ON", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
                 } else {
-                    Log.d(TAG, "---  Logged OFF  ---");
-                    logged_On = false;       // Logged OFF
-                    if (Scout_Match) {
-                        updateDev(false);        // Update firebase with LOGOFF
-                    }
+                    if (toggleLogon.isChecked()) {      // See what state we are in
+                        Log.d(TAG, "!!!  Logged IN  !!!");
+                        logged_On = true;       // Logged ON
+                        switch (devSelected) {          // Who you gonna call?!?
+                            case "Scout Master":         // Scout Master
+                                Intent sm_intent = new Intent(MainActivity.this, ScoutMaster_Activity.class);
+                                startActivity(sm_intent);        // Start the Scout Master activity
+                                break;
+                            case "Visualizer":          // Visualizer
+                                Intent viz_intent = new Intent(MainActivity.this, Visualizer_Activity.class);
+                                Bundle VZbundle = new Bundle();
+                                VZbundle.putString("dev", devSelected);             // Pass data
+                                VZbundle.putString("stud", studentSelected);        //  to activity
+                                viz_intent.putExtras(VZbundle);
+                                startActivity(viz_intent);                        // Start Visualizer
+                                break;
+                            case ("Red-1"):             //#Red or Blue Scout
+                            case ("Red-2"):             //#
+                            case ("Red-3"):             //#
+                            case ("Blue-1"):            //#
+                            case ("Blue-2"):            //#
+                            case ("Blue-3"):            //#####
+                                Log.d(TAG, "### Red/Blue Scout ### " + devSelected);
+                                if (Scout_Match) {
+                                    updateDev(true);        // Update firebase with LOGON
+                                    Intent smast_intent = new Intent(MainActivity.this, MatchScoutActivity.class);
+                                    Bundle SMbundle = new Bundle();
+                                    SMbundle.putString("dev", devSelected);             // Pass data
+                                    SMbundle.putString("stud", studentSelected);        //  to activity
+                                    smast_intent.putExtras(SMbundle);
+                                    startActivity(smast_intent);                        // Start Match Scout
+                                } else {
+                                    if (Scout_Pit) {
+                                        Intent spit_intent = new Intent(MainActivity.this, PitScoutActivity.class);
+                                        Bundle SPbundle = new Bundle();
+                                        SPbundle.putString("dev", devSelected);             // Pass data
+                                        SPbundle.putString("stud", studentSelected);        //  to activity
+                                        spit_intent.putExtras(SPbundle);
+                                        startActivity(spit_intent);                        // Start Pit Scout
+                                    } else {
+                                        Log.e(TAG, "*** Error - Red/Blue Scout device selected but no TYPE indicator  ***");
+                                    }
+                                }
+                                break;
+                            default:                //
+                                Log.d(TAG, "DEV = NULL");
+                        }
+
+                    } else {
+                        Log.d(TAG, "---  Logged OFF  ---");
+                        logged_On = false;       // Logged OFF
+                        if (Scout_Match) {
+                            updateDev(false);        // Update firebase with LOGOFF
+                        }
 //                    devSelected = "";       // Null
 //                    radgrp_Scout.setVisibility(View.GONE);    // Hide scout group
 //                    radgrp_Scout.setEnabled(false);
 //                    spinner_Device.setSelection(0);         //Reset to NO selection
 //                    spinner_Student.setSelection(0);        //*
+                    }
                 }
             }
        });
