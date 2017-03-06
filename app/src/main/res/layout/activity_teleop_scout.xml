@@ -225,4 +225,17 @@
         android:layout_alignBottom="@+id/chkBox_lowGoal"
         android:layout_toStartOf="@+id/seekBar_LowGoal_Teleop" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/editText_teleComments"
+        android:layout_above="@+id/button_GoToFinalActivity"
+        android:layout_marginBottom="69dp"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/space_constrianLowGoal"
+        android:hint="Tap to add any additional comments."
+        android:singleLine="false" />
+
 </RelativeLayout>
