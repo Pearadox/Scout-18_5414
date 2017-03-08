@@ -19,58 +19,41 @@
         android:contentDescription="Scout Master logo"
         android:src="@drawable/scout_master" />
 
-    <TextView
-        android:id="@+id/lbl_MatchType"
-        android:layout_width="80dp"
-        android:layout_height="35dp"
-        android:layout_weight="1"
-        android:textSize="14dp"
-        android:textColor="@color/white"
-        android:text="Match Type"
-        android:layout_below="@+id/imageView_SM"
-        android:layout_marginTop="22dp" />
-
-    <Spinner
-        android:id="@+id/spinner_MatchType"
-        android:layout_width="140dp"
-        android:layout_height="25dp"
-        android:layout_weight="1"
-        android:prompt="@string/mtchtyp_prompt"
-        android:layout_alignTop="@+id/lbl_MatchType"
-        android:layout_toRightOf="@+id/lbl_MatchType"
-        android:layout_toEndOf="@+id/lbl_MatchType" />
-    <TextView
-        android:id="@+id/lbl_MatchNum"
-        android:text="Match Number"
-        android:layout_height="35dp"
-        android:textSize="14dp"
-        android:textColor="@color/white"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_below="@+id/lbl_MatchType"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Spinner
-        android:id="@+id/spinner_MatchNum"
-        android:layout_width="80dp"
-        android:layout_height="25dp"
-        android:layout_weight="1"
-        android:layout_below="@+id/spinner_MatchType"
-        android:layout_alignLeft="@+id/spinner_MatchType"
-        android:layout_alignStart="@+id/spinner_MatchType"
-        android:layout_marginLeft="12dp"
-        android:layout_marginStart="12dp" />
-    <ToggleButton
-        android:text="ToggleButton"
-        android:layout_width="wrap_content"
+    <TextClock
+        android:id="@+id/textClock"
+        android:layout_width="200sp"
         android:layout_height="wrap_content"
-        android:textOff="Start Match"
-        android:textOn="Stop Match"
-        android:id="@+id/toggleStartStop"
-        android:layout_alignTop="@+id/spinner_MatchType"
-        android:layout_toEndOf="@+id/lbl_Divider"
-        android:layout_marginStart="67dp" />
+        android:gravity="right"
+        android:textColor="@color/limegreen"
+        android:textSize="44sp"
+        android:textStyle="bold"
+        android:layout_marginLeft="10dp"
+        android:layout_alignBottom="@+id/imageView_SM"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/lbl_Matches"
+        android:layout_width="80dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/textClock"
+        android:layout_marginTop="11dp"
+        android:layout_toEndOf="@+id/lbl_space1"
+        android:layout_weight="1"
+        android:textStyle="bold"
+        android:text="Matches"
+        android:textColor="@color/white"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/txt_EventName"
+        android:text="Event Name which might be very long!!"
+        android:layout_width="270sp"
+        android:layout_height="25dp"
+        android:textSize="14dp"
+        android:textColor="@color/yellow"
+        android:textAlignment="viewEnd"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:id="@+id/lbl_space1"
@@ -79,19 +62,29 @@
         android:text=" " />
     // ================================
 
-    <TextView
-        android:id="@+id/lbl_RedAlliance"
-        android:layout_width="match_parent"
-        android:textColor="@color/darkred"
-        android:background="@color/red"
+    <Button
+        android:id="@+id/btn_Start"
+        android:layout_width="150sp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/lbl_MatchNum"
-        android:text="Red Alliance"
-        android:gravity="center_horizontal"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:text="Start Selected Match"
+        android:onClick="buttonStart_Click"
+        android:layout_marginTop="16dp"
+        android:layout_alignTop="@+id/linear_Matches"
+        android:layout_alignParentEnd="true" />
 
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    <Button
+        android:id="@+id/btn_Next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="Next Match"
+        android:onClick="buttonNext_Click"
+        android:layout_below="@+id/btn_Start"
+        android:layout_alignStart="@+id/btn_Start"
+        android:layout_alignEnd="@+id/btn_Start" />
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -318,17 +311,6 @@
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     /* Start of DEVICE list */
-    <TextView
-        android:id="@+id/lbl_Divider"
-        android:text="@string/lbl_Divider"
-        android:layout_width="wrap_content"
-        android:textSize="16sp"
-        android:textColor="@color/white"
-        android:layout_gravity="center_horizontal"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16sp"
-        android:layout_below="@+id/teams_sectB1"
-        android:layout_alignParentStart="true" />
 
     <LinearLayout
         android:id="@+id/devListR1"
@@ -505,6 +487,30 @@
 
 
     <TextView
+        android:id="@+id/lbl_Divider"
+        android:text="@string/lbl_Divider"
+        android:layout_width="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/teams_sectB1"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/lbl_RedAlliance"
+        android:layout_width="match_parent"
+        android:textColor="@color/darkred"
+        android:background="@color/red"
+        android:layout_height="wrap_content"
+        android:text="Red Alliance"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="22dp"
+        android:layout_below="@+id/linear_Matches"
+        android:layout_alignParentStart="true" />
+
+    <TextView
         android:id="@+id/lbl_BlueAlliance"
         android:layout_width="match_parent"
         android:textColor="@color/brightblue"
@@ -512,31 +518,47 @@
         android:layout_height="wrap_content"
         android:text="Blue Alliance"
         android:gravity="center_horizontal"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="12dp"
         android:layout_below="@+id/teams_sectR1"
         android:layout_alignParentStart="true" />
 
-    <TextView
-        android:id="@+id/txt_EventName"
-        android:text="Event Name which might be very long!!"
-        android:layout_width="270sp"
-        android:layout_height="25dp"
-        android:textSize="14dp"
-        android:textColor="@color/yellow"
-        android:textAlignment="viewEnd"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
 
-    <TextClock
-        android:id="@+id/textClock"
-        android:layout_width="200sp"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:textColor="@color/limegreen"
-        android:textSize="44sp"
+    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+
+    <LinearLayout
+        android:id="@+id/linear_Matches"
+        android:layout_width="400sp"
+        android:layout_height="240sp"
+        android:layout_below="@+id/lbl_Matches"
+        android:choiceMode="singleChoice"
+        android:listSelector="@android:color/holo_blue_light"
+        android:layout_toEndOf="@+id/lbl_space1"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <ListView
+            android:id="@+id/listView_Matches"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="10dp"
+            android:minHeight="80dip"
+            android:scrollbars="vertical"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_MatchID"
+        android:layout_width="50sp"
+        android:layout_height="30sp"
+        android:layout_marginStart="44dp"
+        android:text="T00"
+        android:textColor="@android:color/holo_blue_light"
+        android:textSize="16sp"
         android:textStyle="bold"
-        android:layout_alignBottom="@+id/imageView_SM"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@+id/btn_Start"
+        android:layout_alignStart="@+id/btn_Next"
+        android:layout_marginTop="14dp" />
 
 
 </RelativeLayout>
