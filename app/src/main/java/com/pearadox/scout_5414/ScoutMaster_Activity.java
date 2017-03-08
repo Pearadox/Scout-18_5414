@@ -122,52 +122,21 @@ public class ScoutMaster_Activity extends AppCompatActivity {
         clearDevData();
 
         Button btn_Start = (Button) findViewById(R.id.btn_Start);   // Listner defined in Layout XML
-//        button_View.setOnClickListener(buttonView_Click);
+//        button_View.setOnClickListener(buttonStart_Click);
         Button btn_Next = (Button) findViewById(R.id.btn_Next);   // Listner defined in Layout XML
-//        button_View.setOnClickListener(buttonView_Click);
+//        button_View.setOnClickListener(buttonNext_Click);
 
-//        toggleStartStop = (ToggleButton) findViewById(R.id.toggleStartStop);
-//        toggleStartStop.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Spinner spinner_MatchType = (Spinner) findViewById(R.id.spinner_MatchType);
-//                Spinner spinner_MatchNum = (Spinner) findViewById(R.id.spinner_MatchNum);
-//                String key = "0";
-//                if (toggleStartStop.isChecked()) {      // See what state we are in
-//                    pfCur_Match_DBReference.child(key).child("cur_match").setValue(matchID);
-//                    getTeams();
-//
-//                } else {        // Stop Session - Clear data
-//                    matchID = matchID.substring(0,1) + Integer.parseInt(NumSelected) + 1;
-//                    Log.d(TAG, "<<<<<  matchID  >>>>>> " + matchID);
-////                    spinner_MatchType.setSelection(0);       //Reset to NO selection
-//                    pfCur_Match_DBReference.child(key).child("cur_match").setValue("");  // set to null
-//                    pfCur_Match_DBReference.child(key).child("r1").setValue("");
-//                    pfCur_Match_DBReference.child(key).child("r2").setValue("");
-//                    pfCur_Match_DBReference.child(key).child("r3").setValue("");
-//                    pfCur_Match_DBReference.child(key).child("b1").setValue("");
-//                    pfCur_Match_DBReference.child(key).child("b2").setValue("");
-//                    pfCur_Match_DBReference.child(key).child("b3").setValue("");
-//                    clearTeamData();
-//
-//                    spinner_MatchNum.setSelection(Integer.parseInt(NumSelected) + 1);
-//                    pfCur_Match_DBReference.child(key).child("cur_match").setValue(matchID);
-//                    getTeams();
-//
-//                }
-//            }
-//        });
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         listView_Matches.setOnItemClickListener(new AdapterView.OnItemClickListener()	{
             public void onItemClick(AdapterView<?> parent,
                                     View view, int pos, long id) {
-                Log.d(TAG,"*** listView_Matches ***   Item Selected: " + pos);
+                Log.w(TAG,"*** listView_Matches ***   Item Selected: " + pos);
                 matchSelected = pos;
                 listView_Matches.setSelector(android.R.color.holo_blue_light);
         		/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
                 matchID = matchList.get(matchSelected).substring(0,3);
-                Log.d(TAG,"   MatchID: " + matchID);
+                Log.w(TAG,"   MatchID: " + matchID);
                 txt_MatchID = (TextView) findViewById(R.id.txt_MatchID);
                 txt_MatchID.setText(matchID);
             }
@@ -187,7 +156,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public void buttonStart_Click(View view) {
-        Log.d(TAG, " Start Button Click  " + matchID);
+        Log.w(TAG, " Start Button Click  " + matchID);
         String key = "0";
         pfCur_Match_DBReference.child(key).child("cur_match").setValue(matchID);
         getTeams();         // Get the teams for match selected
@@ -195,7 +164,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public void buttonNext_Click(View view) {
-        Log.d(TAG, " Next Button Click  " + matchSelected + " " + listView_Matches.getCount());
+        Log.w(TAG, " Next Button Click  " + matchSelected + " " + listView_Matches.getCount());
         if (matchSelected + 1 < listView_Matches.getCount()) {      // +1 since 1st is Zero
             String key = "0";
             pfCur_Match_DBReference.child(key).child("cur_match").setValue("");  // set to null
@@ -208,10 +177,10 @@ public class ScoutMaster_Activity extends AppCompatActivity {
             clearTeamData();
 
             matchSelected = matchSelected + 1;                        // increment selection
-            Log.d(TAG, "}}}}}}     matchSelected = " + matchSelected);
+            Log.w(TAG, "}}}}}}     matchSelected = " + matchSelected);
             listView_Matches.setSelection(matchSelected);
             matchID = matchList.get(matchSelected).substring(0, 3);
-            Log.d(TAG, "<<<<<  matchID  >>>>>> " + matchID);
+            Log.w(TAG, "<<<<<  matchID  >>>>>> " + matchID);
             txt_MatchID = (TextView) findViewById(R.id.txt_MatchID);
             txt_MatchID.setText(matchID);
 
@@ -273,7 +242,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
 
     private void getTeams() {
         Log.i(TAG, "$$$$$  getTeams");
-        Log.d(TAG, ">>>>>  Match = '" + matchID + "'");
+        Log.w(TAG, ">>>>>  Match = '" + matchID + "'");
         txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
         txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
         txt_teamR3 = (TextView) findViewById(R.id.txt_teamR3);
@@ -295,7 +264,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
             query.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Log.d(TAG, "%%%  ChildAdded");
+                    Log.w(TAG, "%%%  ChildAdded");
                     System.out.println(dataSnapshot.getValue());
                     p_Firebase.matchObj mobj = dataSnapshot.getValue(p_Firebase.matchObj.class);
 //                    System.out.println("Match: " + mobj.getMatch());
@@ -316,7 +285,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                     findTeam(tn);
                     tn = mobj.getB3();
                     findTeam(tn);
-                    Log.d(TAG, ">>>> # team instances = " + teams.size());  //** DEBUG
+                    Log.w(TAG, ">>>> # team instances = " + teams.size());  //** DEBUG
                     // Put the teams for this match on screen
                     String key = "0";   // Since only 1, key is zero
                     team_inst = teams.get(0);
@@ -346,15 +315,15 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                 }
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                    Log.d(TAG, "%%%  ChildChanged");
+                    Log.w(TAG, "%%%  ChildChanged");
                 }
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    Log.d(TAG, "%%%  ChildRemoved");
+                    Log.w(TAG, "%%%  ChildRemoved");
                 }
                 @Override
                 public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                    Log.d(TAG, "%%%  ChildMoved");
+                    Log.w(TAG, "%%%  ChildMoved");
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
@@ -373,7 +342,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
             if (Pearadox.team_List.get(i).getTeam_num().equals(tnum)) {
                 team_inst = Pearadox.team_List.get(i);
                 teams.add(team_inst);
-//                Log.d(TAG, "===  Team " + team_inst.getTeam_num() + " " + team_inst.getTeam_name() + " " + team_inst.getTeam_loc());
+//                Log.w(TAG, "===  Team " + team_inst.getTeam_num() + " " + team_inst.getTeam_name() + " " + team_inst.getTeam_loc());
                 found = true;
                 break;  // found it!
             }
@@ -390,7 +359,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
 //        public void onItemSelected(AdapterView<?> parent,
 //                                   View view, int pos, long id) {
 //            typSelected = parent.getItemAtPosition(pos).toString();
-//            Log.d(TAG, ">>>>>  '" + typSelected + "'");
+//            Log.w(TAG, ">>>>>  '" + typSelected + "'");
 //            switch (typSelected) {
 //                case "Practice":        // Practice round
 //                    matchID = "X";
@@ -415,7 +384,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
 //        public void onItemSelected(AdapterView<?> parent,
 //                                   View view, int pos, long id) {
 //            NumSelected = parent.getItemAtPosition(pos).toString();
-//            Log.d(TAG, ">>>>>  '" + NumSelected + "'");
+//            Log.w(TAG, ">>>>>  '" + NumSelected + "'");
 //            matchID = matchID + NumSelected;
 //        }
 //        public void onNothingSelected(AdapterView<?> parent) {
@@ -425,11 +394,11 @@ public class ScoutMaster_Activity extends AppCompatActivity {
 
 
     public void FindDevItem() {
-        Log.d(TAG, "%%%%  FindDevItem  %%%%");
+        Log.w(TAG, "%%%%  FindDevItem  %%%%");
         pfDevice_DBReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(TAG, "Device onDataChange  %%%%");
+                Log.w(TAG, "Device onDataChange  %%%%");
                 txt_scoutR1 = (TextView) findViewById(R.id.txt_scoutR1);
                 txt_scoutR2 = (TextView) findViewById(R.id.txt_scoutR2);
                 txt_scoutR3 = (TextView) findViewById(R.id.txt_scoutR3);
@@ -454,7 +423,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                     device = dev_Obj.getDev_name();
                     studname = dev_Obj.getStud_id();
                     status = dev_Obj.getPhase();
-                    Log.d(TAG, "%%%%  " + studname + " is logged onto " + device + " at Phase '" + status + "' ");
+                    Log.w(TAG, "%%%%  " + studname + " is logged onto " + device + " at Phase '" + status + "' ");
                     numDevs++;
 //                    if (studname.length() > 2) {
                         switch (device) {
@@ -479,7 +448,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                                         break;
                                     default:                //
                                         imgStat_R1.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_off));
-                                        Log.d(TAG, "***** Unknown Device Status ***** -> " + status);
+                                        Log.w(TAG, "***** Unknown Device Status ***** -> " + status);
                                 }
                                 break;
                             case ("Red-2"):             //#
@@ -500,7 +469,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                                         break;
                                     default:                //
                                         imgStat_R2.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_off));
-                                        Log.d(TAG, "***** Unknown Device Status ***** -> " + status);
+                                        Log.w(TAG, "***** Unknown Device Status ***** -> " + status);
                                 }
                                 break;
                             case ("Red-3"):             //#
@@ -521,7 +490,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                                         break;
                                     default:                //
                                         imgStat_R3.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_off));
-                                        Log.d(TAG, "***** Unknown Device Status ***** -> " + status);
+                                        Log.w(TAG, "***** Unknown Device Status ***** -> " + status);
                                 }
                                 break;
                             case ("Blue-1"):            //#
@@ -542,7 +511,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                                         break;
                                     default:                //
                                         imgStat_B1.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_off));
-                                        Log.d(TAG, "***** Unknown Device Status ***** -> " + status);
+                                        Log.w(TAG, "***** Unknown Device Status ***** -> " + status);
                                 }
                                 break;
                             case ("Blue-2"):            //#
@@ -563,7 +532,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                                         break;
                                     default:                //
                                         imgStat_B2.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_off));
-                                        Log.d(TAG, "***** Unknown Device Status ***** -> " + status);
+                                        Log.w(TAG, "***** Unknown Device Status ***** -> " + status);
                                 }
                                 break;
                             case ("Blue-3"):            //#####
@@ -584,18 +553,18 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                                         break;
                                     default:                //
                                         imgStat_B3.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_off));
-                                        Log.d(TAG, "***** Unknown Device Status ***** -> " + status);
+                                        Log.w(TAG, "***** Unknown Device Status ***** -> " + status);
                                 }
                                 break;
                             case "Visualizer":          // Visualizer
                                 // only interested in Scouts
                                 break;
                             default:                //
-                                Log.d(TAG, "*** Error DEV = " + device);
+                                Log.w(TAG, "*** Error DEV = " + device);
                         } // End Switch - Device
 //                    }
                 } // End While
-                Log.d(TAG, "*****  # of devices = " + numDevs);
+                Log.w(TAG, "*****  # of devices = " + numDevs);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -621,7 +590,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
         matchList.add("Q11"  + "  Time: 4:30PM" );
         matchList.add("Q12"  + "  Time: 4:45PM" );
 
-        Log.d(TAG,"### Matches ###  : " + matchList.size());
+        Log.w(TAG,"### Matches ###  : " + matchList.size());
 
     }
 
