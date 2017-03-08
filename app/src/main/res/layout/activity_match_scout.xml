@@ -346,13 +346,11 @@
         android:layout_toStartOf="@+id/button_GearsMinus" />
 
     <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/spinner_balls_collected"
+        android:layout_width="150sp"
+        android:layout_height="wrap_content"
         android:layout_alignTop="@+id/text_collected_balls"
-        android:layout_alignEnd="@+id/txt_stud"
-        android:layout_toEndOf="@+id/text_collected_balls"
-        android:layout_alignStart="@+id/checkbox_automode" />
+        android:layout_toEndOf="@+id/chk_balls" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -386,7 +384,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/text_collected_balls"
         android:layout_below="@+id/chk_activate_hopper"
-        android:layout_toStartOf="@+id/seekBar_LowGoal" />
+        android:layout_alignEnd="@+id/txt_Dev" />
 
     <Spinner
         android:layout_width="40sp"
@@ -433,14 +431,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/text_startpos"
-        android:layout_marginTop="11dp"
-        android:layout_below="@+id/spinner_balls_collected"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/chk_activate_hopper"
+        android:layout_alignEnd="@+id/textView4"
+        android:layout_marginTop="30dp" />
 
     <Spinner
         android:layout_width="170sp"
         android:layout_height="wrap_content"
         android:id="@+id/spinner_stopPos"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/spinner_startPos"
         android:layout_alignStart="@+id/spinner_startPos" />
 
@@ -479,7 +478,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txt_stopPos"
-        android:layout_below="@+id/spinner_startPos"
-        android:layout_toEndOf="@+id/lbl_space1" />
+        android:layout_alignTop="@+id/spinner_stopPos"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
