@@ -41,6 +41,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.ValueEventListener;
 
 import static android.app.PendingIntent.getActivity;
 import static com.pearadox.scout_5414.Pearadox.numTeams;
@@ -50,19 +51,14 @@ public class ScoutMaster_Activity extends AppCompatActivity {
     static String TAG = "ScoutMaster_Activity";      // This CLASS name
     ArrayAdapter<String> adapter_typ;
     public String typSelected = " ";
-//    Spinner spinner_MatchType;
-//    Spinner spinner_MatchNum;
     ArrayAdapter<String> adapter_Num;
     public String NumSelected = " ";
     public int matchSelected = 0;
     public String matchID = "T00";      // Type + #
     ListView listView_Matches;
-    String date, time, mtype, match, r1, r2, r3, b1, b2, b3;
-//    p_Firebase.matchObj matchList = new p_Firebase.matchObj(date, time, mtype, match, r1, r2, r3, b1, b2, b3);
     ArrayList<String> matchList = new ArrayList<String>();
     ArrayAdapter<String> adaptMatch;
     Button btn_Start, btn_Next;
-//    ToggleButton toggleStartStop;
     TextView txt_EventName, txt_MatchID;
     TextView txt_teamR1, txt_teamR2, txt_teamR3, txt_teamB1, txt_teamB2, txt_teamB3;
     TextView txt_teamR1_Name, txt_teamR2_Name, txt_teamR3_Name, txt_teamB1_Name, txt_teamB2_Name, txt_teamB3_Name;
@@ -79,6 +75,8 @@ public class ScoutMaster_Activity extends AppCompatActivity {
     String team_num, team_name, team_loc;
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name, team_loc);
     ArrayList<p_Firebase.teamsObj> teams = new ArrayList<p_Firebase.teamsObj>();
+    String date, time, mtype, match, r1, r2, r3, b1, b2, b3;
+    p_Firebase.matchObj match_inst = new p_Firebase.matchObj(date, time, mtype, match, r1, r2, r3, b1, b2, b3);
 
 
     @Override
@@ -93,25 +91,10 @@ public class ScoutMaster_Activity extends AppCompatActivity {
         txt_MatchID = (TextView) findViewById(R.id.txt_MatchID);
         txt_MatchID.setText(" ");
         listView_Matches = (ListView) findViewById(R.id.listView_Matches);
-//        String[] matchList = new String[12]; 	// Create array with Matches for this event
-
         adaptMatch = new ArrayAdapter<String>(this, R.layout.match_list_layout, matchList);
         listView_Matches.setAdapter(adaptMatch);
         adaptMatch.notifyDataSetChanged();
 
-//        Spinner spinner_MatchType = (Spinner) findViewById(R.id.spinner_MatchType);
-//        String[] devices = getResources().getStringArray(R.array.mtchtyp_array);
-//        adapter_typ = new ArrayAdapter<String>(this, R.layout.dev_list_layout, devices);
-//        adapter_typ.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner_MatchType.setAdapter(adapter_typ);
-//        spinner_MatchType.setSelection(0, false);
-//        spinner_MatchType.setOnItemSelectedListener(new type_OnItemSelectedListener());
-//        Spinner spinner_MatchNum = (Spinner) findViewById(R.id.spinner_MatchNum);
-//        ArrayAdapter adapter_Num = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Pearadox.matches);
-//        adapter_Num.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner_MatchNum.setAdapter(adapter_Num);
-//        spinner_MatchNum.setSelection(0, false);
-//        spinner_MatchNum.setOnItemSelectedListener(new mNum_OnItemSelectedListener());
         pfDatabase = FirebaseDatabase.getInstance();
         pfTeam_DBReference = pfDatabase.getReference("teams/" + Pearadox.FRC_Event);    // Team data from Firebase D/B
         pfStudent_DBReference = pfDatabase.getReference("students");                    // List of Students
@@ -576,23 +559,50 @@ public class ScoutMaster_Activity extends AppCompatActivity {
     private void loadMatches() {
         Log.i(TAG, "###  loadMatches  ###");
 
-        // ToDo - Load real data from Firebase
-        matchList.add("Q01"  + "  Time: 2:00PM" );
-        matchList.add("Q02"  + "  Time: 2:15PM" );
-        matchList.add("Q03"  + "  Time: 2:30PM" );
-        matchList.add("Q04"  + "  Time: 2:45PM" );
-        matchList.add("Q05"  + "  Time: 3:00PM" );
-        matchList.add("Q06"  + "  Time: 3:15PM" );
-        matchList.add("Q07"  + "  Time: 3:30PM" );
-        matchList.add("Q08"  + "  Time: 3:45PM" );
-        matchList.add("Q09"  + "  Time: 4:00PM" );
-        matchList.add("Q10"  + "  Time: 4:15PM" );
-        matchList.add("Q11"  + "  Time: 4:30PM" );
-        matchList.add("Q12"  + "  Time: 4:45PM" );
-
-        Log.w(TAG,"### Matches ###  : " + matchList.size());
+        addMatchSched_VE_Listener(pfMatch_DBReference.orderByChild("match"));
+//        matchList.add("Q01"  + "  Time: 2:00PM" );
+//        matchList.add("Q02"  + "  Time: 2:15PM" );
+//        matchList.add("Q03"  + "  Time: 2:30PM" );
+//        matchList.add("Q04"  + "  Time: 2:45PM" );
+//        matchList.add("Q05"  + "  Time: 3:00PM" );
+//        matchList.add("Q06"  + "  Time: 3:15PM" );
+//        matchList.add("Q07"  + "  Time: 3:30PM" );
+//        matchList.add("Q08"  + "  Time: 3:45PM" );
+//        matchList.add("Q09"  + "  Time: 4:00PM" );
+//        matchList.add("Q10"  + "  Time: 4:15PM" );
+//        matchList.add("Q11"  + "  Time: 4:30PM" );
+//        matchList.add("Q12"  + "  Time: 4:45PM" );
 
     }
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private void addMatchSched_VE_Listener(final Query pfMatch_DBReference) {
+        pfMatch_DBReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i(TAG, "******* Firebase retrieve Match Schedule  *******");
+                matchList.clear();
+                p_Firebase.matchObj match_inst = new p_Firebase.matchObj();
+                Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
+                Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
+                while (iterator.hasNext()) {
+                    match_inst = iterator.next().getValue(p_Firebase.matchObj.class);
+//                    Log.w(TAG,"      " + match_inst.getMatch());
+                    matchList.add(match_inst.getMatch() + "  Time: " + match_inst.getTime() + "  " + match_inst.getMtype());
+                }
+                Log.w(TAG,"### Matches ###  : " + matchList.size());
+                listView_Matches = (ListView) findViewById(R.id.listView_Matches);
+                adaptMatch = new ArrayAdapter<String>(ScoutMaster_Activity.this, R.layout.match_list_layout, matchList);
+                listView_Matches.setAdapter(adaptMatch);
+                adaptMatch.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                /*listener failed or was removed for security reasons*/
+                throw databaseError.toException();
+            }
+        });
+        }
 
 
 //###################################################################
