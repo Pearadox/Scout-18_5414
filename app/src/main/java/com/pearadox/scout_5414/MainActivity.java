@@ -1,14 +1,8 @@
 package com.pearadox.scout_5414;
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -16,31 +10,44 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import java.io.File;
-import java.net.InetAddress;
-import java.util.Arrays;
-import java.util.Iterator;
-
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.ToggleButton;
 import android.widget.RadioGroup;
-import static android.view.View.VISIBLE;
-
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.util.Arrays;
+import java.util.Iterator;
+
+
+import static android.R.id.input;
+import static android.view.View.VISIBLE;
 
 // Debug & Messaging
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.util.Log;
-import android.widget.Toast;
-import android.view.Gravity;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -64,9 +71,31 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference pfStudent_DBReference;
     private DatabaseReference pfDevice_DBReference;
     private DatabaseReference pfTeam_DBReference;
+    private DatabaseReference pfPitData_DBReference;
     String team_num, team_name, team_loc;
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name, team_loc);
     String key = null;
+
+    // ===================  Data Elements for Pit Scout object ===================
+    public String teamSelected = " ";           // Team #
+    public boolean dim_Tall = false;            // Dimension
+    public int totalWheels = 0;                 // Total # of wheels
+    public int numTraction = 0;                 // Num. of Traction wheels
+    public int numOmnis = 0;                     // Num. of Omni wheels
+    public int numMecanums = 0;                  // Num. of Mecanum wheels
+    public boolean gear_Collecter = false;      // presence of gear collector
+    public boolean fuel_Container = false;      // presence of Storage bin
+    public int storSize = 0;                    // estimate of # of balls
+    public boolean shooter = false;             // presence of Shooter
+    public boolean vision = false;              // presence of Vision Camera
+    public boolean pneumatics = false;          // presence of Pneumatics
+    public boolean fuelManip = false;           // presence of a way to pick up fuel from floor
+    public boolean climb = false;               // presence of a Climbing mechanism
+    /* */
+    public String comments = "";                // Comment(s)
+    public String scout = "";                   // Student who collected the data
+    // ===========================================================================
+    pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,numOmnis,numMecanums,gear_Collecter,fuel_Container,storSize,shooter,vision,pneumatics,fuelManip,climb,comments,scout);
 
 
     @Override
@@ -112,9 +141,10 @@ public class MainActivity extends AppCompatActivity {
 //        FirebaseDatabase.getInstance().setPersistenceEnabled(true);     // Enable 'Offline' Database
         pfDatabase = FirebaseDatabase.getInstance();
         if (Pearadox.is_Network) {      // is Internet available?
-            pfStudent_DBReference = pfDatabase.getReference("students");    // Get list of Students
+            pfStudent_DBReference = pfDatabase.getReference("students");        // Get list of Students
             addStud_VE_Listener(pfStudent_DBReference);
-            pfDevice_DBReference = pfDatabase.getReference("devices");      // List of Devices
+            pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Devices
+            pfPitData_DBReference = pfDatabase.getReference("pit-data/" + Pearadox.FRC_Event); // Pit Scout Data
         } else {        // Use smaller list in 'Values/strings'
             loadStudentString();
         }
@@ -213,10 +243,50 @@ public class MainActivity extends AppCompatActivity {
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public void buttonStore_Click(View view) {
-        Log.w(TAG, " buttonStore_Click   " );
-        Toast.makeText(this,"***  Not implemented just yet  ***", Toast.LENGTH_LONG).show();    // ** DEBUG
+        Log.i(TAG, " buttonStore_Click   " );
+        File direct_pit = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/" + Pearadox.FRC_Event);
+        Log.w(TAG, ">>>>> Path" + direct_pit);
+        if (direct_pit != null){
+            String[] filenames = direct_pit.list();
+            for (String tmpf : filenames){
+//                Log.w(TAG, " file " + tmpf);
+                team_num = tmpf.replaceFirst("[.][^.]+$", "");    // fileNameWithOutExt
+//                Log.w(TAG, "*******  Team:" + team_num);
+                try {
+                    Log.w(TAG, "   Dir:" + direct_pit + "/" + tmpf);
+                    InputStream file = new FileInputStream(direct_pit + "/" + tmpf);
+                    InputStream buffer = new BufferedInputStream(file);
+                    ObjectInput input = new ObjectInputStream(buffer);
+                    pitData  Pit_Data = (pitData)input.readObject();
+                    Log.w(TAG, "#### Obect" + Pit_Data.getPit_team() + "  " + Pit_Data.getPit_scout());
+            //      ToDo - Check to see if already in FB or Delete file from SD card
 
+                    String keyID = team_num;
+                    pfPitData_DBReference.child(keyID).setValue(Pit_Data);      // Store it to Firebase
+                    File goner = new File(direct_pit + "/" + tmpf);
+//                    boolean deleted = goner.delete();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }  // End for
+        }  // End If
+// ---------------------------------------
+//      ToDo - Read all data from SD card and write to Firebase (Photos)
+        File direct_img = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/" + Pearadox.FRC_Event);
+        Log.w(TAG, ">>>>> Path" + direct_img);
+        if (direct_img != null){
+            String[] filenames = direct_img.list();
+            for (String tmpf : filenames){
+                Log.w(TAG, " file " + tmpf);
+
+            }  // End for
+        }  // End If
     }
+
 
     private void updateDev(boolean x) {     // x=true LOGON  x=false LOGOFF
         Log.i(TAG, "#### updateDev #### " + x);
@@ -579,10 +649,6 @@ private void preReqs() {
         public void onNothingSelected(AdapterView<?> parent) {
             // Do nothing.
         }
-    }
-
-    private void start_Bluetooth(String devSelected) {
-
     }
 
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
