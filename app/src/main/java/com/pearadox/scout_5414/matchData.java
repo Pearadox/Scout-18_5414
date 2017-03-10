@@ -26,16 +26,35 @@ public class matchData implements Serializable {
     private String auto_fuel_collected;     // Fuel Collected Range
     private String auto_comment;            // Auto comment
     // ============== TELE =================
-    private int tele_gears_placed;
-    private int tele_gears_attempt;
+    private int     tele_gears_placed;      // # gears placed during Tele
+    private int     tele_gears_attempt;     // # gears attempted during Tele
+    private boolean tele_hg;                // Did they shoot at High Goal
+    private int     tele_hg_percent;        // What percentage HG made?
+    private boolean tele_lg;                // Did they shoor at Low Goal
+    private int     tele_lg_percent;        // What percentage LG made?
+    private int     tele_cycles;            // # cycles of shooting Upper Goal
+    private boolean tele_touch_act;         // Did they activate Touchpad
+    private boolean tele_touch_pts;         // Did they get Touchpad points
+    private boolean tele_climb_attempt;     // Did they ATTEMPT climb?
+    private boolean tele_climb_success;     // Was climb successful?
 
     private String tele_comment;            // Tele comment
     // ============= Final  ================
+    private boolean final_lostParts;         // Did they lose parts
+    private boolean final_lostComms;         // Did they lose communication
+    private boolean final_defense_good;      // Was their overall Defense Good (bad=false)
+    private boolean final_def_Lane;          // Did they use Lane Defense
+    private boolean final_def_Block;         // Did they use Blocking Defense
+    private boolean final_def_Hopper;        // Did they use Dump Defense (unload hoppers)
+    private boolean final_def_Gear;          // Did they use Block access to Gear placement
+    private int     final_num_Penalties;     // How many penalties received?
 
-    private String final_comment;           // Final comment
-    private String final_studID;            // Student doing the scouting
+    private String  final_comment;           // Final comment
+    private String  final_studID;            // Student doing the scouting
 
-    public matchData(String match, String team_num, boolean auto_mode, boolean auto_rope, boolean auto_carry_fuel, int auto_fuel_amount, boolean auto_gear, int auto_gears_placed, int auto_gears_attempt, boolean auto_baseline, boolean auto_hg, int auto_hg_percent, boolean auto_lg, int auto_lg_percent, String auto_start, String auto_stop, String auto_gear_pos, boolean auto_act_hopper, String auto_fuel_collected, String auto_comment, int tele_gears_placed, int tele_gears_attempt, String tele_comment, String final_comment, String final_studID) {
+// =================================================================================
+
+    public matchData(String match, String team_num, boolean auto_mode, boolean auto_rope, boolean auto_carry_fuel, int auto_fuel_amount, boolean auto_gear, int auto_gears_placed, int auto_gears_attempt, boolean auto_baseline, boolean auto_hg, int auto_hg_percent, boolean auto_lg, int auto_lg_percent, String auto_start, String auto_stop, String auto_gear_pos, boolean auto_act_hopper, String auto_fuel_collected, String auto_comment, int tele_gears_placed, int tele_gears_attempt, boolean tele_hg, int tele_hg_percent, boolean tele_lg, int tele_lg_percent, int tele_cycles, boolean tele_touch_act, boolean tele_touch_pts, boolean tele_climb_attempt, boolean tele_climb_success, String tele_comment, boolean final_lostParts, boolean final_lostComms, boolean final_defense_good, boolean final_def_Lane, boolean final_def_Block, boolean final_def_Hopper, boolean final_def_Gear, int final_num_Penalties, String final_comment, String final_studID) {
         this.match = match;
         this.team_num = team_num;
         this.auto_mode = auto_mode;
@@ -58,13 +77,29 @@ public class matchData implements Serializable {
         this.auto_comment = auto_comment;
         this.tele_gears_placed = tele_gears_placed;
         this.tele_gears_attempt = tele_gears_attempt;
+        this.tele_hg = tele_hg;
+        this.tele_hg_percent = tele_hg_percent;
+        this.tele_lg = tele_lg;
+        this.tele_lg_percent = tele_lg_percent;
+        this.tele_cycles = tele_cycles;
+        this.tele_touch_act = tele_touch_act;
+        this.tele_touch_pts = tele_touch_pts;
+        this.tele_climb_success = tele_climb_success;
         this.tele_comment = tele_comment;
+        this.final_lostParts = final_lostParts;
+        this.final_lostComms = final_lostComms;
+        this.final_defense_good = final_defense_good;
+        this.final_def_Lane = final_def_Lane;
+        this.final_def_Block = final_def_Block;
+        this.final_def_Hopper = final_def_Hopper;
+        this.final_def_Gear = final_def_Gear;
+        this.final_num_Penalties = final_num_Penalties;
         this.final_comment = final_comment;
         this.final_studID = final_studID;
     }
 
-    // =====================================
 
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -246,12 +281,148 @@ public class matchData implements Serializable {
         this.tele_gears_attempt = tele_gears_attempt;
     }
 
+    public boolean isTele_hg() {
+        return tele_hg;
+    }
+
+    public void setTele_hg(boolean tele_hg) {
+        this.tele_hg = tele_hg;
+    }
+
+    public int getTele_hg_percent() {
+        return tele_hg_percent;
+    }
+
+    public void setTele_hg_percent(int tele_hg_percent) {
+        this.tele_hg_percent = tele_hg_percent;
+    }
+
+    public boolean isTele_lg() {
+        return tele_lg;
+    }
+
+    public void setTele_lg(boolean tele_lg) {
+        this.tele_lg = tele_lg;
+    }
+
+    public int getTele_lg_percent() {
+        return tele_lg_percent;
+    }
+
+    public void setTele_lg_percent(int tele_lg_percent) {
+        this.tele_lg_percent = tele_lg_percent;
+    }
+
+    public int getTele_cycles() {
+        return tele_cycles;
+    }
+
+    public void setTele_cycles(int tele_cycles) {
+        this.tele_cycles = tele_cycles;
+    }
+
+    public boolean isTele_touch_act() {
+        return tele_touch_act;
+    }
+
+    public void setTele_touch_act(boolean tele_touch_act) {
+        this.tele_touch_act = tele_touch_act;
+    }
+
+    public boolean isTele_touch_pts() {
+        return tele_touch_pts;
+    }
+
+    public void setTele_touch_pts(boolean tele_touch_pts) {
+        this.tele_touch_pts = tele_touch_pts;
+    }
+
+    public boolean isTele_climb_attempt() {
+        return tele_climb_attempt;
+    }
+
+    public void setTele_climb_attempt(boolean tele_climb_attempt) {
+        this.tele_climb_attempt = tele_climb_attempt;
+    }
+
+    public boolean isTele_climb_success() {
+        return tele_climb_success;
+    }
+
+    public void setTele_climb_success(boolean tele_climb_success) {
+        this.tele_climb_success = tele_climb_success;
+    }
+
     public String getTele_comment() {
         return tele_comment;
     }
 
     public void setTele_comment(String tele_comment) {
         this.tele_comment = tele_comment;
+    }
+
+    public boolean isFinal_lostParts() {
+        return final_lostParts;
+    }
+
+    public void setFinal_lostParts(boolean final_lostParts) {
+        this.final_lostParts = final_lostParts;
+    }
+
+    public boolean isFinal_lostComms() {
+        return final_lostComms;
+    }
+
+    public void setFinal_lostComms(boolean final_lostComms) {
+        this.final_lostComms = final_lostComms;
+    }
+
+    public boolean isFinal_defense_good() {
+        return final_defense_good;
+    }
+
+    public void setFinal_defense_good(boolean final_defense_good) {
+        this.final_defense_good = final_defense_good;
+    }
+
+    public boolean isFinal_def_Lane() {
+        return final_def_Lane;
+    }
+
+    public void setFinal_def_Lane(boolean final_def_Lane) {
+        this.final_def_Lane = final_def_Lane;
+    }
+
+    public boolean isFinal_def_Block() {
+        return final_def_Block;
+    }
+
+    public void setFinal_def_Block(boolean final_def_Block) {
+        this.final_def_Block = final_def_Block;
+    }
+
+    public boolean isFinal_def_Hopper() {
+        return final_def_Hopper;
+    }
+
+    public void setFinal_def_Hopper(boolean final_def_Hopper) {
+        this.final_def_Hopper = final_def_Hopper;
+    }
+
+    public boolean isFinal_def_Gear() {
+        return final_def_Gear;
+    }
+
+    public void setFinal_def_Gear(boolean final_def_Gear) {
+        this.final_def_Gear = final_def_Gear;
+    }
+
+    public int getFinal_num_Penalties() {
+        return final_num_Penalties;
+    }
+
+    public void setFinal_num_Penalties(int final_num_Penalties) {
+        this.final_num_Penalties = final_num_Penalties;
     }
 
     public String getFinal_comment() {
@@ -269,6 +440,7 @@ public class matchData implements Serializable {
     public void setFinal_studID(String final_studID) {
         this.final_studID = final_studID;
     }
+
 
 // End of Getters/Setters
 

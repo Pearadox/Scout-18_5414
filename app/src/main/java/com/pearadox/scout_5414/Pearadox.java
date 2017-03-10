@@ -51,16 +51,36 @@ public class Pearadox {
     private static String auto_fuel_collected;     // Fuel Collected Range
     private static String auto_comment;            // Auto comment
     // ============== TELE =================
-    private  static int tele_gears_placed;          // # gears placed during Tele
-    private  static int tele_gears_attempt;         // # gears attempted during ATele
+    private static int     tele_gears_placed;      // # gears placed during Tele
+    private static int     tele_gears_attempt;     // # gears attempted during ATele
+    private static boolean tele_hg;                // Did they shoot at High Goal
+    private static int     tele_hg_percent;        // What percentage HG made?
+    private static boolean tele_lg;                // Did they shoor at Low Goal
+    private static int     tele_lg_percent;        // What percentage LG made?
+    private static int     tele_cycles;            // # cycles of shooting Upper Goal
+    private static boolean tele_touch_act;         // Did they activate Touchpad
+    private static boolean tele_touch_pts;         // Did they get Touchpad points
+    private static boolean tele_climb_attempt;     // Did they ATTEMPT climb?
+    private static boolean tele_climb_success;     // Was climb successful?
 
-    private  static String tele_comment;            // Tele comment
+    private static String tele_comment;            // Tele comment
     // ============= Final  ================
+    private static boolean final_lostParts;         // Did they lose parts
+    private static boolean final_lostComms;         // Did they lose communication
+    private static boolean final_defense_good;      // Was their overall Defense Good (bad=false)
+    private static boolean final_def_Lane;          // Did they use Lane Defense
+    private static boolean final_def_Block;         // Did they use Blocking Defense
+    private static boolean final_def_Hopper;        // Did they use Dump Defense (unload hoppers)
+    private static boolean final_def_Gear;          // Did they use Block access to Gear placement
+    private static int     final_num_Penalties;     // How many penalties received?
 
-    private  static String final_comment;                    // Final comment
-    private  static String final_studID;                    // Student doing the scouting
+    private static String  final_comment;           // Final comment
+    private static String  final_studID;            // Student doing the scouting
 
-// Java Object shared by Auto, Tele & Final
-    public static matchData Match_Data = new matchData(match, team_num, auto_mode, auto_rope, auto_carry_fuel, auto_fuel_amount, auto_gear, auto_gears_placed, auto_gears_attempt, auto_baseline, auto_hg, auto_hg_percent, auto_lg, auto_lg_percent, auto_start, auto_stop, auto_gear_pos, auto_act_hopper, auto_fuel_collected, auto_comment, tele_gears_placed, tele_gears_attempt, tele_comment, final_comment, final_studID);
+// Java Object _SHARED_ by Auto, Tele & Final
+    public static matchData Match_Data = new matchData(match, team_num,
+        auto_mode, auto_rope, auto_carry_fuel, auto_fuel_amount, auto_gear, auto_gears_placed, auto_gears_attempt, auto_baseline, auto_hg, auto_hg_percent, auto_lg, auto_lg_percent, auto_start, auto_stop, auto_gear_pos, auto_act_hopper, auto_fuel_collected, auto_comment,
+        tele_gears_placed, tele_gears_attempt, tele_hg, tele_hg_percent, tele_lg, tele_lg_percent, tele_cycles, tele_touch_act, tele_touch_pts, tele_climb_attempt, tele_climb_success, tele_comment,
+        final_lostParts, final_lostComms, final_defense_good, final_def_Lane, final_def_Block, final_def_Hopper, final_def_Gear, final_num_Penalties, final_comment, final_studID);
 
 }

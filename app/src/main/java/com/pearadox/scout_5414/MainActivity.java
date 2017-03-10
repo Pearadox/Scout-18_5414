@@ -26,6 +26,7 @@ import java.util.Iterator;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.ToggleButton;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     Spinner spinner_Student;
     public String studentSelected = " ";
     ToggleButton toggleLogon;
+    Button btn_StoreData;
     RadioGroup radgrp_Scout;      RadioButton radioScoutTyp;
     Boolean logged_On = false;
     Boolean Scout_Match = false, Scout_Pit = false;
@@ -81,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
         deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 //        Toast.makeText(this,"Device ID: " + deviceId, Toast.LENGTH_LONG).show();    // ** DEBUG
-        Log.d(TAG, "Device ID: " + deviceId);                                       // ** DEBUG
-        Pearadox.FRC514_Device = deviceId; 		// Save device ID
+        Log.w(TAG, "Device ID: " + deviceId);                                       // ** DEBUG
+        Pearadox.FRC514_Device = deviceId;        // Save device ID
         setContentView(R.layout.activity_main);
 
         txt_messageLine = (TextView) findViewById(R.id.txt_messageLine);
@@ -104,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         spinner_Device.setOnItemSelectedListener(new device_OnItemSelectedListener());
         ImageView img_netStatus = (ImageView) findViewById(R.id.img_netStatus);
 
-        preReqs(); 				        // Check for pre-requisites
+        preReqs();                        // Check for pre-requisites
         isInternetAvailable();          // See if device has Internet
 
 //        FirebaseDatabase.getInstance().setPersistenceEnabled(true);     // Enable 'Offline' Database
@@ -118,86 +120,101 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
+        Button btn_StoreData = (Button) findViewById(R.id.btn_StoreData);   // Listner defined in Layout XML
+//        button_View.setOnClickListener(buttonStore_Click);
+        if (Pearadox.is_Network) {      // is Internet available?
+            btn_StoreData.setVisibility(View.VISIBLE);
+        } else {        // Don't show button
+            btn_StoreData.setVisibility(View.GONE);
+        }
 
-        toggleLogon = (ToggleButton) findViewById(R.id.toggleLogon);
-        toggleLogon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RadioGroup radgrp_Scout = (RadioGroup) findViewById(R.id.radgrp_Scout);
-                Spinner spinner_Device = (Spinner) findViewById(R.id.spinner_Device);
-                Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
-                if (spinner_Event.getSelectedItemPosition() == 0 || spinner_Device.getSelectedItemPosition() == 0 || spinner_Student.getSelectedItemPosition() == 0) {
-                    Toast toast = Toast.makeText(getBaseContext(), "Select _ALL_ items (Event,Device,Student) before logging ON", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                    toast.show();
-                    toggleLogon.setChecked(false);  // Set Toggle to Logged Off
-                } else {
-                    if (toggleLogon.isChecked()) {      // See what state we are in
-                        Log.d(TAG, "!!!  Logged IN  !!!");
-                        logged_On = true;       // Logged ON
-                        switch (devSelected) {          // Who you gonna call?!?
-                            case "Scout Master":         // Scout Master
-                                Intent sm_intent = new Intent(MainActivity.this, ScoutMaster_Activity.class);
-                                startActivity(sm_intent);        // Start the Scout Master activity
-                                break;
-                            case "Visualizer":          // Visualizer
-                                Intent viz_intent = new Intent(MainActivity.this, Visualizer_Activity.class);
-                                Bundle VZbundle = new Bundle();
-                                VZbundle.putString("dev", devSelected);             // Pass data
-                                VZbundle.putString("stud", studentSelected);        //  to activity
-                                viz_intent.putExtras(VZbundle);
-                                startActivity(viz_intent);                        // Start Visualizer
-                                break;
-                            case ("Red-1"):             //#Red or Blue Scout
-                            case ("Red-2"):             //#
-                            case ("Red-3"):             //#
-                            case ("Blue-1"):            //#
-                            case ("Blue-2"):            //#
-                            case ("Blue-3"):            //#####
-                                Log.d(TAG, "### Red/Blue Scout ### " + devSelected);
-                                if (Scout_Match) {
-                                    updateDev(true);        // Update firebase with LOGON
-                                    Intent smast_intent = new Intent(MainActivity.this, MatchScoutActivity.class);
-                                    Bundle SMbundle = new Bundle();
-                                    SMbundle.putString("dev", devSelected);             // Pass data
-                                    SMbundle.putString("stud", studentSelected);        //  to activity
-                                    smast_intent.putExtras(SMbundle);
-                                    startActivity(smast_intent);                        // Start Match Scout
-                                } else {
-                                    if (Scout_Pit) {
-                                        Intent spit_intent = new Intent(MainActivity.this, PitScoutActivity.class);
-                                        Bundle SPbundle = new Bundle();
-                                        SPbundle.putString("dev", devSelected);             // Pass data
-                                        SPbundle.putString("stud", studentSelected);        //  to activity
-                                        spit_intent.putExtras(SPbundle);
-                                        startActivity(spit_intent);                        // Start Pit Scout
-                                    } else {
-                                        Log.e(TAG, "*** Error - Red/Blue Scout device selected but no TYPE indicator  ***");
-                                    }
-                                }
-                                break;
-                            default:                //
-                                Log.d(TAG, "DEV = NULL");
-                        }
-
+            toggleLogon = (ToggleButton) findViewById(R.id.toggleLogon);
+            toggleLogon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RadioGroup radgrp_Scout = (RadioGroup) findViewById(R.id.radgrp_Scout);
+                    Spinner spinner_Device = (Spinner) findViewById(R.id.spinner_Device);
+                    Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
+                    if (spinner_Event.getSelectedItemPosition() == 0 || spinner_Device.getSelectedItemPosition() == 0 || spinner_Student.getSelectedItemPosition() == 0) {
+                        Toast toast = Toast.makeText(getBaseContext(), "Select _ALL_ items (Event,Device,Student) before logging ON", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                        toggleLogon.setChecked(false);  // Set Toggle to Logged Off
                     } else {
-                        Log.d(TAG, "---  Logged OFF  ---");
-                        logged_On = false;       // Logged OFF
-                        if (Scout_Match) {
-                            updateDev(false);        // Update firebase with LOGOFF
-                        }
+                        if (toggleLogon.isChecked()) {      // See what state we are in
+                            Log.w(TAG, "!!!  Logged IN  !!!");
+                            logged_On = true;       // Logged ON
+                            switch (devSelected) {          // Who you gonna call?!?
+                                case "Scout Master":         // Scout Master
+                                    Intent sm_intent = new Intent(MainActivity.this, ScoutMaster_Activity.class);
+                                    startActivity(sm_intent);        // Start the Scout Master activity
+                                    break;
+                                case "Visualizer":          // Visualizer
+                                    Intent viz_intent = new Intent(MainActivity.this, Visualizer_Activity.class);
+                                    Bundle VZbundle = new Bundle();
+                                    VZbundle.putString("dev", devSelected);             // Pass data
+                                    VZbundle.putString("stud", studentSelected);        //  to activity
+                                    viz_intent.putExtras(VZbundle);
+                                    startActivity(viz_intent);                        // Start Visualizer
+                                    break;
+                                case ("Red-1"):             //#Red or Blue Scout
+                                case ("Red-2"):             //#
+                                case ("Red-3"):             //#
+                                case ("Blue-1"):            //#
+                                case ("Blue-2"):            //#
+                                case ("Blue-3"):            //#####
+                                    Log.w(TAG, "### Red/Blue Scout ### " + devSelected +"  '" + studentSelected + "'" );
+                                    if (Scout_Match) {
+                                        updateDev(true);        // Update firebase with LOGON
+                                        Intent smast_intent = new Intent(MainActivity.this, MatchScoutActivity.class);
+                                        Bundle SMbundle = new Bundle();
+                                        SMbundle.putString("dev", devSelected);             // Pass data
+                                        SMbundle.putString("stud", studentSelected);        //  to activity
+                                        smast_intent.putExtras(SMbundle);
+                                        startActivity(smast_intent);                        // Start Match Scout
+                                    } else {
+                                        if (Scout_Pit) {
+                                            Intent spit_intent = new Intent(MainActivity.this, PitScoutActivity.class);
+                                            Bundle SPbundle = new Bundle();
+                                            SPbundle.putString("dev", devSelected);             // Pass data
+                                            SPbundle.putString("stud", studentSelected);        //  to activity
+                                            spit_intent.putExtras(SPbundle);
+                                            startActivity(spit_intent);                        // Start Pit Scout
+                                        } else {
+                                            Log.e(TAG, "*** Error - Red/Blue Scout device selected but no TYPE indicator  ***");
+                                        }
+                                    }
+                                    break;
+                                default:                //
+                                    Log.w(TAG, "DEV = NULL");
+                            }
+
+                        } else {
+                            Log.w(TAG, "---  Logged OFF  ---");
+                            logged_On = false;       // Logged OFF
+                            if (Scout_Match) {
+                                updateDev(false);        // Update firebase with LOGOFF
+                            }
 //                    devSelected = "";       // Null
 //                    radgrp_Scout.setVisibility(View.GONE);    // Hide scout group
 //                    radgrp_Scout.setEnabled(false);
 //                    spinner_Device.setSelection(0);         //Reset to NO selection
 //                    spinner_Student.setSelection(0);        //*
+                        }
                     }
                 }
-            }
-       });
+            });
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+
+        }
+
+
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    public void buttonStore_Click(View view) {
+        Log.w(TAG, " buttonStore_Click   " );
+        Toast.makeText(this,"***  Not implemented just yet  ***", Toast.LENGTH_LONG).show();    // ** DEBUG
 
     }
 
@@ -229,15 +246,15 @@ public class MainActivity extends AppCompatActivity {
                 key = "7";
                 break;
             default:                //
-                Log.d(TAG, "DEV = NULL" );
+                Log.w(TAG, "DEV = NULL" );
         }
         if (Pearadox.is_Network) {      // Got Internet?
             if (x) {
-                Log.d(TAG, "updating KEY = " + key);
+                Log.w(TAG, "updating KEY = " + key);
                 pfDevice_DBReference.child(key).child("stud_id").setValue(studentSelected);
                 pfDevice_DBReference.child(key).child("phase").setValue("Auto");
               } else {
-                Log.d(TAG, "Nulling KEY = " + key);
+                Log.w(TAG, "Nulling KEY = " + key);
                 pfDevice_DBReference.child(key).child("stud_id").setValue(" ");
                 pfDevice_DBReference.child(key).child("phase").setValue(" ");
             }
@@ -275,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
         pfStudent_DBReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(TAG, "******* Firebase retrieveStudents  *******");
+                Log.w(TAG, "******* Firebase retrieveStudents  *******");
                 Pearadox.stud_Lst.clear();
                 p_Firebase.students student_Obj = new p_Firebase.students();
                 Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
@@ -284,16 +301,16 @@ public class MainActivity extends AppCompatActivity {
                     student_Obj = iterator.next().getValue(p_Firebase.students.class);
                     Pearadox.stud_Lst.add(student_Obj);
                 }
-                Log.d(TAG, "*****  # of students = " + Pearadox.stud_Lst.size());
+                Log.w(TAG, "*****  # of students = " + Pearadox.stud_Lst.size());
                 Pearadox.numStudents = Pearadox.stud_Lst.size() +1;
-                Log.d(TAG, "@@@ array size = " + Pearadox.numStudents);
+                Log.w(TAG, "@@@ array size = " + Pearadox.numStudents);
                 Pearadox.student_List = new String[Pearadox.numStudents];  // Re-size for spinner
                 Arrays.fill(Pearadox.student_List, null );
                 Pearadox.student_List[0] = " ";       // make it so 1st Drop-Down entry is blank
                 for(int i=0 ; i < Pearadox.stud_Lst.size() ; i++)
                 {
                     student_Obj = Pearadox.stud_Lst.get(i);
-//                    Log.d(TAG, "***** student = " + student_Obj.getName() + " " + i);
+//                    Log.w(TAG, "***** student = " + student_Obj.getName() + " " + i);
                     Pearadox.student_List[i + 1] = student_Obj.getName();
                 }
                 Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
@@ -312,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
     }
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void loadStudentString() {
-        Log.d(TAG, "++++++ loadStudentString ++++++ " + Pearadox.is_Network);
+        Log.w(TAG, "++++++ loadStudentString ++++++ " + Pearadox.is_Network);
         Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
         String[] studs = getResources().getStringArray(R.array.student_array);
         adapter_StudStr = new ArrayAdapter<String>(this, R.layout.dev_list_layout, studs);
@@ -326,7 +343,7 @@ public class MainActivity extends AppCompatActivity {
 private void preReqs() {
     boolean isSdPresent;
     isSdPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
-    Log.d(TAG, "SD card: " + isSdPresent);
+    Log.w(TAG, "SD card: " + isSdPresent);
     if (isSdPresent) { 		// Make sure FRC directory is there
         File extStore = Environment.getExternalStorageDirectory();
         File directFRC = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414");
@@ -344,7 +361,7 @@ private void preReqs() {
             if(direct_iLub.mkdir())
             {
             } else {
-                Log.d(TAG, " ****>>> ERROR creating directory  <<<<**** " + direct_iLub);
+                Log.w(TAG, " ****>>> ERROR creating directory  <<<<**** " + direct_iLub);
 
             }        //directory is created;
         }
@@ -422,29 +439,29 @@ private void preReqs() {
                     this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
             NetworkInfo wifi = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-            Log.d(TAG, ">>>>> wifi = " + wifi);
+            Log.w(TAG, ">>>>> wifi = " + wifi);
             NetworkInfo mobile = connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-            Log.d(TAG, ">>>>> mobile = " + mobile);
+            Log.w(TAG, ">>>>> mobile = " + mobile);
             NetworkInfo bt = connMgr.getNetworkInfo(ConnectivityManager.TYPE_BLUETOOTH);
-            Log.d(TAG, ">>>>> Bluetooth = " + bt);
+            Log.w(TAG, ">>>>> Bluetooth = " + bt);
 
             // ========= Test it =========
             if( wifi.isAvailable() && wifi.isConnected()){
-                Log.d(TAG, "$$$ Wi-Fi $$$ " + wifi.getExtraInfo());
+                Log.w(TAG, "$$$ Wi-Fi $$$ " + wifi.getExtraInfo());
 //                Toast.makeText(this, "Wifi" , Toast.LENGTH_LONG).show();
                 img_netStatus.setImageDrawable(getResources().getDrawable(R.drawable.wifi_bad));
                 Pearadox.is_Network = true;
                 status = true;
             }
             else if( mobile.isAvailable() ){
-                Log.d(TAG, "*** Mobile ***");
+                Log.w(TAG, "*** Mobile ***");
 //                Toast.makeText(this, "Mobile 3/4G " , Toast.LENGTH_LONG).show();
                 img_netStatus.setImageDrawable(getResources().getDrawable(R.drawable.net_4g));
                 Pearadox.is_Network = true;
                 status = true;
             }
             else if( bt.isAvailable() ){
-                Log.d(TAG, "### Bluetooth ###");
+                Log.w(TAG, "### Bluetooth ###");
 //                Toast.makeText(this, " Bluetooth " , Toast.LENGTH_LONG).show();
                 img_netStatus.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth));
                 Pearadox.is_Network = true;
@@ -452,7 +469,7 @@ private void preReqs() {
             }
             else
             {
-                Log.d(TAG, "@@@ No Network @@@");
+                Log.w(TAG, "@@@ No Network @@@");
 //                Toast.makeText(this, "No Network " , Toast.LENGTH_LONG).show();
                 img_netStatus.setImageDrawable(getResources().getDrawable(R.drawable.no_connection));
                 Pearadox.is_Network = false;
@@ -464,7 +481,7 @@ private void preReqs() {
             return false;
         }
 
-        Log.d(TAG, "@@@@@ Network Status = " + status);
+        Log.w(TAG, "@@@@@ Network Status = " + status);
         return status;
     }
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -502,7 +519,7 @@ private void preReqs() {
                                    View view, int pos, long id) {
             String ev = parent.getItemAtPosition(pos).toString();
             Pearadox.FRC_EventName = ev;
-            Log.d(TAG, ">>>>> Event '" + Pearadox.FRC_EventName + "'");
+            Log.w(TAG, ">>>>> Event '" + Pearadox.FRC_EventName + "'");
             Spinner spinner_Device = (Spinner) findViewById(R.id.spinner_Device);
             Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
             spinner_Device.setClickable(true);
@@ -521,7 +538,7 @@ private void preReqs() {
                     Toast.makeText(getBaseContext(), "Event code not recognized", Toast.LENGTH_LONG).show();
                     Pearadox.FRC_Event = "zzzz";
             }
-            Log.d(TAG, " Event code = '" + Pearadox.FRC_Event + "'");
+            Log.w(TAG, " Event code = '" + Pearadox.FRC_Event + "'");
             pfTeam_DBReference = pfDatabase.getReference("teams/" + Pearadox.FRC_Event);   // Team data from Firebase D/B
             addTeam_VE_Listener(pfTeam_DBReference);        // Load Teams since we now know event
         }
@@ -534,7 +551,7 @@ private void preReqs() {
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {
             devSelected = parent.getItemAtPosition(pos).toString();
-            Log.d(TAG, ">>>>> Device '" + devSelected + "'");
+            Log.w(TAG, ">>>>> Device '" + devSelected + "'");
             Pearadox.FRC514_Device = devSelected;
             RadioGroup radgrp_Scout = (RadioGroup) findViewById(R.id.radgrp_Scout);
             switch (devSelected) {
@@ -573,7 +590,7 @@ private void preReqs() {
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {
             studentSelected = parent.getItemAtPosition(pos).toString();
-            Log.d(TAG, ">>>>> Student  '" + studentSelected + "'");
+            Log.w(TAG, ">>>>> Student  '" + studentSelected + "'");
             Pearadox.Student_ID = studentSelected;
         }
         public void onNothingSelected(AdapterView<?> parent) {
@@ -582,18 +599,18 @@ private void preReqs() {
     }
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
     public void RadioClick_Scout(View view) {
-        Log.d(TAG, "@@ RadioClick_Scout @@");
+        Log.w(TAG, "@@ RadioClick_Scout @@");
         radgrp_Scout = (RadioGroup) findViewById(R.id.radgrp_Scout);
         int selectedId = radgrp_Scout.getCheckedRadioButtonId();
         radioScoutTyp = (RadioButton) findViewById(selectedId);
         String value = radioScoutTyp.getText().toString();
-        Log.d(TAG, "RadioScout - Button '" + value + "'");
+        Log.w(TAG, "RadioScout - Button '" + value + "'");
         if (value.equals("Match Scout")) { 	    // Match?
-            Log.d(TAG, "Match Scout");
+            Log.w(TAG, "Match Scout");
             Scout_Match = true;
             Scout_Pit = false;
          } else {                               // Pit
-            Log.d(TAG, "Pit Scout");
+            Log.w(TAG, "Pit Scout");
             Scout_Match = false;
             Scout_Pit = true;
         }
