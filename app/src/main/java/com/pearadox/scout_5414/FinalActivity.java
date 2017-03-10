@@ -241,7 +241,7 @@ public class FinalActivity extends Activity {
         Log.i(TAG, "@@@@  saveDatatoSDcard  @@@@");
         String filename = Pearadox.Match_Data.getMatch() + "_" + Pearadox.Match_Data.getTeam_num() + ".dat";
         ObjectOutput out = null;
-        File directMatch = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/" + filename);
+        File directMatch = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/" + Pearadox.FRC_Event + "/" + filename);
         Log.d(TAG, "SD card Path = " + directMatch);
         if(directMatch.exists())  {
             // Todo - Replace TOAST with Dialog Box  - "Do you really ..."
