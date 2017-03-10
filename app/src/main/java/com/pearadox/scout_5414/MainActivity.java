@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -26,11 +28,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -64,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     public String studentSelected = " ";
     ToggleButton toggleLogon;
     Button btn_StoreData;
+    private int num_MatchObjs = 0, num_Photos = 0;
     RadioGroup radgrp_Scout;      RadioButton radioScoutTyp;
     Boolean logged_On = false;
     Boolean Scout_Match = false, Scout_Pit = false;
@@ -248,6 +256,7 @@ public class MainActivity extends AppCompatActivity {
         Log.w(TAG, ">>>>> Path" + direct_pit);
         if (direct_pit != null){
             String[] filenames = direct_pit.list();
+            num_MatchObjs = 0;
             for (String tmpf : filenames){
 //                Log.w(TAG, " file " + tmpf);
                 team_num = tmpf.replaceFirst("[.][^.]+$", "");    // fileNameWithOutExt
@@ -258,11 +267,12 @@ public class MainActivity extends AppCompatActivity {
                     InputStream buffer = new BufferedInputStream(file);
                     ObjectInput input = new ObjectInputStream(buffer);
                     pitData  Pit_Data = (pitData)input.readObject();
-                    Log.w(TAG, "#### Obect" + Pit_Data.getPit_team() + "  " + Pit_Data.getPit_scout());
+                    Log.w(TAG, "#### Obect '" + Pit_Data.getPit_team() + "'  " + Pit_Data.getPit_scout());
             //      ToDo - Check to see if already in FB or Delete file from SD card
 
                     String keyID = team_num;
                     pfPitData_DBReference.child(keyID).setValue(Pit_Data);      // Store it to Firebase
+                    num_MatchObjs ++;
                     File goner = new File(direct_pit + "/" + tmpf);
 //                    boolean deleted = goner.delete();
                 } catch (FileNotFoundException e) {
@@ -273,18 +283,62 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }  // End for
+            Log.w(TAG, " ####### Match Objects = " + num_MatchObjs);
         }  // End If
 // ---------------------------------------
 //      ToDo - Read all data from SD card and write to Firebase (Photos)
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
         File direct_img = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/" + Pearadox.FRC_Event);
         Log.w(TAG, ">>>>> Path" + direct_img);
         if (direct_img != null){
             String[] filenames = direct_img.list();
-            for (String tmpf : filenames){
-                Log.w(TAG, " file " + tmpf);
+            num_Photos = 0;
+            for (String tmpf : filenames) {
+                Log.w(TAG, " filename " + tmpf);
+                num_Photos ++;
+                Uri file = Uri.fromFile(new File(direct_img + "/" + tmpf));
+                Log.w(TAG, " URI " + file);
+//                StorageReference imgRef = storageRef.child("images/" + Pearadox.FRC_Event);
+                StorageReference imgRef = storageRef.child("images/");
+                Log.e(TAG, "***  HTTP error in Firebase putFile;  _NOT_ written to Firebase  *** ");
 
+//                imgRef.putFile(file)
+//                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                            @Override
+//                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//
+//                                //and displaying a success toast
+//                                Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
+//                            }
+//                        })
+//                        .addOnFailureListener(new OnFailureListener() {
+//                            @Override
+//                            public void onFailure(@NonNull Exception exception) {
+//
+//                                //and displaying error message
+//                                Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+//                            }
+//                        });
+////                uploadTask = imgRef.putFile(file);
+//                // Register observers to listen for when the download is done or if it fails
+////                uploadTask.addOnFailureListener(new OnFailureListener() {
+////                    @Override
+////                    public void onFailure(@NonNull Exception exception) {
+////                        // Handle unsuccessful uploads
+////                    }
+////                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+////                    @Override
+////                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+////                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+////                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+////                    }
+////                });
             }  // End for
+            Log.w(TAG, " ####### Photos = " + num_Photos);
         }  // End If
+
+        Toast.makeText(getBaseContext(), "•••• There were " + num_MatchObjs + " Match objects and " + num_Photos + " photos copied from SD card to FB Cloud storage  ••••", Toast.LENGTH_LONG).show();
     }
 
 
