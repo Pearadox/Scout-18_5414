@@ -2,6 +2,8 @@ package com.pearadox.scout_5414;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -54,6 +58,8 @@ public class Visualizer_Activity extends AppCompatActivity {
     String tnum = "";
     Bitmap img;
     String FB_url ="";
+    FirebaseStorage storage;
+    StorageReference storageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +83,8 @@ public class Visualizer_Activity extends AppCompatActivity {
 //        pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Devicess
         pfMatch_DBReference = pfDatabase.getReference("matches/" + Pearadox.FRC_Event); // List of Matches
 //        pfCur_Match_DBReference = pfDatabase.getReference("current-match"); // _THE_ current Match
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
 
         Spinner spinner_MatchType = (Spinner) findViewById(R.id.spinner_MatchType);
         String[] devices = getResources().getStringArray(R.array.mtchtyp_array);
@@ -143,30 +151,36 @@ public class Visualizer_Activity extends AppCompatActivity {
     public void btn_PitR1_Click(View view) {
         Log.i(TAG, " btn_PitR1_Click   ");
         txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
+        txt_teamR1_Name = (TextView) findViewById(R.id.txt_teamR1_Name);
         tnum = (String) txt_teamR1.getText();
-        Log.w(TAG, "*** Team " + tnum);
-        launchVizPit(tnum);
+        team_name = (String) txt_teamR1_Name.getText();
+        Log.w(TAG, "*** Team " + tnum + " " + team_name);
+        launchVizPit(tnum, team_name);
     }
     public void btn_MatchR1_Click(View view) {
         Log.i(TAG, " btn_MatchR1_Click   ");
         txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
+        txt_teamR1_Name = (TextView) findViewById(R.id.txt_teamR1_Name);
         tnum = (String) txt_teamR1.getText();
-        Log.w(TAG, "*** Team " + tnum);
-        launchVizMatch(tnum);
+        team_name = (String) txt_teamR1_Name.getText();
+        Log.w(TAG, "*** Team " + tnum + " " + team_name);
+        launchVizMatch(tnum, team_name);
     }
 
-    private void launchVizMatch(String team) {
+    private void launchVizMatch(String team, String name) {
         Intent pit_intent = new Intent(Visualizer_Activity.this, VisMatch_Activity.class);
         Bundle VZbundle = new Bundle();
         VZbundle.putString("team", team);        // Pass data to activity
+        VZbundle.putString("name", name);        // Pass data to activity
         pit_intent.putExtras(VZbundle);
         startActivity(pit_intent);               // Start Visualizer for Match Data
     }
 
-    private void launchVizPit(String team) {
+    private void launchVizPit(String team, String name) {
         Intent pit_intent = new Intent(Visualizer_Activity.this, VisPit_Activity.class);
         Bundle VZbundle = new Bundle();
         VZbundle.putString("team", team);        // Pass data to activity
+        VZbundle.putString("name", name);        // Pass data to activity
         pit_intent.putExtras(VZbundle);
         startActivity(pit_intent);               // Start Visualizer for Pit Data
 
@@ -227,9 +241,6 @@ public class Visualizer_Activity extends AppCompatActivity {
         ImageView tbl_robotB2 = (ImageView) findViewById(R.id.tbl_robotB2);
         ImageView tbl_robotB3 = (ImageView) findViewById(R.id.tbl_robotB3);
 
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com");
-        StorageReference imagesRef = storageRef.child("images/" + Pearadox.FRC_Event);
         tnum = (String) txt_teamR1.getText();
         getURL(tnum);   // Get the Firebase URL if photo exists
 //        FB_url = "gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event + "/robot_" + tnum + ".png";
@@ -281,10 +292,24 @@ public class Visualizer_Activity extends AppCompatActivity {
         Log.i(TAG, ">>>>>  getURL: " + team);
 
         FB_url = "";
-        if (team.equalsIgnoreCase("4696")) {
-            FB_url = "https://firebasestorage.googleapis.com/v0/b/paradox-2017.appspot.com/o/images%2Ftxlu%2Frobot_4063.jpg?alt=media&token=36707ca3-6c7e-4b08-a006-8e74cb540853";
-        }
-    }
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com");
+//        StorageReference imagesRef = storageRef.child("images/" + Pearadox.FRC_Event);
+        storageRef.child("images/" + Pearadox.FRC_Event + "/" + team.trim() + ".png" ).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.w(TAG, "\n  uri: " + uri);
+//                Uri downloadUri = taskSnapshot.getMetadata().getDownloadUrl();
+//                FB_url = downloadUri.toString(); /// The string(file link) that you need
+                FB_url = String.valueOf(uri);
+                Log.w(TAG, "\n  URL: " + FB_url);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });    }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void getTeams() {
