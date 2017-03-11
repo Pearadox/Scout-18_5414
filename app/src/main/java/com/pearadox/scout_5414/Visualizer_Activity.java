@@ -1,5 +1,6 @@
 package com.pearadox.scout_5414;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -62,7 +63,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         Bundle bundle = this.getIntent().getExtras();
         String param1 = bundle.getString("dev");
         String param2 = bundle.getString("stud");
-        Log.d(TAG, param1 + " " + param2);      // ** DEBUG **
+        Log.w(TAG, param1 + " " + param2);      // ** DEBUG **
 
         txt_dev = (TextView) findViewById(R.id.txt_Dev);
         txt_stud = (TextView) findViewById(R.id.txt_TeamName);
@@ -71,10 +72,10 @@ public class Visualizer_Activity extends AppCompatActivity {
         matchID = "";
 
         pfDatabase = FirebaseDatabase.getInstance();
-//        pfTeam_DBReference = pfDatabase.getReference("teams");              // Tteam data from Firebase D/B
+//        pfTeam_DBReference = pfDatabase.getReference("teams/" + Pearadox.FRC_Event);  // Tteam data from Firebase D/B
 //        pfStudent_DBReference = pfDatabase.getReference("students");        // List of Students
-//        pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Students
-        pfMatch_DBReference = pfDatabase.getReference("matches");           // List of Students
+//        pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Devicess
+        pfMatch_DBReference = pfDatabase.getReference("matches/" + Pearadox.FRC_Event); // List of Matches
 //        pfCur_Match_DBReference = pfDatabase.getReference("current-match"); // _THE_ current Match
 
         Spinner spinner_MatchType = (Spinner) findViewById(R.id.spinner_MatchType);
@@ -136,16 +137,47 @@ public class Visualizer_Activity extends AppCompatActivity {
         tbl_teamB1.setText("");
         tbl_teamB2.setText("");
         tbl_teamB3.setText("");
-
     }
 
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    public void btn_PitR1_Click(View view) {
+        Log.i(TAG, " btn_PitR1_Click   ");
+        txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
+        tnum = (String) txt_teamR1.getText();
+        Log.w(TAG, "*** Team " + tnum);
+        launchVizPit(tnum);
+    }
+    public void btn_MatchR1_Click(View view) {
+        Log.i(TAG, " btn_MatchR1_Click   ");
+        txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
+        tnum = (String) txt_teamR1.getText();
+        Log.w(TAG, "*** Team " + tnum);
+        launchVizMatch(tnum);
+    }
+
+    private void launchVizMatch(String team) {
+        Intent pit_intent = new Intent(Visualizer_Activity.this, VisMatch_Activity.class);
+        Bundle VZbundle = new Bundle();
+        VZbundle.putString("team", team);        // Pass data to activity
+        pit_intent.putExtras(VZbundle);
+        startActivity(pit_intent);               // Start Visualizer for Match Data
+    }
+
+    private void launchVizPit(String team) {
+        Intent pit_intent = new Intent(Visualizer_Activity.this, VisPit_Activity.class);
+        Bundle VZbundle = new Bundle();
+        VZbundle.putString("team", team);        // Pass data to activity
+        pit_intent.putExtras(VZbundle);
+        startActivity(pit_intent);               // Start Visualizer for Pit Data
+
+    }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private class type_OnItemSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {
             typSelected = parent.getItemAtPosition(pos).toString();
-            Log.d(TAG, ">>>>>  '" + typSelected + "'");
+            Log.w(TAG, ">>>>>  '" + typSelected + "'");
             switch (typSelected) {
                 case "Practice":        // Practice round
                     matchID = "X";
@@ -170,9 +202,9 @@ public class Visualizer_Activity extends AppCompatActivity {
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {
             NumSelected = parent.getItemAtPosition(pos).toString();
-            Log.d(TAG, ">>>>>  '" + NumSelected + "'");
+            Log.w(TAG, ">>>>>  '" + NumSelected + "'");
             matchID = matchID + NumSelected;
-            Log.d(TAG, ">>>>>  Match = '" + matchID + "'");
+            Log.w(TAG, ">>>>>  Match = '" + matchID + "'");
         }
         public void onNothingSelected(AdapterView<?> parent) {
             // Do nothing.
@@ -180,14 +212,14 @@ public class Visualizer_Activity extends AppCompatActivity {
     }
 
     public void buttonView_Click(View view) {
-        Log.d(TAG, " VIEW Button Click  ");
+        Log.i(TAG, " VIEW Button Click  ");
 
         getTeams();         // Get the teams for match selected
     }
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void loadTblData () {
+        Log.i(TAG, "#### loadTblData  ####");
         // Start getting data for Table
-        Log.d(TAG, " Loading Table Data ");          //** DEBUG
         ImageView tbl_robotR1 = (ImageView) findViewById(R.id.tbl_robotR1);
         ImageView tbl_robotR2 = (ImageView) findViewById(R.id.tbl_robotR2);
         ImageView tbl_robotR3 = (ImageView) findViewById(R.id.tbl_robotR3);
@@ -197,33 +229,67 @@ public class Visualizer_Activity extends AppCompatActivity {
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com");
-        StorageReference imagesRef = storageRef.child("images");
+        StorageReference imagesRef = storageRef.child("images/" + Pearadox.FRC_Event);
         tnum = (String) txt_teamR1.getText();
-        FB_url = "gs://paradox-2017.appspot.com/images/robot_" + tnum + ".jpg";
-        Log.d(TAG, "FireBase storage " + FB_url);
-        Picasso.with(this).load(FB_url).into(tbl_robotR1);
+        getURL(tnum);   // Get the Firebase URL if photo exists
+//        FB_url = "gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event + "/robot_" + tnum + ".png";
+        Log.w(TAG, "FireBase storage " + FB_url);
+        if (FB_url.length() > 1) {
+            Picasso.with(this).load(FB_url).into(tbl_robotR1);
+        } else {
+            tbl_robotR1.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+        }
         tnum = (String) txt_teamR2.getText();
-        FB_url = "gs://paradox-2017.appspot.com/images/robot_" + tnum + ".jpg";
-        Picasso.with(this).load(FB_url).into(tbl_robotR2);
+        getURL(tnum);   // Get the Firebase URL if photo exists
+        if (FB_url.length() > 1) {
+            Picasso.with(this).load(FB_url).into(tbl_robotR2);
+        } else {
+            tbl_robotR2.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+        }
         tnum = (String) txt_teamR3.getText();
-        FB_url = "gs://paradox-2017.appspot.com/images/robot_" + tnum + ".jpg";
-        Picasso.with(this).load(FB_url).into(tbl_robotR3);
+        getURL(tnum);   // Get the Firebase URL if photo exists
+        if (FB_url.length() > 1) {
+            Picasso.with(this).load(FB_url).into(tbl_robotR3);
+        } else {
+            tbl_robotR3.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+        }
         tnum = (String) txt_teamB1.getText();
-        FB_url = "gs://paradox-2017.appspot.com/images/robot_" + tnum + ".jpg";
-        Picasso.with(this).load(FB_url).into(tbl_robotB1);
+        getURL(tnum);   // Get the Firebase URL if photo exists
+        if (FB_url.length() > 1) {
+            Picasso.with(this).load(FB_url).into(tbl_robotB1);
+        } else {
+            tbl_robotB1.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+        }
         tnum = (String) txt_teamB2.getText();
-        FB_url = "gs://paradox-2017.appspot.com/images/robot_" + tnum + ".jpg";
-        Picasso.with(this).load(FB_url).into(tbl_robotB2);
+        getURL(tnum);   // Get the Firebase URL if photo exists
+        if (FB_url.length() > 1) {
+            Picasso.with(this).load(FB_url).into(tbl_robotB2);
+        } else {
+            tbl_robotB2.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+        }
         tnum = (String) txt_teamB3.getText();
-        FB_url = "gs://paradox-2017.appspot.com/images/robot_" + tnum + ".jpg";
-        Picasso.with(this).load(FB_url).into(tbl_robotB3);
-        Toast.makeText(getBaseContext(), "Robot images loaded", Toast.LENGTH_LONG).show();  //** DEBUG
+        getURL(tnum);   // Get the Firebase URL if photo exists
+        if (FB_url.length() > 1) {
+            Picasso.with(this).load(FB_url).into(tbl_robotB3);
+        } else {
+            tbl_robotB3.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+        }
+//        Toast.makeText(getBaseContext(), "Robot images loaded", Toast.LENGTH_LONG).show();  //** DEBUG
     }
 
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private void getURL(String team) {
+        Log.i(TAG, ">>>>>  getURL: " + team);
+
+        FB_url = "";
+        if (team.equalsIgnoreCase("4696")) {
+            FB_url = "https://firebasestorage.googleapis.com/v0/b/paradox-2017.appspot.com/o/images%2Ftxlu%2Frobot_4063.jpg?alt=media&token=36707ca3-6c7e-4b08-a006-8e74cb540853";
+        }
+    }
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void getTeams() {
         Log.i(TAG, "$$$$$  getTeams");
-        Log.d(TAG, ">>>>>  Match = '" + matchID + "'");
+        Log.w(TAG, ">>>>>  Match = '" + matchID + "'");
         txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
         txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
         txt_teamR3 = (TextView) findViewById(R.id.txt_teamR3);
@@ -245,7 +311,7 @@ public class Visualizer_Activity extends AppCompatActivity {
             query.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Log.d(TAG, "%%%  ChildAdded");
+                    Log.w(TAG, "%%%  ChildAdded");
                     System.out.println(dataSnapshot.getValue());
                     p_Firebase.matchObj mobj = dataSnapshot.getValue(p_Firebase.matchObj.class);
                     System.out.println("Match: " + mobj.getMatch());
@@ -266,8 +332,8 @@ public class Visualizer_Activity extends AppCompatActivity {
                     findTeam(tn);
                     tn = mobj.getB3();
                     findTeam(tn);
-                    Log.d(TAG, ">>>> # team instances = " + teams.size());  //** DEBUG
-                    Log.d(TAG, ">>>> # team instances = " + teams.size());  //** DEBUG
+                    Log.w(TAG, ">>>> # team instances = " + teams.size());  //** DEBUG
+//                    Log.w(TAG, ">>>> # team instances = " + teams.size());  //** DEBUG
 
                     txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
                     txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
@@ -312,18 +378,21 @@ public class Visualizer_Activity extends AppCompatActivity {
                     txt_teamB3.setText(team_inst.getTeam_num());
                     txt_teamB3_Name.setText(team_inst.getTeam_name());
                     tbl_teamB3.setText(team_inst.getTeam_num());
+
+                    loadTblData();      // Load the images (if any)
+
                 }
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                    Log.d(TAG, "%%%  ChildChanged");
+                    Log.w(TAG, "%%%  ChildChanged");
                 }
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    Log.d(TAG, "%%%  ChildRemoved");
+                    Log.w(TAG, "%%%  ChildRemoved");
                 }
                 @Override
                 public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                    Log.d(TAG, "%%%  ChildMoved");
+                    Log.w(TAG, "%%%  ChildMoved");
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
@@ -342,7 +411,7 @@ public class Visualizer_Activity extends AppCompatActivity {
             if (Pearadox.team_List.get(i).getTeam_num().equals(tnum)) {
                 team_inst = Pearadox.team_List.get(i);
                 teams.add(team_inst);
-//                Log.d(TAG, "===  Team " + team_inst.getTeam_num() + " " + team_inst.getTeam_name() + " " + team_inst.getTeam_loc());
+//                Log.w(TAG, "===  Team " + team_inst.getTeam_num() + " " + team_inst.getTeam_name() + " " + team_inst.getTeam_loc());
                 found = true;
                 break;  // found it!
             }
