@@ -127,6 +127,7 @@
         android:text="Red Alliance"
         android:gravity="center_horizontal"
         android:layout_below="@+id/spinner_MatchNum"
+        android:layout_marginTop="30dp"
         android:layout_alignParentStart="true" />
 
     <TextView
@@ -148,7 +149,7 @@
         android:id="@+id/teams_sectR">
 
         <TextView
-            android:id="@+id/lbl_teamR1"
+            android:id="@+id/lbl_team"
             android:layout_width="25sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -418,10 +419,10 @@
                 android:padding="3dip" />
             <TextView
                 android:id="@+id/hdr_robot"
-                android:text="      ROBOT PHOTO"
+                android:text="    ROBOT PHOTO"
                 android:gravity="left"
                 android:layout_width="0px"
-                android:layout_weight="0.20"
+                android:layout_weight="0.25"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:padding="3dip" />
@@ -430,7 +431,7 @@
                 android:text="                                           ATTRIBUTES"
                 android:gravity="left"
                 android:layout_width="0px"
-                android:layout_weight="0.75"
+                android:layout_weight="0.70"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:padding="3dip" />
@@ -455,19 +456,70 @@
                 android:background="@drawable/border"
                 android:padding="3dip" />
 
-            <TextView
-                android:id="@+id/tbl_shootR1"
-                android:text="Statistics"
-                android:gravity="start"
-                android:layout_weight="0.75"
-                android:padding="3dip" />
+            <LinearLayout
+                android:id="@+id/teamR1_layout"
+                android:orientation="horizontal"
+                android:layout_weight="0.70"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <Button
+                    android:id="@+id/btn_PitR1"
+                    android:layout_width="18sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.15"
+                    android:onClick="btn_PitR1_Click"
+                    android:text="Pit Data"
+                    android:textSize="8sp" />
+
+                <Button
+                    android:id="@+id/btn_MatchR1"
+                    android:layout_width="20sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.20"
+                    android:onClick="btn_MatchR1_Click"
+                    android:text="Match Data"
+                    android:textSize="8sp" />
+
+                <TextView
+                    android:id="@+id/tbl_eventR1"
+                    android:layout_width="10sp"
+                    android:layout_height="35sp"
+                    android:textColor="@color/orange"
+                    android:layout_weight="0.15"
+                    android:gravity="start"
+                    android:padding="3dip"
+                    android:text="TXLU" />
+
+                <TextView
+                    android:id="@+id/tbl_rateR1"
+                    android:layout_width="60sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.50"
+                    android:gravity="start"
+                    android:padding="3dip"
+                    android:text="OPR 100.5   DPR 00.0  \nStatistics from other \ndata"
+                    android:textColor="@color/red" />
+
+        </LinearLayout>
+        <!--<LinearLayout-->
+                <!--android:id="@+id/teamR1_Stats"-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_weight="0.70"-->
+                <!--android:layout_below="@+id/tbl_rateR1"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content" >-->
             <!--<TextView-->
-                <!--android:text="Gears Placed"-->
+                <!--android:id="@+id/tbl_statR1"-->
+                <!--android:text="Statistics - Now is the time for all good men to come to the aid of their party"-->
+                <!--android:layout_width="60sp"-->
+                <!--android:layout_height="25sp"-->
                 <!--android:gravity="start"-->
                 <!--android:background="@drawable/border"-->
-                <!--android:layout_weight="0.22"-->
+                <!--android:layout_weight="1"-->
                 <!--android:padding="3dip" />-->
-            <!--<TextView-->
+        <!--</LinearLayout>-->
+        <!--<TextView-->
                 <!--android:text="???????"-->
                 <!--android:gravity="start"-->
                 <!--android:background="@drawable/border"-->

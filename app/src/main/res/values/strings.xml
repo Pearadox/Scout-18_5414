@@ -58,9 +58,9 @@
         <item>Hood, Laura"</item>
     </string-array>
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// String Values for 'non-Main' Activities
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // String Values for 'non-Main' Activities
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     <!--  Scout Master -->
     <!-- ##### Match Types ##### -->
     <string-array name="mtchtyp_array">
@@ -99,8 +99,6 @@
     </string-array>
 
 
-
-
     <!-- -->
     <!-- @@@@@ COLORS @@@@@ -->
     <color name="red">#ff0000</color>
@@ -121,5 +119,6 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="grey">#a8a8a8</color>
+    <string name="title_activity_vis_pit_">VisPit_Activity</string>
 
 </resources>

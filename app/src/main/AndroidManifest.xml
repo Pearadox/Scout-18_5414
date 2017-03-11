@@ -9,8 +9,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/p_logo"
@@ -28,21 +26,24 @@
             </intent-filter>
         </activity>
         <activity android:name=".ScoutMaster_Activity" />
-        <activity android:name=".MatchScoutActivity"
-            android:windowSoftInputMode="adjustNothing"
-            />
-        <activity android:name=".PitScoutActivity"
-            android:windowSoftInputMode="adjustNothing"
-            />
+        <activity
+            android:name=".MatchScoutActivity"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".PitScoutActivity"
+            android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".Visualizer_Activity" />
-        <activity android:name=".FinalActivity"
-            android:windowSoftInputMode="adjustNothing"
-            />
+        <activity
+            android:name=".FinalActivity"
+            android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".ArenaLayoutActivity" />
-        <activity android:name=".TeleopScoutActivity"
-            android:windowSoftInputMode="adjustNothing"
-            />
-
+        <activity
+            android:name=".TeleopScoutActivity"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".VisPit_Activity"
+            android:label="@string/title_activity_vis_pit_" />
+        <activity android:name=".VisMatch_Activity"></activity>
     </application>
 
 </manifest>

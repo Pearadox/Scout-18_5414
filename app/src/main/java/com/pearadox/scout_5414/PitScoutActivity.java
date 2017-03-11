@@ -593,7 +593,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         saveDatatoSDcard();             //Save locally
         if (Pearadox.is_Network) {      // is Internet available?
             String keyID = teamSelected;
-            pfPitData_DBReference.child(keyID).setValue(Pit_Data);
+            pfPitData_DBReference.child(keyID).setValue(Pit_Data);      // Store it to Firebase
         }
     }
     private void saveDatatoSDcard() {
