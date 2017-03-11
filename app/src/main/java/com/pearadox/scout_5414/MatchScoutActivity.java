@@ -213,7 +213,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         spinner_GearPlacement.setOnItemSelectedListener(new gearPosOnClickListener());
         
 
-// Start Listners
+// Start Listeners
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         checkbox_automode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -399,6 +399,7 @@ public class MatchScoutActivity extends AppCompatActivity {
                 } else {
                     //not checked
                     Log.i(TAG,"TextBox is unchecked.");
+                    lg = false;
 
                 }
                 if (buttonView.isChecked()) {
@@ -658,6 +659,7 @@ public class MatchScoutActivity extends AppCompatActivity {
             }
         });
     }
+
     private void findTeam(String tnum) {
         Log.i(TAG, "$$$$$  findTeam " + tnum);
         boolean found = false;

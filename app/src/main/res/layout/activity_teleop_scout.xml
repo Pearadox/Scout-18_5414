@@ -22,22 +22,23 @@
 
 
     <CheckBox
-        android:text="Touchpad points Awarded"
+        android:id="@+id/chk_touchpadpts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/chk_touchpadpts"
-        android:layout_marginStart="18dp"
         android:layout_alignBaseline="@+id/chk_touchpad"
         android:layout_alignBottom="@+id/chk_touchpad"
-        android:layout_toEndOf="@+id/chk_touchpad" />
+        android:layout_marginStart="18dp"
+        android:layout_toEndOf="@+id/chk_touchpad"
+        android:text="Touchpad points Awarded"
+        android:visibility="invisible" />
 
     <CheckBox
-        android:text="Climb Failed"
+        android:id="@+id/chk_climbattempt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/chk_climbfailed"
+        android:layout_alignStart="@+id/chk_touchpadpts"
         android:layout_alignTop="@+id/chk_climbsuccess"
-        android:layout_alignStart="@+id/chk_touchpadpts" />
+        android:text="Climb Attempted" />
 
 
     <SeekBar
@@ -92,12 +93,12 @@
         android:layout_toEndOf="@+id/chk_climbsuccess" />
 
     <Space
+        android:id="@+id/space_constrainLG"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_above="@+id/seekBar_HighGoal_Teleop"
-        android:layout_alignStart="@+id/txt_seekBarLGvalue"
         android:layout_alignEnd="@+id/txt_GearsAttempted"
-        android:id="@+id/space_constrainLG" />
+        android:layout_toEndOf="@+id/chkBox_highGoal" />
 
     <Button
         android:text="Final"
@@ -130,16 +131,18 @@
         android:layout_height="wrap_content"
         android:id="@+id/chkBox_lowGoal"
         android:layout_below="@+id/chkBox_highGoal"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/chkBox_highGoal" />
 
     <CheckBox
         android:text="High Goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/chkBox_highGoal"
-        android:layout_marginTop="23dp"
-        android:layout_below="@+id/button_GearAttemptedM"
-        android:layout_alignParentStart="true" />
+        android:layout_marginTop="97dp"
+        android:layout_below="@+id/button_GearAttemptedP"
+        android:layout_alignEnd="@+id/txt_shooting_cycle"
+        android:layout_toEndOf="@+id/space_constrainHighGoal" />
 
     <TextView
         android:text="Gear(s) Placed"
@@ -233,10 +236,9 @@
         android:layout_width="500sp"
         android:layout_height="150sp"
         android:isScrollContainer="false"
-        android:layout_marginBottom="300dp"
-        android:layout_above="@+id/button_GoToFinalActivity"
-        android:layout_toEndOf="@+id/space_constrianLowGoal"
-        android:layout_marginStart="53dp">
+        android:layout_marginTop="21dp"
+        android:layout_below="@+id/chk_climbattempt"
+        android:layout_centerHorizontal="true">
 
     <EditText
         android:id="@+id/editText_teleComments"
@@ -257,5 +259,45 @@
 
 
     </ScrollView>
+
+    <TextView
+        android:id="@+id/txt_shooting_cycle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/space_constrainLG"
+        android:layout_alignParentStart="true"
+        android:text="Shooting Cycles"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/lbl_shooting_cycles"
+        android:layout_width="30dp"
+        android:layout_height="25dp"
+        android:layout_above="@+id/space_constrainLG"
+        android:layout_alignEnd="@+id/lbl_GearsAttempted"
+        android:layout_alignStart="@+id/lbl_GearsAttempted"
+        android:layout_toStartOf="@+id/button_GearPlacedTPlus"
+        android:textColor="@color/orange"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/button_shooting_cyclesPlus"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_alignBottom="@+id/lbl_shooting_cycles"
+        android:layout_alignStart="@+id/button_GearAttemptedP"
+        android:text="+"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/button_shooting_cyclesMinus"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_alignBottom="@+id/button_shooting_cyclesPlus"
+        android:layout_alignEnd="@+id/button_GearAttemptedM"
+        android:layout_alignTop="@+id/button_shooting_cyclesPlus"
+        android:layout_toEndOf="@+id/button_shooting_cyclesPlus"
+        android:text="-"
+        android:visibility="invisible" />
 
 </RelativeLayout>

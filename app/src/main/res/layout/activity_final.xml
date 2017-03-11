@@ -46,9 +46,9 @@
         android:layout_height="35dp"
         android:textSize="16sp"
         android:textColor="@color/green"
+        android:layout_marginTop="46dp"
         android:layout_below="@+id/chk_lostPart"
-        android:layout_alignStart="@+id/chk_lostPart"
-        android:layout_marginTop="76dp" />
+        android:layout_alignStart="@+id/chk_lostPart" />
 
     <CheckBox
         android:id="@+id/chk_block"
@@ -64,9 +64,9 @@
         android:text="Lane Starvation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_alignTop="@+id/lbl_Defense"
-        android:layout_alignStart="@+id/lbl_Defense" />
+        android:layout_below="@+id/lbl_Defense"
+        android:layout_alignStart="@+id/lbl_Defense"
+        android:layout_marginTop="21dp" />
 
     <CheckBox
         android:id="@+id/chk_dump"
@@ -109,10 +109,10 @@
         android:layout_width="500sp"
         android:layout_height="300sp"
         android:isScrollContainer="false"
-        android:layout_marginTop="34dp"
-        android:layout_below="@+id/chk_block"
-        android:layout_alignStart="@+id/chk_starve"
-        android:layout_marginStart="15dp">
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/button_Number_PenaltiesPlus"
+        android:layout_alignStart="@+id/chkBox_final_def_gear">
 
             <EditText
             android:id="@+id/editText_Comments"
@@ -129,6 +129,84 @@
             android:layout_toEndOf="@+id/chk_dump" />
 
     </ScrollView>
+
+    <CheckBox
+        android:id="@+id/chkBox_final_def_gear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/chk_starve"
+        android:layout_below="@+id/chk_starve"
+        android:text="Gear Blocking" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup_defense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignEnd="@+id/chk_block"
+        android:layout_toEndOf="@+id/lbl_Defense"
+        android:layout_alignTop="@+id/lbl_Defense"
+        android:layout_alignBottom="@+id/lbl_Defense">
+
+        <RadioButton
+            android:id="@+id/rdBtn_def_good"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/chk_block"
+            android:layout_alignTop="@+id/radioGroup_defense"
+            android:onClick="RadioClick_Defense"
+            android:text="Good" />
+
+        <RadioButton
+            android:id="@+id/radioButton_def_bad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/radioGroup_defense"
+            android:layout_toEndOf="@+id/chkBox_final_def_gear"
+            android:layout_weight="1"
+            android:onClick="RadioClick_Defense"
+            android:text="Bad" />
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/button_Number_PenaltiesPlus"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:text="+"
+        android:layout_marginStart="18dp"
+        android:layout_alignBottom="@+id/button_Number_PenaltiesUndo"
+        android:layout_toEndOf="@+id/lbl_Number_Penalties"
+        android:layout_alignTop="@+id/button_Number_PenaltiesUndo" />
+
+    <Button
+        android:id="@+id/button_Number_PenaltiesUndo"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:text="-"
+        android:layout_below="@+id/chkBox_final_def_gear"
+        android:layout_toEndOf="@+id/button_Number_PenaltiesPlus"
+        android:layout_marginTop="29dp" />
+
+    <TextView
+        android:id="@+id/txt_Number_Penalties"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Number of Penalties"
+        android:layout_alignBaseline="@+id/button_Number_PenaltiesPlus"
+        android:layout_alignBottom="@+id/button_Number_PenaltiesPlus"
+        android:layout_alignEnd="@+id/chk_starve" />
+
+    <TextView
+        android:id="@+id/lbl_Number_Penalties"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button_Number_PenaltiesPlus"
+        android:layout_alignStart="@+id/chk_block"
+        android:layout_alignTop="@+id/button_Number_PenaltiesPlus"
+        android:text="0"
+        android:textColor="@color/green" />
+
 
 </RelativeLayout>
 

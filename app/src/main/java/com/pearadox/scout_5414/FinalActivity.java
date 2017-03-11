@@ -1,6 +1,9 @@
 package com.pearadox.scout_5414;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,6 +18,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+//import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.app.Activity;
 import android.widget.Toast;
@@ -29,7 +35,13 @@ import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 
-import static com.pearadox.scout_5414.R.id.button_GoToFinalActivity;
+import static com.pearadox.scout_5414.R.id.radgrp_Scout;
+import static com.pearadox.scout_5414.R.id.radioButton_def_bad;
+import static com.pearadox.scout_5414.R.id.radioGroup_defense;
+
+//import static com.pearadox.scout_5414.R.id.button_GoToFinalActivity;
+//import static com.pearadox.scout_5414.R.id.rdBtn_def_good;
+//import static com.pearadox.scout_5414.R.id.radioGroup_defense;
 
 /**
  * Created by mlm.02000 on 2/5/2017.
@@ -38,10 +50,12 @@ import static com.pearadox.scout_5414.R.id.button_GoToFinalActivity;
 public class FinalActivity extends Activity {
 
     String TAG = "FinalActivity";      // This CLASS name
-    TextView txt_dev, txt_stud, txt_match, txt_MyTeam;
+    TextView txt_dev, txt_stud, txt_match, txt_MyTeam, lbl_Number_Penalties;
     EditText editText_Comments;
-    CheckBox chk_lostPart, chk_lostComm, chk_block, chk_starve, chk_dump;
-    Button button_Saved;
+    CheckBox chk_lostPart, chk_lostComm, chk_block, chk_starve, chk_dump, chkBox_final_def_gear;
+    Button button_Saved, button_Number_PenaltiesPlus, button_Number_PenaltiesUndo;
+    RadioGroup radioGroup_defense;
+    RadioButton rdBtn_def_good, radioButton_def_bad;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfTeam_DBReference;
     private DatabaseReference pfMatch_DBReference;
@@ -52,8 +66,16 @@ public class FinalActivity extends Activity {
 
 // ===================  Final Elements for Match Scout Data object ===================
     // ToDo - add any remaining FINAL elements
-    public boolean lost_Parts = false;
-    public boolean lost_Comms = false;
+    public boolean lost_Parts = false;                          // Did they lose parts?
+    public boolean lost_Comms = false;                          // Did they lose communication?
+    public boolean final_defense_good = false;                  // Was their overall Defense Good (bad = false)?
+    public boolean final_def_Lane = false;                      // Did they use Lane Defense?
+    public boolean final_def_Block = false;                     // Did they use Blocking Defense?
+    public boolean final_def_Hopper = false;                    // Did they use Dump Defense (unload hoppers)?
+    public boolean final_def_Gear = false;                      // Did they Block Access to Gear Placement?
+    public int final_num_Penalties = 0;                         // How many penalties received?
+
+
     /* */
     public String finalComment = " ";
 
@@ -79,6 +101,11 @@ public class FinalActivity extends Activity {
         String param2 = bundle.getString("stud");
         Log.d(TAG, param1 + " " + param2);      // ** DEBUG **
 
+        lbl_Number_Penalties = (TextView) findViewById(R.id.lbl_Number_Penalties);
+        radioButton_def_bad = (RadioButton) findViewById(R.id.radioButton_def_bad);
+        rdBtn_def_good = (RadioButton) findViewById(R.id.rdBtn_def_good);
+        radioGroup_defense = (RadioGroup) findViewById(R.id.radioGroup_defense);
+        chkBox_final_def_gear = (CheckBox) findViewById(R.id.chkBox_final_def_gear);
         chk_lostPart = (CheckBox) findViewById(R.id.chk_lostPart);
         chk_lostPart.requestFocus();        // Don't let EditText mess up layout!!
         chk_lostComm = (CheckBox) findViewById(R.id.chk_lostComm);
@@ -87,6 +114,8 @@ public class FinalActivity extends Activity {
         chk_dump = (CheckBox) findViewById(R.id.chk_dump);
         editText_Comments = (EditText) findViewById(R.id.editText_Comments);
         editText_Comments.setClickable(true);
+        button_Number_PenaltiesPlus = (Button) findViewById(R.id.button_Number_PenaltiesPlus);
+        button_Number_PenaltiesUndo = (Button) findViewById(R.id.button_Number_PenaltiesUndo);
         button_Saved = (Button) findViewById(R.id.button_Saved);
         button_Saved.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -97,6 +126,24 @@ public class FinalActivity extends Activity {
                 // ToDo - Clear all data back to original settings
 
                 finish();       // Exit
+            }
+        });
+
+        button_Number_PenaltiesPlus.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                final_num_Penalties++;
+
+                Log.w(TAG, "Gears = " + final_num_Penalties);      // ** DEBUG **
+                lbl_Number_Penalties.setText(Integer.toString(final_num_Penalties));    // Perform action on click
+            }
+        });
+        button_Number_PenaltiesUndo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (final_num_Penalties >= 1) {
+                    final_num_Penalties--;
+                }
+                Log.w(TAG, "Gears = " + final_num_Penalties);      // ** DEBUG **
+                lbl_Number_Penalties.setText(Integer.toString(final_num_Penalties));    // Perform action on click
             }
         });
 
@@ -147,12 +194,14 @@ public class FinalActivity extends Activity {
                 if (buttonView.isChecked()) {
                     //checked
                     Log.i(TAG,"TextBox is checked.");
+                    lost_Comms = true;
 
                 }
                 else
                 {
                     //not checked
                     Log.i(TAG,"TextBox is unchecked.");
+                    lost_Comms = false;
 
                 }
             }
@@ -166,12 +215,14 @@ public class FinalActivity extends Activity {
                 if (buttonView.isChecked()) {
                     //checked
                     Log.i(TAG,"TextBox is checked.");
+                    final_def_Lane = true;
 
                 }
                 else
                 {
                     //not checked
                     Log.i(TAG,"TextBox is unchecked.");
+                    final_def_Lane = false;
 
                 }
             }
@@ -185,12 +236,14 @@ public class FinalActivity extends Activity {
                 if (buttonView.isChecked()) {
                     //checked
                     Log.i(TAG,"TextBox is checked.");
+                    final_def_Block = true;
 
                 }
                 else
                 {
                     //not checked
                     Log.i(TAG,"TextBox is unchecked.");
+                    final_def_Block = false;
 
                 }
             }
@@ -204,23 +257,54 @@ public class FinalActivity extends Activity {
                 if (buttonView.isChecked()) {
                     //checked
                     Log.i(TAG,"TextBox is checked.");
+                    final_def_Hopper = true;
 
                 }
                 else
                 {
                     //not checked
                     Log.i(TAG,"TextBox is unchecked.");
+                    final_def_Hopper = false;
 
                 }
             }
         }
         );
 
+        chkBox_final_def_gear.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+            Log.i(TAG, "chkBox_final_def_gear Listener");
+            if (buttonView.isChecked()) {
+                //checked
+                Log.i(TAG,"TextBox is checked.");
+                final_def_Gear = true;
+
+            }
+            else
+            {
+                //not checked
+                Log.i(TAG,"TextBox is unchecked.");
+                final_def_Gear = false;
+
+            }
+            }
+        }
+        );
 
     }
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void storeFinalData() {
         Log.i(TAG, ">>>>  storeFinalData  <<<<");
+        Pearadox.Match_Data.setFinal_lostParts(lost_Parts);
+        Pearadox.Match_Data.setFinal_lostComms(lost_Comms);
+        Pearadox.Match_Data.setFinal_defense_good(final_defense_good);
+        Pearadox.Match_Data.setFinal_def_Lane(final_def_Lane);
+        Pearadox.Match_Data.setFinal_def_Block(final_def_Block);
+        Pearadox.Match_Data.setFinal_def_Hopper(final_def_Hopper);
+        Pearadox.Match_Data.setFinal_def_Gear(final_def_Gear);
+        Pearadox.Match_Data.setFinal_num_Penalties(final_num_Penalties);
         //ToDo - add remaining Final elements
          /* */
 //        Pearadox.Match_Data.setFinal_????? = lost_Parts;
@@ -261,6 +345,23 @@ public class FinalActivity extends Activity {
         }
     }
 
+    public void RadioClick_Defense(View view) {
+        Log.w(TAG, "@@ RadioClick_Scout @@");
+        radioGroup_defense = (RadioGroup) findViewById(R.id.radioGroup_defense);
+        int selectedId = radioGroup_defense.getCheckedRadioButtonId();
+        rdBtn_def_good = (RadioButton) findViewById(selectedId);
+        String value = rdBtn_def_good.getText().toString();
+        Log.w(TAG, "RadioDefnse - Button '" + value + "'");
+        if (value.equals("Good")) { 	    // Match?
+            Log.w(TAG, "Good Defense");
+            final_defense_good = true;
+        } else {                               // Pit
+            Log.w(TAG, "Bad Defense");
+            final_defense_good = false;
+        }
+    }
+
+
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void updateDev(String phase) {     //
         Log.i(TAG, "#### updateDev #### " + phase);
@@ -294,6 +395,8 @@ public class FinalActivity extends Activity {
         }
         pfDevice_DBReference.child(key).child("phase").setValue(phase);
     }
+
+
 
 //###################################################################
 //###################################################################

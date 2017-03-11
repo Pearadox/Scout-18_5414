@@ -34,9 +34,9 @@ public class TeleopScoutActivity extends Activity {
 
 
     String TAG = "TeleopScoutActivity";      // This CLASS name
-    TextView txt_dev, txt_stud, txt_match, txt_MyTeam, lbl_GearNUMT, lbl_GearsAttempted, txt_seekBarHGvalue, txt_seekBarLGvalue;
-    private Button button_GoToFinalActivity,button_GearPlacedT, button_GearPlacedTPlus, button_GearAttemptedP, button_GearAttemptedM;
-    CheckBox chk_climbsuccessful, chk_climbfailed, chk_touchpad, chk_touchpadpts, chkBox_highGoal, chkBox_lowGoal;
+    TextView txt_dev, txt_stud, txt_match, txt_MyTeam, lbl_GearNUMT, lbl_GearsAttempted, txt_seekBarHGvalue, txt_seekBarLGvalue, lbl_shooting_cycles, txt_shooting_cycle;
+    private Button button_GoToFinalActivity,button_GearPlacedT, button_GearPlacedTPlus, button_GearAttemptedP, button_GearAttemptedM, button_shooting_cyclesPlus, button_shooting_cyclesMinus;
+    CheckBox chk_climbsuccessful, chk_climbattempted, chk_touchpad, chk_touchpadpts, chkBox_highGoal, chkBox_lowGoal;
     SeekBar seekBar_HighGoal_Teleop, seekBar_LowGoal_Teleop;
     EditText editText_TeleComments;
     private FirebaseDatabase pfDatabase;
@@ -47,10 +47,17 @@ public class TeleopScoutActivity extends Activity {
     String key = null;
 
     // ===================  TeleOps Elements for Match Scout Data object ===================
-    int gearNumT = 0;                   // # Gears placed
-    int gearNumA = 0;                   // # Gears attempted
-    int seekbarvalueHigh = 0;
-    int seekbarvalueLow = 0;
+    public int tele_gears_placed = 0;                   // # Gears placed
+    public int tele_gears_attempt = 0;                  // # Gears attempted
+    public boolean tele_hg = false;                             // Did they shoot at High Goal?
+    public int tele_hg_percent = 0;                     // What percentage HG made?
+    public boolean tele_lg = false;                             // Did they shoot at Low Goal?
+    public int tele_lg_percent = 0;                     // What percentage LG made?
+    public int tele_cycles = 0;                             // # cycles of shooting Upper Goal
+    public boolean tele_touch_act = false;                      // Did they activate Touchpad?
+//    public boolean tele_touch_pts = false;                      // Did they get Touchpad points?
+    public boolean tele_climb_attempt = false;                  // Did they ATTEMPT climb?
+    public boolean tele_climb_success = false;                  // Was climb successful?
     /* */
     public String teleComment = " ";    // Tele Comment
     // ===========================================================================
@@ -64,14 +71,19 @@ public class TeleopScoutActivity extends Activity {
         Bundle bundle = this.getIntent().getExtras();
         String param1 = bundle.getString("dev");
         String param2 = bundle.getString("stud");
-        Log.d(TAG, param1 + " " + param2);      // ** DEBUG **
+        Log.w(TAG, param1 + " " + param2);      // ** DEBUG **
 
+        txt_shooting_cycle = (TextView) findViewById(R.id.txt_shooting_cycle);
         editText_TeleComments = (EditText) findViewById(R.id.editText_teleComments);
+        button_shooting_cyclesPlus = (Button) findViewById(R.id.button_shooting_cyclesPlus);
+        button_shooting_cyclesMinus = (Button) findViewById(R.id.button_shooting_cyclesMinus);
         button_GoToFinalActivity = (Button) findViewById(R.id.button_GoToFinalActivity);
         button_GearPlacedT= (Button) findViewById(R.id.button_GearPlacedT);
         button_GearPlacedTPlus = (Button) findViewById(R.id.button_GearPlacedTPlus);
         lbl_GearNUMT = (TextView) findViewById(R.id.lbl_GearNUMT);
-        lbl_GearNUMT.setText(Integer.toString(gearNumT));
+        lbl_GearNUMT.setText(Integer.toString(tele_gears_placed));
+        lbl_shooting_cycles = (TextView) findViewById(R.id.lbl_shooting_cycles);
+        lbl_shooting_cycles.setText(Integer.toString(tele_cycles));
         pfDatabase = FirebaseDatabase.getInstance();
 //        pfTeam_DBReference = pfDatabase.getReference("teams");              // Tteam data from Firebase D/B
 //        pfStudent_DBReference = pfDatabase.getReference("students");        // List of Students
@@ -83,7 +95,7 @@ public class TeleopScoutActivity extends Activity {
         button_GearAttemptedP = (Button) findViewById(R.id.button_GearAttemptedP);
         button_GearAttemptedM = (Button) findViewById(R.id.button_GearAttemptedM);
         chk_climbsuccessful = (CheckBox) findViewById(R.id.chk_climbsuccess);
-        chk_climbfailed = (CheckBox) findViewById(R.id.chk_climbfailed);
+        chk_climbattempted = (CheckBox) findViewById(R.id.chk_climbattempt);
         chk_touchpad = (CheckBox) findViewById(R.id.chk_touchpad);
         chk_touchpadpts = (CheckBox) findViewById(R.id.chk_touchpadpts);
         chkBox_highGoal = (CheckBox) findViewById(R.id.chkBox_highGoal);
@@ -98,45 +110,76 @@ public class TeleopScoutActivity extends Activity {
         seekBar_HighGoal_Teleop.setVisibility(View.GONE);
         seekBar_LowGoal_Teleop.setEnabled(false);
         seekBar_LowGoal_Teleop.setVisibility(View.GONE);
+//        txt_shooting_cycle.setVisibility(View.GONE);
+//        lbl_shooting_cycles.setVisibility(View.GONE);
+//        button_shooting_cyclesMinus.setVisibility(View.GONE);
+//        button_shooting_cyclesMinus.setEnabled(false);
+//        button_shooting_cyclesPlus.setVisibility(View.GONE);
+//        button_shooting_cyclesPlus.setEnabled(false);
 
 
-        lbl_GearsAttempted.setText(Integer.toString(gearNumA));
+        lbl_GearsAttempted.setText(Integer.toString(tele_gears_attempt));
+
+        button_shooting_cyclesMinus.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (tele_cycles >= 1) {
+                    tele_cycles--;
+                }
+                Log.w(TAG, "Number of Cycles = " + tele_cycles);
+                lbl_shooting_cycles.setText(Integer.toString(tele_cycles));
+            }
+        });
+        button_shooting_cyclesPlus.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (tele_cycles <= 15) {
+                    tele_cycles++;
+                }
+                Log.w(TAG, "Number of Cycles = " + tele_cycles);
+                lbl_shooting_cycles.setText(Integer.toString(tele_cycles));
+            }
+        });
 
         button_GearAttemptedP.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (gearNumA < 50) {
-                    gearNumA++;
+                if (tele_gears_attempt < 50) {
+                    tele_gears_attempt++;
                 }
-                Log.d(TAG, "Gears = " + gearNumA);      // ** DEBUG **
-                lbl_GearsAttempted.setText(Integer.toString(gearNumA));    // Perform action on click
+                Log.w(TAG, "Gears = " + tele_gears_attempt);      // ** DEBUG **
+                lbl_GearsAttempted.setText(Integer.toString(tele_gears_attempt));    // Perform action on click
             }
         });
         button_GearAttemptedM.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (gearNumA >= 1) {
-                    gearNumA--;
+                if (tele_gears_attempt >= 1) {
+                    tele_gears_attempt--;
                 }
-                Log.d(TAG, "Gears = " + gearNumA);      // ** DEBUG **
-                lbl_GearsAttempted.setText(Integer.toString(gearNumA));    // Perform action on click
+                Log.w(TAG, "Gears = " + tele_gears_attempt);      // ** DEBUG **
+                lbl_GearsAttempted.setText(Integer.toString(tele_gears_attempt));    // Perform action on click
             }
         });
 
         button_GearPlacedTPlus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (gearNumT < 12) {
-                    gearNumT++;
+                if (tele_gears_placed < 12) {
+                    tele_gears_placed++;
+                    tele_gears_attempt++;
                 }
-                Log.d(TAG, "Gears = " + gearNumT);      // ** DEBUG **
-                lbl_GearNUMT.setText(Integer.toString(gearNumT));    // Perform action on click
+                Log.w(TAG, "Gears Placed = " + tele_gears_placed);      // ** DEBUG **
+                Log.w(TAG, "Gears Attempted = " + tele_gears_attempt);
+                lbl_GearNUMT.setText(Integer.toString(tele_gears_placed));    // Perform action on click
+                lbl_GearsAttempted.setText(Integer.toString(tele_gears_attempt));
             }
         });
         button_GearPlacedT.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (gearNumT >= 1) {
-                    gearNumT--;
+                if (tele_gears_placed >= 1 && tele_gears_attempt >= tele_gears_placed) {
+                    tele_gears_placed--;
+                    tele_gears_attempt--;
                 }
-                Log.d(TAG, "Gears = " + gearNumT);      // ** DEBUG **
-                lbl_GearNUMT.setText(Integer.toString(gearNumT));    // Perform action on click
+                Log.w(TAG, "Gears Placed = " + tele_gears_placed);      // ** DEBUG **
+                Log.w(TAG, "Gears Attempted = " + tele_gears_attempt);
+                lbl_GearNUMT.setText(Integer.toString(tele_gears_placed));    // Perform action on click
+                lbl_GearsAttempted.setText(Integer.toString(tele_gears_attempt));
             }
         });
 
@@ -155,7 +198,7 @@ public class TeleopScoutActivity extends Activity {
             }
         });
 
-        chk_climbfailed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        chk_climbattempted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
@@ -163,22 +206,14 @@ public class TeleopScoutActivity extends Activity {
                 if (buttonView.isChecked()) {
                     //checked
                     Log.i(TAG,"TextBox is checked.");
+                    tele_climb_attempt = true;
 
                 }
                 else
                 {
                     //not checked
                     Log.i(TAG,"TextBox is unchecked.");
-
-                }
-                if (buttonView.isChecked()) {
-                    //checked
-                    chk_climbsuccessful.setEnabled(false);
-                }
-                else
-                {
-                    //not checked
-                    chk_climbsuccessful.setEnabled(true);
+                    tele_climb_attempt = false;
 
                 }
             }
@@ -192,22 +227,18 @@ public class TeleopScoutActivity extends Activity {
                 if (buttonView.isChecked()) {
                     //checked
                     Log.i(TAG,"TextBox is checked.");
+                    tele_climb_success = true;
+                    chk_touchpad.setChecked(true);
+
 
                 }
                 else
                 {
                     //not checked
                     Log.i(TAG,"TextBox is unchecked.");
+                    tele_climb_success = false;
+                    chk_touchpad.setChecked(false);
 
-                }
-                if (buttonView.isChecked()) {
-                    //checked
-                    chk_climbfailed.setEnabled(false);
-                }
-                else
-                {
-                    //not checked
-                    chk_climbfailed.setEnabled(true);
 
                 }
             }
@@ -222,36 +253,40 @@ public class TeleopScoutActivity extends Activity {
             if (buttonView.isChecked()) {
                 //checked
                 Log.i(TAG,"TextBox is checked.");
+                tele_touch_act =  true;
 
             }
             else
             {
                 //not checked
                 Log.i(TAG,"TextBox is unchecked.");
+                tele_touch_act = false;
 
             }
             }
         }
         );
-        chk_touchpadpts.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                Log.i(TAG, "chkBox_gears Listener");
-                if (buttonView.isChecked()) {
-                    //checked
-                    Log.i(TAG,"TextBox is checked.");
-
-                }
-                else
-                {
-                    //not checked
-                    Log.i(TAG,"TextBox is unchecked.");
-
-                }
-            }
-        }
-        );
+//        chk_touchpadpts.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+//                Log.i(TAG, "chkBox_gears Listener");
+//                if (buttonView.isChecked()) {
+//                    //checked
+//                    Log.i(TAG,"TextBox is checked.");
+//                    tele_touch_pts = true;
+//
+//                }
+//                else
+//                {
+//                    //not checked
+//                    Log.i(TAG,"TextBox is unchecked.");
+//                    tele_touch_pts = false;
+//
+//                }
+//            }
+//        }
+//        );
         seekBar_HighGoal_Teleop.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -271,8 +306,8 @@ public class TeleopScoutActivity extends Activity {
                                           boolean fromUser) {
                 // TODO Auto-generated method stub
 
-                seekbarvalueHigh=progress;	//we can use the progress value of pro as anywhere
-                txt_seekBarHGvalue.setText(Integer.toString(seekbarvalueHigh));
+                tele_hg_percent=progress;	//we can use the progress value of pro as anywhere
+                txt_seekBarHGvalue.setText(Integer.toString(tele_hg_percent));
             }
 
         });
@@ -285,29 +320,33 @@ public class TeleopScoutActivity extends Activity {
             if (buttonView.isChecked()) {
                 //checked
                 Log.i(TAG,"TextBox is checked.");
+                seekBar_HighGoal_Teleop.setEnabled(true);
+                seekBar_HighGoal_Teleop.setVisibility(View.VISIBLE);
+                txt_seekBarHGvalue.setVisibility(View.VISIBLE);
+                tele_hg = true;
+
+                txt_shooting_cycle.setVisibility(View.VISIBLE);
+                lbl_shooting_cycles.setVisibility(View.VISIBLE);
+                button_shooting_cyclesMinus.setVisibility(View.VISIBLE);
+                button_shooting_cyclesPlus.setVisibility(View.VISIBLE);
 
             }
             else
             {
                 //not checked
                 Log.i(TAG,"TextBox is unchecked.");
-
-            }
-            if (buttonView.isChecked()) {
-                //checked
-                seekBar_HighGoal_Teleop.setEnabled(true);
-                seekBar_HighGoal_Teleop.setVisibility(View.VISIBLE);
-                txt_seekBarHGvalue.setVisibility(View.VISIBLE);
-
-            }
-            else
-            {
-                //not checked
                 seekBar_HighGoal_Teleop.setEnabled(false);
                 seekBar_HighGoal_Teleop.setVisibility(View.GONE);
                 txt_seekBarHGvalue.setVisibility(View.GONE);
+                tele_hg = false;
+
+                txt_shooting_cycle.setVisibility(View.GONE);
+                lbl_shooting_cycles.setVisibility(View.GONE);
+                button_shooting_cyclesMinus.setVisibility(View.GONE);
+                button_shooting_cyclesPlus.setVisibility(View.GONE);
 
             }
+
             }
         }
         );
@@ -330,8 +369,8 @@ public class TeleopScoutActivity extends Activity {
                                           boolean fromUser) {
                 // TODO Auto-generated method stub
 
-                seekbarvalueLow=progress;	//we can use the progress value of pro as anywhere
-                txt_seekBarLGvalue.setText(Integer.toString(seekbarvalueLow));
+                tele_lg_percent=progress;	//we can use the progress value of pro as anywhere
+                txt_seekBarLGvalue.setText(Integer.toString(tele_lg_percent));
             }
 
         });
@@ -343,27 +382,30 @@ public class TeleopScoutActivity extends Activity {
                if (buttonView.isChecked()) {
                    //checked
                    Log.i(TAG,"TextBox is checked.");
+                   seekBar_LowGoal_Teleop.setEnabled(true);
+                   seekBar_LowGoal_Teleop.setVisibility(View.VISIBLE);
+                   txt_seekBarLGvalue.setVisibility(View.VISIBLE);
+                   tele_lg = true;
+
+//                   txt_shooting_cycle.setVisibility(View.VISIBLE);
+//                   lbl_shooting_cycles.setVisibility(View.VISIBLE);
+//                   button_shooting_cyclesMinus.setVisibility(View.VISIBLE);
+//                   button_shooting_cyclesPlus.setVisibility(View.VISIBLE);
 
                }
                else
                {
                    //not checked
                    Log.i(TAG,"TextBox is unchecked.");
-
-               }
-               if (buttonView.isChecked()) {
-                   //checked
-                   seekBar_LowGoal_Teleop.setEnabled(true);
-                   seekBar_LowGoal_Teleop.setVisibility(View.VISIBLE);
-                   txt_seekBarLGvalue.setVisibility(View.VISIBLE);
-
-               }
-               else
-               {
-                   //not checked
                    seekBar_LowGoal_Teleop.setEnabled(false);
                    seekBar_LowGoal_Teleop.setVisibility(View.GONE);
                    txt_seekBarLGvalue.setVisibility(View.GONE);
+                   tele_lg = false;
+
+//                   txt_shooting_cycle.setVisibility(View.GONE);
+//                   lbl_shooting_cycles.setVisibility(View.GONE);
+//                   button_shooting_cyclesMinus.setVisibility(View.GONE);
+//                   button_shooting_cyclesPlus.setVisibility(View.GONE);
 
                }
            }
@@ -394,8 +436,16 @@ public class TeleopScoutActivity extends Activity {
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void storeTeleData() {
         Log.i(TAG, ">>>>  storeTeleData  <<<<");
-        Pearadox.Match_Data.setTele_gears_placed(gearNumT);
-        Pearadox.Match_Data.setTele_gears_attempt(gearNumA);
+        Pearadox.Match_Data.setTele_gears_placed(tele_gears_placed);
+        Pearadox.Match_Data.setTele_gears_attempt(tele_gears_attempt);
+        Pearadox.Match_Data.setTele_hg(tele_hg);
+        Pearadox.Match_Data.setTele_hg_percent(tele_hg_percent);
+        Pearadox.Match_Data.setTele_lg(tele_lg);
+        Pearadox.Match_Data.setTele_lg_percent(tele_lg_percent);
+        Pearadox.Match_Data.setTele_cycles(tele_cycles);
+        Pearadox.Match_Data.setTele_touch_act(tele_touch_act);
+        Pearadox.Match_Data.setTele_climb_attempt(tele_climb_attempt);
+        Pearadox.Match_Data.setTele_climb_success(tele_climb_success);
         //ToDo - add remaining TeleOps elements
 
         Pearadox.Match_Data.setTele_comment(teleComment);
@@ -430,7 +480,7 @@ public class TeleopScoutActivity extends Activity {
                 key = "7";
                 break;
             default:                //
-                Log.d(TAG, "DEV = NULL" );
+                Log.w(TAG, "DEV = NULL" );
         }
         pfDevice_DBReference.child(key).child("phase").setValue(phase);
     }
@@ -495,7 +545,7 @@ public class TeleopScoutActivity extends Activity {
 
         if (Pearadox.MatchData_Saved) {
             // ToDo - Clear all data back to original settings
-            Log.d(TAG, "#### Data was saved in Final #### ");
+            Log.w(TAG, "#### Data was saved in Final #### ");
             //Toast.makeText(getBaseContext(), "Data was saved in Final - probably should Exit", Toast.LENGTH_LONG).show();
 
             finish();       // Exit
