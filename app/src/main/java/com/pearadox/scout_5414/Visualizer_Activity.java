@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,11 +25,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Visualizer_Activity extends AppCompatActivity {
 
@@ -40,7 +43,12 @@ public class Visualizer_Activity extends AppCompatActivity {
     Spinner spinner_MatchNum;
     ArrayAdapter<String> adapter_Num;
     public String NumSelected = " ";
+    ListView listView_Matches;
+    ArrayList<String> matchList = new ArrayList<String>();
+    ArrayAdapter<String> adaptMatch;
+    public int matchSelected = 0;
     public String matchID = "T00";      // Type + #
+    TextView txt_EventName, txt_MatchID;
     TextView txt_teamR1, txt_teamR2, txt_teamR3, txt_teamB1, txt_teamB2, txt_teamB3;
     TextView txt_teamR1_Name, txt_teamR2_Name, txt_teamR3_Name, txt_teamB1_Name, txt_teamB2_Name, txt_teamB3_Name;
     TextView tbl_teamR1, tbl_teamR2, tbl_teamR3, tbl_teamB1, tbl_teamB2, tbl_teamB3;
@@ -76,6 +84,10 @@ public class Visualizer_Activity extends AppCompatActivity {
         txt_dev.setText(param1);
         txt_stud.setText(param2);
         matchID = "";
+        listView_Matches = (ListView) findViewById(R.id.listView_Matches);
+        adaptMatch = new ArrayAdapter<String>(this, R.layout.match_list_layout, matchList);
+        listView_Matches.setAdapter(adaptMatch);
+        adaptMatch.notifyDataSetChanged();
 
         pfDatabase = FirebaseDatabase.getInstance();
 //        pfTeam_DBReference = pfDatabase.getReference("teams/" + Pearadox.FRC_Event);  // Tteam data from Firebase D/B
@@ -102,7 +114,27 @@ public class Visualizer_Activity extends AppCompatActivity {
         clearTeams();
         Button button_View = (Button) findViewById(R.id.button_View);   // Listner defined in Layout XML
 //        button_View.setOnClickListener(buttonView_Click);
+
+
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        listView_Matches.setOnItemClickListener(new AdapterView.OnItemClickListener()	{
+            public void onItemClick(AdapterView<?> parent,
+                                    View view, int pos, long id) {
+                Log.w(TAG,"*** listView_Matches ***   Item Selected: " + pos);
+                matchSelected = pos;
+                listView_Matches.setSelector(android.R.color.holo_blue_light);
+        		/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+                matchID = matchList.get(matchSelected).substring(0,3);
+                Log.w(TAG,"   MatchID: " + matchID);
+                txt_MatchID = (TextView) findViewById(R.id.txt_MatchID);
+                txt_MatchID.setText(matchID);
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing.
+            }
+        });
     }
+
 
     private void clearTeams() {
         Log.i(TAG, "Clearing Team data");
@@ -227,11 +259,13 @@ public class Visualizer_Activity extends AppCompatActivity {
         }
     }
 
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public void buttonView_Click(View view) {
-        Log.i(TAG, " VIEW Button Click  ");
+        Log.w(TAG, " Start Button Click  " + matchID);
 
         getTeams();         // Get the teams for match selected
     }
+
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void loadTblData () {
         Log.i(TAG, "#### loadTblData  ####");
@@ -450,10 +484,67 @@ public class Visualizer_Activity extends AppCompatActivity {
         }
     }
 
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private void loadMatches() {
+        Log.i(TAG, "###  loadMatches  ###");
 
+        addMatchSched_VE_Listener(pfMatch_DBReference.orderByChild("match"));
+//        matchList.add("Q01"  + "  Time: 2:00PM" );
+//        matchList.add("Q02"  + "  Time: 2:15PM" );
+//        matchList.add("Q03"  + "  Time: 2:30PM" );
+//        matchList.add("Q04"  + "  Time: 2:45PM" );
+//        matchList.add("Q05"  + "  Time: 3:00PM" );
+//        matchList.add("Q06"  + "  Time: 3:15PM" );
+//        matchList.add("Q07"  + "  Time: 3:30PM" );
+//        matchList.add("Q08"  + "  Time: 3:45PM" );
+//        matchList.add("Q09"  + "  Time: 4:00PM" );
+//        matchList.add("Q10"  + "  Time: 4:15PM" );
+//        matchList.add("Q11"  + "  Time: 4:30PM" );
+//        matchList.add("Q12"  + "  Time: 4:45PM" );
+
+    }
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private void addMatchSched_VE_Listener(final Query pfMatch_DBReference) {
+        pfMatch_DBReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i(TAG, "******* Firebase retrieve Match Schedule  *******");
+                matchList.clear();
+                p_Firebase.matchObj match_inst = new p_Firebase.matchObj();
+                Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
+                Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
+                while (iterator.hasNext()) {
+                    match_inst = iterator.next().getValue(p_Firebase.matchObj.class);
+//                    Log.w(TAG,"      " + match_inst.getMatch());
+//                    matchList.add(match_inst.getMatch() + "  Time: " + match_inst.getTime() + "  " + match_inst.getMtype());
+                    matchList.add(match_inst.getMatch() +  "  " + match_inst.getMtype());
+                }
+                Log.w(TAG,"### Matches ###  : " + matchList.size());
+                listView_Matches = (ListView) findViewById(R.id.listView_Matches);
+                adaptMatch = new ArrayAdapter<String>(Visualizer_Activity.this, R.layout.match_list_layout, matchList);
+                listView_Matches.setAdapter(adaptMatch);
+                adaptMatch.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                /*listener failed or was removed for security reasons*/
+                throw databaseError.toException();
+            }
+        });
+    }
+
+
+    //###################################################################
 //###################################################################
 //###################################################################
-//###################################################################
+@Override
+public void onStart() {
+    super.onStart();
+    Log.v(TAG, "onStart");
+
+    loadMatches();  // Find all matches for this event
+}
     @Override
     public void onResume() {
         super.onResume();

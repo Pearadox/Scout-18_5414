@@ -17,18 +17,18 @@
         android:layout_height="120dp"
         android:src="@drawable/visualizer"
         android:contentDescription="Visualizer logo"
-        android:layout_alignBottom="@+id/lbl_MatchType"
+
         android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/lbl_Student"
-        android:layout_width="70dp"
+        android:layout_width="50dp"
         android:layout_height="25dp"
-        android:textSize="14sp"
-        android:textColor="@color/white"
-        android:text="Student"
+        android:layout_alignStart="@+id/lbl_Dev"
         android:layout_below="@+id/txt_Dev"
-        android:layout_alignStart="@+id/lbl_Dev" />
+        android:text="Scout"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/txt_TeamName"
@@ -40,16 +40,17 @@
         android:layout_alignBaseline="@+id/lbl_Student"
         android:layout_alignBottom="@+id/lbl_Student"
         android:layout_alignStart="@+id/txt_Dev" />
+
     <TextView
         android:id="@+id/lbl_Dev"
-        android:layout_width="70dp"
+        android:layout_width="50dp"
         android:layout_height="25dp"
-        android:textSize="14sp"
-        android:textColor="@color/white"
-        android:text="Device"
+        android:layout_above="@+id/lbl_Student"
         android:layout_marginStart="14dp"
         android:layout_toEndOf="@+id/imageView_VZ"
-        android:layout_above="@+id/lbl_Student" />
+        android:text="Device"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
 
 
     <TextView
@@ -68,6 +69,7 @@
         android:layout_height="25dp"
         android:layout_weight="1"
         android:prompt="@string/mtchtyp_prompt"
+        android:visibility="invisible"
         android:layout_alignTop="@+id/lbl_MatchType"
         android:layout_toRightOf="@+id/lbl_MatchType"
         android:layout_toEndOf="@+id/lbl_MatchType" />
@@ -77,6 +79,7 @@
         android:layout_width="80dp"
         android:layout_height="25dp"
         android:layout_weight="1"
+        android:visibility="invisible"
         android:layout_below="@+id/spinner_MatchType"
         android:layout_alignLeft="@+id/spinner_MatchType"
         android:layout_alignStart="@+id/spinner_MatchType"
@@ -85,34 +88,35 @@
 
     <TextView
         android:id="@+id/lbl_MatchType"
-        android:layout_width="80dp"
+        android:layout_width="70dp"
         android:layout_height="35dp"
+        android:layout_alignBottom="@+id/txt_TeamName"
+        android:layout_toStartOf="@+id/linear_Matches"
         android:layout_weight="1"
-        android:textSize="14sp"
+        android:text="Matches  ►"
         android:textColor="@color/white"
-        android:text="Match Type"
-        android:layout_below="@+id/lbl_Student"
-        android:layout_alignStart="@+id/lbl_Student" />
+        android:textSize="10sp"
+        tools:textAlignment="textEnd" />
 
-    <TextView
-        android:id="@+id/lbl_MatchNum"
-        android:text="Match Number"
-        android:layout_height="35dp"
-        android:textSize="14sp"
-        android:textColor="@color/white"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_below="@+id/spinner_MatchType"
-        android:layout_alignStart="@+id/lbl_MatchType" />
+    <!--<TextView-->
+        <!--android:id="@+id/lbl_MatchNum"-->
+        <!--android:text="Match Number"-->
+        <!--android:layout_height="35dp"-->
+        <!--android:textSize="14sp"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_below="@+id/spinner_MatchType"-->
+        <!--android:layout_alignStart="@+id/lbl_MatchType" />-->
+
     <Button
         android:id="@+id/button_View"
-        android:text="View Selected"
-        android:onClick="buttonView_Click"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txt_TeamName"
-        android:layout_toEndOf="@+id/txt_TeamName"
-        android:layout_marginStart="53dp" />
+        android:onClick="buttonView_Click"
+        android:text="View"
+        android:layout_below="@+id/spinner_MatchNum"
+        android:layout_alignStart="@+id/lbl_Student" />
 
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -125,8 +129,8 @@
         android:layout_height="wrap_content"
         android:text="Red Alliance"
         android:gravity="center_horizontal"
-        android:layout_below="@+id/spinner_MatchNum"
-        android:layout_marginTop="30dp"
+        android:layout_below="@+id/linear_Matches"
+        android:layout_marginTop="1dp"
         android:layout_alignParentStart="true" />
 
     <TextView
@@ -153,7 +157,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="14sp"
-            android:textColor="@color/darkred"
+            android:textColor="@color/orange"
             android:text="Team 1"
             android:layout_below="@+id/spinner_MatchNum"
             android:layout_alignParentLeft="true"
@@ -174,7 +178,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="14sp"
-            android:textColor="@color/darkred"
+            android:textColor="@color/orange"
             android:text="Team 2"
             android:layout_below="@+id/lbl_team1"
             android:layout_alignParentLeft="true"
@@ -193,7 +197,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="14sp"
-            android:textColor="@color/darkred"
+            android:textColor="@color/orange"
             android:text="Team 3" />
         <TextView
             android:id="@+id/txt_teamR3"
@@ -391,8 +395,7 @@
         android:text="Blue Alliance"
         android:gravity="center_horizontal"
         android:layout_below="@+id/teams_sectR1"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp" />
+        android:layout_alignParentStart="true" />
 
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -411,6 +414,7 @@
                 android:id="@+id/hdr_team"
                 android:text="TEAM"
                 android:gravity="left"
+                android:textSize="10sp"
                 android:layout_width="0px"
                 android:layout_weight="0.10"
                 android:layout_height="wrap_content"
@@ -418,19 +422,21 @@
                 android:padding="3dip" />
             <TextView
                 android:id="@+id/hdr_robot"
-                android:text="    ROBOT PHOTO"
+                android:text="ROBOT PHOTO"
+                android:textSize="10sp"
                 android:gravity="left"
                 android:layout_width="0px"
-                android:layout_weight="0.25"
+                android:layout_weight="0.15"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:padding="3dip" />
             <TextView
                 android:id="@+id/hdr_attr"
-                android:text="                                           ATTRIBUTES"
+                android:text="                                                       ATTRIBUTES"
                 android:gravity="left"
+                android:textSize="10sp"
                 android:layout_width="0px"
-                android:layout_weight="0.70"
+                android:layout_weight="0.75"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:padding="3dip" />
@@ -449,7 +455,7 @@
             <ImageView
                 android:id="@+id/tbl_robotR1"
                 android:layout_width="100dp"
-                android:layout_weight="0.20"
+                android:layout_weight="0.15"
                 android:layout_height="80dp"
                 android:gravity="start"
                 android:background="@drawable/border"
@@ -458,13 +464,13 @@
             <LinearLayout
                 android:id="@+id/teamR1_layout"
                 android:orientation="horizontal"
-                android:layout_weight="0.70"
+                android:layout_weight="0.75"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
                 <Button
                     android:id="@+id/btn_PitR1"
-                    android:layout_width="18sp"
+                    android:layout_width="20sp"
                     android:layout_height="40sp"
                     android:layout_weight="0.15"
                     android:onClick="btn_PitR1_Click"
@@ -475,7 +481,7 @@
                     android:id="@+id/btn_MatchR1"
                     android:layout_width="20sp"
                     android:layout_height="40sp"
-                    android:layout_weight="0.20"
+                    android:layout_weight="0.15"
                     android:onClick="btn_MatchR1_Click"
                     android:text="Match Data"
                     android:textSize="8sp" />
@@ -494,7 +500,7 @@
                     android:id="@+id/tbl_rateR1"
                     android:layout_width="60sp"
                     android:layout_height="40sp"
-                    android:layout_weight="0.50"
+                    android:layout_weight="0.45"
                     android:gravity="start"
                     android:padding="3dip"
                     android:text="OPR 100.5   DPR 00.0  \nStatistics from other \ndata"
@@ -539,7 +545,7 @@
             <ImageView
                 android:id="@+id/tbl_robotR2"
                 android:layout_width="100dp"
-                android:layout_weight="0.20"
+                android:layout_weight="0.15"
                 android:layout_height="80dp"
                 android:gravity="start"
                 android:background="@drawable/border"
@@ -572,7 +578,7 @@
                 android:id="@+id/tbl_robotR3"
                 android:layout_width="100dp"
                 android:layout_height="80dp"
-                android:layout_weight="0.20"
+                android:layout_weight="0.15"
                 android:gravity="start"
                 android:background="@drawable/border"
                 android:padding="3dip" />
@@ -604,7 +610,7 @@
                 android:layout_width="100dp"
                 android:layout_height="80dp"
                 android:text="second"
-                android:layout_weight="0.20"
+                android:layout_weight="0.15"
                 android:gravity="start"
                 android:background="@drawable/border"
                 android:padding="3dip" />
@@ -636,7 +642,7 @@
                 android:layout_width="100dp"
                 android:layout_height="80dp"
                 android:text="second"
-                android:layout_weight="0.20"
+                android:layout_weight="0.15"
                 android:gravity="start"
                 android:background="@drawable/border"
                 android:padding="3dip" />
@@ -668,7 +674,7 @@
                 android:layout_width="100dp"
                 android:layout_height="80dp"
                 android:text="second"
-                android:layout_weight="0.20"
+                android:layout_weight="0.15"
                 android:gravity="start"
                 android:background="@drawable/border"
                 android:padding="3dip" />
@@ -688,5 +694,45 @@
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+
+    <LinearLayout
+        android:id="@+id/linear_Matches"
+        android:layout_width="160sp"
+        android:layout_height="140sp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:choiceMode="singleChoice"
+        android:listSelector="@android:color/holo_blue_light"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <ListView
+            android:id="@+id/listView_Matches"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="4dp"
+            android:minHeight="80dip"
+            android:scrollbars="vertical"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_MatchID"
+        android:layout_width="50sp"
+        android:layout_height="30sp"
+        android:text="T00"
+        android:textColor="@android:color/holo_blue_light"
+        android:textSize="16sp"
+        android:textStyle="bold"
+
+        android:layout_marginStart="25dp"
+        android:layout_alignBaseline="@+id/button_View"
+        android:layout_alignBottom="@+id/button_View"
+        android:layout_toEndOf="@+id/button_View" />
+
 
 </RelativeLayout>

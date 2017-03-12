@@ -6,6 +6,6 @@
     android:layout_height="wrap_content"
     android:textColor="@color/white"
     android:layout_margin="10dp"
-    android:minHeight="40dip"
+    android:minHeight="25dip"
     android:textAppearance="?android:attr/textAppearanceSmall" >
 </TextView>
