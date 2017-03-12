@@ -36,7 +36,7 @@ public class TeleopScoutActivity extends Activity {
     String TAG = "TeleopScoutActivity";      // This CLASS name
     TextView txt_dev, txt_stud, txt_match, txt_MyTeam, lbl_GearNUMT, lbl_GearsAttempted, txt_seekBarHGvalue, txt_seekBarLGvalue, lbl_shooting_cycles, txt_shooting_cycle;
     private Button button_GoToFinalActivity,button_GearPlacedT, button_GearPlacedTPlus, button_GearAttemptedP, button_GearAttemptedM, button_shooting_cyclesPlus, button_shooting_cyclesMinus;
-    CheckBox chk_climbsuccessful, chk_climbattempted, chk_touchpad, chk_touchpadpts, chkBox_highGoal, chkBox_lowGoal;
+    CheckBox chk_climbsuccessful, chk_climbattempted, chk_touchpad, chk_touchpadpts, chkBox_highGoal, chkBox_lowGoal, chkBox_PU_Gears_floor;
     SeekBar seekBar_HighGoal_Teleop, seekBar_LowGoal_Teleop;
     EditText editText_TeleComments;
     private FirebaseDatabase pfDatabase;
@@ -58,6 +58,7 @@ public class TeleopScoutActivity extends Activity {
 //    public boolean tele_touch_pts = false;                      // Did they get Touchpad points?
     public boolean tele_climb_attempt = false;                  // Did they ATTEMPT climb?
     public boolean tele_climb_success = false;                  // Was climb successful?
+    public boolean tele_gear_pickup = false;                    //Did they pickup gears off the ground?
     /* */
     public String teleComment = " ";    // Tele Comment
     // ===========================================================================
@@ -73,6 +74,7 @@ public class TeleopScoutActivity extends Activity {
         String param2 = bundle.getString("stud");
         Log.w(TAG, param1 + " " + param2);      // ** DEBUG **
 
+        chkBox_PU_Gears_floor = (CheckBox) findViewById(R.id.chkBox_PU_Gears_floor);
         txt_shooting_cycle = (TextView) findViewById(R.id.txt_shooting_cycle);
         editText_TeleComments = (EditText) findViewById(R.id.editText_teleComments);
         button_shooting_cyclesPlus = (Button) findViewById(R.id.button_shooting_cyclesPlus);
@@ -198,6 +200,29 @@ public class TeleopScoutActivity extends Activity {
             }
         });
 
+        chkBox_PU_Gears_floor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+            Log.i(TAG, "chkBox_PU_Gears_floor Listener");
+            if (buttonView.isChecked()) {
+                  //checked
+                 Log.i(TAG,"TextBox is checked.");
+                tele_gear_pickup = true;
+
+            }
+            else
+            {
+                  //not checked
+                Log.i(TAG,"TextBox is unchecked.");
+                tele_gear_pickup = false;
+
+            }
+            }
+        }
+        );
+
+
         chk_climbattempted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
@@ -229,6 +254,7 @@ public class TeleopScoutActivity extends Activity {
                     Log.i(TAG,"TextBox is checked.");
                     tele_climb_success = true;
                     chk_touchpad.setChecked(true);
+                    chk_climbattempted.setChecked(true);
 
 
                 }
@@ -238,6 +264,7 @@ public class TeleopScoutActivity extends Activity {
                     Log.i(TAG,"TextBox is unchecked.");
                     tele_climb_success = false;
                     chk_touchpad.setChecked(false);
+                    chk_climbattempted.setChecked(false);
 
 
                 }
@@ -254,6 +281,8 @@ public class TeleopScoutActivity extends Activity {
                 //checked
                 Log.i(TAG,"TextBox is checked.");
                 tele_touch_act =  true;
+                chk_climbattempted.setChecked(true);
+
 
             }
             else
@@ -261,6 +290,8 @@ public class TeleopScoutActivity extends Activity {
                 //not checked
                 Log.i(TAG,"TextBox is unchecked.");
                 tele_touch_act = false;
+                chk_climbattempted.setChecked(false);
+
 
             }
             }
@@ -446,6 +477,7 @@ public class TeleopScoutActivity extends Activity {
         Pearadox.Match_Data.setTele_touch_act(tele_touch_act);
         Pearadox.Match_Data.setTele_climb_attempt(tele_climb_attempt);
         Pearadox.Match_Data.setTele_climb_success(tele_climb_success);
+        Pearadox.Match_Data.setTele_gear_pickup(tele_gear_pickup);
         //ToDo - add remaining TeleOps elements
 
         Pearadox.Match_Data.setTele_comment(teleComment);
