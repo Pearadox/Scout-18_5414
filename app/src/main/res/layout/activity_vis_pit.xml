@@ -264,7 +264,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/border"
         android:ems="12"
-        android:lines="2"
+        android:lines="3"
         android:scrollbars="vertical"
         android:text="Comments"
         android:textColor="@color/green"
