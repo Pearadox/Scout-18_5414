@@ -190,6 +190,48 @@ public class Visualizer_Activity extends AppCompatActivity {
 //        FB_url = "https://firebasestorage.googleapis.com/v0/b/paradox-2017.appspot.com/o/images%2Ftxlu%2Frobot_1296.png?alt=media&token=e6c8fbc1-f0e1-4ddc-9e01-f30a2a32a291";
         launchVizPit(tnum, team_name, FB_url);
     }
+    public void btn_PitR2_Click(View view) {
+        Log.i(TAG, " btn_PitR2_Click   ");
+        txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
+        txt_teamR2_Name = (TextView) findViewById(R.id.txt_teamR2_Name);
+        tnum = (String) txt_teamR2.getText();
+        team_name = (String) txt_teamR2_Name.getText();
+        launchVizPit(tnum, team_name, FB_url);
+    }
+    public void btn_PitR3_Click(View view) {
+        Log.i(TAG, " btn_PitR3_Click   ");
+        txt_teamR3 = (TextView) findViewById(R.id.txt_teamR3);
+        txt_teamR3_Name = (TextView) findViewById(R.id.txt_teamR3_Name);
+        tnum = (String) txt_teamR3.getText();
+        team_name = (String) txt_teamR3_Name.getText();
+        launchVizPit(tnum, team_name, FB_url);
+    }
+    public void btn_PitB1_Click(View view) {
+        Log.i(TAG, " btn_PitB1_Click   ");
+        txt_teamB1 = (TextView) findViewById(R.id.txt_teamB1);
+        txt_teamB1_Name = (TextView) findViewById(R.id.txt_teamB1_Name);
+        tnum = (String) txt_teamB1.getText();
+        team_name = (String) txt_teamB1_Name.getText();
+        launchVizPit(tnum, team_name, FB_url);
+    }
+    public void btn_PitB2_Click(View view) {
+        Log.i(TAG, " btn_PitB2_Click   ");
+        txt_teamB2 = (TextView) findViewById(R.id.txt_teamB2);
+        txt_teamB2_Name = (TextView) findViewById(R.id.txt_teamB2_Name);
+        tnum = (String) txt_teamB2.getText();
+        team_name = (String) txt_teamB2_Name.getText();
+        launchVizPit(tnum, team_name, FB_url);
+    }
+    public void btn_PitB3_Click(View view) {
+        Log.i(TAG, " btn_PitB3_Click   ");
+        txt_teamB3 = (TextView) findViewById(R.id.txt_teamB3);
+        txt_teamB3_Name = (TextView) findViewById(R.id.txt_teamB3_Name);
+        tnum = (String) txt_teamB3.getText();
+        team_name = (String) txt_teamB3_Name.getText();
+        launchVizPit(tnum, team_name, FB_url);
+    }
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public void btn_MatchR1_Click(View view) {
         Log.i(TAG, " btn_MatchR1_Click   ");
         txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
@@ -199,7 +241,48 @@ public class Visualizer_Activity extends AppCompatActivity {
         Log.w(TAG, "*** Team " + tnum + " " + team_name);
         launchVizMatch(tnum, team_name);
     }
+    public void btn_MatchR2_Click(View view) {
+        Log.i(TAG, " btn_MatchR2_Click   ");
+        txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
+        txt_teamR2_Name = (TextView) findViewById(R.id.txt_teamR2_Name);
+        tnum = (String) txt_teamR2.getText();
+        team_name = (String) txt_teamR2_Name.getText();
+        launchVizMatch(tnum, team_name);
+    }
+    public void btn_MatchR3_Click(View view) {
+        Log.i(TAG, " btn_MatchR3_Click   ");
+        txt_teamR3 = (TextView) findViewById(R.id.txt_teamR3);
+        txt_teamR3_Name = (TextView) findViewById(R.id.txt_teamR3_Name);
+        tnum = (String) txt_teamR3.getText();
+        team_name = (String) txt_teamR3_Name.getText();
+        launchVizMatch(tnum, team_name);
+    }
+    public void btn_MatchB1_Click(View view) {
+        Log.i(TAG, " btn_MatchB1_Click   ");
+        txt_teamB1 = (TextView) findViewById(R.id.txt_teamB1);
+        txt_teamB1_Name = (TextView) findViewById(R.id.txt_teamB1_Name);
+        tnum = (String) txt_teamB1.getText();
+        team_name = (String) txt_teamB1_Name.getText();
+        launchVizMatch(tnum, team_name);
+    }
+    public void btn_MatchB2_Click(View view) {
+        Log.i(TAG, " btn_MatchB2_Click   ");
+        txt_teamB2 = (TextView) findViewById(R.id.txt_teamB2);
+        txt_teamB2_Name = (TextView) findViewById(R.id.txt_teamB2_Name);
+        tnum = (String) txt_teamB2.getText();
+        team_name = (String) txt_teamB2_Name.getText();
+        launchVizMatch(tnum, team_name);
+    }
+    public void btn_MatchB3_Click(View view) {
+        Log.i(TAG, " btn_MatchB3_Click   ");
+        txt_teamB3 = (TextView) findViewById(R.id.txt_teamB3);
+        txt_teamB3_Name = (TextView) findViewById(R.id.txt_teamB3_Name);
+        tnum = (String) txt_teamB3.getText();
+        team_name = (String) txt_teamB3_Name.getText();
+        launchVizMatch(tnum, team_name);
+    }
 
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void launchVizMatch(String team, String name) {
         Intent pit_intent = new Intent(Visualizer_Activity.this, VisMatch_Activity.class);
         Bundle VZbundle = new Bundle();
@@ -220,7 +303,7 @@ public class Visualizer_Activity extends AppCompatActivity {
 
     }
 
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private class type_OnItemSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {

@@ -550,11 +550,52 @@
                 android:gravity="start"
                 android:background="@drawable/border"
                 android:padding="3dip" />
-            <TextView
-                android:text="Statistics"
-                android:gravity="start"
+            <LinearLayout
+                android:id="@+id/teamR2_layout"
+                android:orientation="horizontal"
                 android:layout_weight="0.75"
-                android:padding="3dip" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <Button
+                    android:id="@+id/btn_PitR2"
+                    android:layout_width="20sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.15"
+                    android:onClick="btn_PitR2_Click"
+                    android:text="Pit Data"
+                    android:textSize="8sp" />
+
+                <Button
+                    android:id="@+id/btn_MatchR2"
+                    android:layout_width="20sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.15"
+                    android:onClick="btn_MatchR2_Click"
+                    android:text="Match Data"
+                    android:textSize="8sp" />
+
+                <TextView
+                    android:id="@+id/tbl_eventR2"
+                    android:layout_width="10sp"
+                    android:layout_height="35sp"
+                    android:textColor="@color/orange"
+                    android:layout_weight="0.15"
+                    android:gravity="start"
+                    android:padding="3dip"
+                    android:text="TXLU" />
+
+                <TextView
+                    android:id="@+id/tbl_rateR2"
+                    android:layout_width="60sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.45"
+                    android:gravity="start"
+                    android:padding="3dip"
+                    android:text="OPR 100.5   DPR 00.0  \nStatistics from other \ndata"
+                    android:textColor="@color/red" />
+
+            </LinearLayout>
             <!--android:background="@drawable/border"-->
             <!--<TextView-->
                 <!--android:text="Gears Placed"-->
@@ -582,11 +623,52 @@
                 android:gravity="start"
                 android:background="@drawable/border"
                 android:padding="3dip" />
-            <TextView
-                android:text="Statistics"
-                android:gravity="start"
+            <LinearLayout
+                android:id="@+id/teamR3_layout"
+                android:orientation="horizontal"
                 android:layout_weight="0.75"
-                android:padding="3dip" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <Button
+                    android:id="@+id/btn_PitR3"
+                    android:layout_width="20sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.15"
+                    android:onClick="btn_PitR3_Click"
+                    android:text="Pit Data"
+                    android:textSize="8sp" />
+
+                <Button
+                    android:id="@+id/btn_MatchR3"
+                    android:layout_width="20sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.15"
+                    android:onClick="btn_MatchR3_Click"
+                    android:text="Match Data"
+                    android:textSize="8sp" />
+
+                <TextView
+                    android:id="@+id/tbl_eventR3"
+                    android:layout_width="10sp"
+                    android:layout_height="35sp"
+                    android:textColor="@color/orange"
+                    android:layout_weight="0.15"
+                    android:gravity="start"
+                    android:padding="3dip"
+                    android:text="TXLU" />
+
+                <TextView
+                    android:id="@+id/tbl_rateR3"
+                    android:layout_width="60sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.45"
+                    android:gravity="start"
+                    android:padding="3dip"
+                    android:text="OPR 100.5   DPR 00.0  \nStatistics from other \ndata"
+                    android:textColor="@color/red" />
+
+            </LinearLayout>
             <!--<TextView-->
                 <!--android:text="Gears Placed"-->
                 <!--android:gravity="start"-->
@@ -614,11 +696,52 @@
                 android:gravity="start"
                 android:background="@drawable/border"
                 android:padding="3dip" />
-            <TextView
-                android:text="Statistics"
-                android:gravity="start"
+            <LinearLayout
+                android:id="@+id/teamB1_layout"
+                android:orientation="horizontal"
                 android:layout_weight="0.75"
-                android:padding="3dip" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <Button
+                    android:id="@+id/btn_PitB1"
+                    android:layout_width="20sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.15"
+                    android:onClick="btn_PitB1_Click"
+                    android:text="Pit Data"
+                    android:textSize="8sp" />
+
+                <Button
+                    android:id="@+id/btn_MatchB1"
+                    android:layout_width="20sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.15"
+                    android:onClick="btn_MatchB1_Click"
+                    android:text="Match Data"
+                    android:textSize="8sp" />
+
+                <TextView
+                    android:id="@+id/tbl_eventB1"
+                    android:layout_width="10sp"
+                    android:layout_height="35sp"
+                    android:textColor="@color/cyan"
+                    android:layout_weight="0.15"
+                    android:gravity="start"
+                    android:padding="3dip"
+                    android:text="TXLU" />
+
+                <TextView
+                    android:id="@+id/tbl_rateB1"
+                    android:layout_width="60sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.45"
+                    android:gravity="start"
+                    android:padding="3dip"
+                    android:text="OPR 100.5   DPR 00.0  \nStatistics from other \ndata"
+                    android:textColor="@color/brightblue" />
+
+            </LinearLayout>
             <!--<TextView-->
                 <!--android:text="Gears Placed"-->
                 <!--android:gravity="start"-->
@@ -646,11 +769,52 @@
                 android:gravity="start"
                 android:background="@drawable/border"
                 android:padding="3dip" />
-            <TextView
-                android:text="Statistics"
-                android:gravity="start"
+            <LinearLayout
+                android:id="@+id/teamB2_layout"
+                android:orientation="horizontal"
                 android:layout_weight="0.75"
-                android:padding="3dip" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <Button
+                    android:id="@+id/btn_PitB2"
+                    android:layout_width="20sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.15"
+                    android:onClick="btn_PitB2_Click"
+                    android:text="Pit Data"
+                    android:textSize="8sp" />
+
+                <Button
+                    android:id="@+id/btn_MatchB2"
+                    android:layout_width="20sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.15"
+                    android:onClick="btn_MatchB2_Click"
+                    android:text="Match Data"
+                    android:textSize="8sp" />
+
+                <TextView
+                    android:id="@+id/tbl_eventB2"
+                    android:layout_width="10sp"
+                    android:layout_height="35sp"
+                    android:textColor="@color/cyan"
+                    android:layout_weight="0.15"
+                    android:gravity="start"
+                    android:padding="3dip"
+                    android:text="TXLU" />
+
+                <TextView
+                    android:id="@+id/tbl_rateB2"
+                    android:layout_width="60sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.45"
+                    android:gravity="start"
+                    android:padding="3dip"
+                    android:text="OPR 100.5   DPR 00.0  \nStatistics from other \ndata"
+                    android:textColor="@color/brightblue" />
+
+            </LinearLayout>
             <!--<TextView-->
                 <!--android:text="Gears Placed"-->
                 <!--android:gravity="start"-->
@@ -678,11 +842,52 @@
                 android:gravity="start"
                 android:background="@drawable/border"
                 android:padding="3dip" />
-            <TextView
-                android:text="Statistics"
-                android:gravity="start"
+            <LinearLayout
+                android:id="@+id/teamB3_layout"
+                android:orientation="horizontal"
                 android:layout_weight="0.75"
-                android:padding="3dip" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <Button
+                    android:id="@+id/btn_PitB3"
+                    android:layout_width="20sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.15"
+                    android:onClick="btn_PitB3_Click"
+                    android:text="Pit Data"
+                    android:textSize="8sp" />
+
+                <Button
+                    android:id="@+id/btn_MatchB3"
+                    android:layout_width="20sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.15"
+                    android:onClick="btn_MatchB3_Click"
+                    android:text="Match Data"
+                    android:textSize="8sp" />
+
+                <TextView
+                    android:id="@+id/tbl_eventB3"
+                    android:layout_width="10sp"
+                    android:layout_height="35sp"
+                    android:textColor="@color/cyan"
+                    android:layout_weight="0.15"
+                    android:gravity="start"
+                    android:padding="3dip"
+                    android:text="TXLU" />
+
+                <TextView
+                    android:id="@+id/tbl_rateB3"
+                    android:layout_width="60sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.45"
+                    android:gravity="start"
+                    android:padding="3dip"
+                    android:text="OPR 100.5   DPR 00.0  \nStatistics from other \ndata"
+                    android:textColor="@color/brightblue" />
+
+            </LinearLayout>
             <!--<TextView-->
                 <!--android:text="Gears Placed"-->
                 <!--android:gravity="start"-->
