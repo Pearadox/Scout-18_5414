@@ -96,9 +96,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button_Saved"
-        android:layout_below="@+id/scrollv_comm"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="173dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="24dp" />
 
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
