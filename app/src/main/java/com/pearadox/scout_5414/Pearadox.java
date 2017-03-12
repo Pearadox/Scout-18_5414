@@ -53,9 +53,10 @@ public class Pearadox {
     // ============== TELE =================
     private static int     tele_gears_placed;      // # gears placed during Tele
     private static int     tele_gears_attempt;     // # gears attempted during ATele
+    private static boolean tele_gear_pickup;       // Did they pick up Gear(s)
     private static boolean tele_hg;                // Did they shoot at High Goal
     private static int     tele_hg_percent;        // What percentage HG made?
-    private static boolean tele_lg;                // Did they shoor at Low Goal
+    private static boolean tele_lg;                // Did they shoot at Low Goal
     private static int     tele_lg_percent;        // What percentage LG made?
     private static int     tele_cycles;            // # cycles of shooting Upper Goal
     private static boolean tele_touch_act;         // Did they activate Touchpad
@@ -80,7 +81,7 @@ public class Pearadox {
 // Java Object _SHARED_ by Auto, Tele & Final
     public static matchData Match_Data = new matchData(match, team_num,
         auto_mode, auto_rope, auto_carry_fuel, auto_fuel_amount, auto_gear, auto_gears_placed, auto_gears_attempt, auto_baseline, auto_hg, auto_hg_percent, auto_lg, auto_lg_percent, auto_start, auto_stop, auto_gear_pos, auto_act_hopper, auto_fuel_collected, auto_comment,
-        tele_gears_placed, tele_gears_attempt, tele_hg, tele_hg_percent, tele_lg, tele_lg_percent, tele_cycles, tele_touch_act, tele_touch_pts, tele_climb_attempt, tele_climb_success, tele_comment,
+        tele_gears_placed, tele_gears_attempt, tele_gear_pickup, tele_hg, tele_hg_percent, tele_lg, tele_lg_percent, tele_cycles, tele_touch_act, tele_touch_pts, tele_climb_attempt, tele_climb_success, tele_comment,
         final_lostParts, final_lostComms, final_defense_good, final_def_Lane, final_def_Block, final_def_Hopper, final_def_Gear, final_num_Penalties, final_comment, final_studID);
 
 }

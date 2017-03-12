@@ -28,9 +28,10 @@ public class matchData implements Serializable {
     // ============== TELE =================
     private int     tele_gears_placed;      // # gears placed during Tele
     private int     tele_gears_attempt;     // # gears attempted during Tele
+    private boolean tele_gear_pickup;       // Did they pick up Gear(s)
     private boolean tele_hg;                // Did they shoot at High Goal
     private int     tele_hg_percent;        // What percentage HG made?
-    private boolean tele_lg;                // Did they shoor at Low Goal
+    private boolean tele_lg;                // Did they shoot at Low Goal
     private int     tele_lg_percent;        // What percentage LG made?
     private int     tele_cycles;            // # cycles of shooting Upper Goal
     private boolean tele_touch_act;         // Did they activate Touchpad
@@ -54,7 +55,7 @@ public class matchData implements Serializable {
 
 // =================================================================================
 
-    public matchData(String match, String team_num, boolean auto_mode, boolean auto_rope, boolean auto_carry_fuel, int auto_fuel_amount, boolean auto_gear, int auto_gears_placed, int auto_gears_attempt, boolean auto_baseline, boolean auto_hg, int auto_hg_percent, boolean auto_lg, int auto_lg_percent, String auto_start, String auto_stop, String auto_gear_pos, boolean auto_act_hopper, String auto_fuel_collected, String auto_comment, int tele_gears_placed, int tele_gears_attempt, boolean tele_hg, int tele_hg_percent, boolean tele_lg, int tele_lg_percent, int tele_cycles, boolean tele_touch_act, boolean tele_touch_pts, boolean tele_climb_attempt, boolean tele_climb_success, String tele_comment, boolean final_lostParts, boolean final_lostComms, boolean final_defense_good, boolean final_def_Lane, boolean final_def_Block, boolean final_def_Hopper, boolean final_def_Gear, int final_num_Penalties, String final_comment, String final_studID) {
+    public matchData(String match, String team_num, boolean auto_mode, boolean auto_rope, boolean auto_carry_fuel, int auto_fuel_amount, boolean auto_gear, int auto_gears_placed, int auto_gears_attempt, boolean auto_baseline, boolean auto_hg, int auto_hg_percent, boolean auto_lg, int auto_lg_percent, String auto_start, String auto_stop, String auto_gear_pos, boolean auto_act_hopper, String auto_fuel_collected, String auto_comment, int tele_gears_placed, int tele_gears_attempt, boolean tele_gear_pickup, boolean tele_hg, int tele_hg_percent, boolean tele_lg, int tele_lg_percent, int tele_cycles, boolean tele_touch_act, boolean tele_touch_pts, boolean tele_climb_attempt, boolean tele_climb_success, String tele_comment, boolean final_lostParts, boolean final_lostComms, boolean final_defense_good, boolean final_def_Lane, boolean final_def_Block, boolean final_def_Hopper, boolean final_def_Gear, int final_num_Penalties, String final_comment, String final_studID) {
         this.match = match;
         this.team_num = team_num;
         this.auto_mode = auto_mode;
@@ -77,6 +78,7 @@ public class matchData implements Serializable {
         this.auto_comment = auto_comment;
         this.tele_gears_placed = tele_gears_placed;
         this.tele_gears_attempt = tele_gears_attempt;
+        this.tele_gear_pickup = tele_gear_pickup;
         this.tele_hg = tele_hg;
         this.tele_hg_percent = tele_hg_percent;
         this.tele_lg = tele_lg;
@@ -279,6 +281,14 @@ public class matchData implements Serializable {
 
     public void setTele_gears_attempt(int tele_gears_attempt) {
         this.tele_gears_attempt = tele_gears_attempt;
+    }
+
+    public boolean isTele_gear_pickup() {
+        return tele_gear_pickup;
+    }
+
+    public void setTele_gear_pickup(boolean tele_gear_pickup) {
+        this.tele_gear_pickup = tele_gear_pickup;
     }
 
     public boolean isTele_hg() {
