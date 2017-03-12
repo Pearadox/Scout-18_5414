@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/VisPit_Activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -38,8 +39,238 @@
         android:layout_toEndOf="@+id/txt_team"
         android:text="Very Long Team Name goes here" />
 
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <ImageView
+        android:id="@+id/imgView_Robot"
+        android:layout_width="fill_parent"
+        android:layout_height="350dp"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="Photo of Robot"
+        android:layout_below="@+id/lbl_team"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="13dp" />
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <TextView
+        android:id="@+id/lbl_Dim"
+        android:layout_width="80sp"
+        android:layout_height="30sp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imgView_Robot"
+        android:text="Dimension"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/txt_Dim"
+        android:layout_width="250dp"
+        android:layout_height="30sp"
+        android:layout_below="@+id/imgView_Robot"
+        android:layout_toEndOf="@+id/txt_team"
+        android:text="Dimension"
+        android:textColor="@color/grey"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/lbl_Wheels"
+        android:layout_width="60sp"
+        android:layout_height="30sp"
+        android:textSize="16sp"
+        android:text="Wheels"
+        android:textColor="@color/white"
+        android:layout_below="@+id/lbl_Dim"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/txt_TotWheels"
+        android:text="00"
+        android:layout_width="40dp"
+        android:layout_height="30sp"
+        android:textSize="16dp"
+        android:textColor="@color/yellow"
+        android:layout_alignBaseline="@+id/lbl_Wheels"
+        android:layout_alignBottom="@+id/lbl_Wheels"
+        android:layout_toEndOf="@+id/lbl_Dim" />
+
+    <ImageView
+        android:id="@+id/imgView_Traction"
+        android:layout_width="75sp"
+        android:layout_height="75sp"
+        app:srcCompat="@drawable/wheel_traction"
+        android:layout_alignTop="@+id/imgView_Omni"
+        android:layout_alignStart="@+id/txt_teamName"
+        android:layout_marginStart="13dp" />
+
+    <TextView
+        android:id="@+id/txt_NumTrac"
+        android:text="00"
+        android:layout_width="40dp"
+        android:layout_height="30sp"
+        android:textSize="16dp"
+        android:textColor="@color/green"
+        android:layout_alignTop="@+id/imgView_Traction"
+        android:layout_toEndOf="@+id/imgView_Traction"
+        android:layout_marginStart="13dp" />
+
+    <ImageView
+        android:id="@+id/imgView_Omni"
+        android:layout_width="75sp"
+        android:layout_height="75sp"
+        app:srcCompat="@drawable/wheel_omni"
+        android:layout_alignTop="@+id/txt_NumOmni"
+        android:layout_alignEnd="@+id/txt_teamName" />
+    <TextView
+        android:id="@+id/txt_NumOmni"
+        android:text="00"
+        android:layout_width="40dp"
+        android:layout_height="30sp"
+        android:textSize="16dp"
+        android:textColor="@color/green"
+        android:layout_marginStart="14dp"
+        android:layout_alignTop="@+id/imgView_Mecanum"
+        android:layout_toEndOf="@+id/imgView_Omni" />
+
+    <ImageView
+        android:id="@+id/imgView_Mecanum"
+        android:layout_width="75sp"
+        android:layout_height="75sp"
+        app:srcCompat="@drawable/wheel_mecanum"
+        android:layout_alignTop="@+id/txt_NumMecanum"
+        android:layout_toEndOf="@+id/txt_NumOmni"
+        android:layout_marginStart="24dp" />
+    <TextView
+        android:id="@+id/txt_NumMecanum"
+        android:text="00"
+        android:layout_width="40dp"
+        android:layout_height="30sp"
+        android:textSize="16dp"
+        android:textColor="@color/green"
+        android:layout_marginStart="23dp"
+        android:layout_alignBaseline="@+id/lbl_Wheels"
+        android:layout_alignBottom="@+id/lbl_Wheels"
+        android:layout_toEndOf="@+id/imgView_Mecanum" />
+
+    // ======================================================
+
+    <CheckBox
+        android:id="@+id/chkBox_Gear"
+        android:text="Gear Collector"
+        android:layout_width="160sp"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:layout_marginTop="17dp"
+        android:layout_below="@+id/imgView_Traction"
+        android:layout_alignParentStart="true" />
+
+    <CheckBox
+        android:id="@+id/chkBox_FuelManip"
+        android:text="Fuel Pickup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/chkBox_Fuel"
+        android:layout_alignParentStart="true" />
+    <CheckBox
+        android:id="@+id/chkBox_Pneumatics"
+        android:text="Pneumatics"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:layout_alignBaseline="@+id/chkBox_Shooter"
+        android:layout_alignBottom="@+id/chkBox_Shooter"
+        android:layout_toStartOf="@+id/chkBox_Vision"
+        android:layout_width="140sp" />
+
+    <CheckBox
+        android:id="@+id/chkBox_Shooter"
+        android:text="Shooter"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:layout_alignBaseline="@+id/chkBox_Gear"
+        android:layout_alignBottom="@+id/chkBox_Gear"
+        android:layout_toEndOf="@+id/chkBox_Gear"
+        android:layout_width="90sp" />
+
+    <CheckBox
+        android:id="@+id/chkBox_Vision"
+        android:text="Vision Camera"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:layout_alignBaseline="@+id/chkBox_Pneumatics"
+        android:layout_alignBottom="@+id/chkBox_Pneumatics"
+        android:layout_alignStart="@+id/imgView_Mecanum"
+        android:layout_width="140sp" />
+
+    <CheckBox
+        android:id="@+id/chkBox_Climb"
+        android:text="Climber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:layout_alignTop="@+id/chkBox_FuelManip"
+        android:layout_toEndOf="@+id/chkBox_Gear"  />
+
+    <CheckBox
+        android:id="@+id/chkBox_Fuel"
+        android:text="Fuel Container"
+        android:layout_width="160sp"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/chkBox_Gear"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/txt_FuelCap"
+        android:layout_width="40dp"
+        android:layout_height="30sp"
+        android:textSize="16dp"
+        android:textColor="@color/magenta"
+        android:text="000"
+        android:layout_alignBaseline="@+id/chkBox_Fuel"
+        android:layout_alignBottom="@+id/chkBox_Fuel"
+        android:layout_alignEnd="@+id/imgView_Traction" />
+
+    <TextView
+        android:id="@+id/lbl_Scout"
+        android:layout_width="50sp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Scout"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:layout_alignBaseline="@+id/txt_Scout"
+        android:layout_alignBottom="@+id/txt_Scout"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/txt_Scout"
+        android:layout_width="240dp"
+        android:layout_height="30sp"
+        android:text="Scout, Name"
+        android:textColor="@color/brightblue"
+        android:textSize="14dp"
+        android:layout_below="@+id/chkBox_FuelManip"
+        android:layout_toEndOf="@+id/lbl_Wheels"
+        android:layout_marginTop="11dp" />
+
+    // ======================================================
+
+    <TextView
+        android:id="@+id/txt_Comments"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border"
+        android:ems="12"
+        android:lines="2"
+        android:scrollbars="vertical"
+        android:text="Comments"
+        android:textColor="@color/green"
+        android:textSize="14dp"
+        android:layout_below="@+id/txt_Scout"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

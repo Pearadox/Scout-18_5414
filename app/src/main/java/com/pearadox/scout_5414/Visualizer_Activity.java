@@ -155,7 +155,8 @@ public class Visualizer_Activity extends AppCompatActivity {
         tnum = (String) txt_teamR1.getText();
         team_name = (String) txt_teamR1_Name.getText();
         Log.w(TAG, "*** Team " + tnum + " " + team_name);
-        launchVizPit(tnum, team_name);
+//        FB_url = "https://firebasestorage.googleapis.com/v0/b/paradox-2017.appspot.com/o/images%2Ftxlu%2Frobot_1296.png?alt=media&token=e6c8fbc1-f0e1-4ddc-9e01-f30a2a32a291";
+        launchVizPit(tnum, team_name, FB_url);
     }
     public void btn_MatchR1_Click(View view) {
         Log.i(TAG, " btn_MatchR1_Click   ");
@@ -176,11 +177,12 @@ public class Visualizer_Activity extends AppCompatActivity {
         startActivity(pit_intent);               // Start Visualizer for Match Data
     }
 
-    private void launchVizPit(String team, String name) {
+    private void launchVizPit(String team, String name, String url) {
         Intent pit_intent = new Intent(Visualizer_Activity.this, VisPit_Activity.class);
         Bundle VZbundle = new Bundle();
         VZbundle.putString("team", team);        // Pass data to activity
         VZbundle.putString("name", name);        // Pass data to activity
+        VZbundle.putString("url", url);          // Pass data to activity
         pit_intent.putExtras(VZbundle);
         startActivity(pit_intent);               // Start Visualizer for Pit Data
 
@@ -329,7 +331,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         txt_teamB3_Name = (TextView) findViewById(R.id.txt_teamB3_Name);
 //        int z = matchID.length();
         if (matchID.length() == 3) {
-            Log.i(TAG, "   Q U E R Y  ");
+            Log.i(TAG, "\n   Q U E R Y  ");
             String child = "match";
             String key = matchID;
             Query query = pfMatch_DBReference.orderByChild(child).equalTo(key);

@@ -48,9 +48,8 @@
         android:textColor="@color/white"
         android:text="Device"
         android:layout_marginStart="14dp"
-        android:layout_above="@+id/lbl_Student"
         android:layout_toEndOf="@+id/imageView_VZ"
-        android:layout_marginBottom="11dp" />
+        android:layout_above="@+id/lbl_Student" />
 
 
     <TextView
