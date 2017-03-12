@@ -74,6 +74,14 @@ public class VisPit_Activity extends AppCompatActivity {
         } else {
             imgView_Robot.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
         }
+
+        txt_Dim = (TextView) findViewById(R.id.txt_Dim);
+        txt_Scout = (TextView) findViewById(R.id.txt_Scout);
+        txt_Comments = (TextView) findViewById(R.id.txt_Comments);
+        txt_Dim.setText(" ");
+        txt_Scout.setText(" ");
+        txt_Comments.setText("***   No Pit data for this team   ***");
+
     }
     private void getTeam_Pit(String team) {
         Log.i(TAG, "$$$$$  getTeam_Pit  $$$$$  " + team);
