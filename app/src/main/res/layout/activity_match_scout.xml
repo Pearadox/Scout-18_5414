@@ -125,6 +125,29 @@
         android:layout_below="@+id/txt_Match"
         android:layout_toEndOf="@+id/txt_MyTeam" />
 
+// =======  Either Team# from Firebase or EditText visible (depending on Internet status) =======
+    <EditText
+        android:id="@+id/editTxt_Match"
+        android:layout_width="35dp"
+        android:layout_height="38dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text=""
+        android:textColor="@color/green"
+        android:layout_below="@+id/txt_stud"
+        android:layout_alignEnd="@+id/txt_Dev" />
+
+    <EditText
+        android:id="@+id/editTxt_Team"
+        android:layout_width="50dp"
+        android:layout_height="38dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text=""
+        android:textColor="@color/brightblue"
+        android:layout_below="@+id/txt_Match"
+        android:layout_alignEnd="@+id/chk_balls" />
+
     <TextView
         android:id="@+id/lbl_space1"
         android:layout_width="0dp"
@@ -335,7 +358,7 @@
         android:layout_height="40dp"
         android:layout_width="30dp"
         android:layout_above="@+id/button_GearsAttemptedMinus"
-        android:layout_toStartOf="@+id/txt_TeamName" />
+        android:layout_toStartOf="@+id/editTxt_Team" />
 
     <Button
         android:id="@+id/button_GearsPlus"

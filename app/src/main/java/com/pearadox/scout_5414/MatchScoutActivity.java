@@ -3,6 +3,9 @@ package com.pearadox.scout_5414;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
+import android.os.Vibrator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,7 +46,12 @@ public class MatchScoutActivity extends AppCompatActivity {
 
     String TAG = "MatchScout_Activity";      // This CLASS name
     boolean onStart = false;
+    protected Vibrator vibrate;
+    long[] once = { 0, 100 };
+    long[] twice = { 0, 100, 400, 100 };
+    long[] thrice = { 0, 100, 400, 100, 400, 100 };
     public static String device = " ";
+    EditText editTxt_Team, editTxt_Match;
     TextView txt_EventName, txt_dev, txt_stud, txt_Match, txt_MyTeam, txt_TeamName, text_HGSeekBarValue, text_LGSeekBarValue, text_collected_balls;
     TextView txt_GearsPlaced, txt_GearsAttempted;
     CheckBox chk_baseline, chk_highGoal, chkBox_balls, chk_gears, chkBox_rope, chk_lowGoal, checkbox_automode, chk_activate_hopper;
@@ -123,11 +131,72 @@ public class MatchScoutActivity extends AppCompatActivity {
         txt_Match = (TextView) findViewById(R.id.txt_Match);
         txt_MyTeam = (TextView) findViewById(R.id.txt_MyTeam);
         txt_TeamName = (TextView) findViewById(R.id.txt_TeamName);
+        editTxt_Match = (EditText) findViewById(R.id.editTxt_Match);
+        editTxt_Team = (EditText) findViewById(R.id.editTxt_Team);
         ImageView imgScoutLogo = (ImageView) findViewById(R.id.imageView_MS);
         txt_dev.setText(device);
         txt_stud.setText(studID);
         txt_Match.setText("");
-        txt_MyTeam.setText("");
+        if (Pearadox.is_Network) {      // is Internet available?
+            txt_MyTeam.setText("");
+            editTxt_Match.setVisibility(View.INVISIBLE);
+            editTxt_Match.setEnabled(false);
+            editTxt_Team.setVisibility(View.INVISIBLE);
+            editTxt_Team.setEnabled(false);
+        } else {
+            editTxt_Match.setVisibility(View.VISIBLE);
+            editTxt_Match.setEnabled(true);
+            editTxt_Match.requestFocus();        // Don't let EditText mess up layout!!
+            editTxt_Match.setFocusable(true);
+            editTxt_Match.setFocusableInTouchMode(true);
+            editTxt_Match.requestFocus();        // Don't let EditText mess up layout!!
+            txt_Match.setText("Q");         // Default to qualifying
+            editTxt_Team.setVisibility(View.VISIBLE);
+            editTxt_Team.setEnabled(true);
+            editTxt_Team.setFocusable(true);
+            editTxt_Team.setFocusableInTouchMode(true);
+            txt_MyTeam.setVisibility(View.GONE);
+            txt_TeamName.setVisibility(View.GONE);
+
+            editTxt_Match.setOnKeyListener(new View.OnKeyListener() {
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                            (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                        Log.d(TAG, " editTxt_Match listener; Match = " + editTxt_Match.getText());
+                        if (editTxt_Match.getText().length() < 2) {
+                            vibrate.vibrate(twice, -1);
+                            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+                            Toast.makeText(getBaseContext(),"*** Match number must be at least 2 characters  *** ", Toast.LENGTH_LONG).show();
+                        } else {
+                            matchID = "Q" + (String.valueOf(editTxt_Match.getText()));
+                        }
+                        Log.e(TAG, " Match ID = " + matchID);
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            editTxt_Team.setOnKeyListener(new View.OnKeyListener() {
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                            (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                        Log.d(TAG, " editTxt_Team listener; Team = " + editTxt_Team.getText());
+                        if (editTxt_Team.getText().length() < 3 || editTxt_Team.getText().length() > 4) {
+                            vibrate.vibrate(twice, -1);
+                            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+                            Toast.makeText(getBaseContext(),"*** Team number must be at least 3 characters and no more than 4  *** ", Toast.LENGTH_LONG).show();
+                        } else {
+                            tn = (String.valueOf(editTxt_Team.getText()));
+                        }
+                        Log.e(TAG, " Team # = " + tn);
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
         txt_TeamName.setText("");
         String devcol = device.substring(0,3);
         Log.d(TAG, "color=" + devcol);
@@ -485,7 +554,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         });
         button_GearsAttemptedMinus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (gearAttemptNum >= 1) {
+                if (gearAttemptNum >= 1 && gearAttemptNum > gearNum) {    // GLF - make sure note less than placed
                     gearAttemptNum--;
                 }
                 Log.d(TAG, "Gears Attempted = " + gearAttemptNum);      // ** DEBUG **
@@ -818,6 +887,11 @@ public void onStart() {
     onStart = true;
     getMatch();      // Get current match
     Log.d(TAG, "*** onStart  ->" + onStart);
+
+    vibrate = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+    if (vibrate == null) {
+        Log.e(TAG, "No vibration service exists.");
+    }
 }
 
     public void onPause() {
@@ -831,7 +905,7 @@ public void onStart() {
         Log.v(TAG, "onResume");
         onStart = false;
         if (Pearadox.MatchData_Saved) {
-            // ToDo - Clear all data back to priginal settings
+            // ToDo - Clear all data back to original settings
             Log.d(TAG, "#### Data was saved in Final #### ");
             //Toast.makeText(getBaseContext(), "Data was saved in Final - probably should clear data and wait for next match", Toast.LENGTH_LONG).show();
             finish();
