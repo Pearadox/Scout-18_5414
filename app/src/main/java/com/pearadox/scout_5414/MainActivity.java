@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     public String studentSelected = " ";
     ToggleButton toggleLogon;
     Button btn_StoreData;
-    private int num_MatchObjs = 0, num_Photos = 0;
+    private int num_PitObjs = 0, num_Photos = 0,num_MatchObjs = 0;
     RadioGroup radgrp_Scout;      RadioButton radioScoutTyp;
     Boolean logged_On = false;
     Boolean Scout_Match = false, Scout_Pit = false;
@@ -80,31 +80,14 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference pfDevice_DBReference;
     private DatabaseReference pfTeam_DBReference;
     private DatabaseReference pfPitData_DBReference;
+    private DatabaseReference pfMatchData_DBReference;
     String team_num, team_name, team_loc;
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name, team_loc);
     String key = null;
 
-    // ===================  Data Elements for Pit Scout object ===================
-    public String teamSelected = " ";           // Team #
-    public boolean dim_Tall = false;            // Dimension
-    public int totalWheels = 0;                 // Total # of wheels
-    public int numTraction = 0;                 // Num. of Traction wheels
-    public int numOmnis = 0;                     // Num. of Omni wheels
-    public int numMecanums = 0;                  // Num. of Mecanum wheels
-    public boolean gear_Collecter = false;      // presence of gear collector
-    public boolean fuel_Container = false;      // presence of Storage bin
-    public int storSize = 0;                    // estimate of # of balls
-    public boolean shooter = false;             // presence of Shooter
-    public boolean vision = false;              // presence of Vision Camera
-    public boolean pneumatics = false;          // presence of Pneumatics
-    public boolean fuelManip = false;           // presence of a way to pick up fuel from floor
-    public boolean climb = false;               // presence of a Climbing mechanism
-    /* */
-    public String comments = "";                // Comment(s)
-    public String scout = "";                   // Student who collected the data
     // ===========================================================================
-    pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,numOmnis,numMecanums,gear_Collecter,fuel_Container,storSize,shooter,vision,pneumatics,fuelManip,climb,comments,scout);
-
+    pitData Pit_Data = new pitData();
+    matchData Match_Data = new matchData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
             addStud_VE_Listener(pfStudent_DBReference);
             pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Devices
             pfPitData_DBReference = pfDatabase.getReference("pit-data/" + Pearadox.FRC_Event); // Pit Scout Data
+            pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
         } else {        // Use smaller list in 'Values/strings'
             pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Devices
             loadStudentString();
@@ -246,18 +230,20 @@ public class MainActivity extends AppCompatActivity {
 
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
-
         }
 
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public void buttonStore_Click(View view) {
         Log.i(TAG, " buttonStore_Click   " );
+        txt_messageLine = (TextView) findViewById(R.id.txt_messageLine);
+        txt_messageLine.setText("*** Saving Pit Data to Firebase ***");
+
         File direct_pit = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/" + Pearadox.FRC_Event);
         Log.w(TAG, ">>>>> Path" + direct_pit);
         if (direct_pit != null){
             String[] filenames = direct_pit.list();
-            num_MatchObjs = 0;
+            num_PitObjs = 0;
             for (String tmpf : filenames){
 //                Log.w(TAG, " file " + tmpf);
                 team_num = tmpf.replaceFirst("[.][^.]+$", "");    // fileNameWithOutExt
@@ -273,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
 
                     String keyID = team_num;
                     pfPitData_DBReference.child(keyID).setValue(Pit_Data);      // Store it to Firebase
-                    num_MatchObjs ++;
+                    num_PitObjs ++;
                     File goner = new File(direct_pit + "/" + tmpf);
 //                    boolean deleted = goner.delete();
                 } catch (FileNotFoundException e) {
@@ -284,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }  // End for
-            Log.w(TAG, " ####### Match Objects = " + num_MatchObjs);
+            Log.w(TAG, " ####### Pit Data Objects = " + num_PitObjs);
         }  // End If
 // ---------------------------------------
 //      ToDo - Read all data from SD card and write to Firebase (Photos)
@@ -339,7 +325,45 @@ public class MainActivity extends AppCompatActivity {
             Log.w(TAG, " ####### Photos = " + num_Photos);
         }  // End If
 
-        Toast.makeText(getBaseContext(), "•••• There were " + num_MatchObjs + " Match objects and " + num_Photos + " photos copied from SD card to FB Cloud storage  ••••", Toast.LENGTH_LONG).show();
+// ---------------------------------------
+//      ToDo - Read all Matcg data from SD card and write to Firebase
+        txt_messageLine.setText("*** Saving Match Data to Firebase ***");
+
+        File direct_match = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/" + Pearadox.FRC_Event);
+        Log.w(TAG, ">>>>> Path" + direct_match);
+        if (direct_match != null){
+            String[] filenames = direct_match.list();
+            num_MatchObjs = 0;
+            for (String tmpf : filenames){
+                String mID_team = tmpf.replaceFirst("[.][^.]+$", "");    // fileNameWithOutExt
+                Log.w(TAG, "*******  Match ID & Team:" + mID_team);
+                try {
+                    Log.w(TAG, "   Dir:" + direct_match + "/" + tmpf);
+                    InputStream file = new FileInputStream(direct_match + "/" + tmpf);
+                    InputStream buffer = new BufferedInputStream(file);
+                    ObjectInput input = new ObjectInputStream(buffer);
+                    matchData  Match_Data = (matchData)input.readObject();
+                    Log.w(TAG, "#### Obect '" + matchData.getSerialVersionUID());
+                    //      ToDo - Check to see if already in FB or Delete file from SD card
+
+                    String keyID = mID_team;
+                    pfMatchData_DBReference.child(keyID).setValue(Match_Data);      // Store it to Firebase
+                    num_MatchObjs ++;
+                    File goner = new File(direct_match + "/" + tmpf);
+//                    boolean deleted = goner.delete();     // Delete
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }  // End for
+            Log.w(TAG, " ####### Match Objects = " + num_MatchObjs);
+        }  // End If
+
+        Toast.makeText(getBaseContext(), "•••• There were " + num_PitObjs + " Pit data objects, " + num_Photos + " photos and " + num_MatchObjs + " Match objects copied from SD card to Firebase Cloud storage  ••••", Toast.LENGTH_LONG).show();
+        txt_messageLine.setText("*** Saving Match Data to Firebase ***");
     }
 
 
