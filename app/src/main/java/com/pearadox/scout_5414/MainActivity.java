@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
             pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Devices
             pfPitData_DBReference = pfDatabase.getReference("pit-data/" + Pearadox.FRC_Event); // Pit Scout Data
         } else {        // Use smaller list in 'Values/strings'
+            pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Devices
             loadStudentString();
         }
 
@@ -372,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
             default:                //
                 Log.w(TAG, "DEV = NULL" );
         }
-        if (Pearadox.is_Network) {      // Got Internet?
+//        if (Pearadox.is_Network) {      // Got Internet?
             if (x) {
                 Log.w(TAG, "updating KEY = " + key);
                 pfDevice_DBReference.child(key).child("stud_id").setValue(studentSelected);
@@ -382,7 +383,7 @@ public class MainActivity extends AppCompatActivity {
                 pfDevice_DBReference.child(key).child("stud_id").setValue(" ");
                 pfDevice_DBReference.child(key).child("phase").setValue(" ");
             }
-        }
+//        }
     }
 
 

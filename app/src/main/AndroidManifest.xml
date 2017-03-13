@@ -17,6 +17,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
+            android:configChanges="orientation"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -28,22 +29,28 @@
         <activity android:name=".ScoutMaster_Activity" />
         <activity
             android:name=".MatchScoutActivity"
+            android:configChanges="orientation"
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".PitScoutActivity"
+            android:configChanges="orientation"
             android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".Visualizer_Activity" />
         <activity
             android:name=".FinalActivity"
+            android:configChanges="orientation"
             android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".ArenaLayoutActivity" />
         <activity
             android:name=".TeleopScoutActivity"
+            android:configChanges="orientation"
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".VisPit_Activity"
-            android:label="@string/title_activity_vis_pit_" />
-        <activity android:name=".VisMatch_Activity"></activity>
+            android:configChanges="orientation"   />
+        <activity android:name=".VisMatch_Activity"
+            android:configChanges="orientation"   />
+
     </application>
 
 </manifest>

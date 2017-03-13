@@ -15,11 +15,19 @@
       },
       "oauth_client": [
         {
+          "client_id": "372598341053-k6vag6jv2f0p73rrobpatd1h6u5da44a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pearadox.scout_5414",
+            "certificate_hash": "06af2ff42a87c7e653683263b69e02d73681d649"
+          }
+        },
+        {
           "client_id": "372598341053-bk7p1vs74rglcpoudflsljdprr4dr5d0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.pearadox.scout_5414",
-            "certificate_hash": "4AE080903125E44278CA2A178DCAD4B5DF469DE4"
+            "certificate_hash": "4ae080903125e44278ca2a178dcad4b5df469de4"
           }
         },
         {

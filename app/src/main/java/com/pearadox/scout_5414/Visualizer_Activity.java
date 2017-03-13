@@ -406,7 +406,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         tnum = (String) txt_teamR1.getText();
         getURL(tnum);   // Get the Firebase URL if photo exists
 //        FB_url = "gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event + "/robot_" + tnum + ".png";
-        Log.w(TAG, "FireBase storage " + FB_url);
+        Log.w(TAG, "FireBase storage '" + FB_url + "'");
         if (FB_url.length() > 1) {
             Picasso.with(this).load(FB_url).into(tbl_robotR1);
         } else {
@@ -455,12 +455,14 @@ public class Visualizer_Activity extends AppCompatActivity {
 
         FB_url = "";
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com");
+        StorageReference storageRef = storage.getReference();
+//        StorageReference storageRef = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com");
 //        StorageReference imagesRef = storageRef.child("images/" + Pearadox.FRC_Event);
+        Log.e(TAG, "images/" + Pearadox.FRC_Event + "/" + team.trim() + ".png");
         storageRef.child("images/" + Pearadox.FRC_Event + "/" + team.trim() + ".png" ).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Log.w(TAG, "\n  uri: " + uri);
+               Log.w(TAG, "\n  uri: " + uri);
 //                Uri downloadUri = taskSnapshot.getMetadata().getDownloadUrl();
 //                FB_url = downloadUri.toString(); /// The string(file link) that you need
                 FB_url = String.valueOf(uri);
@@ -469,6 +471,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
+                Log.e(TAG, "***** ERROR in Firebase Storage Retrieval  ***** " + exception);
                 // Handle any errors
             }
         });    }
