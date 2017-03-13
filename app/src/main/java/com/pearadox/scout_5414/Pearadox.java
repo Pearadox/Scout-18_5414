@@ -84,4 +84,8 @@ public class Pearadox {
         tele_gears_placed, tele_gears_attempt, tele_gear_pickup, tele_hg, tele_hg_percent, tele_lg, tele_lg_percent, tele_cycles, tele_touch_act, tele_touch_pts, tele_climb_attempt, tele_climb_success, tele_comment,
         final_lostParts, final_lostComms, final_defense_good, final_def_Lane, final_def_Block, final_def_Hopper, final_def_Gear, final_num_Penalties, final_comment, final_studID);
 
+// -----  Array of Match Data Objects for Match Data Visualizer
+public static ArrayList<matchData> Matches_Data = new ArrayList<matchData>();
+
+
 }

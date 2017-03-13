@@ -102,6 +102,10 @@ public class matchData implements Serializable {
 
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// Default constructor required for calls to
+// DataSnapshot.getValue(teams.class)
+public matchData() {
+}
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

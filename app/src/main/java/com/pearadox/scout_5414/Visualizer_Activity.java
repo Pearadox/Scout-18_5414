@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -54,12 +55,14 @@ public class Visualizer_Activity extends AppCompatActivity {
     TextView tbl_teamR1, tbl_teamR2, tbl_teamR3, tbl_teamB1, tbl_teamB2, tbl_teamB3;
     Button button_View;
     String team_num, team_name, team_loc;
+    String load_team, load_name;
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name,  team_loc);
     private FirebaseDatabase pfDatabase;
 //    private DatabaseReference pfStudent_DBReference;
 //    private DatabaseReference pfDevice_DBReference;
 //    private DatabaseReference pfTeam_DBReference;
     private DatabaseReference pfMatch_DBReference;
+    private DatabaseReference pfMatchData_DBReference;
 //    private DatabaseReference pfCur_Match_DBReference;
     ArrayList<p_Firebase.teamsObj> teams = new ArrayList<p_Firebase.teamsObj>();
     ImageView tbl_robotR1, tbl_robotR2, tbl_robotR3, tbl_robotB1, tbl_robotB2, tbl_robotB3;
@@ -94,6 +97,7 @@ public class Visualizer_Activity extends AppCompatActivity {
 //        pfStudent_DBReference = pfDatabase.getReference("students");        // List of Students
 //        pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Devicess
         pfMatch_DBReference = pfDatabase.getReference("matches/" + Pearadox.FRC_Event); // List of Matches
+        pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
 //        pfCur_Match_DBReference = pfDatabase.getReference("current-match"); // _THE_ current Match
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
@@ -284,14 +288,53 @@ public class Visualizer_Activity extends AppCompatActivity {
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void launchVizMatch(String team, String name) {
-        Intent pit_intent = new Intent(Visualizer_Activity.this, VisMatch_Activity.class);
-        Bundle VZbundle = new Bundle();
-        VZbundle.putString("team", team);        // Pass data to activity
-        VZbundle.putString("name", name);        // Pass data to activity
-        pit_intent.putExtras(VZbundle);
-        startActivity(pit_intent);               // Start Visualizer for Match Data
+        Log.i(TAG, ">>>>> launchVizMatch   <<<<<");
+
+        load_team = team;
+        load_name = name;
+        addMD_VE_Listener(pfMatchData_DBReference);        // Load Matches
+
     }
 
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private void addMD_VE_Listener(final DatabaseReference pfMatchData_DBReference) {
+        pfMatchData_DBReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i(TAG, "<<<< getFB_Data >>>> Match Data for team " + load_team);
+                Pearadox.Matches_Data.clear();
+                matchData mdobj = new matchData();
+                Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
+                Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
+                while (iterator.hasNext()) {
+                    mdobj = iterator.next().getValue(matchData.class);
+                    if (mdobj.getTeam_num().matches(load_team)) {
+                        Pearadox.Matches_Data.add(mdobj);
+                    }
+               }
+                Log.i(TAG, "***** Matches Loaded. # = "  + Pearadox.Matches_Data.size());
+                if (Pearadox.Matches_Data.size() > 0) {
+                    Intent pit_intent = new Intent(Visualizer_Activity.this, VisMatch_Activity.class);
+                    Bundle VZbundle = new Bundle();
+                    VZbundle.putString("team", load_team);        // Pass data to activity
+                    VZbundle.putString("name", load_name);        // Pass data to activity
+                    pit_intent.putExtras(VZbundle);
+                    startActivity(pit_intent);               // Start Visualizer for Match Data
+                } else {
+                    Toast toast = Toast.makeText(getBaseContext(), "★★★★  There is _NO_ Match Data for Team " + load_team + "  ★★★★", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                /*listener failed or was removed for security reasons*/
+            }
+        });
+    }
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void launchVizPit(String team, String name, String url) {
         Intent pit_intent = new Intent(Visualizer_Activity.this, VisPit_Activity.class);
         Bundle VZbundle = new Bundle();

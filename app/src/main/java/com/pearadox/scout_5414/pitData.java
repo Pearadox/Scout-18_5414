@@ -24,8 +24,6 @@ public class pitData implements Serializable {
     public String pit_scout = " ";                  // Student who collected the data
 
 // ===========================================================================
-    public pitData() {
-    }
 
     public pitData(String pit_team, boolean pit_tall, int pit_totWheels, int pit_numTrac, int pit_numOmni, int pit_numMecanum, boolean pit_gear_Collect, boolean pit_fuel_Container, int pit_storSize, boolean pit_shooter, boolean pit_vision, boolean pit_pneumatics, boolean pit_fuelManip, boolean pit_climb, String pit_comment, String pit_scout) {
         this.pit_team = pit_team;
@@ -45,6 +43,12 @@ public class pitData implements Serializable {
         this.pit_comment = pit_comment;
         this.pit_scout = pit_scout;
     }
+
+// Default constructor required for calls to
+// DataSnapshot.getValue(teams.class)
+public pitData() {
+    }
+
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public static long getSerialVersionUID() {
         return serialVersionUID;
