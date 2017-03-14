@@ -6,8 +6,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,7 +14,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import android.widget.Toast;
+import android.util.Log;
+import android.view.Gravity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,8 +34,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+// ===== TBA - API for Blue Alliance
+//import com.cpjd.main.TBA;
+//import com.cpjd.main.Settings;
+//import com.cpjd.models.Event;
+//import com.cpjd.models.Match;
+//import com.cpjd.models.Team;
+import android.os.StrictMode;
+
 
 public class Visualizer_Activity extends AppCompatActivity {
 
@@ -82,6 +91,19 @@ public class Visualizer_Activity extends AppCompatActivity {
         String param2 = bundle.getString("stud");
         Log.w(TAG, param1 + " " + param2);      // ** DEBUG **
 
+// ----------  Blue Alliance  -----------
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
+        StrictMode.setThreadPolicy(policy);
+//        TBA.setID("Pearadox", "Scout-5414", "V1");
+//        final TBA tba = new TBA();
+//        Settings.FIND_TEAM_RANKINGS = true;
+//        Settings.GET_EVENT_TEAMS = true;
+//        Settings.GET_EVENT_MATCHES = true;
+//        Settings.GET_EVENT_ALLIANCES = true;
+//        Settings.GET_EVENT_AWARDS = true;
+//        Event e = tba.getEvent("txwa", 2017);       // event/2017txlu will give top 15 OPR
+
+//      -----------------------------------------
         txt_dev = (TextView) findViewById(R.id.txt_Dev);
         txt_stud = (TextView) findViewById(R.id.txt_TeamName);
         txt_dev.setText(param1);
@@ -548,6 +570,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                     txt_teamR1.setText(team_inst.getTeam_num());
                     txt_teamR1_Name.setText(team_inst.getTeam_name());
                     tbl_teamR1.setText(team_inst.getTeam_num());
+                    get_BAdata(team_inst.getTeam_num());
                     team_inst = teams.get(1);
                     txt_teamR2.setText(team_inst.getTeam_num());
                     txt_teamR2_Name.setText(team_inst.getTeam_name());
@@ -592,6 +615,11 @@ public class Visualizer_Activity extends AppCompatActivity {
             Toast.makeText(getBaseContext(), "** Select both Match TYPE & NUMBER ** ", Toast.LENGTH_LONG).show();
             // ToDo - turn toggle back to logon
         }
+    }
+
+    private void get_BAdata(String team) {
+
+
     }
 
     private void findTeam(String tnum) {

@@ -97,7 +97,7 @@
         android:layout_alignEnd="@+id/lbl_HGshootingPercent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/lbl_GearRatio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
@@ -107,6 +107,75 @@
         android:layout_alignEnd="@+id/lbl_autoLGshootingPercent" />
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <TextView
+        android:id="@+id/lbl_Tele"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/yellow"
+        android:text="________________________________TeleOps_______________________________"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/txt_AutoComments"
+        android:layout_alignEnd="@+id/lbl_Autonomous" />
+
+    <TextView
+        android:id="@+id/txt_TeleComments"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border"
+        android:ems="12"
+        android:lines="4"
+        android:scrollbars="vertical"
+        android:text="Comments"
+        android:textColor="@color/yellow"
+        android:textSize="14dp"
+        android:layout_marginBottom="16dp"
+        android:layout_above="@+id/lbl_Final"
+        android:layout_alignParentStart="true" />
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    <TextView
+        android:id="@+id/lbl_Final"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/green"
+        android:text="_________________________________Final________________________________"
+        android:layout_marginBottom="164dp"
+        android:layout_above="@+id/txt_FinalComments"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/txt_FinalComments"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border"
+        android:ems="12"
+        android:lines="4"
+        android:scrollbars="vertical"
+        android:text="Comments"
+        android:textColor="@color/green"
+        android:textSize="14dp"
+        android:layout_marginBottom="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/txt_AutoComments"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:background="@drawable/border"
+        android:ems="12"
+        android:lines="4"
+        android:scrollbars="vertical"
+        android:text="Comments"
+        android:textColor="@color/red"
+        android:textSize="14dp"
+        android:layout_below="@+id/txt_auto_gearRatio"
+        android:layout_alignParentStart="true" />
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
 
 
 </RelativeLayout>
