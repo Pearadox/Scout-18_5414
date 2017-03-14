@@ -155,8 +155,31 @@ public class VisMatch_Activity extends AppCompatActivity {
         // ToDo - display Final elements
 
         txt_FinalComments.setText(final_Comments);
-
     }
 
+    //###################################################################
+//###################################################################
+//###################################################################
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.v(TAG, "onStart");
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.v(TAG, "onResume");
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.v(TAG, "onStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.v(TAG, "OnDestroy");
+    }
 
 }
