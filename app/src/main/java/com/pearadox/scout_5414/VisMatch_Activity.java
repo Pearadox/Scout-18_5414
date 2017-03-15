@@ -19,12 +19,14 @@ public class VisMatch_Activity extends AppCompatActivity {
     String underScore = new String(new char[60]).replace("\0", "_");  // string of 'x' underscores
     TextView txt_team, txt_teamName, txt_auto_HGpercent, txt_auto_LGpercent, txt_auto_gearRatio, txt_auto_baselineRatio, txt_tele_gearRatio, txt_climbAttempts, txt_successfulClimbs, txt_tele_HGpercent, txt_tele_LGpercent;
     /* Comment Boxes */     TextView txt_AutoComments, txt_TeleComments, txt_FinalComments;
+    TextView txt_sB1, txt_sB2, txt_sB3, txt_sB4, txt_sB5;
     /* Labels */    TextView lbl_Autonomous, lbl_autoHGshootingPercent, lbl_autoLGshootingPercent, lbl_tele_gearRatio, lbl_climbAttempts, lbl_successfulClimbs;
     //----------------------------------
     int auto_HGtotalShooting = 0;
     int auto_LGtotalShooting = 0;
     int auto_totalgearsAttempted = 0;
     int auto_totalgearsPlaced = 0;
+    int auto_B1 = 0; int auto_B2 = 0; int auto_B3 = 0; int auto_B4 = 0; int auto_B5 = 0;
     String auto_collectedBalls = "";
     String auto_Comments = "";
     //----------------------------------
@@ -59,18 +61,25 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_auto_HGpercent = (TextView) findViewById(R.id.txt_auto_HGpercent);
         txt_auto_LGpercent = (TextView) findViewById(R.id.txt_auto_LGpercent);
         txt_auto_gearRatio = (TextView) findViewById(R.id.txt_auto_gearRatio);
+        txt_sB1 = (TextView) findViewById(R.id.txt_sB1);
+        txt_sB2 = (TextView) findViewById(R.id.txt_sB2);
+        txt_sB3 = (TextView) findViewById(R.id.txt_sB3);
+        txt_sB4 = (TextView) findViewById(R.id.txt_sB4);
+        txt_sB5 = (TextView) findViewById(R.id.txt_sB5);
         txt_AutoComments = (TextView) findViewById(R.id.txt_AutoComments);
         txt_TeleComments = (TextView) findViewById(R.id.txt_TeleComments);
         txt_FinalComments = (TextView) findViewById(R.id.txt_FinalComments);
+        txt_AutoComments.setMovementMethod(new ScrollingMovementMethod());
+        txt_TeleComments.setMovementMethod(new ScrollingMovementMethod());
+        txt_FinalComments.setMovementMethod(new ScrollingMovementMethod());
         txt_auto_baselineRatio = (TextView) findViewById(R.id.txt_auto_baselineRatio);
         txt_tele_gearRatio = (TextView) findViewById(R.id.txt_tele_gearRatio);
         txt_climbAttempts = (TextView) findViewById(R.id.txt_climbAttempts);
         txt_successfulClimbs = (TextView) findViewById(R.id.txt_successfulClimbs);
         txt_tele_HGpercent = (TextView) findViewById(R.id.txt_tele_HGpercent);
         txt_tele_LGpercent = (TextView) findViewById(R.id.txt_tele_LGpercent);
-        txt_AutoComments.setMovementMethod(new ScrollingMovementMethod());
-        txt_TeleComments.setMovementMethod(new ScrollingMovementMethod());
-        txt_FinalComments.setMovementMethod(new ScrollingMovementMethod());
+
+
         txt_team.setText(tnum);
         txt_teamName.setText(tname);    // Get real
 
@@ -85,11 +94,12 @@ public class VisMatch_Activity extends AppCompatActivity {
         int numTeleLG = 0;
 
         auto_HGtotalShooting = 0; auto_LGtotalShooting = 0; tele_HGtotalShooting = 0; tele_LGtotalShooting = 0; auto_totalgearsAttempted = 0; auto_totalgearsPlaced = 0; tele_totalGearsAttempted = 0; tele_totalGearsPlaced = 0; numAutoBaseline = 0;
+        auto_B1 = 0; auto_B2 = 0; auto_B3 = 0; auto_B4 = 0; auto_B1 = 0;
         auto_Comments = ""; tele_Comments = ""; final_Comments="";
 
         for (int i = 0; i < numObjects; i++) {
             Log.w(TAG, "In for loop!   " + i);
-            match_inst = Pearadox.Matches_Data.get(i);
+            match_inst = Pearadox.Matches_Data.get(i);      // Get instance of Match Data
 
             if (match_inst.isAuto_baseline()) {
                 numAutoBaseline++;
@@ -124,6 +134,27 @@ public class VisMatch_Activity extends AppCompatActivity {
             Log.w(TAG, "Auto Comment = " + match_inst.getAuto_comment() + "  " + match_inst.getAuto_comment().length());
             if (match_inst.getAuto_comment().length() > 1) {
                 auto_Comments = auto_Comments + match_inst.getMatch() + "-" + match_inst.getAuto_comment() + "\n" + underScore  + "\n" ;
+            }
+            String pos = match_inst.getAuto_start();
+            Log.w(TAG, "Start Pos. " + pos);
+            switch (pos) {
+                case "B1":
+                    auto_B1++;
+                    break;
+                case ("B2"):
+                    auto_B2++;
+                    break;
+                case "B3":
+                    auto_B3++;
+                    break;
+                case ("B4"):
+                    auto_B4++;
+                    break;
+                case ("B5"):
+                    auto_B5++;
+                    break;
+                default:                //
+                    Log.w(TAG, "***  Invalid Start Position!!!  ***" );
             }
 
             //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
@@ -175,10 +206,10 @@ public class VisMatch_Activity extends AppCompatActivity {
             if (match_inst.getFinal_comment().length() > 1) {
                 final_Comments = final_Comments + match_inst.getMatch() + "-" + match_inst.getFinal_comment() + "\n" + underScore  + "\n" ;
             }
-
         } //end For
         Log.w(TAG, "Number of Attempted Climbs = " + numTeleClimbAttempt);
         Log.w(TAG, "Number of Successful Climbs = " + numTeleClimbSuccess);
+
 // ======  Now start displaying all the data we collected  ========
         Log.w(TAG, "Auto HG Shooting = " + auto_HGtotalShooting + "   " + numAutoHG);
         if (numAutoHG > 0) {      // Don't divide by zero!!
@@ -207,6 +238,11 @@ public class VisMatch_Activity extends AppCompatActivity {
 //        Log.w(TAG, "Auto Gears Attempted = " + auto_gearsAttempted);
 //
 //        Log.w(TAG, "Auto Gears Placed = " + auto_gearsPlaced);
+        txt_sB1.setText(String.valueOf(auto_B1));
+        txt_sB2.setText(String.valueOf(auto_B2));
+        txt_sB3.setText(String.valueOf(auto_B3));
+        txt_sB4.setText(String.valueOf(auto_B4));
+        txt_sB1.setText(String.valueOf(auto_B5));
 
 
         txt_AutoComments.setText(auto_Comments);

@@ -111,10 +111,10 @@
         android:id="@+id/lbl_baselineRatio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="Crossing Baseline Ratio"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/lbl_GearRatio"
-        android:layout_alignParentStart="true" />
+        android:text="Crossed Baseline Ratio"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/txt_auto_baselineRatio"
@@ -123,6 +123,87 @@
         android:textColor="@color/red"
         android:layout_below="@+id/txt_auto_gearRatio"
         android:layout_alignStart="@+id/txt_auto_gearRatio" />
+
+    <TextView
+        android:id="@+id/lbl_B1_B5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" _B1_B2_B3_B4_B5_"
+        android:layout_alignBaseline="@+id/txt_auto_HGpercent"
+        android:layout_alignBottom="@+id/txt_auto_HGpercent"
+        android:layout_toEndOf="@+id/txt_teamName" />
+
+    <TextView
+        android:id="@+id/lbl_StartPos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Position"
+        android:layout_below="@+id/lbl_Autonomous"
+        android:layout_toEndOf="@+id/txt_sB1" />
+
+    <TextView
+        android:id="@+id/txt_sB1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@color/red"
+        android:layout_below="@+id/lbl_B1_B5"
+        android:layout_toEndOf="@+id/txt_teamName"
+        android:layout_marginStart="10dp" />
+
+    <TextView
+        android:id="@+id/txt_sB2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@color/red"
+        android:layout_below="@+id/lbl_B1_B5"
+        android:layout_toEndOf="@+id/txt_final_LostComm" />
+
+    <TextView
+        android:id="@+id/txt_sB3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@color/red"
+        android:layout_below="@+id/lbl_B1_B5"
+        android:layout_toEndOf="@+id/txt_sB2"
+        android:layout_marginStart="19dp" />
+
+    <TextView
+        android:id="@+id/txt_sB4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@color/red"
+        android:layout_below="@+id/lbl_B1_B5"
+        android:layout_alignEnd="@+id/lbl_StartPos"
+        android:layout_marginEnd="10dp" />
+
+    <TextView
+        android:id="@+id/txt_sB5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@color/red"
+        android:layout_below="@+id/lbl_B1_B5"
+        android:layout_alignEnd="@+id/lbl_B1_B5"
+        android:layout_marginEnd="11dp" />
+
+    <TextView
+        android:id="@+id/txt_AutoComments"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:background="@drawable/border"
+        android:ems="12"
+        android:lines="5"
+        android:scrollbars="vertical"
+        android:text="Comments"
+        android:textColor="@color/red"
+        android:textSize="14dp"
+        android:layout_below="@+id/txt_auto_gearRatio"
+        android:layout_alignParentStart="true" />
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -143,54 +224,13 @@
         android:layout_height="wrap_content"
         android:background="@drawable/border"
         android:ems="12"
-        android:lines="4"
+        android:lines="5"
         android:scrollbars="vertical"
         android:text="Comments"
         android:textColor="@color/yellow"
         android:textSize="14dp"
         android:layout_marginBottom="16dp"
         android:layout_above="@+id/lbl_Final"
-        android:layout_alignParentStart="true" />
-
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    <TextView
-        android:id="@+id/lbl_Final"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/green"
-        android:text="_________________________________Final________________________________"
-        android:layout_marginBottom="99dp"
-        android:layout_above="@+id/txt_FinalComments"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:id="@+id/txt_FinalComments"
-        android:layout_width="500dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/border"
-        android:ems="12"
-        android:lines="4"
-        android:scrollbars="vertical"
-        android:text="Comments"
-        android:textColor="@color/green"
-        android:textSize="14dp"
-        android:layout_marginBottom="40dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:id="@+id/txt_AutoComments"
-        android:layout_width="500dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
-        android:background="@drawable/border"
-        android:ems="12"
-        android:lines="4"
-        android:scrollbars="vertical"
-        android:text="Comments"
-        android:textColor="@color/red"
-        android:textSize="14dp"
-        android:layout_below="@+id/txt_auto_gearRatio"
         android:layout_alignParentStart="true" />
 
     <TextView
@@ -281,6 +321,165 @@
         android:textColor="@color/yellow"
         android:layout_above="@+id/txt_tele_LGpercent"
         android:layout_alignStart="@+id/txt_auto_baselineRatio" />
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    <TextView
+        android:id="@+id/lbl_Final"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/green"
+        android:text="_________________________________Final________________________________"
+        android:layout_marginBottom="99dp"
+        android:layout_above="@+id/txt_FinalComments"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/lbl_final_LostComm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="Lost Comms"
+        android:layout_above="@+id/lbl_final_DefGood"
+        android:layout_alignEnd="@+id/txt_teamName"
+        android:layout_marginEnd="12dp" />
+
+    <TextView
+        android:id="@+id/txt_final_LostComm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@color/green"
+        android:layout_alignBaseline="@+id/lbl_final_LostComm"
+        android:layout_alignBottom="@+id/lbl_final_LostComm"
+        android:layout_toEndOf="@+id/lbl_final_LostComm"
+        android:layout_marginStart="29dp" />
+
+    <TextView
+        android:id="@+id/lbl_final_LostParts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lost Parts"
+        android:layout_below="@+id/txt_TeleComments"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="12dp" />
+
+    <TextView
+        android:id="@+id/txt_final_LostParts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@color/green"
+        android:layout_alignBaseline="@+id/lbl_final_LostComm"
+        android:layout_alignBottom="@+id/lbl_final_LostComm"
+        android:layout_alignStart="@+id/txt_final_DefGood" />
+
+    <TextView
+        android:id="@+id/lbl_final_DefGood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="# 'Good' Defense(s)"
+        android:layout_below="@+id/lbl_final_LostParts"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="12dp" />
+
+    <TextView
+        android:id="@+id/txt_final_DefGood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@color/green"
+        android:layout_alignBaseline="@+id/lbl_final_DefGood"
+        android:layout_alignBottom="@+id/lbl_final_DefGood"
+        android:layout_alignStart="@+id/txt_successfulClimbs" />
+
+    <TextView
+        android:id="@+id/lbl_final_DefBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Blocked Gears"
+        android:layout_alignBaseline="@+id/txt_final_DefStarve"
+        android:layout_alignBottom="@+id/txt_final_DefStarve"
+        android:layout_alignStart="@+id/lbl_final_DefDump" />
+
+    <TextView
+        android:id="@+id/lbl_final_DefDump"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hopper Dump"
+        android:layout_above="@+id/lbl_final_DefBlock"
+        android:layout_alignStart="@+id/lbl_final_LostComm" />
+
+    <TextView
+        android:id="@+id/txt_final_DefBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@color/green"
+        android:layout_alignBaseline="@+id/lbl_final_DefBlock"
+        android:layout_alignBottom="@+id/lbl_final_DefBlock"
+        android:layout_alignStart="@+id/txt_final_LostComm" />
+
+    <TextView
+        android:id="@+id/txt_final_DefDump"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/txt_final_DefBlock"
+        android:layout_alignStart="@+id/txt_final_DefBlock"
+        android:text="0"
+        android:textColor="@color/green" />
+
+    <TextView
+        android:id="@+id/lbl_final_DefStarve"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lane Starvation"
+        android:layout_below="@+id/lbl_final_DefGood"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/txt_final_DefStarve"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@color/green"
+        android:layout_alignBaseline="@+id/lbl_final_DefStarve"
+        android:layout_alignBottom="@+id/lbl_final_DefStarve"
+        android:layout_alignStart="@+id/txt_final_DefGood" />
+
+    <TextView
+        android:id="@+id/lbl_final_NumPen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="# Penalties"
+        android:layout_below="@+id/lbl_final_DefStarve"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/txt_final_NumPen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@color/green"
+        android:layout_alignBaseline="@+id/lbl_final_NumPen"
+        android:layout_alignBottom="@+id/lbl_final_NumPen"
+        android:layout_alignStart="@+id/txt_final_DefStarve" />
+
+//=============================================================
+    <TextView
+        android:id="@+id/txt_FinalComments"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border"
+        android:ems="12"
+        android:lines="5"
+        android:scrollbars="vertical"
+        android:text="Comments"
+        android:textColor="@color/green"
+        android:textSize="14dp"
+        android:layout_marginBottom="21dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 

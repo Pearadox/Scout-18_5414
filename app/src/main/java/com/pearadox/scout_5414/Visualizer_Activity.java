@@ -2,6 +2,8 @@ package com.pearadox.scout_5414;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -50,7 +52,7 @@ public class Visualizer_Activity extends AppCompatActivity {
     // @@@  Blue Alliance  @@@
     public static int BAnumTeams = 0;                                      // # of teams from Blue Alliance
     public static ArrayList<String> BAteams_List = new ArrayList<String>();     // Teams (in RANK order)
-
+    public boolean BA_avail = false;
     // -----------------------
     ArrayAdapter<String> adapter_typ;
     public String typSelected = " ";
@@ -113,17 +115,33 @@ public class Visualizer_Activity extends AppCompatActivity {
         System.out.println(e.name);
         System.out.println(e.location);
         System.out.println(e.start_date);
-        System.out.println(e.teams.length + "\n ");
+//        System.out.println(e.teams.length + "\n ");
         Log.w(TAG, "Rank " + e.teams[0].team_number + " " + e.teams[0].rank + " " + e.teams[0].defense + "\n ");
 //        Log.w(TAG, "Rank " + e.teams[1].team_number + " " + e.teams[1].rank + " " + e.teams[1].rankingScore + "\n ");
 //        Log.w(TAG, "Rank " + e.teams[2].team_number + " " + e.teams[2].rank + " " + e.teams[2].rankingScore + "\n ");
 //        Log.w(TAG, "Rank " + e.teams[3].team_number + " " + e.teams[3].rank + " " + e.teams[3].rankingScore + "\n ");
-        BAnumTeams = e.teams.length;
-        BAteams_List.clear();
-        for(int i = 0; i < BAnumTeams; i++) {   // Load teams in Rank order
-            BAteams_List.add(String.valueOf(e.teams[i].team_number));
+        if (!e.name.isEmpty()) {
+            BA_avail = false;
+            BAnumTeams = e.teams.length;
+            BAteams_List.clear();
+            for (int i = 0; i < BAnumTeams; i++) {   // Load teams in Rank order
+                BAteams_List.add(String.valueOf(e.teams[i].team_number));
+            }
+            Log.w(TAG, "BAteams_List = " + BAteams_List.size());
+        } else {
+            BA_avail = false;
+            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+            Toast toast = Toast.makeText(getBaseContext(), "***  Data from the Blue Alliance is _NOT_ available this session  ***", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
         }
-        Log.w(TAG, "BAteams_List = " + BAteams_List.size());
+
+        Team[] teams = tba.getTeams("txlu", 2017);
+        Log.w(TAG, "Teams " + teams[0].team_number + " " + teams[0].record + " " + teams[0].defense+ " " + teams[0].rank+ " " + teams[0].rankingScore + "\n ");
+        Log.w(TAG, "Teams " + teams[1].team_number + " " + teams[1].record + " " + teams[1].defense+ " " + teams[1].rank+ " " + teams[1].rankingScore + "\n ");
+        Log.w(TAG, "Teams " + teams[2].team_number + " " + teams[2].record + " " + teams[2].defense+ " " + teams[2].rank+ " " + teams[2].rankingScore + "\n ");
+
 
 //      -----------------------------------------
 
