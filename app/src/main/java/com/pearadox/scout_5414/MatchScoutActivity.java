@@ -638,6 +638,13 @@ public class MatchScoutActivity extends AppCompatActivity {
                 text_LGSeekBarValue.setText(Integer.toString(LGSvalue));
             }
         });
+        String blank = "" + spinner_balls_collected.getItemAtPosition(0);
+        String first = "" + spinner_balls_collected.getItemAtPosition(1);
+        String second = "" + spinner_balls_collected.getItemAtPosition(2);
+        String third = "" + spinner_balls_collected.getItemAtPosition(3);
+        String fourth = "" + spinner_balls_collected.getItemAtPosition(4);
+        String fifth = "" + spinner_balls_collected.getItemAtPosition(5);
+
     }
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
