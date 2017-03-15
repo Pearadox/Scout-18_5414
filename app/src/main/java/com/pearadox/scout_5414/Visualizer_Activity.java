@@ -35,11 +35,11 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 // ===== TBA - API for Blue Alliance
-//import com.cpjd.main.TBA;
-//import com.cpjd.main.Settings;
-//import com.cpjd.models.Event;
-//import com.cpjd.models.Match;
-//import com.cpjd.models.Team;
+import com.cpjd.main.TBA;
+import com.cpjd.main.Settings;
+import com.cpjd.models.Event;
+import com.cpjd.models.Match;
+import com.cpjd.models.Team;
 import android.os.StrictMode;
 
 
@@ -47,6 +47,11 @@ public class Visualizer_Activity extends AppCompatActivity {
 
     String TAG = "Visualizer_Activity";        // This CLASS name
     TextView txt_dev, txt_stud;
+    // @@@  Blue Alliance  @@@
+    public static int BAnumTeams = 0;                                      // # of teams from Blue Alliance
+    public static ArrayList<String> BAteams_List = new ArrayList<String>();     // Teams (in RANK order)
+
+    // -----------------------
     ArrayAdapter<String> adapter_typ;
     public String typSelected = " ";
     Spinner spinner_MatchType;
@@ -62,6 +67,9 @@ public class Visualizer_Activity extends AppCompatActivity {
     TextView txt_teamR1, txt_teamR2, txt_teamR3, txt_teamB1, txt_teamB2, txt_teamB3;
     TextView txt_teamR1_Name, txt_teamR2_Name, txt_teamR3_Name, txt_teamB1_Name, txt_teamB2_Name, txt_teamB3_Name;
     TextView tbl_teamR1, tbl_teamR2, tbl_teamR3, tbl_teamB1, tbl_teamB2, tbl_teamB3;
+    TextView tbl_eventR1, tbl_eventR2, tbl_eventR3, tbl_eventB1, tbl_eventB2, tbl_eventB3;
+    TextView tbl_rateR1,tbl_rateR2,tbl_rateR3, tbl_rateB1, tbl_rateB2, tbl_rateB3;
+
     Button button_View;
     String team_num, team_name, team_loc;
     String load_team, load_name;
@@ -94,16 +102,31 @@ public class Visualizer_Activity extends AppCompatActivity {
 // ----------  Blue Alliance  -----------
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
         StrictMode.setThreadPolicy(policy);
-//        TBA.setID("Pearadox", "Scout-5414", "V1");
-//        final TBA tba = new TBA();
-//        Settings.FIND_TEAM_RANKINGS = true;
-//        Settings.GET_EVENT_TEAMS = true;
-//        Settings.GET_EVENT_MATCHES = true;
-//        Settings.GET_EVENT_ALLIANCES = true;
-//        Settings.GET_EVENT_AWARDS = true;
-//        Event e = tba.getEvent("txwa", 2017);       // event/2017txlu will give top 15 OPR
+        TBA.setID("Pearadox", "Scout-5414", "V1");
+        final TBA tba = new TBA();
+        Settings.FIND_TEAM_RANKINGS = true;
+        Settings.GET_EVENT_TEAMS = true;
+        Settings.GET_EVENT_MATCHES = true;
+        Settings.GET_EVENT_ALLIANCES = true;
+        Settings.GET_EVENT_AWARDS = true;
+        Event e = tba.getEvent("txlu", 2017);       // event/2017txlu will give top 15 OPR
+        System.out.println(e.name);
+        System.out.println(e.location);
+        System.out.println(e.start_date);
+        System.out.println(e.teams.length + "\n ");
+        Log.w(TAG, "Rank " + e.teams[0].team_number + " " + e.teams[0].rank + " " + e.teams[0].defense + "\n ");
+//        Log.w(TAG, "Rank " + e.teams[1].team_number + " " + e.teams[1].rank + " " + e.teams[1].rankingScore + "\n ");
+//        Log.w(TAG, "Rank " + e.teams[2].team_number + " " + e.teams[2].rank + " " + e.teams[2].rankingScore + "\n ");
+//        Log.w(TAG, "Rank " + e.teams[3].team_number + " " + e.teams[3].rank + " " + e.teams[3].rankingScore + "\n ");
+        BAnumTeams = e.teams.length;
+        BAteams_List.clear();
+        for(int i = 0; i < BAnumTeams; i++) {   // Load teams in Rank order
+            BAteams_List.add(String.valueOf(e.teams[i].team_number));
+        }
+        Log.w(TAG, "BAteams_List = " + BAteams_List.size());
 
 //      -----------------------------------------
+
         txt_dev = (TextView) findViewById(R.id.txt_Dev);
         txt_stud = (TextView) findViewById(R.id.txt_TeamName);
         txt_dev.setText(param1);
@@ -182,6 +205,18 @@ public class Visualizer_Activity extends AppCompatActivity {
         tbl_teamB1 = (TextView) findViewById(R.id.tbl_teamB1);
         tbl_teamB2 = (TextView) findViewById(R.id.tbl_teamB2);
         tbl_teamB3 = (TextView) findViewById(R.id.tbl_teamB3);
+        tbl_eventR1 = (TextView) findViewById(R.id.tbl_eventR1);
+        tbl_eventR2 = (TextView) findViewById(R.id.tbl_eventR2);
+        tbl_eventR3 = (TextView) findViewById(R.id.tbl_eventR3);
+        tbl_eventB1 = (TextView) findViewById(R.id.tbl_eventB1);
+        tbl_eventB2 = (TextView) findViewById(R.id.tbl_eventB2);
+        tbl_eventB3 = (TextView) findViewById(R.id.tbl_eventB3);
+        tbl_rateR1 = (TextView) findViewById(R.id.tbl_rateR1);
+        tbl_rateR2 = (TextView) findViewById(R.id.tbl_rateR2);
+        tbl_rateR3 = (TextView) findViewById(R.id.tbl_rateR3);
+        tbl_rateB1 = (TextView) findViewById(R.id.tbl_rateB1);
+        tbl_rateB2 = (TextView) findViewById(R.id.tbl_rateB2);
+        tbl_rateB3 = (TextView) findViewById(R.id.tbl_rateB3);
 
         txt_teamR1.setText("");
         txt_teamR2.setText("");
@@ -203,6 +238,20 @@ public class Visualizer_Activity extends AppCompatActivity {
         tbl_teamB1.setText("");
         tbl_teamB2.setText("");
         tbl_teamB3.setText("");
+
+        tbl_eventR1.setText("");
+        tbl_eventR2.setText("");
+        tbl_eventR3.setText("");
+        tbl_eventB1.setText("");
+        tbl_eventB2.setText("");
+        tbl_eventB3.setText("");
+
+        tbl_rateR1.setText("");
+        tbl_rateR2.setText("");
+        tbl_rateR3.setText("");
+        tbl_rateB1.setText("");
+        tbl_rateB2.setText("");
+        tbl_rateB3.setText("");
     }
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -502,6 +551,7 @@ public class Visualizer_Activity extends AppCompatActivity {
     private void getTeams() {
         Log.i(TAG, "$$$$$  getTeams");
         Log.w(TAG, ">>>>>  Match = '" + matchID + "'");
+        final int[] rank = {0};
         txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
         txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
         txt_teamR3 = (TextView) findViewById(R.id.txt_teamR3);
@@ -565,32 +615,91 @@ public class Visualizer_Activity extends AppCompatActivity {
                     tbl_teamB1 = (TextView) findViewById(R.id.tbl_teamB1);
                     tbl_teamB2 = (TextView) findViewById(R.id.tbl_teamB2);
                     tbl_teamB3 = (TextView) findViewById(R.id.tbl_teamB3);
+                    tbl_eventR1 = (TextView) findViewById(R.id.tbl_eventR1);
+                    tbl_eventR2 = (TextView) findViewById(R.id.tbl_eventR2);
+                    tbl_eventR3 = (TextView) findViewById(R.id.tbl_eventR3);
+                    tbl_eventB1 = (TextView) findViewById(R.id.tbl_eventB1);
+                    tbl_eventB2 = (TextView) findViewById(R.id.tbl_eventB2);
+                    tbl_eventB3 = (TextView) findViewById(R.id.tbl_eventB3);
+                    tbl_rateR1 = (TextView) findViewById(R.id.tbl_rateR1);
+                    tbl_rateR2 = (TextView) findViewById(R.id.tbl_rateR2);
+                    tbl_rateR3 = (TextView) findViewById(R.id.tbl_rateR3);
+                    tbl_rateB1 = (TextView) findViewById(R.id.tbl_rateB1);
+                    tbl_rateB2 = (TextView) findViewById(R.id.tbl_rateB2);
+                    tbl_rateB3 = (TextView) findViewById(R.id.tbl_rateB3);
 
                     team_inst = teams.get(0);
                     txt_teamR1.setText(team_inst.getTeam_num());
                     txt_teamR1_Name.setText(team_inst.getTeam_name());
                     tbl_teamR1.setText(team_inst.getTeam_num());
-                    get_BAdata(team_inst.getTeam_num());
+                    rank[0] = get_BAdata(team_inst.getTeam_num().trim());
+                    if (rank[0] > 0) {
+                        tbl_eventR1.setText("TXLU");
+                        tbl_rateR1.setText("OPR 000.0   DPR 00.0  \n" + "Rank=" + rank[0]);
+                    } else {
+                        tbl_eventR1.setText("");
+                        tbl_rateR1.setText("");
+                    }
                     team_inst = teams.get(1);
                     txt_teamR2.setText(team_inst.getTeam_num());
                     txt_teamR2_Name.setText(team_inst.getTeam_name());
                     tbl_teamR2.setText(team_inst.getTeam_num());
+                    rank[0] = get_BAdata(team_inst.getTeam_num().trim());
+                    if (rank[0] > 0) {
+                        tbl_eventR2.setText("TXLU");
+                        tbl_rateR2.setText("OPR 000.0   DPR 00.0  \n" + "Rank=" + rank[0]);
+                    } else {
+                        tbl_eventR2.setText("");
+                        tbl_rateR2.setText("");
+                    }
                     team_inst = teams.get(2);
                     txt_teamR3.setText(team_inst.getTeam_num());
                     txt_teamR3_Name.setText(team_inst.getTeam_name());
                     tbl_teamR3.setText(team_inst.getTeam_num());
+                    rank[0] = get_BAdata(team_inst.getTeam_num().trim());
+                    if (rank[0] > 0) {
+                        tbl_eventR3.setText("TXLU");
+                        tbl_rateR3.setText("OPR 000.0   DPR 00.0  \n" + "Rank=" + rank[0]);
+                    } else {
+                        tbl_eventR3.setText("");
+                        tbl_rateR3.setText("");
+                    }
                     team_inst = teams.get(3);
                     txt_teamB1.setText(team_inst.getTeam_num());
                     txt_teamB1_Name.setText(team_inst.getTeam_name());
                     tbl_teamB1.setText(team_inst.getTeam_num());
+                    rank[0] = get_BAdata(team_inst.getTeam_num().trim());
+                    if (rank[0] > 0) {
+                        tbl_eventB1.setText("TXLU");
+                        tbl_rateB1.setText("OPR 000.0   DPR 00.0  \n" + "Rank=" + rank[0]);
+                    } else {
+                        tbl_eventB1.setText("");
+                        tbl_rateB1.setText("");
+                    }
                     team_inst = teams.get(4);
                     txt_teamB2.setText(team_inst.getTeam_num());
                     txt_teamB2_Name.setText(team_inst.getTeam_name());
                     tbl_teamB2.setText(team_inst.getTeam_num());
+                    rank[0] = get_BAdata(team_inst.getTeam_num().trim());
+                    if (rank[0] > 0) {
+                        tbl_eventB2.setText("TXLU");
+                        tbl_rateB2.setText("OPR 000.0   DPR 00.0  \n" + "Rank=" + rank[0]);
+                    } else {
+                        tbl_eventB2.setText("");
+                        tbl_rateB2.setText("");
+                    }
                     team_inst = teams.get(5);
                     txt_teamB3.setText(team_inst.getTeam_num());
                     txt_teamB3_Name.setText(team_inst.getTeam_name());
                     tbl_teamB3.setText(team_inst.getTeam_num());
+                    rank[0] = get_BAdata(team_inst.getTeam_num().trim());
+                    if (rank[0] > 0) {
+                        tbl_eventB3.setText("TXLU");
+                        tbl_rateB3.setText("OPR 000.0   DPR 00.0  \n" + "Rank=" + rank[0]);
+                    } else {
+                        tbl_eventB3.setText("");
+                        tbl_rateB3.setText("");
+                    }
 
                     loadTblData();      // Load the images (if any)
 
@@ -617,9 +726,18 @@ public class Visualizer_Activity extends AppCompatActivity {
         }
     }
 
-    private void get_BAdata(String team) {
-
-
+    private int get_BAdata(String team) {
+        Log.i(TAG, "%%%  get_BAdata %%% " + team);
+        int rank = 0;
+        String team_num = "";
+        for(int i = 0; i < BAnumTeams; i++) {   // Search Teams to find Rank
+            team_num = BAteams_List.get(i);
+            Log.w(TAG, "LOOP " + i + " " + team_num);
+            if (team_num.matches(team)) {
+                rank = i + 1;       // Rank
+            }
+        }
+        return rank;
     }
 
     private void findTeam(String tnum) {
@@ -692,7 +810,7 @@ public class Visualizer_Activity extends AppCompatActivity {
     }
 
 
-    //###################################################################
+//###################################################################
 //###################################################################
 //###################################################################
 @Override
