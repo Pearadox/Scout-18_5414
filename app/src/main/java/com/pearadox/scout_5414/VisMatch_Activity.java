@@ -17,7 +17,7 @@ public class VisMatch_Activity extends AppCompatActivity {
     String tnum = "";
     String tname = "";
     String underScore = new String(new char[60]).replace("\0", "_");  // string of 'x' underscores
-    TextView txt_team, txt_teamName, txt_auto_HGpercent, txt_auto_LGpercent, txt_auto_gearRatio, txt_auto_baselineRatio, txt_tele_gearRatio, txt_climbAttempts, txt_successfulClimbs;
+    TextView txt_team, txt_teamName, txt_auto_HGpercent, txt_auto_LGpercent, txt_auto_gearRatio, txt_auto_baselineRatio, txt_tele_gearRatio, txt_climbAttempts, txt_successfulClimbs, txt_tele_HGpercent, txt_tele_LGpercent;
     /* Comment Boxes */     TextView txt_AutoComments, txt_TeleComments, txt_FinalComments;
     /* Labels */    TextView lbl_Autonomous, lbl_autoHGshootingPercent, lbl_autoLGshootingPercent, lbl_tele_gearRatio, lbl_climbAttempts, lbl_successfulClimbs;
     //----------------------------------
@@ -66,6 +66,8 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_tele_gearRatio = (TextView) findViewById(R.id.txt_tele_gearRatio);
         txt_climbAttempts = (TextView) findViewById(R.id.txt_climbAttempts);
         txt_successfulClimbs = (TextView) findViewById(R.id.txt_successfulClimbs);
+        txt_tele_HGpercent = (TextView) findViewById(R.id.txt_tele_HGpercent);
+        txt_tele_LGpercent = (TextView) findViewById(R.id.txt_tele_LGpercent);
         txt_AutoComments.setMovementMethod(new ScrollingMovementMethod());
         txt_TeleComments.setMovementMethod(new ScrollingMovementMethod());
         txt_FinalComments.setMovementMethod(new ScrollingMovementMethod());
@@ -79,6 +81,8 @@ public class VisMatch_Activity extends AppCompatActivity {
         int numAutoBaseline = 0;
         int numTeleClimbAttempt = 0;
         int numTeleClimbSuccess = 0;
+        int numTeleHG = 0;
+        int numTeleLG = 0;
 
         auto_HGtotalShooting = 0; auto_LGtotalShooting = 0; tele_HGtotalShooting = 0; tele_LGtotalShooting = 0; auto_totalgearsAttempted = 0; auto_totalgearsPlaced = 0; tele_totalGearsAttempted = 0; tele_totalGearsPlaced = 0; numAutoBaseline = 0;
         auto_Comments = ""; tele_Comments = ""; final_Comments="";
@@ -130,6 +134,23 @@ public class VisMatch_Activity extends AppCompatActivity {
             Log.w(TAG, "Tele Gears Placed = " + match_inst.getTele_gears_placed());
             tele_totalGearsAttempted = tele_totalGearsAttempted + match_inst.getTele_gears_attempt();
             Log.w(TAG, "Tele Gears Attempted = " + match_inst.getTele_gears_attempt());
+
+
+            Log.w(TAG, "Tele HG Boolean = " + match_inst.isTele_hg());
+            if (match_inst.isTele_hg()) {
+                tele_HGtotalShooting = tele_HGtotalShooting + match_inst.getTele_hg_percent();
+                numTeleHG++;
+                Log.w(TAG, "numTeleHG = " + numTeleHG);
+            }
+            Log.w(TAG, "Tele HG = " + match_inst.getTele_hg_percent());
+            if (match_inst.isTele_lg()) {       /* Matthew - <<<<<<<<<<<<<<<<  match_inst _NOT_ Match_Data */
+                tele_LGtotalShooting = tele_LGtotalShooting + match_inst.getTele_lg_percent();
+                numTeleLG++;
+                Log.w(TAG, "numTeleLG = " + numTeleLG);
+
+            }
+            Log.w(TAG, "Tele LG = " + match_inst.getAuto_lg_percent());
+
 
             if (match_inst.isTele_climb_attempt()) {
                 numTeleClimbAttempt++;
@@ -196,6 +217,22 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_tele_gearRatio.setText(tele_totalGearsPlaced + "/" + tele_totalGearsAttempted);
         txt_climbAttempts.setText(numTeleClimbAttempt + "/" + numObjects);
         txt_successfulClimbs.setText(numTeleClimbSuccess + "/" + numObjects);
+
+        if (numTeleHG > 0) {      // Don't divide by zero!!
+            float tele_HGPer = ((float)auto_LGtotalShooting) / numTeleHG;
+            Log.w(TAG, "Percentage of HG Shooting in Tele = " + ((float)tele_HGtotalShooting) / numTeleHG);
+            txt_tele_HGpercent.setText(String.format("%3.2f", (tele_HGPer)) + "%");
+        } else {
+            txt_tele_HGpercent.setText(" ");
+        }
+
+        if (numTeleLG > 0) {      // Don't divide by zero!!
+            float tele_LGPer = ((float)tele_LGtotalShooting) / numTeleLG;
+            Log.w(TAG, "Percentage of LG Shooting in Tele = " + ((float)tele_LGtotalShooting) / numTeleLG);
+            txt_tele_LGpercent.setText(String.format("%3.2f",(tele_LGPer)) + "%");
+        } else {
+            txt_tele_LGpercent.setText(" ");
+        }
 
         txt_TeleComments.setText(tele_Comments);
 

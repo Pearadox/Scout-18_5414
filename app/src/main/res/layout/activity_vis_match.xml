@@ -197,13 +197,11 @@
         android:id="@+id/lbl_tele_gearRatio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:textColor="@color/white"
-        android:layout_below="@+id/lbl_Tele"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="45dp"
         android:text="Ratio of Gears"
-        android:layout_toStartOf="@+id/txt_teamName"
-        android:layout_alignEnd="@+id/lbl_GearRatio" />
+        android:layout_below="@+id/lbl_Tele"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/txt_tele_gearRatio"
@@ -247,6 +245,41 @@
         android:layout_height="wrap_content"
         android:textColor="@color/yellow"
         android:layout_below="@+id/txt_climbAttempts"
+        android:layout_alignStart="@+id/txt_auto_baselineRatio" />
+
+    <TextView
+        android:id="@+id/lbl_tele_LGpercent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_above="@+id/txt_tele_gearRatio"
+        android:layout_alignParentStart="true"
+        android:text="LG Shooting %"
+        android:layout_alignEnd="@+id/lbl_tele_gearRatio" />
+
+    <TextView
+        android:id="@+id/txt_tele_LGpercent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/yellow"
+        android:layout_above="@+id/txt_tele_gearRatio"
+        android:layout_alignStart="@+id/txt_auto_baselineRatio" />
+
+    <TextView
+        android:id="@+id/lbl_tele_HGpercent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_above="@+id/lbl_tele_LGpercent"
+        android:layout_alignParentStart="true"
+        android:text="HG Shooting %" />
+
+    <TextView
+        android:id="@+id/txt_tele_HGpercent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/yellow"
+        android:layout_above="@+id/txt_tele_LGpercent"
         android:layout_alignStart="@+id/txt_auto_baselineRatio" />
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
