@@ -87,7 +87,8 @@ public class Visualizer_Activity extends AppCompatActivity {
     ImageView tbl_robotR1, tbl_robotR2, tbl_robotR3, tbl_robotB1, tbl_robotB2, tbl_robotB3;
     String tnum = "";
     Bitmap img;
-    String FB_url ="";
+    String URL = "";
+    String FB_url[] = new String[]{"","","","","",""};
     FirebaseStorage storage;
     StorageReference storageRef;
 
@@ -137,10 +138,10 @@ public class Visualizer_Activity extends AppCompatActivity {
             toast.show();
         }
 
-        Team[] teams = tba.getTeams("txlu", 2017);
-        Log.w(TAG, "Teams " + teams[0].team_number + " " + teams[0].record + " " + teams[0].defense+ " " + teams[0].rank+ " " + teams[0].rankingScore + "\n ");
-        Log.w(TAG, "Teams " + teams[1].team_number + " " + teams[1].record + " " + teams[1].defense+ " " + teams[1].rank+ " " + teams[1].rankingScore + "\n ");
-        Log.w(TAG, "Teams " + teams[2].team_number + " " + teams[2].record + " " + teams[2].defense+ " " + teams[2].rank+ " " + teams[2].rankingScore + "\n ");
+//        Team[] teams = tba.getTeams("txlu", 2017);
+//        Log.w(TAG, "Teams " + teams[0].team_number + " " + teams[0].record + " " + teams[0].defense+ " " + teams[0].rank+ " " + teams[0].rankingScore + "\n ");
+//        Log.w(TAG, "Teams " + teams[1].team_number + " " + teams[1].record + " " + teams[1].defense+ " " + teams[1].rank+ " " + teams[1].rankingScore + "\n ");
+//        Log.w(TAG, "Teams " + teams[2].team_number + " " + teams[2].record + " " + teams[2].defense+ " " + teams[2].rank+ " " + teams[2].rankingScore + "\n ");
 
 
 //      -----------------------------------------
@@ -279,9 +280,9 @@ public class Visualizer_Activity extends AppCompatActivity {
         txt_teamR1_Name = (TextView) findViewById(R.id.txt_teamR1_Name);
         tnum = (String) txt_teamR1.getText();
         team_name = (String) txt_teamR1_Name.getText();
-        Log.w(TAG, "*** Team " + tnum + " " + team_name);
-//        FB_url = "https://firebasestorage.googleapis.com/v0/b/paradox-2017.appspot.com/o/images%2Ftxlu%2Frobot_1296.png?alt=media&token=e6c8fbc1-f0e1-4ddc-9e01-f30a2a32a291";
-        launchVizPit(tnum, team_name, FB_url);
+        Log.w(TAG, "*** Team " + tnum + " " + team_name + "  URL ='" + FB_url[0] + "' ");
+//        FB_url[0] = "https://firebasestorage.googleapis.com/v0/b/paradox-2017.appspot.com/o/images%2Ftxlu%2Frobot_1296.png?alt=media&token=e6c8fbc1-f0e1-4ddc-9e01-f30a2a32a291";
+        launchVizPit(tnum, team_name, FB_url[0]);
     }
     public void btn_PitR2_Click(View view) {
         Log.i(TAG, " btn_PitR2_Click   ");
@@ -289,7 +290,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         txt_teamR2_Name = (TextView) findViewById(R.id.txt_teamR2_Name);
         tnum = (String) txt_teamR2.getText();
         team_name = (String) txt_teamR2_Name.getText();
-        launchVizPit(tnum, team_name, FB_url);
+        launchVizPit(tnum, team_name, FB_url[1]);
     }
     public void btn_PitR3_Click(View view) {
         Log.i(TAG, " btn_PitR3_Click   ");
@@ -297,7 +298,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         txt_teamR3_Name = (TextView) findViewById(R.id.txt_teamR3_Name);
         tnum = (String) txt_teamR3.getText();
         team_name = (String) txt_teamR3_Name.getText();
-        launchVizPit(tnum, team_name, FB_url);
+        launchVizPit(tnum, team_name, FB_url[2]);
     }
     public void btn_PitB1_Click(View view) {
         Log.i(TAG, " btn_PitB1_Click   ");
@@ -305,7 +306,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         txt_teamB1_Name = (TextView) findViewById(R.id.txt_teamB1_Name);
         tnum = (String) txt_teamB1.getText();
         team_name = (String) txt_teamB1_Name.getText();
-        launchVizPit(tnum, team_name, FB_url);
+        launchVizPit(tnum, team_name, FB_url[3]);
     }
     public void btn_PitB2_Click(View view) {
         Log.i(TAG, " btn_PitB2_Click   ");
@@ -313,7 +314,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         txt_teamB2_Name = (TextView) findViewById(R.id.txt_teamB2_Name);
         tnum = (String) txt_teamB2.getText();
         team_name = (String) txt_teamB2_Name.getText();
-        launchVizPit(tnum, team_name, FB_url);
+        launchVizPit(tnum, team_name, FB_url[4]);
     }
     public void btn_PitB3_Click(View view) {
         Log.i(TAG, " btn_PitB3_Click   ");
@@ -321,7 +322,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         txt_teamB3_Name = (TextView) findViewById(R.id.txt_teamB3_Name);
         tnum = (String) txt_teamB3.getText();
         team_name = (String) txt_teamB3_Name.getText();
-        launchVizPit(tnum, team_name, FB_url);
+        launchVizPit(tnum, team_name, FB_url[5]);
     }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -424,12 +425,13 @@ public class Visualizer_Activity extends AppCompatActivity {
     }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    private void launchVizPit(String team, String name, String url) {
+    private void launchVizPit(String team, String name, String imgURL) {
+        Log.i(TAG,">>>>>>>>  launchVizPit " + team + " " + name + " " + imgURL);      // ** DEBUG **
         Intent pit_intent = new Intent(Visualizer_Activity.this, VisPit_Activity.class);
         Bundle VZbundle = new Bundle();
         VZbundle.putString("team", team);        // Pass data to activity
         VZbundle.putString("name", name);        // Pass data to activity
-        VZbundle.putString("url", url);          // Pass data to activity
+        VZbundle.putString("url", imgURL);       // Pass data to activity
         pit_intent.putExtras(VZbundle);
         startActivity(pit_intent);               // Start Visualizer for Pit Data
 
@@ -494,45 +496,51 @@ public class Visualizer_Activity extends AppCompatActivity {
 
         tnum = (String) txt_teamR1.getText();
         getURL(tnum);   // Get the Firebase URL if photo exists
-//        FB_url = "gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event + "/robot_" + tnum + ".png";
-        Log.w(TAG, "FireBase storage '" + FB_url + "'");
-        if (FB_url.length() > 1) {
-            Picasso.with(this).load(FB_url).into(tbl_robotR1);
+        FB_url[0] = URL;
+//        FB_url[0] = "gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event + "/robot_" + tnum + ".png";
+        Log.w(TAG, "FireBase storage '" + FB_url[0] + "'");
+        if (FB_url[0].length() > 1) {
+            Picasso.with(this).load(FB_url[0]).into(tbl_robotR1);
         } else {
             tbl_robotR1.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
         }
         tnum = (String) txt_teamR2.getText();
         getURL(tnum);   // Get the Firebase URL if photo exists
-        if (FB_url.length() > 1) {
-            Picasso.with(this).load(FB_url).into(tbl_robotR2);
+        FB_url[1] = URL;
+        if (FB_url[1].length() > 1) {
+            Picasso.with(this).load(FB_url[1]).into(tbl_robotR2);
         } else {
             tbl_robotR2.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
         }
         tnum = (String) txt_teamR3.getText();
         getURL(tnum);   // Get the Firebase URL if photo exists
-        if (FB_url.length() > 1) {
-            Picasso.with(this).load(FB_url).into(tbl_robotR3);
+        FB_url[2] = URL;
+        if (FB_url[2].length() > 1) {
+            Picasso.with(this).load(FB_url[2]).into(tbl_robotR3);
         } else {
             tbl_robotR3.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
         }
         tnum = (String) txt_teamB1.getText();
         getURL(tnum);   // Get the Firebase URL if photo exists
-        if (FB_url.length() > 1) {
-            Picasso.with(this).load(FB_url).into(tbl_robotB1);
+        FB_url[3] = URL;
+        if (FB_url[3].length() > 1) {
+            Picasso.with(this).load(FB_url[3]).into(tbl_robotB1);
         } else {
             tbl_robotB1.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
         }
         tnum = (String) txt_teamB2.getText();
         getURL(tnum);   // Get the Firebase URL if photo exists
-        if (FB_url.length() > 1) {
-            Picasso.with(this).load(FB_url).into(tbl_robotB2);
+        FB_url[4] = URL;
+        if (FB_url[4].length() > 1) {
+            Picasso.with(this).load(FB_url[4]).into(tbl_robotB2);
         } else {
             tbl_robotB2.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
         }
         tnum = (String) txt_teamB3.getText();
         getURL(tnum);   // Get the Firebase URL if photo exists
-        if (FB_url.length() > 1) {
-            Picasso.with(this).load(FB_url).into(tbl_robotB3);
+        FB_url[5] = URL;
+        if (FB_url[5].length() > 1) {
+            Picasso.with(this).load(FB_url[5]).into(tbl_robotB3);
         } else {
             tbl_robotB3.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
         }
@@ -542,28 +550,25 @@ public class Visualizer_Activity extends AppCompatActivity {
     private void getURL(String team) {
         Log.i(TAG, ">>>>>  getURL: " + team);
 
-        FB_url = "";
+        URL = "";
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-//        StorageReference storageRef = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com");
-//        StorageReference imagesRef = storageRef.child("images/" + Pearadox.FRC_Event);
-        Log.e(TAG, "images/" + Pearadox.FRC_Event + "/" + team.trim() + ".png");
-        storageRef.child("images/" + Pearadox.FRC_Event + "/" + team.trim() + ".png" ).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        StorageReference pathReference = storageRef.child("images/" + Pearadox.FRC_Event + "/" + team.trim() + ".png");
+        Log.e(TAG, "images/" + Pearadox.FRC_Event + "/" + team.trim() + ".png" + "\n \n");
+
+        pathReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-               Log.w(TAG, "\n  uri: " + uri);
-//                Uri downloadUri = taskSnapshot.getMetadata().getDownloadUrl();
-//                FB_url = downloadUri.toString(); /// The string(file link) that you need
-                FB_url = String.valueOf(uri);
-                Log.w(TAG, "\n  URL: " + FB_url);
+                Log.e(TAG, "uri: " + uri.toString());
+                URL = uri.toString();
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Log.e(TAG, "***** ERROR in Firebase Storage Retrieval  ***** " + exception);
-                // Handle any errors
-            }
-        });    }
+        });
+        if (team.matches(" 118")) {
+            Log.i(TAG, "********  Team 118 \n \n ");
+            URL = "https://firebasestorage.googleapis.com/v0/b/paradox-2017.appspot.com/o/images%2Ftxlu%2Frobot_118.png?alt=media&token=647da8f9-d3f3-4f0a-b4c4-c892aea20b79";
+        }
+
+    }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void getTeams() {
@@ -750,7 +755,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         String team_num = "";
         for(int i = 0; i < BAnumTeams; i++) {   // Search Teams to find Rank
             team_num = BAteams_List.get(i);
-            Log.w(TAG, "LOOP " + i + " " + team_num);
+//            Log.w(TAG, "LOOP " + i + " " + team_num);
             if (team_num.matches(team)) {
                 rank = i + 1;       // Rank
             }
