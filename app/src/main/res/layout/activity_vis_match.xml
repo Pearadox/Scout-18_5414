@@ -402,14 +402,6 @@
         android:layout_alignStart="@+id/lbl_final_DefDump" />
 
     <TextView
-        android:id="@+id/lbl_final_DefDump"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hopper Dump"
-        android:layout_above="@+id/lbl_final_DefBlock"
-        android:layout_alignStart="@+id/lbl_final_LostComm" />
-
-    <TextView
         android:id="@+id/txt_final_DefBlock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -418,6 +410,14 @@
         android:layout_alignBaseline="@+id/lbl_final_DefBlock"
         android:layout_alignBottom="@+id/lbl_final_DefBlock"
         android:layout_alignStart="@+id/txt_final_LostComm" />
+
+    <TextView
+        android:id="@+id/lbl_final_DefDump"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hopper Dump"
+        android:layout_above="@+id/lbl_final_DefBlock"
+        android:layout_alignStart="@+id/lbl_final_LostComm" />
 
     <TextView
         android:id="@+id/txt_final_DefDump"

@@ -20,6 +20,7 @@ public class VisMatch_Activity extends AppCompatActivity {
     TextView txt_team, txt_teamName, txt_auto_HGpercent, txt_auto_LGpercent, txt_auto_gearRatio, txt_auto_baselineRatio, txt_tele_gearRatio, txt_climbAttempts, txt_successfulClimbs, txt_tele_HGpercent, txt_tele_LGpercent;
     /* Comment Boxes */     TextView txt_AutoComments, txt_TeleComments, txt_FinalComments;
     TextView txt_sB1, txt_sB2, txt_sB3, txt_sB4, txt_sB5;
+    TextView txt_final_LostComm, txt_final_LostParts, txt_final_DefGood, txt_final_DefBlock,txt_final_DefDump, txt_final_DefStarve, txt_final_NumPen;
     /* Labels */    TextView lbl_Autonomous, lbl_autoHGshootingPercent, lbl_autoLGshootingPercent, lbl_tele_gearRatio, lbl_climbAttempts, lbl_successfulClimbs;
     //----------------------------------
     int auto_HGtotalShooting = 0;
@@ -36,6 +37,8 @@ public class VisMatch_Activity extends AppCompatActivity {
     int tele_totalGearsPlaced = 0;
     String tele_Comments = "";
     //----------------------------------
+    int final_LostComm = 0; int final_LostParts = 0; int final_DefGood = 0; int final_DefBlock = 0;  int final_DefDump = 0; int final_DefStarve = 0; int final_NumPen = 0;
+    //        TextView txt_final_LostComm, txt_final_LostParts, txt_final_DefGood, txt_final_DefBlock,txt_final_DefDump, txt_final_DefStarve, txt_final_NumPen;
     String final_Comments = "";
     //----------------------------------
 
@@ -79,6 +82,13 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_tele_HGpercent = (TextView) findViewById(R.id.txt_tele_HGpercent);
         txt_tele_LGpercent = (TextView) findViewById(R.id.txt_tele_LGpercent);
 
+        txt_final_LostComm = (TextView) findViewById(R.id.txt_final_LostComm);
+        txt_final_LostParts = (TextView) findViewById(R.id.txt_final_LostParts);
+        txt_final_DefGood = (TextView) findViewById(R.id.txt_final_DefGood);
+        txt_final_DefBlock = (TextView) findViewById(R.id.txt_final_DefBlock);
+        txt_final_DefDump = (TextView) findViewById(R.id.txt_final_DefDump);
+        txt_final_DefStarve = (TextView) findViewById(R.id.txt_final_DefStarve);
+        txt_final_NumPen = (TextView) findViewById(R.id.txt_final_NumPen);
 
         txt_team.setText(tnum);
         txt_teamName.setText(tname);    // Get real
@@ -96,7 +106,10 @@ public class VisMatch_Activity extends AppCompatActivity {
         auto_HGtotalShooting = 0; auto_LGtotalShooting = 0; tele_HGtotalShooting = 0; tele_LGtotalShooting = 0; auto_totalgearsAttempted = 0; auto_totalgearsPlaced = 0; tele_totalGearsAttempted = 0; tele_totalGearsPlaced = 0; numAutoBaseline = 0;
         auto_B1 = 0; auto_B2 = 0; auto_B3 = 0; auto_B4 = 0; auto_B1 = 0;
         auto_Comments = ""; tele_Comments = ""; final_Comments="";
+        final_LostComm = 0; final_LostParts = 0; final_DefGood = 0; final_DefBlock = 0;  final_DefDump = 0; final_DefStarve = 0; final_NumPen = 0;
 
+
+// ================================================================
         for (int i = 0; i < numObjects; i++) {
             Log.w(TAG, "In for loop!   " + i);
             match_inst = Pearadox.Matches_Data.get(i);      // Get instance of Match Data
@@ -135,7 +148,7 @@ public class VisMatch_Activity extends AppCompatActivity {
             if (match_inst.getAuto_comment().length() > 1) {
                 auto_Comments = auto_Comments + match_inst.getMatch() + "-" + match_inst.getAuto_comment() + "\n" + underScore  + "\n" ;
             }
-            String pos = match_inst.getAuto_start();
+            String pos = match_inst.getAuto_start().trim();
             Log.w(TAG, "Start Pos. " + pos);
             switch (pos) {
                 case "B1":
@@ -201,16 +214,41 @@ public class VisMatch_Activity extends AppCompatActivity {
 
             //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
             // ToDo - collect Final elements
+            if (match_inst.isFinal_lostComms()) {
+                final_LostComm++;
+            }
+            if (match_inst.isFinal_lostParts()) {
+                final_LostParts++;
+            }
+            if (match_inst.isFinal_defense_good()) {
+                final_DefGood++;
+            }
+            if (match_inst.isFinal_def_Hopper()) {
+                final_DefDump++;
+            }
+            if (match_inst.isFinal_def_Lane()) {
+                final_DefStarve++;
+            }
+            if (match_inst.isFinal_def_Block()) {
+                final_DefBlock++;
+            }
+            if (match_inst.getFinal_num_Penalties() > 0) {
+                final_NumPen = final_NumPen + match_inst.getFinal_num_Penalties();
+            }
 
             Log.w(TAG, "Final Comment = " + match_inst.getFinal_comment() + "  " + match_inst.getFinal_comment().length());
             if (match_inst.getFinal_comment().length() > 1) {
                 final_Comments = final_Comments + match_inst.getMatch() + "-" + match_inst.getFinal_comment() + "\n" + underScore  + "\n" ;
             }
         } //end For
+
+
+// ================================================================
+// ======  Now start displaying all the data we collected  ========
+// ================================================================
         Log.w(TAG, "Number of Attempted Climbs = " + numTeleClimbAttempt);
         Log.w(TAG, "Number of Successful Climbs = " + numTeleClimbSuccess);
 
-// ======  Now start displaying all the data we collected  ========
         Log.w(TAG, "Auto HG Shooting = " + auto_HGtotalShooting + "   " + numAutoHG);
         if (numAutoHG > 0) {      // Don't divide by zero!!
             float auto_HGPer = ((float)auto_HGtotalShooting) / numAutoHG;
@@ -236,14 +274,12 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_auto_baselineRatio.setText(numAutoBaseline +  "/" + numObjects);
 
 //        Log.w(TAG, "Auto Gears Attempted = " + auto_gearsAttempted);
-//
 //        Log.w(TAG, "Auto Gears Placed = " + auto_gearsPlaced);
         txt_sB1.setText(String.valueOf(auto_B1));
         txt_sB2.setText(String.valueOf(auto_B2));
         txt_sB3.setText(String.valueOf(auto_B3));
         txt_sB4.setText(String.valueOf(auto_B4));
-        txt_sB1.setText(String.valueOf(auto_B5));
-
+        txt_sB5.setText(String.valueOf(auto_B5));
 
         txt_AutoComments.setText(auto_Comments);
 
@@ -274,11 +310,18 @@ public class VisMatch_Activity extends AppCompatActivity {
 
         // ==============================================
         // ToDo - display Final elements
+        txt_final_LostComm.setText(String.valueOf(final_LostComm));
+        txt_final_LostParts.setText(String.valueOf(final_LostParts));
+        txt_final_DefGood.setText(String.valueOf(final_DefGood));
+        txt_final_DefDump.setText(String.valueOf(final_DefDump));
+        txt_final_DefBlock.setText(String.valueOf(final_DefBlock));
+        txt_final_DefStarve.setText(String.valueOf(final_DefStarve));
+        txt_final_NumPen.setText(String.valueOf(final_NumPen));
 
         txt_FinalComments.setText(final_Comments);
     }
 
-    //###################################################################
+//###################################################################
 //###################################################################
 //###################################################################
     @Override
