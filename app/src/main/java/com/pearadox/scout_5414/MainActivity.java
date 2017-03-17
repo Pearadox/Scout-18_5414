@@ -145,10 +145,10 @@ public class MainActivity extends AppCompatActivity {
         Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
         Button btn_StoreData = (Button) findViewById(R.id.btn_StoreData);   // Listner defined in Layout XML
 //        button_View.setOnClickListener(buttonStore_Click);
-        if (Pearadox.is_Network) {      // is Internet available?
+        if (Pearadox.FRC_Event.length() == 4) {      // is Internet available?
             btn_StoreData.setVisibility(View.VISIBLE);
-        } else {        // Don't show button
-            btn_StoreData.setVisibility(View.GONE);
+//        } else {        // Don't show button
+//            btn_StoreData.setVisibility(View.GONE);
         }
 
             toggleLogon = (ToggleButton) findViewById(R.id.toggleLogon);
@@ -235,9 +235,11 @@ public class MainActivity extends AppCompatActivity {
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public void buttonStore_Click(View view) {
-        Log.i(TAG, " buttonStore_Click   " );
+        Log.i(TAG, " buttonStore_Click   '" + Pearadox.FRC_Event + "'  \n ");
         txt_messageLine = (TextView) findViewById(R.id.txt_messageLine);
         txt_messageLine.setText("*** Saving Pit Data to Firebase ***");
+        pfPitData_DBReference = pfDatabase.getReference("pit-data/" + Pearadox.FRC_Event); // Pit Scout Data
+        pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
 
         File direct_pit = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/" + Pearadox.FRC_Event);
         Log.w(TAG, ">>>>> Path" + direct_pit);
@@ -326,7 +328,7 @@ public class MainActivity extends AppCompatActivity {
         }  // End If
 
 // ---------------------------------------
-//      ToDo - Read all Matcg data from SD card and write to Firebase
+//      ToDo - Read all Match data from SD card and write to Firebase
         txt_messageLine.setText("*** Saving Match Data to Firebase ***");
 
         File direct_match = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/" + Pearadox.FRC_Event);
@@ -363,7 +365,7 @@ public class MainActivity extends AppCompatActivity {
         }  // End If
 
         Toast.makeText(getBaseContext(), "•••• There were " + num_PitObjs + " Pit data objects, " + num_Photos + " photos and " + num_MatchObjs + " Match objects copied from SD card to Firebase Cloud storage  ••••", Toast.LENGTH_LONG).show();
-        txt_messageLine.setText("*** Saving Match Data to Firebase ***");
+        txt_messageLine.setText(" ");
     }
 
 
@@ -668,7 +670,7 @@ private void preReqs() {
                                    View view, int pos, long id) {
             String ev = parent.getItemAtPosition(pos).toString();
             Pearadox.FRC_EventName = ev;
-            Log.w(TAG, ">>>>> Event '" + Pearadox.FRC_EventName + "'");
+            Log.w(TAG, ">>>>> Event '" + Pearadox.FRC_EventName + "'  \n ");
             Spinner spinner_Device = (Spinner) findViewById(R.id.spinner_Device);
             Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
             spinner_Device.setClickable(true);
@@ -687,7 +689,7 @@ private void preReqs() {
                     Toast.makeText(getBaseContext(), "Event code not recognized", Toast.LENGTH_LONG).show();
                     Pearadox.FRC_Event = "zzzz";
             }
-            Log.w(TAG, " Event code = '" + Pearadox.FRC_Event + "'");
+            Log.w(TAG, " Event code = '" + Pearadox.FRC_Event + "'  \n ");
             pfTeam_DBReference = pfDatabase.getReference("teams/" + Pearadox.FRC_Event);   // Team data from Firebase D/B
             addTeam_VE_Listener(pfTeam_DBReference);        // Load Teams since we now know event
         }
