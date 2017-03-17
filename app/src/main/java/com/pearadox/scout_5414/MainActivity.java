@@ -3,6 +3,8 @@ package com.pearadox.scout_5414;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -107,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         Pearadox.FRC514_Device = deviceId;        // Save device ID
         setContentView(R.layout.activity_main);
 
+        Pearadox.FRC_Event = "";
         txt_messageLine = (TextView) findViewById(R.id.txt_messageLine);
         txt_messageLine.setText("Hello Pearadox!  Please select Event and then Log yourself into Device.    ");
         final Spinner spinner_Event = (Spinner) findViewById(R.id.spinner_Event);
@@ -145,11 +148,12 @@ public class MainActivity extends AppCompatActivity {
         Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
         Button btn_StoreData = (Button) findViewById(R.id.btn_StoreData);   // Listner defined in Layout XML
 //        button_View.setOnClickListener(buttonStore_Click);
-        if (Pearadox.FRC_Event.length() == 4) {      // is Internet available?
+
+//        if (Pearadox.is_Network) {      // is Internet available?
             btn_StoreData.setVisibility(View.VISIBLE);
 //        } else {        // Don't show button
 //            btn_StoreData.setVisibility(View.GONE);
-        }
+//        }
 
             toggleLogon = (ToggleButton) findViewById(R.id.toggleLogon);
             toggleLogon.setOnClickListener(new View.OnClickListener() {
@@ -236,61 +240,62 @@ public class MainActivity extends AppCompatActivity {
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public void buttonStore_Click(View view) {
         Log.i(TAG, " buttonStore_Click   '" + Pearadox.FRC_Event + "'  \n ");
-        txt_messageLine = (TextView) findViewById(R.id.txt_messageLine);
-        txt_messageLine.setText("*** Saving Pit Data to Firebase ***");
-        pfPitData_DBReference = pfDatabase.getReference("pit-data/" + Pearadox.FRC_Event); // Pit Scout Data
-        pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
+        if (Pearadox.FRC_Event.length() == 4) {
+            txt_messageLine = (TextView) findViewById(R.id.txt_messageLine);
+            txt_messageLine.setText("*** Saving Pit Data to Firebase ***");
+            pfPitData_DBReference = pfDatabase.getReference("pit-data/" + Pearadox.FRC_Event); // Pit Scout Data
+            pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
 
-        File direct_pit = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/" + Pearadox.FRC_Event);
-        Log.w(TAG, ">>>>> Path" + direct_pit);
-        if (direct_pit != null){
-            String[] filenames = direct_pit.list();
-            num_PitObjs = 0;
-            for (String tmpf : filenames){
+            File direct_pit = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/" + Pearadox.FRC_Event);
+            Log.w(TAG, ">>>>> Path" + direct_pit);
+            if (direct_pit != null) {
+                String[] filenames = direct_pit.list();
+                num_PitObjs = 0;
+                for (String tmpf : filenames) {
 //                Log.w(TAG, " file " + tmpf);
-                team_num = tmpf.replaceFirst("[.][^.]+$", "");    // fileNameWithOutExt
+                    team_num = tmpf.replaceFirst("[.][^.]+$", "");    // fileNameWithOutExt
 //                Log.w(TAG, "*******  Team:" + team_num);
-                try {
-                    Log.w(TAG, "   Dir:" + direct_pit + "/" + tmpf);
-                    InputStream file = new FileInputStream(direct_pit + "/" + tmpf);
-                    InputStream buffer = new BufferedInputStream(file);
-                    ObjectInput input = new ObjectInputStream(buffer);
-                    pitData  Pit_Data = (pitData)input.readObject();
-                    Log.w(TAG, "#### Obect '" + Pit_Data.getPit_team() + "'  " + Pit_Data.getPit_scout());
-            //      ToDo - Check to see if already in FB or Delete file from SD card
+                    try {
+                        Log.w(TAG, "   Dir:" + direct_pit + "/" + tmpf);
+                        InputStream file = new FileInputStream(direct_pit + "/" + tmpf);
+                        InputStream buffer = new BufferedInputStream(file);
+                        ObjectInput input = new ObjectInputStream(buffer);
+                        pitData Pit_Data = (pitData) input.readObject();
+                        Log.w(TAG, "#### Obect '" + Pit_Data.getPit_team() + "'  " + Pit_Data.getPit_scout());
+                        //      ToDo - Check to see if already in FB or Delete file from SD card
 
-                    String keyID = team_num;
-                    pfPitData_DBReference.child(keyID).setValue(Pit_Data);      // Store it to Firebase
-                    num_PitObjs ++;
-                    File goner = new File(direct_pit + "/" + tmpf);
+                        String keyID = team_num;
+                        pfPitData_DBReference.child(keyID).setValue(Pit_Data);      // Store it to Firebase
+                        num_PitObjs++;
+                        File goner = new File(direct_pit + "/" + tmpf);
 //                    boolean deleted = goner.delete();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }  // End for
-            Log.w(TAG, " ####### Pit Data Objects = " + num_PitObjs);
-        }  // End If
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }  // End for
+                Log.w(TAG, " ####### Pit Data Objects = " + num_PitObjs);
+            }  // End If
 // ---------------------------------------
 //      ToDo - Read all data from SD card and write to Firebase (Photos)
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
-        File direct_img = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/" + Pearadox.FRC_Event);
-        Log.w(TAG, ">>>>> Path" + direct_img);
-        if (direct_img != null){
-            String[] filenames = direct_img.list();
-            num_Photos = 0;
-            for (String tmpf : filenames) {
-                Log.w(TAG, " filename " + tmpf);
-                num_Photos ++;
-                Uri file = Uri.fromFile(new File(direct_img + "/" + tmpf));
-                Log.w(TAG, " URI " + file);
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference();
+            File direct_img = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/" + Pearadox.FRC_Event);
+            Log.w(TAG, ">>>>> Path" + direct_img);
+            if (direct_img != null) {
+                String[] filenames = direct_img.list();
+                num_Photos = 0;
+                for (String tmpf : filenames) {
+                    Log.w(TAG, " filename " + tmpf);
+                    num_Photos++;
+                    Uri file = Uri.fromFile(new File(direct_img + "/" + tmpf));
+                    Log.w(TAG, " URI " + file);
 //                StorageReference imgRef = storageRef.child("images/" + Pearadox.FRC_Event);
-                StorageReference imgRef = storageRef.child("images/");
-                Log.e(TAG, "***  HTTP error in Firebase putFile;  _NOT_ written to Firebase  *** ");
+                    StorageReference imgRef = storageRef.child("images/");
+                    Log.e(TAG, "***  HTTP error in Firebase putFile;  _NOT_ written to Firebase  *** ");
 
 //                imgRef.putFile(file)
 //                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -323,49 +328,54 @@ public class MainActivity extends AppCompatActivity {
 ////                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
 ////                    }
 ////                });
-            }  // End for
-            Log.w(TAG, " ####### Photos = " + num_Photos);
-        }  // End If
+                }  // End for
+                Log.w(TAG, " ####### Photos = " + num_Photos);
+            }  // End If
 
 // ---------------------------------------
 //      ToDo - Read all Match data from SD card and write to Firebase
-        txt_messageLine.setText("*** Saving Match Data to Firebase ***");
+            txt_messageLine.setText("*** Saving Match Data to Firebase ***");
 
-        File direct_match = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/" + Pearadox.FRC_Event);
-        Log.w(TAG, ">>>>> Path" + direct_match);
-        if (direct_match != null){
-            String[] filenames = direct_match.list();
-            num_MatchObjs = 0;
-            for (String tmpf : filenames){
-                String mID_team = tmpf.replaceFirst("[.][^.]+$", "");    // fileNameWithOutExt
-                Log.w(TAG, "*******  Match ID & Team:" + mID_team);
-                try {
-                    Log.w(TAG, "   Dir:" + direct_match + "/" + tmpf);
-                    InputStream file = new FileInputStream(direct_match + "/" + tmpf);
-                    InputStream buffer = new BufferedInputStream(file);
-                    ObjectInput input = new ObjectInputStream(buffer);
-                    matchData  Match_Data = (matchData)input.readObject();
-                    Log.w(TAG, "#### Obect '" + matchData.getSerialVersionUID());
-                    //      ToDo - Check to see if already in FB or Delete file from SD card
+            File direct_match = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/" + Pearadox.FRC_Event);
+            Log.w(TAG, ">>>>> Path" + direct_match);
+            if (direct_match != null) {
+                String[] filenames = direct_match.list();
+                num_MatchObjs = 0;
+                for (String tmpf : filenames) {
+                    String mID_team = tmpf.replaceFirst("[.][^.]+$", "");    // fileNameWithOutExt
+                    Log.w(TAG, "*******  Match ID & Team:" + mID_team);
+                    try {
+                        Log.w(TAG, "   Dir:" + direct_match + "/" + tmpf);
+                        InputStream file = new FileInputStream(direct_match + "/" + tmpf);
+                        InputStream buffer = new BufferedInputStream(file);
+                        ObjectInput input = new ObjectInputStream(buffer);
+                        matchData Match_Data = (matchData) input.readObject();
+                        Log.w(TAG, "#### Obect '" + matchData.getSerialVersionUID());
+                        //      ToDo - Check to see if already in FB or Delete file from SD card
 
-                    String keyID = mID_team;
-                    pfMatchData_DBReference.child(keyID).setValue(Match_Data);      // Store it to Firebase
-                    num_MatchObjs ++;
-                    File goner = new File(direct_match + "/" + tmpf);
+                        String keyID = mID_team;
+                        pfMatchData_DBReference.child(keyID).setValue(Match_Data);      // Store it to Firebase
+                        num_MatchObjs++;
+                        File goner = new File(direct_match + "/" + tmpf);
 //                    boolean deleted = goner.delete();     // Delete
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }  // End for
-            Log.w(TAG, " ####### Match Objects = " + num_MatchObjs);
-        }  // End If
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }  // End for
+                Log.w(TAG, " ####### Match Objects = " + num_MatchObjs);
+            }  // End If
 
-        Toast.makeText(getBaseContext(), "•••• There were " + num_PitObjs + " Pit data objects, " + num_Photos + " photos and " + num_MatchObjs + " Match objects copied from SD card to Firebase Cloud storage  ••••", Toast.LENGTH_LONG).show();
-        txt_messageLine.setText(" ");
+            Toast.makeText(getBaseContext(), "•••• There were " + num_PitObjs + " Pit data objects, " + num_Photos + " photos and " + num_MatchObjs + " Match objects copied from SD card to Firebase Cloud storage  ••••", Toast.LENGTH_LONG).show();
+            txt_messageLine.setText(" ");
+        } else {
+            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+            Toast.makeText(getBaseContext(), "•••• Select an Event first  ••••", Toast.LENGTH_LONG).show();
+        }
     }
 
 
