@@ -155,9 +155,15 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     Log.d(TAG, " editTxt_Team listener; Team = " + editTxt_Team.getText());
-                    teamSelected = (String.valueOf(editTxt_Team.getText()));
-                    chkForPhoto(teamSelected);      // see if photo already exists
-                    return true;
+                    if (editTxt_Team.getText().length() < 3 || editTxt_Team.getText().length() > 4) {
+                        final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                        tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+                        Toast.makeText(getBaseContext(),"*** Team number must be at least 3 characters and no more than 4  *** ", Toast.LENGTH_LONG).show();
+                    } else {
+                        teamSelected = (String.valueOf(editTxt_Team.getText()));
+                        chkForPhoto(teamSelected);      // see if photo already exists
+                        return true;
+                    }
                 }
                 return false;
                 }
@@ -392,9 +398,9 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
 //            Log.d(TAG, "*** data '" + data + "'");
             ImageView img_Photo = (ImageView) findViewById(R.id.img_Photo);
             img_Photo.setImageBitmap(imageBitmap);
-            if (Pearadox.is_Network) {      // is Internet available?
+//            if (Pearadox.is_Network) {      // is Internet available?      Commented out because 'tethered' show No internet
                 encodeBitmapAndSaveToFirebase(imageBitmap);
-            }
+//            }
         }
     }
     public void encodeBitmapAndSaveToFirebase(Bitmap bitmap) {
@@ -452,10 +458,10 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
             img_Photo.setImageBitmap(imageBitmap);
 
         } else {
-            if (Pearadox.is_Network) {      // is Internet available?
+//            if (Pearadox.is_Network) {      // is Internet available?   Commented out because 'tethered' show No internet
                 Log.d(TAG, "### Checking on Firebase Images ### ");
                 //ToDo - check on Firebase (if internet is up)
-            }
+//            }
         }
 
 
@@ -550,7 +556,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         int selectedId = radgrp_Dim.getCheckedRadioButtonId();
         radio_Dim = (RadioButton) findViewById(selectedId);
         String value = radio_Dim.getText().toString();
-        if (teamSelected.length() < 4) {        /// Make sure a Team is selected 1st
+        if (teamSelected.length() < 3) {        /// Make sure a Team is selected 1st
             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
             tg.startTone(ToneGenerator.TONE_PROP_BEEP);
             Toast toast = Toast.makeText(getBaseContext(), "*** Select a TEAM first before entering data ***", Toast.LENGTH_LONG);
@@ -591,10 +597,10 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         Pit_Data.setPit_scout(scout);
 // -----------------------------------------------
         saveDatatoSDcard();             //Save locally
-        if (Pearadox.is_Network) {      // is Internet available?
+//        if (Pearadox.is_Network) {      // is Internet available?         Commented out because 'tethered' show No internet
             String keyID = teamSelected;
             pfPitData_DBReference.child(keyID).setValue(Pit_Data);      // Store it to Firebase
-        }
+//        }
     }
     private void saveDatatoSDcard() {
         Log.i(TAG, "@@@@  saveDatatoSDcard  @@@@");
