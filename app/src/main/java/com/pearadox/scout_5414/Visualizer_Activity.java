@@ -64,8 +64,14 @@ public class Visualizer_Activity extends AppCompatActivity {
     ArrayList<String> matchList = new ArrayList<String>();
     ArrayAdapter<String> adaptMatch;
     public int matchSelected = 0;
-    public String matchID = "T00";      // Type + #
-    TextView txt_EventName, txt_MatchID;
+    public String OPR = " ";                // Offensive Power Rating
+    public static String[] OPR_Teams = new String[]       // Top 15 OPRs from TXLU
+            {"2481", "1477", " 118", "3366", "5572", " 192", " 624", "2468", "2341", "2164", "4696", "1817", "2613", "2352", "3847"};
+    public static String[] OPR_rating = new String[]       // Top 15 OPRs from TXLU
+            {"128.5","118.2","109.4"," 99.3"," 96.3"," 87.7"," 87.5"," 84.9"," 84.2"," 79.5"," 79.4"," 78.7"," 74.8"," 72.4"," 68.7"};
+    public String matchID = "T00";          // Type + #
+    public String next_Match = " ";         // List of next Matches for 5414
+    TextView txt_EventName, txt_MatchID, txt_NextMatch;
     TextView txt_teamR1, txt_teamR2, txt_teamR3, txt_teamB1, txt_teamB2, txt_teamB3;
     TextView txt_teamR1_Name, txt_teamR2_Name, txt_teamR3_Name, txt_teamB1_Name, txt_teamB2_Name, txt_teamB3_Name;
     TextView tbl_teamR1, tbl_teamR2, tbl_teamR3, tbl_teamB1, tbl_teamB2, tbl_teamB3;
@@ -148,8 +154,10 @@ public class Visualizer_Activity extends AppCompatActivity {
 
         txt_dev = (TextView) findViewById(R.id.txt_Dev);
         txt_stud = (TextView) findViewById(R.id.txt_TeamName);
+        txt_NextMatch = (TextView) findViewById(R.id.txt_NextMatch);
         txt_dev.setText(param1);
         txt_stud.setText(param2);
+        txt_NextMatch.setText("");
         matchID = "";
         listView_Matches = (ListView) findViewById(R.id.listView_Matches);
         adaptMatch = new ArrayAdapter<String>(this, R.layout.match_list_layout, matchList);
@@ -567,6 +575,9 @@ public class Visualizer_Activity extends AppCompatActivity {
             Log.i(TAG, "********  Team 118 \n \n ");
             URL = "https://firebasestorage.googleapis.com/v0/b/paradox-2017.appspot.com/o/images%2Ftxlu%2Frobot_118.png?alt=media&token=647da8f9-d3f3-4f0a-b4c4-c892aea20b79";
         }
+        if (team.matches("5414")) {
+            URL = "https://firebasestorage.googleapis.com/v0/b/paradox-2017.appspot.com/o/images%2Ftxho%2Frobot_5414.png?alt=media&token=3dbd8a30-3eb1-4421-a64b-f74fdf41e9d5";
+        }
 
     }
 
@@ -658,7 +669,8 @@ public class Visualizer_Activity extends AppCompatActivity {
                     rank[0] = get_BAdata(team_inst.getTeam_num().trim());
                     if (rank[0] > 0) {
                         tbl_eventR1.setText("TXLU");
-                        tbl_rateR1.setText("OPR 000.0   DPR 00.0  \n" + "Rank=" + rank[0]);
+                        OPR = chkOPR(team_inst.getTeam_num());
+                        tbl_rateR1.setText("OPR " + OPR + "   DPR 00.0  \n" + "Rank=" + rank[0]);
                     } else {
                         tbl_eventR1.setText("");
                         tbl_rateR1.setText("");
@@ -670,7 +682,8 @@ public class Visualizer_Activity extends AppCompatActivity {
                     rank[0] = get_BAdata(team_inst.getTeam_num().trim());
                     if (rank[0] > 0) {
                         tbl_eventR2.setText("TXLU");
-                        tbl_rateR2.setText("OPR 000.0   DPR 00.0  \n" + "Rank=" + rank[0]);
+                        OPR = chkOPR(team_inst.getTeam_num());
+                        tbl_rateR2.setText("OPR " + OPR + "   DPR 00.0  \n" + "Rank=" + rank[0]);
                     } else {
                         tbl_eventR2.setText("");
                         tbl_rateR2.setText("");
@@ -682,7 +695,8 @@ public class Visualizer_Activity extends AppCompatActivity {
                     rank[0] = get_BAdata(team_inst.getTeam_num().trim());
                     if (rank[0] > 0) {
                         tbl_eventR3.setText("TXLU");
-                        tbl_rateR3.setText("OPR 000.0   DPR 00.0  \n" + "Rank=" + rank[0]);
+                        OPR = chkOPR(team_inst.getTeam_num());
+                        tbl_rateR3.setText("OPR " + OPR + "   DPR 00.0  \n" + "Rank=" + rank[0]);
                     } else {
                         tbl_eventR3.setText("");
                         tbl_rateR3.setText("");
@@ -694,7 +708,8 @@ public class Visualizer_Activity extends AppCompatActivity {
                     rank[0] = get_BAdata(team_inst.getTeam_num().trim());
                     if (rank[0] > 0) {
                         tbl_eventB1.setText("TXLU");
-                        tbl_rateB1.setText("OPR 000.0   DPR 00.0  \n" + "Rank=" + rank[0]);
+                        OPR = chkOPR(team_inst.getTeam_num());
+                        tbl_rateB1.setText("OPR " + OPR + "   DPR 00.0  \n" + "Rank=" + rank[0]);
                     } else {
                         tbl_eventB1.setText("");
                         tbl_rateB1.setText("");
@@ -706,7 +721,8 @@ public class Visualizer_Activity extends AppCompatActivity {
                     rank[0] = get_BAdata(team_inst.getTeam_num().trim());
                     if (rank[0] > 0) {
                         tbl_eventB2.setText("TXLU");
-                        tbl_rateB2.setText("OPR 000.0   DPR 00.0  \n" + "Rank=" + rank[0]);
+                        OPR = chkOPR(team_inst.getTeam_num());
+                        tbl_rateB2.setText("OPR " + OPR + "   DPR 00.0  \n" + "Rank=" + rank[0]);
                     } else {
                         tbl_eventB2.setText("");
                         tbl_rateB2.setText("");
@@ -718,7 +734,8 @@ public class Visualizer_Activity extends AppCompatActivity {
                     rank[0] = get_BAdata(team_inst.getTeam_num().trim());
                     if (rank[0] > 0) {
                         tbl_eventB3.setText("TXLU");
-                        tbl_rateB3.setText("OPR 000.0   DPR 00.0  \n" + "Rank=" + rank[0]);
+                        OPR = chkOPR(team_inst.getTeam_num());
+                        tbl_rateB3.setText("OPR " + OPR + "   DPR 00.0  \n" + "Rank=" + rank[0]);
                     } else {
                         tbl_eventB3.setText("");
                         tbl_rateB3.setText("");
@@ -747,6 +764,19 @@ public class Visualizer_Activity extends AppCompatActivity {
             Toast.makeText(getBaseContext(), "** Select both Match TYPE & NUMBER ** ", Toast.LENGTH_LONG).show();
             // ToDo - turn toggle back to logon
         }
+    }
+
+    private String chkOPR(String team) {
+        Log.i(TAG, "###  chkOPR ### " + team);
+        // ToDo - Get OPR data from Blue Alliance
+        String opr = "000.0";
+        for(int i = 0; i < OPR_Teams.length; i++) {   // Search Teams to find Rank
+            Log.w(TAG, "opr Team " + OPR_Teams[i]);
+            if (OPR_Teams[i].matches(team)) {
+                opr = OPR_rating[i];
+            }
+        }
+        return opr;
     }
 
     private int get_BAdata(String team) {
@@ -808,7 +838,9 @@ public class Visualizer_Activity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.i(TAG, "******* Firebase retrieve Match Schedule  *******");
+                txt_NextMatch = (TextView) findViewById(R.id.txt_NextMatch);
                 matchList.clear();
+                next_Match = "";
                 p_Firebase.matchObj match_inst = new p_Firebase.matchObj();
                 Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
                 Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
@@ -817,8 +849,27 @@ public class Visualizer_Activity extends AppCompatActivity {
 //                    Log.w(TAG,"      " + match_inst.getMatch());
 //                    matchList.add(match_inst.getMatch() + "  Time: " + match_inst.getTime() + "  " + match_inst.getMtype());
                     matchList.add(match_inst.getMatch() +  "  " + match_inst.getMtype());
+                    if (match_inst.getR1().matches("5414")) {
+                        next_Match =  next_Match + match_inst.getMatch() + "  ";
+                    }
+                    if (match_inst.getR2().matches("5414")) {
+                        next_Match =  next_Match + match_inst.getMatch() + "  ";
+                    }
+                    if (match_inst.getR3().matches("5414")) {
+                        next_Match =  next_Match + match_inst.getMatch() + "  ";
+                    }
+                    if (match_inst.getB1().matches("5414")) {
+                        next_Match =  next_Match + match_inst.getMatch() + "  ";
+                    }
+                    if (match_inst.getB2().matches("5414")) {
+                        next_Match =  next_Match + match_inst.getMatch() + "  ";
+                    }
+                    if (match_inst.getB3().matches("5414")) {
+                        next_Match =  next_Match + match_inst.getMatch() + "  ";
+                    }
                 }
                 Log.w(TAG,"### Matches ###  : " + matchList.size());
+                txt_NextMatch.setText(next_Match);
                 listView_Matches = (ListView) findViewById(R.id.listView_Matches);
                 adaptMatch = new ArrayAdapter<String>(Visualizer_Activity.this, R.layout.match_list_layout, matchList);
                 listView_Matches.setAdapter(adaptMatch);

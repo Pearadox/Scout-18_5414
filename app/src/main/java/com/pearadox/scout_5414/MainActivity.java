@@ -133,16 +133,17 @@ public class MainActivity extends AppCompatActivity {
         isInternetAvailable();          // See if device has Internet
 
 //        FirebaseDatabase.getInstance().setPersistenceEnabled(true);     // Enable 'Offline' Database
+        loadStudentString();            // Force student load from Strings
         pfDatabase = FirebaseDatabase.getInstance();
         if (Pearadox.is_Network) {      // is Internet available?
-            pfStudent_DBReference = pfDatabase.getReference("students");        // Get list of Students
-            addStud_VE_Listener(pfStudent_DBReference);
+//            pfStudent_DBReference = pfDatabase.getReference("students");        // Get list of Students
+//            addStud_VE_Listener(pfStudent_DBReference);
             pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Devices
             pfPitData_DBReference = pfDatabase.getReference("pit-data/" + Pearadox.FRC_Event); // Pit Scout Data
             pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
         } else {        // Use smaller list in 'Values/strings'
             pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Devices
-            loadStudentString();
+//            loadStudentString();
         }
 
         Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);

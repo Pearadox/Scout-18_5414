@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_visualizer"
     android:layout_width="match_parent"
@@ -14,7 +15,7 @@
     <ImageView
         android:id="@+id/imageView_VZ"
         android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_height="110dp"
         android:src="@drawable/visualizer"
         android:contentDescription="Visualizer logo"
 
@@ -112,7 +113,7 @@
     <Button
         android:id="@+id/button_View"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="45sp"
         android:onClick="buttonView_Click"
         android:text="View"
         android:layout_below="@+id/spinner_MatchNum"
@@ -938,6 +939,25 @@
         android:layout_alignBaseline="@+id/button_View"
         android:layout_alignBottom="@+id/button_View"
         android:layout_toEndOf="@+id/button_View" />
+
+    <TextView
+        android:id="@+id/txt_NextMatch"
+        android:layout_width="350sp"
+        android:layout_height="20sp"
+        android:text="Q01  Q02  Q03  Q04  Q05  Q06  Q07  Q08  Q09  Q10 "
+        android:textColor="@color/yellow"
+        android:textStyle="bold"
+        android:layout_above="@+id/lbl_RedAlliance"
+        android:layout_toEndOf="@+id/imgPearadox"
+        android:layout_marginStart="11dp" />
+
+    <ImageView
+        android:id="@+id/imgPearadox"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_above="@+id/lbl_RedAlliance"
+        android:layout_alignParentStart="true"
+        app:srcCompat="@mipmap/p_logo" />
 
 
 </RelativeLayout>
