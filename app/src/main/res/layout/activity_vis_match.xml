@@ -22,6 +22,17 @@
         android:text="Team" />
 
     <TextView
+        android:id="@+id/lbl_Matches"
+        android:layout_width="70sp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="# Matches"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/lbl_StartPos" />
+
+    <TextView
         android:id="@+id/txt_team"
         android:layout_width="40sp"
         android:layout_height="wrap_content"
@@ -129,6 +140,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=" _B1_B2_B3_B4_B5_"
+        android:textColor="@color/white"
         android:layout_alignBaseline="@+id/txt_auto_HGpercent"
         android:layout_alignBottom="@+id/txt_auto_HGpercent"
         android:layout_toEndOf="@+id/txt_teamName" />
@@ -138,6 +150,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Start Position"
+        android:textColor="@color/white"
         android:layout_below="@+id/lbl_Autonomous"
         android:layout_toEndOf="@+id/txt_sB1" />
 
@@ -337,7 +350,7 @@
         android:id="@+id/lbl_final_LostComm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:textColor="@color/white"
         android:text="Lost Comms"
         android:layout_above="@+id/lbl_final_DefGood"
         android:layout_alignEnd="@+id/txt_teamName"
@@ -359,6 +372,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Lost Parts"
+        android:textColor="@color/white"
         android:layout_below="@+id/txt_TeleComments"
         android:layout_alignParentStart="true"
         android:layout_marginTop="12dp" />
@@ -377,6 +391,7 @@
         android:id="@+id/lbl_final_DefGood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="# 'Good' Defense(s)"
         android:layout_below="@+id/lbl_final_LostParts"
         android:layout_alignParentStart="true"
@@ -396,6 +411,7 @@
         android:id="@+id/lbl_final_DefBlock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="Blocked Gears"
         android:layout_alignBaseline="@+id/txt_final_DefStarve"
         android:layout_alignBottom="@+id/txt_final_DefStarve"
@@ -415,6 +431,7 @@
         android:id="@+id/lbl_final_DefDump"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="Hopper Dump"
         android:layout_above="@+id/lbl_final_DefBlock"
         android:layout_alignStart="@+id/lbl_final_LostComm" />
@@ -432,6 +449,7 @@
         android:id="@+id/lbl_final_DefStarve"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="Lane Starvation"
         android:layout_below="@+id/lbl_final_DefGood"
         android:layout_alignParentStart="true" />
@@ -450,6 +468,7 @@
         android:id="@+id/lbl_final_NumPen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="# Penalties"
         android:layout_below="@+id/lbl_final_DefStarve"
         android:layout_alignParentStart="true"
@@ -480,6 +499,17 @@
         android:layout_marginBottom="21dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/txt_NumMatches"
+        android:layout_width="30sp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+
+        android:text="00"
+        android:textColor="@color/orange"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/lbl_Matches" />
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 

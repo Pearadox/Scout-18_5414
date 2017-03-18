@@ -17,7 +17,8 @@ public class VisMatch_Activity extends AppCompatActivity {
     String tnum = "";
     String tname = "";
     String underScore = new String(new char[60]).replace("\0", "_");  // string of 'x' underscores
-    TextView txt_team, txt_teamName, txt_auto_HGpercent, txt_auto_LGpercent, txt_auto_gearRatio, txt_auto_baselineRatio, txt_tele_gearRatio, txt_climbAttempts, txt_successfulClimbs, txt_tele_HGpercent, txt_tele_LGpercent;
+    TextView txt_team, txt_teamName, txt_NumMatches;
+    TextView txt_auto_HGpercent, txt_auto_LGpercent, txt_auto_gearRatio, txt_auto_baselineRatio, txt_tele_gearRatio, txt_climbAttempts, txt_successfulClimbs, txt_tele_HGpercent, txt_tele_LGpercent;
     /* Comment Boxes */     TextView txt_AutoComments, txt_TeleComments, txt_FinalComments;
     TextView txt_sB1, txt_sB2, txt_sB3, txt_sB4, txt_sB5;
     TextView txt_final_LostComm, txt_final_LostParts, txt_final_DefGood, txt_final_DefBlock,txt_final_DefDump, txt_final_DefStarve, txt_final_NumPen;
@@ -61,6 +62,7 @@ public class VisMatch_Activity extends AppCompatActivity {
 
         txt_team = (TextView) findViewById(R.id.txt_team);
         txt_teamName = (TextView) findViewById(R.id.txt_teamName);
+        txt_NumMatches = (TextView) findViewById(R.id.txt_NumMatches);
         txt_auto_HGpercent = (TextView) findViewById(R.id.txt_auto_HGpercent);
         txt_auto_LGpercent = (TextView) findViewById(R.id.txt_auto_LGpercent);
         txt_auto_gearRatio = (TextView) findViewById(R.id.txt_auto_gearRatio);
@@ -95,6 +97,7 @@ public class VisMatch_Activity extends AppCompatActivity {
 
         int numObjects = Pearadox.Matches_Data.size();
         Log.w(TAG, "Objects = " + numObjects);
+        txt_NumMatches.setText(String.valueOf(numObjects));
         int numAutoHG = 0;
         int numAutoLG = 0;
         int numAutoBaseline = 0;
