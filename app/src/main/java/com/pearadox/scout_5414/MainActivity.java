@@ -434,6 +434,7 @@ public class MainActivity extends AppCompatActivity {
                         String keyID = mID_team;
                         pfMatchData_DBReference.child(keyID).setValue(Match_Data);      // Store it to Firebase
                         num_MatchObjs++;
+                        // ToDo copy file to BackUp directory then delete
                         File goner = new File(direct_match + "/" + tmpf);
 //                    boolean deleted = goner.delete();     // Delete
                     } catch (FileNotFoundException e) {
