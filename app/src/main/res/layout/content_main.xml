@@ -132,8 +132,18 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/radgrp_Scout"
             android:layout_marginTop="0dp" />
-
     </RadioGroup>
+
+
+    <ToggleButton
+        android:text="ToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOff="Logon"
+        android:textOn="Logoff"
+        android:id="@+id/toggleLogon"
+        android:layout_below="@+id/spinner_Device"
+        android:layout_alignParentEnd="true" />
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -145,16 +155,6 @@
         android:layout_marginBottom="72dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
-
-    <ToggleButton
-        android:text="ToggleButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textOff="Logon"
-        android:textOn="Logoff"
-        android:id="@+id/toggleLogon"
-        android:layout_below="@+id/spinner_Device"
-        android:layout_alignParentEnd="true" />
 
     <Button
         android:id="@+id/btn_StoreData"
