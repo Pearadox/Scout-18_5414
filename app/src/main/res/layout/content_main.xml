@@ -74,7 +74,7 @@
 
     <Spinner
         android:id="@+id/spinner_Device"
-        android:layout_width="140dp"
+        android:layout_width="160dp"
         android:layout_height="35dp"
         android:layout_weight="1"
         android:prompt="@string/device_prompt"

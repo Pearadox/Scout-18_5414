@@ -1,6 +1,7 @@
 package com.pearadox.scout_5414;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.media.AudioManager;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -86,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
     String team_num, team_name, team_loc;
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name, team_loc);
     String key = null;
+    boolean netOK = false;
 
     // ===========================================================================
     pitData Pit_Data = new pitData();
@@ -160,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
             toggleLogon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    netOK = false;
                     RadioGroup radgrp_Scout = (RadioGroup) findViewById(R.id.radgrp_Scout);
                     Spinner spinner_Device = (Spinner) findViewById(R.id.spinner_Device);
                     Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
@@ -170,21 +174,93 @@ public class MainActivity extends AppCompatActivity {
                         toggleLogon.setChecked(false);  // Set Toggle to Logged Off
                     } else {
                         if (toggleLogon.isChecked()) {      // See what state we are in
-                            Log.w(TAG, "!!!  Logged IN  !!!");
+                            Log.w(TAG, "!!!  Logged IN  !!! = '" + devSelected + "' ");
                             logged_On = true;       // Logged ON
                             switch (devSelected) {          // Who you gonna call?!?
                                 case "Scout Master":         // Scout Master
-                                    Intent sm_intent = new Intent(MainActivity.this, ScoutMaster_Activity.class);
-                                    startActivity(sm_intent);        // Start the Scout Master activity
-                                    break;
+                                    if (Pearadox.is_Network) {
+                                        netOK = true;
+                                        Log.w(TAG, "Internet Connected -or- replied 'YES' ");
+                                        Intent sm_intent = new Intent(MainActivity.this, ScoutMaster_Activity.class);
+                                        startActivity(sm_intent);        // Start the Scout Master activity
+                                        break;
+                                    } else {
+                                        AlertDialog alertbox = new AlertDialog.Builder(MainActivity.this)
+                                                .setTitle("No Internet detected")
+                                                .setMessage("There is _NO_ Internet detected. If you are Bluetooth tethered, do you want to continue?  ")
+                                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface arg0, int arg1) {
+                                                    // do something
+                                                        Log.w(TAG, "User replied 'YES' ");
+                                                        netOK = true;
+                                                        Log.w(TAG, "Internet Connected -or- replied 'YES' ");
+                                                        Intent sm_intent = new Intent(MainActivity.this, ScoutMaster_Activity.class);
+                                                        startActivity(sm_intent);        // Start the Scout Master activity
+                                                    }
+                                                })
+                                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                    // do something when the button is clicked
+                                                    public void onClick(DialogInterface arg0, int arg1) {
+                                                        Log.w(TAG, "User replied 'NO' ");
+                                                        netOK = false;
+                                                    }
+                                                })
+                                                .show();
+                                    }
+                                    Log.e(TAG, " netOK = " + netOK);
+                                    if (netOK) {
+                                        Log.w(TAG, "Internet Connected -or- replied 'YES' ");
+                                        Intent sm_intent = new Intent(MainActivity.this, ScoutMaster_Activity.class);
+                                        startActivity(sm_intent);        // Start the Scout Master activity
+                                    }
+
                                 case "Visualizer":          // Visualizer
-                                    Intent viz_intent = new Intent(MainActivity.this, Visualizer_Activity.class);
-                                    Bundle VZbundle = new Bundle();
-                                    VZbundle.putString("dev", devSelected);             // Pass data
-                                    VZbundle.putString("stud", studentSelected);        //  to activity
-                                    viz_intent.putExtras(VZbundle);
-                                    startActivity(viz_intent);                        // Start Visualizer
-                                    break;
+                                    if (Pearadox.is_Network) {
+                                        netOK = true;
+                                        Log.w(TAG, "Internet Connected -or- replied 'YES' ");
+                                        Intent viz_intent = new Intent(MainActivity.this, Visualizer_Activity.class);
+                                        Bundle VZbundle = new Bundle();
+                                        VZbundle.putString("dev", devSelected);             // Pass data
+                                        VZbundle.putString("stud", studentSelected);        //  to activity
+                                        viz_intent.putExtras(VZbundle);
+                                        startActivity(viz_intent);                        // Start Visualizer
+                                        break;
+                                    } else {
+                                        AlertDialog alertbox = new AlertDialog.Builder(MainActivity.this)
+                                                .setMessage("There is _NO_ Internet detected. If you are Bluetooth tethered, do you want to continue?  ")
+                                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                    // do something when the button is clicked
+                                                    public void onClick(DialogInterface arg0, int arg1) {
+                                                        // do something
+                                                        Log.w(TAG, "User replied 'YES' ");
+                                                        netOK = true;
+                                                        Log.w(TAG, "Internet Connected -or- replied 'YES' ");
+                                                        Intent viz_intent = new Intent(MainActivity.this, Visualizer_Activity.class);
+                                                        Bundle VZbundle = new Bundle();
+                                                        VZbundle.putString("dev", devSelected);             // Pass data
+                                                        VZbundle.putString("stud", studentSelected);        //  to activity
+                                                        viz_intent.putExtras(VZbundle);
+                                                        startActivity(viz_intent);                        // Start Visualizer
+                                                    }
+                                                })
+                                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                    // do something when the button is clicked
+                                                    public void onClick(DialogInterface arg0, int arg1) {
+                                                        netOK = false;
+                                                    }
+                                                })
+                                                .show();
+                                    }
+                                    Log.e(TAG, " netOK = " + netOK);
+                                    if (netOK) {
+                                        Log.w(TAG, "Internet Connected -or- replied 'YES' ");
+                                        Intent viz_intent = new Intent(MainActivity.this, Visualizer_Activity.class);
+                                        Bundle VZbundle = new Bundle();
+                                        VZbundle.putString("dev", devSelected);             // Pass data
+                                        VZbundle.putString("stud", studentSelected);        //  to activity
+                                        viz_intent.putExtras(VZbundle);
+                                        startActivity(viz_intent);                        // Start Visualizer
+                                    }
                                 case ("Red-1"):             //#Red or Blue Scout
                                 case ("Red-2"):             //#
                                 case ("Red-3"):             //#
@@ -209,6 +285,7 @@ public class MainActivity extends AppCompatActivity {
                                             spit_intent.putExtras(SPbundle);
                                             startActivity(spit_intent);                        // Start Pit Scout
                                         } else {
+                                            Log.e(TAG, " netOK = " + netOK);
                                             Log.e(TAG, "*** Error - Red/Blue Scout device selected but no TYPE indicator  ***");
                                         }
                                     }
