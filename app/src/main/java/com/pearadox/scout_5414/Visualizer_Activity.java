@@ -50,9 +50,11 @@ public class Visualizer_Activity extends AppCompatActivity {
     String TAG = "Visualizer_Activity";        // This CLASS name
     TextView txt_dev, txt_stud;
     // @@@  Blue Alliance  @@@
-    public static int BAnumTeams = 0;                                      // # of teams from Blue Alliance
+    public static int BA1numTeams = 0;                                      // # of teams from Blue Alliance
+    public static int BA2numTeams = 0;
     public static ArrayList<String> BAteams_List = new ArrayList<String>();     // Teams (in RANK order)
     public boolean BA_avail = false;
+    Team[] teams1; Team[] teams2;
     // -----------------------
     ArrayAdapter<String> adapter_typ;
     public String typSelected = " ";
@@ -121,12 +123,24 @@ public class Visualizer_Activity extends AppCompatActivity {
         Settings.GET_EVENT_STATS = true;
 
         TBA t = new TBA();
-        Event e = t.getEvent("txho", 2017);
-        Team[] teams = e.teams;
-        Log.e(TAG, "BLUE " + teams.length);
-        for(int i = 0; i < teams.length; i++) {
-            System.out.println("Team #: "+teams[i].team_number+" OPR: "+teams[i].opr+ "  " +teams[i].rank);
-            System.out.println("        "+teams[i].record+" RankScore: "+teams[i].rankingScore+ "  " +teams[i].pressure + "\n ");
+        Event e = t.getEvent("txlu", 2017);
+        teams1 = e.teams.clone();
+//        Team[] teams1 = e.teams;
+        Log.e(TAG, "BLUE1 " + teams1.length);
+        BA1numTeams = e.teams.length;
+        for(int i = 0; i < teams1.length; i++) {
+            System.out.println("Team #: "+teams1[i].team_number+ "  " +teams1[i].rank+" OPR: "+teams1[i].opr+ "  " +teams1[i].touchpad);
+            System.out.println("        "+teams1[i].record+" RankScore: "+teams1[i].rankingScore+ "  " +teams1[i].pressure + "\n ");
+        }
+
+        Event x = t.getEvent("txho", 2017);
+        teams2 = x.teams.clone();
+//        Team[] teams2 = x.teams;
+        Log.e(TAG, "BLUE2 " + teams2.length);
+        BA2numTeams = e.teams.length;
+        for(int i = 0; i < teams2.length; i++) {
+            System.out.println("Team #: "+teams2[i].team_number+ "  " +teams2[i].rank+" OPR: "+teams2[i].opr+ "  " +teams2[i].touchpad);
+            System.out.println("        "+teams2[i].record+" RankScore: "+teams2[i].rankingScore+ "  " +teams2[i].pressure + "\n ");
         }
 
 //        Event e = tba.getEvent("txlu", 2017);       // event/2017txlu will give top 15 OPR
@@ -154,14 +168,14 @@ public class Visualizer_Activity extends AppCompatActivity {
 //            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
 //
 //        }
-        if (!e.name.isEmpty()) {
+        if (!e.name.isEmpty() && !x.name.isEmpty()) {
             BA_avail = true;
-            BAnumTeams = e.teams.length;
-            BAteams_List.clear();
-            for (int i = 0; i < BAnumTeams; i++) {   // Load teams in Rank order
-                BAteams_List.add(String.valueOf(e.teams[i].team_number));
-            }
-            Log.w(TAG, "BAteams_List = " + BAteams_List.size());
+//            BAnumTeams = e.teams.length;
+//            BAteams_List.clear();
+//            for (int i = 0; i < BAnumTeams; i++) {   // Load teams in Rank order
+//                BAteams_List.add(String.valueOf(e.teams[i].team_number));
+//            }
+//            Log.w(TAG, "BAteams_List = " + BAteams_List.size());
         } else {
             BA_avail = false;
             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
@@ -652,7 +666,6 @@ public class Visualizer_Activity extends AppCompatActivity {
                     tn = mobj.getB3();
                     findTeam(tn);
                     Log.w(TAG, ">>>> # team instances = " + teams.size());  //** DEBUG
-//                    Log.w(TAG, ">>>> # team instances = " + teams.size());  //** DEBUG
 
                     txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
                     txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
@@ -685,11 +698,12 @@ public class Visualizer_Activity extends AppCompatActivity {
                     tbl_rateB2 = (TextView) findViewById(R.id.tbl_rateB2);
                     tbl_rateB3 = (TextView) findViewById(R.id.tbl_rateB3);
 
+                    Log.w(TAG, "@@@@@@@@@@@@@@@@@@@ GET TEAM DATA  @@@@@@@@@@@@@@@@@@@");  //** DEBUG
                     team_inst = teams.get(0);
                     txt_teamR1.setText(team_inst.getTeam_num());
                     txt_teamR1_Name.setText(team_inst.getTeam_name());
                     tbl_teamR1.setText(team_inst.getTeam_num());
-                    rank[0] = get_BAdata(team_inst.getTeam_num().trim());
+                    rank[0] = get_BA1data(team_inst.getTeam_num().trim());
                     if (rank[0] > 0) {
                         tbl_eventR1.setText("TXLU");
                         OPR = chkOPR(team_inst.getTeam_num());
@@ -702,7 +716,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                     txt_teamR2.setText(team_inst.getTeam_num());
                     txt_teamR2_Name.setText(team_inst.getTeam_name());
                     tbl_teamR2.setText(team_inst.getTeam_num());
-                    rank[0] = get_BAdata(team_inst.getTeam_num().trim());
+                    rank[0] = get_BA1data(team_inst.getTeam_num().trim());
                     if (rank[0] > 0) {
                         tbl_eventR2.setText("TXLU");
                         OPR = chkOPR(team_inst.getTeam_num());
@@ -715,7 +729,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                     txt_teamR3.setText(team_inst.getTeam_num());
                     txt_teamR3_Name.setText(team_inst.getTeam_name());
                     tbl_teamR3.setText(team_inst.getTeam_num());
-                    rank[0] = get_BAdata(team_inst.getTeam_num().trim());
+                    rank[0] = get_BA1data(team_inst.getTeam_num().trim());
                     if (rank[0] > 0) {
                         tbl_eventR3.setText("TXLU");
                         OPR = chkOPR(team_inst.getTeam_num());
@@ -728,7 +742,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                     txt_teamB1.setText(team_inst.getTeam_num());
                     txt_teamB1_Name.setText(team_inst.getTeam_name());
                     tbl_teamB1.setText(team_inst.getTeam_num());
-                    rank[0] = get_BAdata(team_inst.getTeam_num().trim());
+                    rank[0] = get_BA1data(team_inst.getTeam_num().trim());
                     if (rank[0] > 0) {
                         tbl_eventB1.setText("TXLU");
                         OPR = chkOPR(team_inst.getTeam_num());
@@ -741,7 +755,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                     txt_teamB2.setText(team_inst.getTeam_num());
                     txt_teamB2_Name.setText(team_inst.getTeam_name());
                     tbl_teamB2.setText(team_inst.getTeam_num());
-                    rank[0] = get_BAdata(team_inst.getTeam_num().trim());
+                    rank[0] = get_BA1data(team_inst.getTeam_num().trim());
                     if (rank[0] > 0) {
                         tbl_eventB2.setText("TXLU");
                         OPR = chkOPR(team_inst.getTeam_num());
@@ -754,7 +768,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                     txt_teamB3.setText(team_inst.getTeam_num());
                     txt_teamB3_Name.setText(team_inst.getTeam_name());
                     tbl_teamB3.setText(team_inst.getTeam_num());
-                    rank[0] = get_BAdata(team_inst.getTeam_num().trim());
+                    rank[0] = get_BA1data(team_inst.getTeam_num().trim());
                     if (rank[0] > 0) {
                         tbl_eventB3.setText("TXLU");
                         OPR = chkOPR(team_inst.getTeam_num());
@@ -802,13 +816,13 @@ public class Visualizer_Activity extends AppCompatActivity {
         return opr;
     }
 
-    private int get_BAdata(String team) {
-        Log.i(TAG, "%%%  get_BAdata %%% " + team);
+    private int get_BA1data(String team) {
+        Log.i(TAG, "%%%  get_BA1data %%% " + team);
         int rank = 0;
         String team_num = "";
-        for(int i = 0; i < BAnumTeams; i++) {   // Search Teams to find Rank
-            team_num = BAteams_List.get(i);
-//            Log.w(TAG, "LOOP " + i + " " + team_num);
+        for(int i = 0; i < BA1numTeams; i++) {   // Search Teams to find Rank
+            team_num = String.valueOf(teams1[i].team_number);
+            Log.w(TAG, "LOOP " + i + " " + team_num);
             if (team_num.matches(team)) {
                 rank = i + 1;       // Rank
             }

@@ -401,6 +401,8 @@
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
     <TableLayout
         android:layout_width="fill_parent"
@@ -417,7 +419,7 @@
                 android:gravity="left"
                 android:textSize="10sp"
                 android:layout_width="0px"
-                android:layout_weight="0.10"
+                android:layout_weight="0.14"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:padding="3dip" />
@@ -427,17 +429,28 @@
                 android:textSize="10sp"
                 android:gravity="left"
                 android:layout_width="0px"
-                android:layout_weight="0.15"
+                android:layout_weight="0.21"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:padding="3dip" />
+            <TextView
+                android:id="@+id/hdr_buttons"
+                android:text="            ADD'L  INFO"
+                android:textSize="10sp"
+                android:gravity="left"
+                android:layout_width="0px"
+                android:layout_weight="0.12"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:padding="3dip" />
+
             <TextView
                 android:id="@+id/hdr_attr"
                 android:text="                                                       ATTRIBUTES"
                 android:gravity="left"
                 android:textSize="10sp"
                 android:layout_width="0px"
-                android:layout_weight="0.75"
+                android:layout_weight="0.53"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:padding="3dip" />
@@ -450,30 +463,29 @@
                 android:text="1111"
                 android:textColor="@color/red"
                 android:layout_width="0px"
-                android:layout_weight="0.10"
+                android:layout_weight="0.14"
                 android:background="@drawable/border"
                 android:padding="3dip" />
             <ImageView
                 android:id="@+id/tbl_robotR1"
                 android:layout_width="100dp"
-                android:layout_weight="0.15"
+                android:layout_weight="0.21"
                 android:layout_height="80dp"
                 android:gravity="start"
                 android:background="@drawable/border"
                 android:padding="3dip" />
 
             <LinearLayout
-                android:id="@+id/teamR1_layout"
+                android:id="@+id/teamR1_buttons"
                 android:orientation="horizontal"
-                android:layout_weight="0.75"
+                android:layout_weight="0.12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
-
                 <Button
                     android:id="@+id/btn_PitR1"
                     android:layout_width="20sp"
                     android:layout_height="40sp"
-                    android:layout_weight="0.15"
+                    android:layout_weight="1"
                     android:onClick="btn_PitR1_Click"
                     android:text="Pit Data"
                     android:textSize="8sp" />
@@ -482,32 +494,71 @@
                     android:id="@+id/btn_MatchR1"
                     android:layout_width="20sp"
                     android:layout_height="40sp"
-                    android:layout_weight="0.15"
+                    android:layout_weight="1"
                     android:onClick="btn_MatchR1_Click"
                     android:text="Match Data"
                     android:textSize="8sp" />
-
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="0.53"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            <LinearLayout
+                android:id="@+id/teamR1_layout"
+                android:orientation="horizontal"
+                android:layout_weight="0.53"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
                 <TextView
                     android:id="@+id/tbl_eventR1"
-                    android:layout_width="10sp"
-                    android:layout_height="35sp"
-                    android:textColor="@color/orange"
-                    android:layout_weight="0.15"
+                    android:layout_width="15sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.20"
                     android:gravity="start"
                     android:padding="3dip"
-                    android:text="TXLU" />
+                    android:text="TXLU \n00-0-0"
+                    android:textColor="@color/orange" />
 
                 <TextView
                     android:id="@+id/tbl_rateR1"
                     android:layout_width="60sp"
                     android:layout_height="40sp"
-                    android:layout_weight="0.45"
+                    android:layout_weight="0.80"
                     android:gravity="start"
                     android:padding="3dip"
                     android:text="OPR 100.5   DPR 00.0  \nStatistics from other \ndata"
                     android:textColor="@color/red" />
-
         </LinearLayout>
+            <LinearLayout
+                android:id="@+id/teamR1_layout2"
+                android:orientation="horizontal"
+                android:layout_weight="0.53"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/tbl_event2R1"
+                    android:layout_width="15sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.20"
+                    android:gravity="start"
+                    android:padding="3dip"
+                    android:text="TXHO \n00-0-0"
+                    android:textColor="@color/orange" />
+
+                <TextView
+                    android:id="@+id/tbl_rate2R1"
+                    android:layout_width="60sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.80"
+                    android:gravity="start"
+                    android:padding="3dip"
+                    android:text="OPR 100.5   DPR 00.0  \nStatistics from other \ndata"
+                    android:textColor="@color/red" />
+            </LinearLayout>
+
+            </LinearLayout>
         <!--<LinearLayout-->
                 <!--android:id="@+id/teamR1_Stats"-->
                 <!--android:orientation="vertical"-->
@@ -540,62 +591,99 @@
                 android:text="2222"
                 android:textColor="@color/red"
                 android:layout_width="0px"
-                android:layout_weight="0.10"
+                android:layout_weight="0.14"
                 android:background="@drawable/border"
                 android:padding="3dip" />
             <ImageView
                 android:id="@+id/tbl_robotR2"
                 android:layout_width="100dp"
-                android:layout_weight="0.15"
+                android:layout_weight="0.21"
                 android:layout_height="80dp"
                 android:gravity="start"
                 android:background="@drawable/border"
                 android:padding="3dip" />
+
             <LinearLayout
-                android:id="@+id/teamR2_layout"
+                android:id="@+id/teamR2_buttons"
                 android:orientation="horizontal"
-                android:layout_weight="0.75"
+                android:layout_weight="0.12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
-
                 <Button
                     android:id="@+id/btn_PitR2"
                     android:layout_width="20sp"
                     android:layout_height="40sp"
-                    android:layout_weight="0.15"
+                    android:layout_weight="1"
                     android:onClick="btn_PitR2_Click"
                     android:text="Pit Data"
                     android:textSize="8sp" />
-
                 <Button
                     android:id="@+id/btn_MatchR2"
                     android:layout_width="20sp"
                     android:layout_height="40sp"
-                    android:layout_weight="0.15"
+                    android:layout_weight="1"
                     android:onClick="btn_MatchR2_Click"
                     android:text="Match Data"
                     android:textSize="8sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="0.53"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            <LinearLayout
+                android:id="@+id/teamR2_layout"
+                android:orientation="horizontal"
+                android:layout_weight="0.53"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
 
                 <TextView
                     android:id="@+id/tbl_eventR2"
                     android:layout_width="10sp"
-                    android:layout_height="35sp"
-                    android:textColor="@color/orange"
-                    android:layout_weight="0.15"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.20"
                     android:gravity="start"
                     android:padding="3dip"
-                    android:text="TXLU" />
+                    android:text="TXLU \n00-0-0"
+                    android:textColor="@color/orange" />
 
                 <TextView
                     android:id="@+id/tbl_rateR2"
                     android:layout_width="60sp"
                     android:layout_height="40sp"
-                    android:layout_weight="0.45"
+                    android:layout_weight="0.80"
                     android:gravity="start"
                     android:padding="3dip"
                     android:text="OPR 100.5   DPR 00.0  \nStatistics from other \ndata"
                     android:textColor="@color/red" />
-
+            </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/teamR2_layout2"
+                    android:orientation="horizontal"
+                    android:layout_weight="0.53"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+                    <TextView
+                        android:id="@+id/tbl_event2R2"
+                        android:layout_width="15sp"
+                        android:layout_height="40sp"
+                        android:textColor="@color/orange"
+                        android:layout_weight="0.20"
+                        android:gravity="start"
+                        android:padding="3dip"
+                        android:text="TXHO \n00-0-0" />
+                    <TextView
+                        android:id="@+id/tbl_rate2R2"
+                        android:layout_width="60sp"
+                        android:layout_height="40sp"
+                        android:layout_weight="0.80"
+                        android:gravity="start"
+                        android:padding="3dip"
+                        android:text="OPR 100.5   DPR 00.0  \nStatistics from other \ndata"
+                        android:textColor="@color/red" />
+                </LinearLayout>
             </LinearLayout>
             <!--android:background="@drawable/border"-->
             <!--<TextView-->
@@ -613,29 +701,29 @@
                 android:text="3333"
                 android:textColor="@color/red"
                 android:layout_width="0px"
-                android:layout_weight="0.10"
+                android:layout_weight="0.14"
                 android:background="@drawable/border"
                 android:padding="3dip" />
             <ImageView
                 android:id="@+id/tbl_robotR3"
                 android:layout_width="100dp"
                 android:layout_height="80dp"
-                android:layout_weight="0.15"
+                android:layout_weight="0.21"
                 android:gravity="start"
                 android:background="@drawable/border"
                 android:padding="3dip" />
+
             <LinearLayout
-                android:id="@+id/teamR3_layout"
+                android:id="@+id/teamR3_buttons"
                 android:orientation="horizontal"
-                android:layout_weight="0.75"
+                android:layout_weight="0.12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
-
                 <Button
                     android:id="@+id/btn_PitR3"
                     android:layout_width="20sp"
                     android:layout_height="40sp"
-                    android:layout_weight="0.15"
+                    android:layout_weight="0.11"
                     android:onClick="btn_PitR3_Click"
                     android:text="Pit Data"
                     android:textSize="8sp" />
@@ -644,31 +732,67 @@
                     android:id="@+id/btn_MatchR3"
                     android:layout_width="20sp"
                     android:layout_height="40sp"
-                    android:layout_weight="0.15"
+                    android:layout_weight="0.11"
                     android:onClick="btn_MatchR3_Click"
                     android:text="Match Data"
                     android:textSize="8sp" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="0.53"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            <LinearLayout
+                android:id="@+id/teamR3_layout"
+                android:orientation="horizontal"
+                android:layout_weight="0.53"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
                 <TextView
                     android:id="@+id/tbl_eventR3"
                     android:layout_width="10sp"
-                    android:layout_height="35sp"
+                    android:layout_height="40sp"
                     android:textColor="@color/orange"
-                    android:layout_weight="0.15"
+                    android:layout_weight="0.20"
                     android:gravity="start"
                     android:padding="3dip"
-                    android:text="TXLU" />
-
+                    android:text="TXLU \n00-0-0" />
                 <TextView
                     android:id="@+id/tbl_rateR3"
                     android:layout_width="60sp"
                     android:layout_height="40sp"
-                    android:layout_weight="0.45"
+                    android:layout_weight="0.80"
                     android:gravity="start"
                     android:padding="3dip"
                     android:text="OPR 100.5   DPR 00.0  \nStatistics from other \ndata"
                     android:textColor="@color/red" />
-
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/teamR3_layout2"
+                android:orientation="horizontal"
+                android:layout_weight="0.53"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+                <TextView
+                    android:id="@+id/tbl_event2R3"
+                    android:layout_width="15sp"
+                    android:layout_height="40sp"
+                    android:textColor="@color/orange"
+                    android:layout_weight="0.20"
+                    android:gravity="start"
+                    android:padding="3dip"
+                    android:text="TXHO \n00-0-0" />
+                <TextView
+                    android:id="@+id/tbl_rate2R3"
+                    android:layout_width="60sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.80"
+                    android:gravity="start"
+                    android:padding="3dip"
+                    android:text="OPR 100.5   DPR 00.0  \nStatistics from other \ndata"
+                    android:textColor="@color/red" />
+            </LinearLayout>
             </LinearLayout>
             <!--<TextView-->
                 <!--android:text="Gears Placed"-->
@@ -685,30 +809,31 @@
                 android:text="1111"
                 android:textColor="@color/cyan"
                 android:layout_width="0px"
-                android:layout_weight="0.10"
+                android:layout_weight="0.14"
                 android:background="@drawable/border"
                 android:padding="3dip" />
+
             <ImageView
                 android:id="@+id/tbl_robotB1"
                 android:layout_width="100dp"
                 android:layout_height="80dp"
-                android:text="second"
-                android:layout_weight="0.15"
-                android:gravity="start"
+                android:layout_weight="0.21"
                 android:background="@drawable/border"
-                android:padding="3dip" />
+                android:gravity="start"
+                android:padding="3dip"
+                android:text="second" />
+
             <LinearLayout
-                android:id="@+id/teamB1_layout"
+                android:id="@+id/teamB1_buttons"
                 android:orientation="horizontal"
-                android:layout_weight="0.75"
+                android:layout_weight="0.12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
-
                 <Button
                     android:id="@+id/btn_PitB1"
                     android:layout_width="20sp"
                     android:layout_height="40sp"
-                    android:layout_weight="0.15"
+                    android:layout_weight="1"
                     android:onClick="btn_PitB1_Click"
                     android:text="Pit Data"
                     android:textSize="8sp" />
@@ -717,31 +842,71 @@
                     android:id="@+id/btn_MatchB1"
                     android:layout_width="20sp"
                     android:layout_height="40sp"
-                    android:layout_weight="0.15"
+                    android:layout_weight="1"
                     android:onClick="btn_MatchB1_Click"
                     android:text="Match Data"
                     android:textSize="8sp" />
+            </LinearLayout>
 
-                <TextView
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="0.53"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            <LinearLayout
+                android:id="@+id/teamB1_layout"
+                android:orientation="horizontal"
+                android:layout_weight="0.53"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+            <TextView
                     android:id="@+id/tbl_eventB1"
                     android:layout_width="10sp"
-                    android:layout_height="35sp"
+                    android:layout_height="40sp"
                     android:textColor="@color/cyan"
-                    android:layout_weight="0.15"
+                    android:layout_weight="0.20"
                     android:gravity="start"
                     android:padding="3dip"
-                    android:text="TXLU" />
+                    android:text="TXLU \n00-0-0" />
 
                 <TextView
                     android:id="@+id/tbl_rateB1"
                     android:layout_width="60sp"
                     android:layout_height="40sp"
-                    android:layout_weight="0.45"
+                    android:layout_weight="0.80"
                     android:gravity="start"
                     android:padding="3dip"
                     android:text="OPR 100.5   DPR 00.0  \nStatistics from other \ndata"
                     android:textColor="@color/brightblue" />
+            </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/teamB1_layout2"
+                    android:orientation="horizontal"
+                    android:layout_weight="0.53"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
 
+                    <TextView
+                        android:id="@+id/tbl_event2B1"
+                        android:layout_width="15sp"
+                        android:layout_height="40sp"
+                        android:layout_weight="0.20"
+                        android:gravity="start"
+                        android:padding="3dip"
+                        android:text="TXHO \n00-0-0"
+                        android:textColor="@color/cyan" />
+
+                    <TextView
+                        android:id="@+id/tbl_rate2B1"
+                        android:layout_width="60sp"
+                        android:layout_height="40sp"
+                        android:layout_weight="0.80"
+                        android:gravity="start"
+                        android:padding="3dip"
+                        android:text="OPR 100.5   DPR 00.0  \nStatistics from other \ndata"
+                        android:textColor="@color/brightblue" />
+                </LinearLayout>
             </LinearLayout>
             <!--<TextView-->
                 <!--android:text="Gears Placed"-->
@@ -758,7 +923,7 @@
                 android:text="2222"
                 android:textColor="@color/cyan"
                 android:layout_width="0px"
-                android:layout_weight="0.10"
+                android:layout_weight="0.14"
                 android:background="@drawable/border"
                 android:padding="3dip" />
             <ImageView
@@ -766,55 +931,93 @@
                 android:layout_width="100dp"
                 android:layout_height="80dp"
                 android:text="second"
-                android:layout_weight="0.15"
+                android:layout_weight="0.21"
                 android:gravity="start"
                 android:background="@drawable/border"
                 android:padding="3dip" />
+
             <LinearLayout
-                android:id="@+id/teamB2_layout"
+                android:id="@+id/teamB2_buttons"
                 android:orientation="horizontal"
-                android:layout_weight="0.75"
+                android:layout_weight="0.12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
-
                 <Button
                     android:id="@+id/btn_PitB2"
                     android:layout_width="20sp"
                     android:layout_height="40sp"
-                    android:layout_weight="0.15"
+                    android:layout_weight="1"
                     android:onClick="btn_PitB2_Click"
                     android:text="Pit Data"
                     android:textSize="8sp" />
-
                 <Button
                     android:id="@+id/btn_MatchB2"
                     android:layout_width="20sp"
                     android:layout_height="40sp"
-                    android:layout_weight="0.15"
+                    android:layout_weight="1"
                     android:onClick="btn_MatchB2_Click"
                     android:text="Match Data"
                     android:textSize="8sp" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="0.53"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            <LinearLayout
+                android:id="@+id/teamB2_layout"
+                android:orientation="horizontal"
+                android:layout_weight="0.53"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
                 <TextView
                     android:id="@+id/tbl_eventB2"
                     android:layout_width="10sp"
-                    android:layout_height="35sp"
+                    android:layout_height="40sp"
                     android:textColor="@color/cyan"
-                    android:layout_weight="0.15"
+                    android:layout_weight="0.20"
                     android:gravity="start"
                     android:padding="3dip"
-                    android:text="TXLU" />
+                    android:text="TXLU \n00-0-0" />
 
                 <TextView
                     android:id="@+id/tbl_rateB2"
                     android:layout_width="60sp"
                     android:layout_height="40sp"
-                    android:layout_weight="0.45"
+                    android:layout_weight="0.80"
                     android:gravity="start"
                     android:padding="3dip"
                     android:text="OPR 100.5   DPR 00.0  \nStatistics from other \ndata"
                     android:textColor="@color/brightblue" />
+            </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/teamB2_layout2"
+                    android:orientation="horizontal"
+                    android:layout_weight="0.53"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
 
+                    <TextView
+                        android:id="@+id/tbl_event2B2"
+                        android:layout_width="15sp"
+                        android:layout_height="40sp"
+                        android:layout_weight="0.20"
+                        android:gravity="start"
+                        android:padding="3dip"
+                        android:text="TXHO \n00-0-0"
+                        android:textColor="@color/cyan" />
+
+                    <TextView
+                        android:id="@+id/tbl_rate2B2"
+                        android:layout_width="60sp"
+                        android:layout_height="40sp"
+                        android:layout_weight="0.80"
+                        android:gravity="start"
+                        android:padding="3dip"
+                        android:text="OPR 100.5   DPR 00.0  \nStatistics from other \ndata"
+                        android:textColor="@color/brightblue" />
+                </LinearLayout>
             </LinearLayout>
             <!--<TextView-->
                 <!--android:text="Gears Placed"-->
@@ -831,7 +1034,7 @@
                 android:text="3333"
                 android:textColor="@color/cyan"
                 android:layout_width="0px"
-                android:layout_weight="0.10"
+                android:layout_weight="0.14"
                 android:background="@drawable/border"
                 android:padding="3dip" />
             <ImageView
@@ -839,22 +1042,21 @@
                 android:layout_width="100dp"
                 android:layout_height="80dp"
                 android:text="second"
-                android:layout_weight="0.15"
+                android:layout_weight="0.21"
                 android:gravity="start"
                 android:background="@drawable/border"
                 android:padding="3dip" />
             <LinearLayout
-                android:id="@+id/teamB3_layout"
+                android:id="@+id/teamB3_buttons"
                 android:orientation="horizontal"
-                android:layout_weight="0.75"
+                android:layout_weight="0.12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
-
-                <Button
+            <Button
                     android:id="@+id/btn_PitB3"
                     android:layout_width="20sp"
                     android:layout_height="40sp"
-                    android:layout_weight="0.15"
+                    android:layout_weight="0.11"
                     android:onClick="btn_PitB3_Click"
                     android:text="Pit Data"
                     android:textSize="8sp" />
@@ -863,31 +1065,71 @@
                     android:id="@+id/btn_MatchB3"
                     android:layout_width="20sp"
                     android:layout_height="40sp"
-                    android:layout_weight="0.15"
+                    android:layout_weight="0.11"
                     android:onClick="btn_MatchB3_Click"
                     android:text="Match Data"
                     android:textSize="8sp" />
+            </LinearLayout>
 
-                <TextView
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="0.53"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            <LinearLayout
+                android:id="@+id/teamB3_layout"
+                android:orientation="horizontal"
+                android:layout_weight="0.53"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+            <TextView
                     android:id="@+id/tbl_eventB3"
                     android:layout_width="10sp"
-                    android:layout_height="35sp"
+                    android:layout_height="40sp"
                     android:textColor="@color/cyan"
-                    android:layout_weight="0.15"
+                    android:layout_weight="0.20"
                     android:gravity="start"
                     android:padding="3dip"
-                    android:text="TXLU" />
+                    android:text="TXLU \n00-0-0" />
 
                 <TextView
                     android:id="@+id/tbl_rateB3"
                     android:layout_width="60sp"
                     android:layout_height="40sp"
-                    android:layout_weight="0.45"
+                    android:layout_weight="0.80"
                     android:gravity="start"
                     android:padding="3dip"
                     android:text="OPR 100.5   DPR 00.0  \nStatistics from other \ndata"
                     android:textColor="@color/brightblue" />
+            </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/teamB3_layout2"
+                    android:orientation="horizontal"
+                    android:layout_weight="0.53"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
 
+                    <TextView
+                        android:id="@+id/tbl_event2B3"
+                        android:layout_width="15sp"
+                        android:layout_height="40sp"
+                        android:layout_weight="0.20"
+                        android:gravity="start"
+                        android:padding="3dip"
+                        android:text="TXHO \n00-0-0"
+                        android:textColor="@color/cyan" />
+
+                    <TextView
+                        android:id="@+id/tbl_rate2B3"
+                        android:layout_width="60sp"
+                        android:layout_height="40sp"
+                        android:layout_weight="0.80"
+                        android:gravity="start"
+                        android:padding="3dip"
+                        android:text="OPR 100.5   DPR 00.0  \nStatistics from other \ndata"
+                        android:textColor="@color/brightblue" />
+                </LinearLayout>
             </LinearLayout>
             <!--<TextView-->
                 <!--android:text="Gears Placed"-->
