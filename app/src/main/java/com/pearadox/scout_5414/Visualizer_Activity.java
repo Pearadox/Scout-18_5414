@@ -118,17 +118,44 @@ public class Visualizer_Activity extends AppCompatActivity {
         Settings.GET_EVENT_MATCHES = true;
         Settings.GET_EVENT_ALLIANCES = true;
         Settings.GET_EVENT_AWARDS = true;
-        Event e = tba.getEvent("txlu", 2017);       // event/2017txlu will give top 15 OPR
-        System.out.println(e.name);
-        System.out.println(e.location);
-        System.out.println(e.start_date);
-//        System.out.println(e.teams.length + "\n ");
-        Log.w(TAG, "Rank " + e.teams[0].team_number + " " + e.teams[0].rank + " " + e.teams[0].defense + "\n ");
-//        Log.w(TAG, "Rank " + e.teams[1].team_number + " " + e.teams[1].rank + " " + e.teams[1].rankingScore + "\n ");
-//        Log.w(TAG, "Rank " + e.teams[2].team_number + " " + e.teams[2].rank + " " + e.teams[2].rankingScore + "\n ");
-//        Log.w(TAG, "Rank " + e.teams[3].team_number + " " + e.teams[3].rank + " " + e.teams[3].rankingScore + "\n ");
+        Settings.GET_EVENT_STATS = true;
+
+        TBA t = new TBA();
+        Event e = t.getEvent("txho", 2017);
+        Team[] teams = e.teams;
+        Log.e(TAG, "BLUE " + teams.length);
+        for(int i = 0; i < teams.length; i++) {
+            System.out.println("Team #: "+teams[i].team_number+" OPR: "+teams[i].opr+ "  " +teams[i].rank);
+            System.out.println("        "+teams[i].record+" RankScore: "+teams[i].rankingScore+ "  " +teams[i].pressure + "\n ");
+        }
+
+//        Event e = tba.getEvent("txlu", 2017);       // event/2017txlu will give top 15 OPR
+//        System.out.println(e.name);
+//        System.out.println(e.location);
+//        System.out.println(e.start_date);
+//        if (!e.name.isEmpty()) {
+//            Team[] teams = e.teams;
+//            System.out.println(e.teams.length + "\n ");
+//            Log.w(TAG, "Rank " + e.teams[0].team_number + " " + e.teams[0].rank + " " + e.teams[0].defense + "\n ");
+//            Log.w(TAG, "Rank " + e.teams[1].team_number + " " + e.teams[1].rank + " " + e.teams[1].rankingScore + "\n ");
+//            Log.w(TAG, "Rank " + e.teams[2].team_number + " " + e.teams[2].rank + " " + e.teams[2].rankingScore + "\n ");
+//            Log.w(TAG, "Rank " + e.teams[3].team_number + " " + e.teams[3].rank + " " + e.teams[3].rankingScore + "\n ");
+//            Log.w(TAG, "Rank " + e.teams[4].team_number + " " + e.teams[4].rank + " " + e.teams[4].rankingScore + "\n ");
+//            Log.w(TAG, "Rank " + e.teams[5].team_number + " " + e.teams[5].rank + " " + e.teams[5].rankingScore + "\n ");
+//
+//            Log.w(TAG, "Teams " + teams[0].team_number + " " + teams[0].record + " " + teams[0].defense+ " " + teams[0].auto+ " " + teams[0].goals + "\n ");
+//            Log.w(TAG, "Teams " + teams[1].team_number + " " + teams[1].record + " " + teams[1].defense+ " " + teams[1].auto+ " " + teams[1].goals + "\n ");
+//            Log.w(TAG, "Teams " + teams[2].team_number + " " + teams[2].record + " " + teams[2].defense+ " " + teams[2].auto+ " " + teams[2].goals + "\n ");
+//            Log.w(TAG, "Teams " + teams[3].team_number + " " + teams[3].record + " " + teams[3].defense+ " " + teams[3].auto+ " " + teams[3].goals + "\n ");
+//            Log.w(TAG, "Teams " + teams[4].team_number + " " + teams[4].record + " " + teams[4].defense+ " " + teams[4].auto+ " " + teams[4].goals + "\n ");
+//            Log.w(TAG, "Teams " + teams[5].team_number + " " + teams[5].record + " " + teams[5].defense+ " " + teams[5].auto+ " " + teams[5].goals + "\n ");
+//        } else {
+//            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+//            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+//
+//        }
         if (!e.name.isEmpty()) {
-            BA_avail = false;
+            BA_avail = true;
             BAnumTeams = e.teams.length;
             BAteams_List.clear();
             for (int i = 0; i < BAnumTeams; i++) {   // Load teams in Rank order
@@ -143,11 +170,6 @@ public class Visualizer_Activity extends AppCompatActivity {
             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             toast.show();
         }
-
-//        Team[] teams = tba.getTeams("txlu", 2017);
-//        Log.w(TAG, "Teams " + teams[0].team_number + " " + teams[0].record + " " + teams[0].defense+ " " + teams[0].rank+ " " + teams[0].rankingScore + "\n ");
-//        Log.w(TAG, "Teams " + teams[1].team_number + " " + teams[1].record + " " + teams[1].defense+ " " + teams[1].rank+ " " + teams[1].rankingScore + "\n ");
-//        Log.w(TAG, "Teams " + teams[2].team_number + " " + teams[2].record + " " + teams[2].defense+ " " + teams[2].rank+ " " + teams[2].rankingScore + "\n ");
 
 
 //      -----------------------------------------
@@ -571,6 +593,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                 URL = uri.toString();
             }
         });
+        // ToDo - Remove when "real" photos available
         if (team.matches(" 118")) {
             Log.i(TAG, "********  Team 118 \n \n ");
             URL = "https://firebasestorage.googleapis.com/v0/b/paradox-2017.appspot.com/o/images%2Ftxlu%2Frobot_118.png?alt=media&token=647da8f9-d3f3-4f0a-b4c4-c892aea20b79";
@@ -578,7 +601,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         if (team.matches("5414")) {
             URL = "https://firebasestorage.googleapis.com/v0/b/paradox-2017.appspot.com/o/images%2Ftxho%2Frobot_5414.png?alt=media&token=3dbd8a30-3eb1-4421-a64b-f74fdf41e9d5";
         }
-
+        // ToDo ----------------------------------------
     }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
