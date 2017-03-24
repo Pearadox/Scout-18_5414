@@ -52,10 +52,13 @@ public class matchData implements Serializable {
 
     private String  final_comment;           // Final comment
     private String  final_studID;            // Student doing the scouting
+    private String  final_dateTime;          // Date & Time data was saved
 
 // =================================================================================
 
-    public matchData(String match, String team_num, boolean auto_mode, boolean auto_rope, boolean auto_carry_fuel, int auto_fuel_amount, boolean auto_gear, int auto_gears_placed, int auto_gears_attempt, boolean auto_baseline, boolean auto_hg, int auto_hg_percent, boolean auto_lg, int auto_lg_percent, String auto_start, String auto_stop, String auto_gear_pos, boolean auto_act_hopper, String auto_fuel_collected, String auto_comment, int tele_gears_placed, int tele_gears_attempt, boolean tele_gear_pickup, boolean tele_hg, int tele_hg_percent, boolean tele_lg, int tele_lg_percent, int tele_cycles, boolean tele_touch_act, boolean tele_touch_pts, boolean tele_climb_attempt, boolean tele_climb_success, String tele_comment, boolean final_lostParts, boolean final_lostComms, boolean final_defense_good, boolean final_def_Lane, boolean final_def_Block, boolean final_def_Hopper, boolean final_def_Gear, int final_num_Penalties, String final_comment, String final_studID) {
+
+
+    public matchData(String match, String team_num, boolean auto_mode, boolean auto_rope, boolean auto_carry_fuel, int auto_fuel_amount, boolean auto_gear, int auto_gears_placed, int auto_gears_attempt, boolean auto_baseline, boolean auto_hg, int auto_hg_percent, boolean auto_lg, int auto_lg_percent, String auto_start, String auto_stop, String auto_gear_pos, boolean auto_act_hopper, String auto_fuel_collected, String auto_comment, int tele_gears_placed, int tele_gears_attempt, boolean tele_gear_pickup, boolean tele_hg, int tele_hg_percent, boolean tele_lg, int tele_lg_percent, int tele_cycles, boolean tele_touch_act, boolean tele_touch_pts, boolean tele_climb_attempt, boolean tele_climb_success, String tele_comment, boolean final_lostParts, boolean final_lostComms, boolean final_defense_good, boolean final_def_Lane, boolean final_def_Block, boolean final_def_Hopper, boolean final_def_Gear, int final_num_Penalties, String final_comment, String final_studID, String  final_dateTime) {
         this.match = match;
         this.team_num = team_num;
         this.auto_mode = auto_mode;
@@ -98,6 +101,7 @@ public class matchData implements Serializable {
         this.final_num_Penalties = final_num_Penalties;
         this.final_comment = final_comment;
         this.final_studID = final_studID;
+        this.final_dateTime = final_dateTime;
     }
 
 
@@ -455,7 +459,13 @@ public matchData() {
         this.final_studID = final_studID;
     }
 
+    public String getFinal_dateTime() {
+        return final_dateTime;
+    }
 
+    public void setFinal_dateTime(String final_dateTime) {
+        this.final_dateTime = final_dateTime;
+    }
 // End of Getters/Setters
 
 }
