@@ -55,6 +55,7 @@ public class Visualizer_Activity extends AppCompatActivity {
     public static ArrayList<String> BAteams_List = new ArrayList<String>();     // Teams (in RANK order)
     public boolean BA_avail = false;
     Team[] teams1; Team[] teams2;
+    String WLT = ""; String kPa = ""; String NTP = "";
     // -----------------------
     ArrayAdapter<String> adapter_typ;
     public String typSelected = " ";
@@ -705,9 +706,9 @@ public class Visualizer_Activity extends AppCompatActivity {
                     tbl_teamR1.setText(team_inst.getTeam_num());
                     rank[0] = get_BA1data(team_inst.getTeam_num().trim());
                     if (rank[0] > 0) {
-                        tbl_eventR1.setText("TXLU");
-                        OPR = chkOPR(team_inst.getTeam_num());
-                        tbl_rateR1.setText("OPR " + OPR + "   DPR 00.0  \n" + "Rank=" + rank[0]);
+                        tbl_eventR1.setText("TXLU \n" + WLT);
+//                        OPR = chkOPR(team_inst.getTeam_num());
+                        tbl_rateR1.setText("OPR " + OPR + "   ↑ " + NTP + "  \n" + "Rank=" + rank[0]);
                     } else {
                         tbl_eventR1.setText("");
                         tbl_rateR1.setText("");
@@ -718,9 +719,9 @@ public class Visualizer_Activity extends AppCompatActivity {
                     tbl_teamR2.setText(team_inst.getTeam_num());
                     rank[0] = get_BA1data(team_inst.getTeam_num().trim());
                     if (rank[0] > 0) {
-                        tbl_eventR2.setText("TXLU");
-                        OPR = chkOPR(team_inst.getTeam_num());
-                        tbl_rateR2.setText("OPR " + OPR + "   DPR 00.0  \n" + "Rank=" + rank[0]);
+                        tbl_eventR2.setText("TXLU \n" + WLT);
+//                        OPR = chkOPR(team_inst.getTeam_num());
+                        tbl_rateR2.setText("OPR " + OPR + "   ↑ " + NTP + "  \n" + "Rank=" + rank[0]);
                     } else {
                         tbl_eventR2.setText("");
                         tbl_rateR2.setText("");
@@ -731,9 +732,9 @@ public class Visualizer_Activity extends AppCompatActivity {
                     tbl_teamR3.setText(team_inst.getTeam_num());
                     rank[0] = get_BA1data(team_inst.getTeam_num().trim());
                     if (rank[0] > 0) {
-                        tbl_eventR3.setText("TXLU");
-                        OPR = chkOPR(team_inst.getTeam_num());
-                        tbl_rateR3.setText("OPR " + OPR + "   DPR 00.0  \n" + "Rank=" + rank[0]);
+                        tbl_eventR3.setText("TXLU \n" + WLT);
+//                        OPR = chkOPR(team_inst.getTeam_num());
+                        tbl_rateR3.setText("OPR " + OPR + "   ↑ " + NTP + "  \n" + "Rank=" + rank[0]);
                     } else {
                         tbl_eventR3.setText("");
                         tbl_rateR3.setText("");
@@ -744,9 +745,9 @@ public class Visualizer_Activity extends AppCompatActivity {
                     tbl_teamB1.setText(team_inst.getTeam_num());
                     rank[0] = get_BA1data(team_inst.getTeam_num().trim());
                     if (rank[0] > 0) {
-                        tbl_eventB1.setText("TXLU");
-                        OPR = chkOPR(team_inst.getTeam_num());
-                        tbl_rateB1.setText("OPR " + OPR + "   DPR 00.0  \n" + "Rank=" + rank[0]);
+                        tbl_eventB1.setText("TXLU \n" + WLT);
+//                        OPR = chkOPR(team_inst.getTeam_num());
+                        tbl_rateB1.setText("OPR " + OPR + "   ↑ " + NTP + "  \n" + "Rank=" + rank[0]);
                     } else {
                         tbl_eventB1.setText("");
                         tbl_rateB1.setText("");
@@ -757,9 +758,9 @@ public class Visualizer_Activity extends AppCompatActivity {
                     tbl_teamB2.setText(team_inst.getTeam_num());
                     rank[0] = get_BA1data(team_inst.getTeam_num().trim());
                     if (rank[0] > 0) {
-                        tbl_eventB2.setText("TXLU");
-                        OPR = chkOPR(team_inst.getTeam_num());
-                        tbl_rateB2.setText("OPR " + OPR + "   DPR 00.0  \n" + "Rank=" + rank[0]);
+                        tbl_eventB2.setText("TXLU \n" + WLT);
+//                        OPR = chkOPR(team_inst.getTeam_num());
+                        tbl_rateB2.setText("OPR " + OPR + "   ↑ " + NTP + "  \n" + "Rank=" + rank[0]);
                     } else {
                         tbl_eventB2.setText("");
                         tbl_rateB2.setText("");
@@ -770,9 +771,9 @@ public class Visualizer_Activity extends AppCompatActivity {
                     tbl_teamB3.setText(team_inst.getTeam_num());
                     rank[0] = get_BA1data(team_inst.getTeam_num().trim());
                     if (rank[0] > 0) {
-                        tbl_eventB3.setText("TXLU");
-                        OPR = chkOPR(team_inst.getTeam_num());
-                        tbl_rateB3.setText("OPR " + OPR + "   DPR 00.0  \n" + "Rank=" + rank[0]);
+                        tbl_eventB3.setText("TXLU \n" + WLT);
+//                        OPR = chkOPR(team_inst.getTeam_num());
+                        tbl_rateB3.setText("OPR " + OPR + "   ↑ " + NTP + "  \n" + "Rank=" + rank[0]);
                     } else {
                         tbl_eventB3.setText("");
                         tbl_rateB3.setText("");
@@ -819,12 +820,16 @@ public class Visualizer_Activity extends AppCompatActivity {
     private int get_BA1data(String team) {
         Log.i(TAG, "%%%  get_BA1data %%% " + team);
         int rank = 0;
-        String team_num = "";
+        String team_num = "";  WLT ="";
         for(int i = 0; i < BA1numTeams; i++) {   // Search Teams to find Rank
             team_num = String.valueOf(teams1[i].team_number);
             Log.w(TAG, "LOOP " + i + " " + team_num);
             if (team_num.matches(team)) {
-                rank = i + 1;       // Rank
+                rank = i + 1;                                       // Rank
+                OPR = String.format("%3.1f",(teams1[i].opr));       // OPR
+                NTP = String.format("%3.1f",(teams1[i].touchpad));  // Touchpad
+                kPa = String.format("%3.1f",(teams1[i].pressure));  // kPa - Pressure
+                WLT = teams1[i].record;                             // W-L-T Record
             }
         }
         return rank;
