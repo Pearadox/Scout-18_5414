@@ -513,7 +513,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
                 <TextView
-                    android:id="@+id/tbl_eventR1"
+                    android:id="@+id/tbl_event1R1"
                     android:layout_width="20sp"
                     android:layout_height="40sp"
                     android:layout_weight="0.20"
@@ -523,7 +523,7 @@
                     android:textColor="@color/orange" />
 
                 <TextView
-                    android:id="@+id/tbl_rateR1"
+                    android:id="@+id/tbl_rate1R1"
                     android:layout_width="60sp"
                     android:layout_height="40sp"
                     android:layout_weight="0.80"
@@ -642,7 +642,7 @@
                 android:layout_height="wrap_content" >
 
                 <TextView
-                    android:id="@+id/tbl_eventR2"
+                    android:id="@+id/tbl_event1R2"
                     android:layout_width="20sp"
                     android:layout_height="40sp"
                     android:layout_weight="0.20"
@@ -652,7 +652,7 @@
                     android:textColor="@color/orange" />
 
                 <TextView
-                    android:id="@+id/tbl_rateR2"
+                    android:id="@+id/tbl_rate1R2"
                     android:layout_width="60sp"
                     android:layout_height="40sp"
                     android:layout_weight="0.80"
@@ -752,7 +752,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
                 <TextView
-                    android:id="@+id/tbl_eventR3"
+                    android:id="@+id/tbl_event1R3"
                     android:layout_width="20sp"
                     android:layout_height="40sp"
                     android:textColor="@color/orange"
@@ -761,7 +761,7 @@
                     android:padding="3dip"
                     android:text="TXLU \n00-0-0" />
                 <TextView
-                    android:id="@+id/tbl_rateR3"
+                    android:id="@+id/tbl_rate1R3"
                     android:layout_width="60sp"
                     android:layout_height="40sp"
                     android:layout_weight="0.80"
@@ -863,7 +863,7 @@
                 android:layout_height="wrap_content" >
 
             <TextView
-                    android:id="@+id/tbl_eventB1"
+                    android:id="@+id/tbl_event1B1"
                     android:layout_width="20sp"
                     android:layout_height="40sp"
                     android:textColor="@color/brightblue"
@@ -873,7 +873,7 @@
                     android:text="TXLU \n00-0-0" />
 
                 <TextView
-                    android:id="@+id/tbl_rateB1"
+                    android:id="@+id/tbl_rate1B1"
                     android:layout_width="60sp"
                     android:layout_height="40sp"
                     android:layout_weight="0.80"
@@ -974,7 +974,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
                 <TextView
-                    android:id="@+id/tbl_eventB2"
+                    android:id="@+id/tbl_event1B2"
                     android:layout_width="20sp"
                     android:layout_height="40sp"
                     android:textColor="@color/brightblue"
@@ -984,7 +984,7 @@
                     android:text="TXLU \n00-0-0" />
 
                 <TextView
-                    android:id="@+id/tbl_rateB2"
+                    android:id="@+id/tbl_rate1B2"
                     android:layout_width="60sp"
                     android:layout_height="40sp"
                     android:layout_weight="0.80"
@@ -1086,7 +1086,7 @@
                 android:layout_height="wrap_content" >
 
             <TextView
-                    android:id="@+id/tbl_eventB3"
+                    android:id="@+id/tbl_event1B3"
                     android:layout_width="20sp"
                     android:layout_height="40sp"
                     android:textColor="@color/brightblue"
@@ -1096,7 +1096,7 @@
                     android:text="TXLU \n00-0-0" />
 
                 <TextView
-                    android:id="@+id/tbl_rateB3"
+                    android:id="@+id/tbl_rate1B3"
                     android:layout_width="60sp"
                     android:layout_height="40sp"
                     android:layout_weight="0.80"
