@@ -203,7 +203,7 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_alignStart="@+id/button_GoToTeleopActivity"
-        android:layout_alignBottom="@+id/spinner_balls_collected" />
+        android:layout_above="@+id/scrollv_comm" />
     <!--android:layout_toEndOf="@+id/txt_Student"-->
 
     <CheckBox

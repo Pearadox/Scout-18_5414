@@ -34,7 +34,7 @@ public class TeleopScoutActivity extends Activity {
 
 
     String TAG = "TeleopScoutActivity";      // This CLASS name
-    TextView txt_dev, txt_stud, txt_match, txt_MyTeam, lbl_GearNUMT, lbl_GearsAttempted, txt_seekBarHGvalue, txt_seekBarLGvalue, lbl_shooting_cycles, txt_shooting_cycle;
+    TextView txt_dev, txt_stud, txt_match, txt_MyTeam, lbl_GearNUMT, lbl_GearsAttempted, txt_seekBarHGvalue, txt_seekBarLGvalue, lbl_shooting_cycles, txt_shooting_cycle, txt_tnum;
     private Button button_GoToFinalActivity,button_GearPlacedT, button_GearPlacedTPlus, button_GearAttemptedP, button_GearAttemptedM, button_shooting_cyclesPlus, button_shooting_cyclesMinus;
     CheckBox chk_climbsuccessful, chk_climbattempted, chk_touchpad, chk_touchpadpts, chkBox_highGoal, chkBox_lowGoal, chkBox_PU_Gears_floor;
     SeekBar seekBar_HighGoal_Teleop, seekBar_LowGoal_Teleop;
@@ -45,6 +45,7 @@ public class TeleopScoutActivity extends Activity {
     private DatabaseReference pfDevice_DBReference;
     private DatabaseReference pfCur_Match_DBReference;
     String key = null;
+    String tn = " ";
 
     // ===================  TeleOps Elements for Match Scout Data object ===================
     public int tele_gears_placed = 0;                   // # Gears placed
@@ -70,9 +71,11 @@ public class TeleopScoutActivity extends Activity {
         Log.i(TAG, "<< Teleop Scout >>");
         setContentView(R.layout.activity_teleop_scout);
         Bundle bundle = this.getIntent().getExtras();
-        String param1 = bundle.getString("dev");
-        String param2 = bundle.getString("stud");
-        Log.w(TAG, param1 + " " + param2);      // ** DEBUG **
+        tn = bundle.getString("tnum");
+        Log.w(TAG, tn);      // ** DEBUG **
+
+        txt_tnum = (TextView) findViewById(R.id.txt_tnum);
+        txt_tnum.setText(tn);
 
         chkBox_PU_Gears_floor = (CheckBox) findViewById(R.id.chkBox_PU_Gears_floor);
         txt_shooting_cycle = (TextView) findViewById(R.id.txt_shooting_cycle);
@@ -195,6 +198,7 @@ public class TeleopScoutActivity extends Activity {
 
                 Intent smast_intent = new Intent(TeleopScoutActivity.this, FinalActivity.class);
                 Bundle SMbundle = new Bundle();
+                SMbundle.putString("tnum", tn);
                 smast_intent.putExtras(SMbundle);
                 startActivity(smast_intent);
             }
