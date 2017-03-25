@@ -1,6 +1,7 @@
 package com.pearadox.scout_5414;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
@@ -8,10 +9,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -416,6 +419,60 @@ public class FinalActivity extends Activity {
         }
         pfDevice_DBReference.child(key).child("phase").setValue(phase);
     }
+
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // TODO Auto-generated method stub
+
+        switch(keyCode)
+        {
+            case KeyEvent.KEYCODE_BACK:
+                AlertDialog.Builder ab = new AlertDialog.Builder(FinalActivity.this);
+                ab.setMessage("Do you want to exit without saving? All of your data will be lost!").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
+                break;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    //Yes button clicked
+                    finish();
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    //No button clicked
+                    break;
+            }
+        }
+//        AlertDialog alertbox = new AlertDialog.Builder(this)
+//                .setMessage("Do you want to exit without saving? All of your data will be lost!")
+//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//
+//                    // do something when the button is clicked
+//                    public void onClick(DialogInterface arg0, int arg1) {
+//
+//                        finish();
+//                        //close();
+//
+//
+//                    }
+//                })
+//                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+//
+//                    // do something when the button is clicked
+//                    public void onClick(DialogInterface arg0, int arg1) {
+//                    }
+//                })
+//                .show();
+
+
+    };
 
 
 

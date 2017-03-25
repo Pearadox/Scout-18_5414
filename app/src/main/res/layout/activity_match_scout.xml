@@ -199,11 +199,11 @@
         android:text="ARENA"
         android:id="@+id/button_GoToArenaLayoutActivity"
         android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/chk_rope"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_alignStart="@+id/button_GoToTeleopActivity"
-        android:layout_above="@+id/scrollv_comm" />
+        android:layout_alignTop="@+id/text_automode"
+        android:layout_alignBottom="@+id/spinner_balls_collected" />
     <!--android:layout_toEndOf="@+id/txt_Student"-->
 
     <CheckBox
@@ -336,11 +336,11 @@
         android:layout_width="30dp"
         android:layout_height="25dp"
         android:text="0"
-        android:textColor="@color/orange"
+        android:textColor="@color/red"
         android:id="@+id/txt_GearsAttempted"
         android:layout_alignBaseline="@+id/button_GearsAttemptedPlus"
         android:layout_alignBottom="@+id/button_GearsAttemptedPlus"
-        android:layout_toEndOf="@+id/chk_baseline" />
+        android:layout_toEndOf="@+id/chk_baselineINVIS" />
 
     <TextView
         android:id="@+id/txt_GearsPlaced"
@@ -348,7 +348,7 @@
         android:layout_width="30dp"
         android:layout_height="25dp"
         android:textSize="14dp"
-        android:textColor="@color/orange"
+        android:textColor="@color/red"
         android:layout_above="@+id/lbl_gearsAttempted"
         android:layout_alignStart="@+id/txt_GearsAttempted" />
 
@@ -360,7 +360,7 @@
         android:text="100"
         android:layout_alignBaseline="@+id/chk_highGoal"
         android:layout_alignBottom="@+id/chk_highGoal"
-        android:layout_alignEnd="@+id/txt_GearsAttempted" />
+        android:layout_alignStart="@+id/txt_GearsAttempted" />
 
     <Button
         android:text="-"
@@ -402,14 +402,14 @@
         android:text="100"
         android:layout_alignBaseline="@+id/chk_LowGoal"
         android:layout_alignBottom="@+id/chk_LowGoal"
-        android:layout_alignEnd="@+id/txt_GearsAttempted" />
+        android:layout_alignStart="@+id/txt_GearsAttempted" />
 
     <CheckBox
         android:text="High Goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/chk_highGoal"
-        android:layout_below="@+id/chk_baseline"
+        android:layout_below="@+id/chk_baselineINVIS"
         android:layout_toEndOf="@+id/lbl_space1" />
 
     <CheckBox
@@ -437,11 +437,11 @@
         android:layout_marginEnd="25dp" />
 
     <CheckBox
-        android:id="@+id/chk_baseline"
+        android:id="@+id/chk_baselineINVIS"
         android:text="Crossed Baseline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="99dp"
         android:layout_below="@+id/spinner_gearposition"
         android:layout_alignParentStart="true" />
 
@@ -457,11 +457,11 @@
         android:id="@+id/textView4"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/button_GearsAttemptedPlus"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="21dp"
         android:text="Gear Position"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:layout_below="@+id/button_GearsAttemptedPlus"
+        android:layout_alignParentStart="true" />
 
     <CheckBox
         android:id="@+id/chk_activate_hopper"
@@ -485,8 +485,9 @@
         android:layout_width="170sp"
         android:layout_height="wrap_content"
         android:id="@+id/spinner_stopPos"
-        android:layout_alignTop="@+id/txt_stopPos"
-        android:layout_alignStart="@+id/lbl_MyTeam" />
+        android:layout_below="@+id/button_GoToArenaLayoutActivity"
+        android:layout_alignStart="@+id/lbl_MyTeam"
+        android:layout_toEndOf="@+id/text_collected_balls"/>
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -497,18 +498,19 @@
         android:layout_height="wrap_content"
         android:id="@+id/txt_stopPos"
         android:textColor="@color/white"
-        android:layout_marginBottom="48dp"
-        android:layout_above="@+id/scrollv_comm"
-        android:layout_alignParentStart="true" />
+        android:layout_alignTop="@+id/spinner_stopPos"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/text_collected_balls"
+        android:layout_toStartOf="@+id/spinner_gearposition" />
 
     <ScrollView
         android:id="@+id/scrollv_comm"
         android:layout_width="500sp"
         android:layout_height="100sp"
         android:isScrollContainer="false"
-        android:layout_marginBottom="61dp"
-        android:layout_above="@+id/button_GoToTeleopActivity"
-        android:layout_alignStart="@+id/spinner_stopPos">
+        android:layout_below="@+id/spinner_gearposition"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/spinner_startPos">
 
         <EditText
             android:id="@+id/editText_autoComment"
@@ -527,5 +529,13 @@
             android:textColor="@color/red" />
 
     </ScrollView>
+
+    <CheckBox
+        android:id="@+id/chk_baseline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Crossed Baseline"
+        android:layout_above="@+id/button_GearsAttemptedMinus"
+        android:layout_alignEnd="@+id/text_startpos" />
 
 </RelativeLayout>

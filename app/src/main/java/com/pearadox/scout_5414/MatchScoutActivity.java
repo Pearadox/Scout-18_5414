@@ -2,7 +2,6 @@ package com.pearadox.scout_5414;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Vibrator;
@@ -21,12 +20,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.app.Activity;
-import android.view.Menu;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
 
@@ -36,10 +32,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.Iterator;
-import java.util.concurrent.RunnableFuture;
 
 import static android.view.View.VISIBLE;
 
@@ -56,7 +49,7 @@ public class MatchScoutActivity extends AppCompatActivity {
     EditText editTxt_Team, editTxt_Match;
     TextView txt_EventName, txt_dev, txt_stud, txt_Match, txt_MyTeam, txt_TeamName, text_HGSeekBarValue, text_LGSeekBarValue, text_collected_balls;
     TextView txt_GearsPlaced, txt_GearsAttempted;
-    CheckBox chk_baseline, chk_highGoal, chkBox_balls, chk_gears, chkBox_rope, chk_lowGoal, checkbox_automode, chk_activate_hopper;
+    CheckBox chk_baseline, chk_highGoal, chkBox_balls, chk_gears, chkBox_rope, chk_lowGoal, checkbox_automode, chk_activate_hopper, chk_baselineINVIS;
     EditText editText_Fuel, editText_autoComment;
     Spinner spinner_balls_collected;
     SeekBar seekBar_HighGoal, seekBar_LowGoal;
@@ -214,6 +207,8 @@ public class MatchScoutActivity extends AppCompatActivity {
             imgScoutLogo.setImageDrawable(getResources().getDrawable(R.drawable.blue_scout));
         }
 
+        chk_baselineINVIS = (CheckBox) findViewById(R.id.chk_baselineINVIS);
+        chk_baselineINVIS.setVisibility(View.INVISIBLE);
         txt_GearsPlaced = (TextView) findViewById(R.id.txt_GearsPlaced);
         text_collected_balls = (TextView) findViewById(R.id.text_collected_balls);
         spinner_balls_collected = (Spinner) findViewById(R.id.spinner_balls_collected);
@@ -252,8 +247,8 @@ public class MatchScoutActivity extends AppCompatActivity {
         editText_Fuel.setEnabled(false);
         editText_Fuel.setText("");
         fuel = 10;
-        text_collected_balls.setVisibility(View.GONE);
-        spinner_balls_collected.setVisibility(View.GONE);
+        text_collected_balls.setVisibility(View.INVISIBLE);
+        spinner_balls_collected.setVisibility(View.INVISIBLE);
 
 
         final Spinner spinner_balls_collected = (Spinner) findViewById(R.id.spinner_balls_collected);
