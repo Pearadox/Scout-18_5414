@@ -31,7 +31,7 @@
         <activity
             android:name=".MatchScoutActivity"
             android:configChanges="orientation"
-            android:windowSoftInputMode="adjustNothing" />
+/>
         <activity
             android:name=".PitScoutActivity"
             android:configChanges="orientation"
