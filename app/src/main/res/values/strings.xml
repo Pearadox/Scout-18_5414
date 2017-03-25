@@ -30,6 +30,7 @@
         <item>Blue-3</item>
         // ...
         <item>Visualizer</item>
+        <item>Draft Scout</item>
     </string-array>
 
     <string-array name="spinner_balls_collected">
