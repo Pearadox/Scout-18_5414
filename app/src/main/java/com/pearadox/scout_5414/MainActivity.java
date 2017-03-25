@@ -213,11 +213,17 @@ public class MainActivity extends AppCompatActivity {
                                         Intent sm_intent = new Intent(MainActivity.this, ScoutMaster_Activity.class);
                                         startActivity(sm_intent);        // Start the Scout Master activity
                                     }
+                                case "Draft Scout":          // Draft Scout
+                                    Log.w(TAG, "Draft Internet Connected");
+                                    Intent draft_intent = new Intent(MainActivity.this, DraftScout_Activity.class);
+                                    startActivity(draft_intent);                        // Draft Scout
+                                    break;
+
 
                                 case "Visualizer":          // Visualizer
                                     if (Pearadox.is_Network) {
                                         netOK = true;
-                                        Log.w(TAG, "Internet Connected -or- replied 'YES' ");
+                                        Log.w(TAG, "Internet Connected");
                                         Intent viz_intent = new Intent(MainActivity.this, Visualizer_Activity.class);
                                         Bundle VZbundle = new Bundle();
                                         VZbundle.putString("dev", devSelected);             // Pass data

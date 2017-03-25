@@ -48,10 +48,11 @@
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".VisPit_Activity"
-            android:configChanges="orientation"   />
-        <activity android:name=".VisMatch_Activity"
-            android:configChanges="orientation"   />
-
+            android:configChanges="orientation" />
+        <activity
+            android:name=".VisMatch_Activity"
+            android:configChanges="orientation" />
+        <activity android:name=".DraftScout_Activity"></activity>
     </application>
 
 </manifest>
