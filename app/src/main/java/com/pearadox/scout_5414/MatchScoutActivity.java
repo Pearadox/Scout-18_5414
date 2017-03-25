@@ -36,6 +36,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.concurrent.RunnableFuture;
 
@@ -73,6 +75,8 @@ public class MatchScoutActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter_auto_gear_placement;
     ArrayAdapter<String> adapter_balls_collected;
 
+    String load_team;
+
 
     // ===================  Autonomous Elements for Match Scout Data object ===================
     public String matchID = "T00";          // Type + #
@@ -99,7 +103,9 @@ public class MatchScoutActivity extends AppCompatActivity {
     public String autoComment = " ";
     /* */
     public static String studID = " ";
+
 // ===========================================================================
+
 
 
     @Override
@@ -110,8 +116,10 @@ public class MatchScoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_match_scout);
         Bundle bundle = this.getIntent().getExtras();
         String device = bundle.getString("dev");
-        String studID = bundle.getString("stud");
-        Log.d(TAG, device + " " + studID);      // ** DEBUG **
+        studID = bundle.getString("stud");
+        Log.w(TAG, device + " " + studID);      // ** DEBUG **
+
+        tn = bundle.getString("tnum");
 
         Pearadox.MatchData_Saved = false;    // Set flag to show need to saved
         txt_EventName = (TextView) findViewById(R.id.txt_EventName);
@@ -576,6 +584,7 @@ public class MatchScoutActivity extends AppCompatActivity {
 
                     Intent smast_intent = new Intent(MatchScoutActivity.this, TeleopScoutActivity.class);
                     Bundle SMbundle = new Bundle();
+                    SMbundle.putString("tnum", tn);
                     smast_intent.putExtras(SMbundle);
                     startActivity(smast_intent);
                 }
@@ -647,9 +656,17 @@ public class MatchScoutActivity extends AppCompatActivity {
 
     }
 
+    private void launchTeleopScoutActivity(String team, String name) {
+        Log.i(TAG, ">>>>> launchVizMatch   <<<<<");
+
+        load_team = tn;
+
+    }
+
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void storeAutoData() {
         Log.i(TAG, ">>>>  storeAutoData  <<<<");
+        Log.w(TAG, studID + " is the student.");
         Pearadox.Match_Data.setMatch(matchID);
         Pearadox.Match_Data.setTeam_num(tn);
         Pearadox.Match_Data.setAuto_mode(auto);

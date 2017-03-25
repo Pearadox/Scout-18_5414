@@ -34,6 +34,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.text.DateFormat;
+import java.util.Date;
 
 import static com.pearadox.scout_5414.R.id.radgrp_Scout;
 import static com.pearadox.scout_5414.R.id.radioButton_def_bad;
@@ -50,7 +52,7 @@ import static com.pearadox.scout_5414.R.id.radioGroup_defense;
 public class FinalActivity extends Activity {
 
     String TAG = "FinalActivity";      // This CLASS name
-    TextView txt_dev, txt_stud, txt_match, txt_MyTeam, lbl_Number_Penalties;
+    TextView txt_dev, txt_stud, txt_match, txt_MyTeam, lbl_Number_Penalties, txt_robotnum;
     EditText editText_Comments;
     CheckBox chk_lostPart, chk_lostComm, chk_block, chk_starve, chk_dump, chkBox_final_def_gear;
     Button button_Saved, button_Number_PenaltiesPlus, button_Number_PenaltiesUndo;
@@ -63,6 +65,7 @@ public class FinalActivity extends Activity {
     private DatabaseReference pfCur_Match_DBReference;
     private DatabaseReference pfMatchData_DBReference;
     String key = null;
+    String tn = "";
 
 // ===================  Final Elements for Match Scout Data object ===================
     // ToDo - add any remaining FINAL elements
@@ -74,10 +77,13 @@ public class FinalActivity extends Activity {
     public boolean final_def_Hopper = false;                    // Did they use Dump Defense (unload hoppers)?
     public boolean final_def_Gear = false;                      // Did they Block Access to Gear Placement?
     public int final_num_Penalties = 0;                         // How many penalties received?
+    public String final_studID = "";
 
 
     /* */
     public String finalComment = " ";
+    public static String currentDateTimeString = " ";
+
 
 // ===========================================================================
 
@@ -97,9 +103,18 @@ public class FinalActivity extends Activity {
         pfDevice_DBReference = pfDatabase.getReference("devices");              // List of Students
         pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
 
-        String param1 = bundle.getString("dev");
-        String param2 = bundle.getString("stud");
-        Log.d(TAG, param1 + " " + param2);      // ** DEBUG **
+
+        tn = bundle.getString("tnum");
+        Log.w(TAG, tn);      // ** DEBUG **
+
+
+        txt_robotnum = (TextView) findViewById(R.id.txt_robotnum);
+        txt_robotnum.setText(tn);
+
+        //TODO create field for firebase!!!!
+        currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+
+        Log.w(TAG, currentDateTimeString);
 
         lbl_Number_Penalties = (TextView) findViewById(R.id.lbl_Number_Penalties);
         radioButton_def_bad = (RadioButton) findViewById(R.id.radioButton_def_bad);
@@ -126,8 +141,10 @@ public class FinalActivity extends Activity {
                 // ToDo - Clear all data back to original settings
 
                 finish();       // Exit
+
             }
         });
+
 
         button_Number_PenaltiesPlus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -297,6 +314,7 @@ public class FinalActivity extends Activity {
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void storeFinalData() {
         Log.i(TAG, ">>>>  storeFinalData  <<<<");
+        Log.w(TAG, currentDateTimeString + " is the current date and time.");
         Pearadox.Match_Data.setFinal_lostParts(lost_Parts);
         Pearadox.Match_Data.setFinal_lostComms(lost_Comms);
         Pearadox.Match_Data.setFinal_defense_good(final_defense_good);
@@ -305,6 +323,9 @@ public class FinalActivity extends Activity {
         Pearadox.Match_Data.setFinal_def_Hopper(final_def_Hopper);
         Pearadox.Match_Data.setFinal_def_Gear(final_def_Gear);
         Pearadox.Match_Data.setFinal_num_Penalties(final_num_Penalties);
+
+        Pearadox.Match_Data.setFinal_dateTime(currentDateTimeString);
+
         //ToDo - add remaining Final elements
          /* */
 //        Pearadox.Match_Data.setFinal_????? = lost_Parts;

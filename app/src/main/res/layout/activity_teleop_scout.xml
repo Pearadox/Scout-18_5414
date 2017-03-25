@@ -158,8 +158,8 @@
         android:id="@+id/button_GearPlacedTPlus"
         android:layout_width="30dp"
         android:layout_height="40dp"
-        android:layout_marginTop="22dp"
-        android:layout_below="@+id/text_Teleop"
+        android:layout_marginTop="17dp"
+        android:layout_below="@+id/lbl_robotnum"
         android:layout_alignStart="@+id/button_GearAttemptedP" />
 
     <Button
@@ -167,9 +167,8 @@
         android:text="-"
         android:layout_height="40dp"
         android:layout_width="30dp"
-        android:layout_below="@+id/text_Teleop"
-        android:layout_marginTop="22dp"
-        android:layout_toEndOf="@+id/button_GearAttemptedP" />
+        android:layout_above="@+id/button_GearAttemptedM"
+        android:layout_alignEnd="@+id/chkBox_PU_Gears_floor" />
 
 
     <Button
@@ -307,5 +306,22 @@
         android:layout_below="@+id/button_GearAttemptedM"
         android:layout_toEndOf="@+id/space_constrainHighGoal"
         android:text="Can they pickup gears from the floor?" />
+
+    <TextView
+        android:id="@+id/lbl_robotnum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Robot Team Number"
+        android:layout_below="@+id/text_Teleop"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="19dp" />
+
+    <TextView
+        android:id="@+id/txt_tnum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/yellow"
+        android:layout_alignStart="@+id/lbl_GearNUMT"
+        android:layout_alignTop="@+id/lbl_robotnum" />
 
 </RelativeLayout>
