@@ -155,7 +155,7 @@ public class TeleopScoutActivity extends Activity {
         });
         button_GearAttemptedM.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (tele_gears_attempt >= 1) {
+                if (tele_gears_attempt >= 1 && tele_gears_attempt > tele_gears_placed) {
                     tele_gears_attempt--;
                 }
                 Log.w(TAG, "Gears = " + tele_gears_attempt);      // ** DEBUG **
