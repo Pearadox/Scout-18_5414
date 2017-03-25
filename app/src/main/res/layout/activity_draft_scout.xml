@@ -55,6 +55,18 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/lbl_MoveTeam"
+        android:layout_width="160dp"
+        android:layout_height="25dp"
+        android:layout_alignBaseline="@+id/txt_EventName"
+        android:layout_alignBottom="@+id/txt_EventName"
+        android:layout_alignStart="@+id/btn_Up"
+        android:text="   Move Selected Team"
+        android:textColor="@color/white"
+        android:textSize="14dp"
+        android:textStyle="bold" />
+
+    <TextView
         android:id="@+id/txt_NumTeams"
         android:layout_width="25sp"
         android:layout_height="wrap_content"
@@ -67,10 +79,29 @@
 
     <ListView
         android:id="@+id/lstView_Teams"
-        android:layout_width="500sp"
+        android:layout_width="750sp"
         android:layout_height="match_parent"
         android:layout_below="@+id/imageView_DS"
-        android:layout_marginTop="26dp"
-        android:layout_toEndOf="@+id/imageView_DS" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="21dp" />
+
+    <Button
+        android:id="@+id/btn_Up"
+        android:layout_width="70sp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/lstView_Teams"
+        android:layout_marginStart="63dp"
+        android:layout_toEndOf="@+id/imageView_DS"
+        android:onClick="buttonUp_Click"
+        android:text="UP" />
+
+    <Button
+        android:id="@+id/btn_Down"
+        android:layout_width="70sp"
+        android:layout_height="wrap_content"
+        android:onClick="buttonDown_Click"
+        android:text="DOWN"
+        android:layout_below="@+id/lbl_MoveTeam"
+        android:layout_alignEnd="@+id/lbl_MoveTeam" />
 
 </RelativeLayout>
