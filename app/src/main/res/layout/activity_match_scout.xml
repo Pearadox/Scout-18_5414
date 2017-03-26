@@ -306,10 +306,11 @@
         android:id="@+id/text_automode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="33dp"
-        android:text="No autonomous mode?"
         android:layout_below="@+id/text_startpos"
-        android:layout_toEndOf="@+id/lbl_space1" />
+        android:layout_marginTop="33dp"
+        android:layout_toEndOf="@+id/lbl_space1"
+        android:text="No autonomous mode?"
+        android:textColor="@color/white" />
 
     <Button
         android:text="+"
@@ -421,12 +422,13 @@
         android:layout_alignParentStart="true" />
 
     <TextView
-        android:text="How many balls did they collect?"
+        android:id="@+id/text_collected_balls"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/text_collected_balls"
+        android:layout_alignEnd="@+id/txt_Dev"
         android:layout_below="@+id/chk_activate_hopper"
-        android:layout_alignEnd="@+id/txt_Dev" />
+        android:text="How many balls did they collect?"
+        android:textColor="@color/white" />
 
     <Spinner
         android:id="@+id/spinner_startPos"

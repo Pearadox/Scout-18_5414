@@ -25,12 +25,11 @@
         android:id="@+id/chk_touchpadpts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/chk_touchpad"
-        android:layout_alignBottom="@+id/chk_touchpad"
         android:layout_marginStart="18dp"
         android:layout_toEndOf="@+id/chk_touchpad"
         android:text="Touchpad points Awarded"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_alignBottom="@+id/chk_touchpad" />
 
     <CheckBox
         android:id="@+id/chk_climbattempt"
@@ -52,6 +51,42 @@
         android:layout_alignEnd="@+id/chk_touchpadpts"
         android:layout_toEndOf="@+id/txt_seekBarHGvalue" />
 
+    <SeekBar
+        android:id="@+id/seekBar_HighGoal_Teleop1"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/chk_touchpadpts"
+        android:layout_alignTop="@+id/chkBox_highGoal1"
+        android:layout_toEndOf="@+id/txt_seekBarHGvalue1"
+        android:max="100"
+        android:progress="100"
+        android:visibility="invisible" />
+
+    <SeekBar
+        android:id="@+id/seekBar_HighGoal_Teleop2"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/chk_touchpadpts"
+        android:layout_alignTop="@+id/chkBox_highGoal2"
+        android:layout_toEndOf="@+id/txt_seekBarHGvalue2"
+        android:max="100"
+        android:progress="100"
+        android:visibility="invisible" />
+
+    <SeekBar
+        android:id="@+id/seekBar_HighGoal_Teleop3"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/chk_touchpadpts"
+        android:layout_alignTop="@+id/chkBox_highGoal3"
+        android:layout_toEndOf="@+id/txt_seekBarHGvalue3"
+        android:max="100"
+        android:progress="100"
+        android:visibility="invisible" />
+
     <TextView
         android:id="@+id/txt_seekBarHGvalue"
         android:layout_height="wrap_content"
@@ -60,7 +95,41 @@
         android:text="100"
         android:layout_alignBaseline="@+id/chkBox_highGoal"
         android:layout_alignBottom="@+id/chkBox_highGoal"
-        android:layout_alignEnd="@+id/chk_climbsuccess" />
+        android:layout_alignEnd="@+id/chk_climbsuccess"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/txt_seekBarHGvalue1"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/chkBox_highGoal1"
+        android:layout_alignBottom="@+id/chkBox_highGoal1"
+        android:layout_alignEnd="@+id/chk_climbsuccess"
+        android:text="100"
+        android:textColor="@color/magenta"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/txt_seekBarHGvalue2"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/chkBox_highGoal2"
+        android:layout_alignBottom="@+id/chkBox_highGoal2"
+        android:layout_alignEnd="@+id/chk_climbsuccess"
+        android:text="100"
+        android:textColor="@color/magenta"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/txt_seekBarHGvalue3"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        android:text="100"
+        android:textColor="@color/magenta"
+        android:visibility="invisible"
+        android:layout_alignBaseline="@+id/chkBox_highGoal3"
+        android:layout_alignBottom="@+id/chkBox_highGoal3"
+        android:layout_alignEnd="@+id/chk_climbsuccess"/>
 
     <Space
         android:layout_width="0dp"
@@ -92,13 +161,48 @@
         android:layout_alignEnd="@+id/chk_touchpadpts"
         android:layout_toEndOf="@+id/chk_climbsuccess" />
 
+    <SeekBar
+        android:id="@+id/seekBar_LowGoal_Teleop1"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/chk_touchpadpts"
+        android:layout_below="@+id/chkBox_highGoal1"
+        android:layout_toEndOf="@+id/chk_climbsuccess"
+        android:max="100"
+        android:progress="100"
+        android:visibility="invisible" />
+
+    <SeekBar
+        android:id="@+id/seekBar_LowGoal_Teleop2"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/chk_touchpadpts"
+        android:layout_below="@+id/chkBox_highGoal2"
+        android:layout_toEndOf="@+id/chk_climbsuccess"
+        android:max="100"
+        android:progress="100"
+        android:visibility="invisible" />
+
+    <SeekBar
+        android:id="@+id/seekBar_LowGoal_Teleop3"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/chk_touchpadpts"
+        android:layout_below="@+id/chkBox_highGoal3"
+        android:layout_toEndOf="@+id/chk_climbsuccess"
+        android:max="100"
+        android:progress="100"
+        android:visibility="invisible" />
+
     <Space
         android:id="@+id/space_constrainLG"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_above="@+id/seekBar_HighGoal_Teleop"
-        android:layout_alignEnd="@+id/txt_GearsAttempted"
-        android:layout_toEndOf="@+id/chkBox_highGoal" />
+        android:layout_toStartOf="@+id/txt_seekBarHGvalue" />
 
     <Button
         android:text="Final"
@@ -113,9 +217,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/chk_touchpad"
-        android:layout_marginTop="52dp"
-        android:layout_below="@+id/chkBox_lowGoal"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/chkBox_lowGoal3"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="69dp" />
 
     <CheckBox
         android:text="Climb Successful"
@@ -126,13 +230,44 @@
         android:layout_alignParentStart="true" />
 
     <CheckBox
-        android:text="Low Goal"
+        android:id="@+id/chkBox_lowGoal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/chkBox_lowGoal"
-        android:layout_below="@+id/chkBox_highGoal"
+        android:layout_alignEnd="@+id/chkBox_highGoal"
         android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/chkBox_highGoal" />
+        android:layout_below="@+id/chkBox_highGoal"
+        android:text="Low Goal"
+        android:visibility="invisible" />
+
+    <CheckBox
+        android:id="@+id/chkBox_lowGoal1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/chkBox_highGoal1"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/chkBox_highGoal1"
+        android:text="Low Goal"
+        android:visibility="invisible" />
+
+    <CheckBox
+        android:id="@+id/chkBox_lowGoal2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/chkBox_highGoal2"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/chkBox_highGoal2"
+        android:text="Low Goal"
+        android:visibility="invisible" />
+
+    <CheckBox
+        android:id="@+id/chkBox_lowGoal3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/chkBox_highGoal3"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/chkBox_highGoal3"
+        android:text="Low Goal"
+        android:visibility="invisible" />
 
     <CheckBox
         android:text="High Goal"
@@ -142,16 +277,52 @@
         android:layout_marginTop="97dp"
         android:layout_below="@+id/button_GearAttemptedP"
         android:layout_alignEnd="@+id/txt_shooting_cycle"
-        android:layout_toEndOf="@+id/space_constrainHighGoal" />
+        android:layout_toEndOf="@+id/space_constrainHighGoal"
+        android:visibility="invisible"/>
 
-    <TextView
-        android:text="Gear(s) Placed"
+    <CheckBox
+        android:id="@+id/chkBox_highGoal1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/txt_shooting_cycle"
+        android:layout_below="@+id/button_GearAttemptedP"
+        android:layout_marginTop="97dp"
+        android:layout_toEndOf="@+id/space_constrainHighGoal"
+        android:text="High Goal"
+        android:visibility="invisible" />
+
+    <CheckBox
+        android:id="@+id/chkBox_highGoal2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/txt_shooting_cycle"
+        android:layout_below="@+id/button_GearAttemptedP"
+        android:layout_marginTop="97dp"
+        android:layout_toEndOf="@+id/space_constrainHighGoal"
+        android:text="High Goal"
+        android:visibility="invisible" />
+
+    <CheckBox
+        android:id="@+id/chkBox_highGoal3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/txt_shooting_cycle"
+        android:layout_below="@+id/button_GearAttemptedP"
+        android:layout_marginTop="97dp"
+        android:layout_toEndOf="@+id/space_constrainHighGoal"
+        android:text="High Goal"
+        android:visibility="invisible" />
+
+    <TextView
         android:id="@+id/txt_GearPLACED"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/button_GearPlacedT"
         android:layout_alignBottom="@+id/button_GearPlacedT"
-        android:layout_alignParentStart="true" />
+        android:layout_alignEnd="@+id/txt_shooting_cycle"
+        android:layout_alignParentStart="true"
+        android:text="Gear(s) Placed"
+        android:textColor="@color/white" />
 
     <Button
         android:text="+"
@@ -189,13 +360,14 @@
         android:layout_alignStart="@+id/chk_touchpadpts" />
 
     <TextView
-        android:text="Gear(s) Attempted"
+        android:id="@+id/txt_GearsAttempted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txt_GearsAttempted"
         android:layout_alignBaseline="@+id/button_GearAttemptedP"
         android:layout_alignBottom="@+id/button_GearAttemptedP"
-        android:layout_toEndOf="@+id/space_constrainHighGoal" />
+        android:layout_toEndOf="@+id/space_constrainHighGoal"
+        android:text="Gear(s) Attempted"
+        android:textColor="@color/white" />
 
     <TextView
         android:layout_width="30dp"
@@ -225,10 +397,53 @@
         android:text="100"
         android:layout_alignBaseline="@+id/chkBox_lowGoal"
         android:layout_alignBottom="@+id/chkBox_lowGoal"
-        android:layout_toStartOf="@+id/seekBar_LowGoal_Teleop" />
+        android:layout_toEndOf="@+id/txt_GearPLACED"
+        android:layout_alignStart="@+id/SPACE1"
+        android:layout_toStartOf="@+id/seekBar_LowGoal_Teleop"
+        android:visibility="invisible"/>
+
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <TextView
+        android:id="@+id/txt_seekBarLGvalue1"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/chkBox_lowGoal1"
+        android:layout_alignBottom="@+id/chkBox_lowGoal1"
+        android:layout_alignStart="@+id/txt_seekBarHGvalue1"
+        android:layout_alignEnd="@+id/chk_climbsuccess"
+        android:layout_toEndOf="@+id/txt_GearPLACED"
+        android:text="100"
+        android:textColor="@color/magenta"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/txt_seekBarLGvalue2"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/chkBox_lowGoal2"
+        android:layout_alignBottom="@+id/chkBox_lowGoal2"
+        android:layout_alignEnd="@+id/chk_climbsuccess"
+        android:layout_alignStart="@+id/txt_seekBarHGvalue2"
+        android:layout_toEndOf="@+id/txt_GearPLACED"
+        android:text="100"
+        android:textColor="@color/magenta"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/txt_seekBarLGvalue3"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/chkBox_lowGoal3"
+        android:layout_alignBottom="@+id/chkBox_lowGoal3"
+        android:layout_alignEnd="@+id/chk_climbsuccess"
+        android:layout_toEndOf="@+id/txt_GearPLACED"
+        android:text="100"
+        android:textColor="@color/magenta"
+        android:visibility="invisible"
+        android:layout_alignStart="@+id/txt_seekBarHGvalue3" />
 
     <ScrollView
         android:id="@+id/scrollv_comm"
@@ -263,41 +478,39 @@
         android:id="@+id/txt_shooting_cycle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/space_constrainLG"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/constrain_ShootingCycles"
         android:text="Shooting Cycles"
-        android:visibility="invisible" />
+        android:textColor="@color/white"
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/lbl_shooting_cycles"
         android:layout_width="30dp"
         android:layout_height="25dp"
-        android:layout_above="@+id/space_constrainLG"
-        android:layout_alignEnd="@+id/lbl_GearsAttempted"
-        android:layout_alignStart="@+id/lbl_GearsAttempted"
-        android:layout_toStartOf="@+id/button_GearPlacedTPlus"
-        android:textColor="@color/orange"
-        android:visibility="invisible" />
+        android:text="0"
+        android:textColor="@color/yellow"
+        android:visibility="visible"
+        android:layout_below="@+id/constrain_ShootingCycles"
+        android:layout_alignStart="@+id/lbl_GearsAttempted" />
 
     <Button
         android:id="@+id/button_shooting_cyclesPlus"
         android:layout_width="30dp"
         android:layout_height="40dp"
-        android:layout_alignBottom="@+id/lbl_shooting_cycles"
-        android:layout_alignStart="@+id/button_GearAttemptedP"
         android:text="+"
-        android:visibility="invisible" />
+        android:visibility="visible"
+        android:layout_alignBottom="@+id/lbl_shooting_cycles"
+        android:layout_toStartOf="@+id/button_GearPlacedT" />
 
     <Button
         android:id="@+id/button_shooting_cyclesMinus"
         android:layout_width="30dp"
         android:layout_height="40dp"
-        android:layout_alignBottom="@+id/button_shooting_cyclesPlus"
-        android:layout_alignEnd="@+id/button_GearAttemptedM"
-        android:layout_alignTop="@+id/button_shooting_cyclesPlus"
-        android:layout_toEndOf="@+id/button_shooting_cyclesPlus"
         android:text="-"
-        android:visibility="invisible" />
+        android:visibility="visible"
+        android:layout_toEndOf="@+id/button_shooting_cyclesPlus"
+        android:layout_alignBottom="@+id/button_shooting_cyclesPlus" />
 
     <CheckBox
         android:id="@+id/chkBox_PU_Gears_floor"
@@ -311,10 +524,11 @@
         android:id="@+id/lbl_robotnum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Robot Team Number"
-        android:layout_below="@+id/text_Teleop"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="19dp" />
+        android:layout_below="@+id/text_Teleop"
+        android:layout_marginTop="19dp"
+        android:text="Robot Team Number"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/txt_tnum"
@@ -323,5 +537,20 @@
         android:textColor="@color/yellow"
         android:layout_alignStart="@+id/lbl_GearNUMT"
         android:layout_alignTop="@+id/lbl_robotnum" />
+
+    <TextView
+        android:id="@+id/constrain_ShootingCycles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/txt_GearPLACED"
+        android:layout_below="@+id/chkBox_PU_Gears_floor" />
+
+    <TextView
+        android:id="@+id/SPACE1"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/txt_tnum"
+        android:layout_toEndOf="@+id/space_constrainLG"
+        android:layout_above="@+id/button_GearAttemptedP" />
 
 </RelativeLayout>

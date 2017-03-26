@@ -58,9 +58,9 @@
         android:layout_height="wrap_content"
         android:textColor="@color/red"
         android:text="______________________________Autonomous_____________________________"
+        android:layout_marginTop="25dp"
         android:layout_below="@+id/lbl_team"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="18dp" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/txt_auto_HGpercent"
@@ -207,7 +207,7 @@
         android:id="@+id/txt_AutoComments"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="51dp"
         android:background="@drawable/border"
         android:ems="12"
         android:lines="5"
@@ -215,7 +215,7 @@
         android:text="Comments"
         android:textColor="@color/red"
         android:textSize="14dp"
-        android:layout_below="@+id/txt_auto_gearRatio"
+        android:layout_below="@+id/lbl_baselineRatio"
         android:layout_alignParentStart="true" />
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -510,6 +510,16 @@
         android:textColor="@color/orange"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/lbl_Matches" />
+
+    <TextView
+        android:id="@+id/txt_Matches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lbl_team"
+        android:text="Q01  Q02  Q03  Q04  Q05  Q06  Q07  Q08  Q09  Q10"
+        android:textColor="@color/orange"
+        android:textStyle="bold" />
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 

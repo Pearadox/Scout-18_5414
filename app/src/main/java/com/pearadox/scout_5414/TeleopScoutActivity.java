@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.app.Activity;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -34,10 +35,11 @@ public class TeleopScoutActivity extends Activity {
 
 
     String TAG = "TeleopScoutActivity";      // This CLASS name
-    TextView txt_dev, txt_stud, txt_match, txt_MyTeam, lbl_GearNUMT, lbl_GearsAttempted, txt_seekBarHGvalue, txt_seekBarLGvalue, lbl_shooting_cycles, txt_shooting_cycle, txt_tnum;
+    TextView txt_dev, txt_stud, txt_match, txt_MyTeam, lbl_GearNUMT, lbl_GearsAttempted, txt_seekBarHGvalue, txt_seekBarLGvalue,txt_seekBarHGvalue1, txt_seekBarLGvalue1, txt_seekBarHGvalue2, txt_seekBarLGvalue2, txt_seekBarHGvalue3, txt_seekBarLGvalue3, lbl_shooting_cycles, txt_tnum;
     private Button button_GoToFinalActivity,button_GearPlacedT, button_GearPlacedTPlus, button_GearAttemptedP, button_GearAttemptedM, button_shooting_cyclesPlus, button_shooting_cyclesMinus;
     CheckBox chk_climbsuccessful, chk_climbattempted, chk_touchpad, chk_touchpadpts, chkBox_highGoal, chkBox_lowGoal, chkBox_PU_Gears_floor;
-    SeekBar seekBar_HighGoal_Teleop, seekBar_LowGoal_Teleop;
+    CheckBox chkBox_highGoal1, chkBox_lowGoal1, chkBox_highGoal2, chkBox_lowGoal2, chkBox_highGoal3, chkBox_lowGoal3;
+    SeekBar seekBar_HighGoal_Teleop, seekBar_LowGoal_Teleop, seekBar_HighGoal_Teleop1, seekBar_LowGoal_Teleop1, seekBar_HighGoal_Teleop2, seekBar_LowGoal_Teleop2, seekBar_HighGoal_Teleop3, seekBar_LowGoal_Teleop3;
     EditText editText_TeleComments;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfTeam_DBReference;
@@ -64,6 +66,16 @@ public class TeleopScoutActivity extends Activity {
     public String teleComment = " ";    // Tele Comment
     // ===========================================================================
 
+    public int tele_hg_percent0 = 0;
+    public int tele_lg_percent0 = 0;
+    public int tele_hg_percent1 = 0;
+    public int tele_lg_percent1 = 0;
+    public int tele_hg_percent2 = 0;
+    public int tele_lg_percent2 = 0;
+    public int tele_hg_percent3 = 0;
+    public int tele_lg_percent3 = 0;
+
+    matchData match_cycle = new matchData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +89,35 @@ public class TeleopScoutActivity extends Activity {
         txt_tnum = (TextView) findViewById(R.id.txt_tnum);
         txt_tnum.setText(tn);
 
+        txt_seekBarHGvalue = (TextView) findViewById(R.id.txt_seekBarHGvalue);
+        txt_seekBarLGvalue = (TextView) findViewById(R.id.txt_seekBarLGvalue);
+        txt_seekBarHGvalue1 = (TextView) findViewById(R.id.txt_seekBarHGvalue1);
+        txt_seekBarLGvalue1 = (TextView) findViewById(R.id.txt_seekBarLGvalue1);
+        txt_seekBarHGvalue2 = (TextView) findViewById(R.id.txt_seekBarHGvalue2);
+        txt_seekBarLGvalue2 = (TextView) findViewById(R.id.txt_seekBarLGvalue2);
+        txt_seekBarHGvalue3 = (TextView) findViewById(R.id.txt_seekBarHGvalue3);
+        txt_seekBarLGvalue3 = (TextView) findViewById(R.id.txt_seekBarLGvalue3);
+
+        seekBar_HighGoal_Teleop = (SeekBar) findViewById(R.id.seekBar_HighGoal_Teleop);
+        seekBar_LowGoal_Teleop = (SeekBar) findViewById(R.id.seekBar_LowGoal_Teleop);
+        seekBar_HighGoal_Teleop1 = (SeekBar) findViewById(R.id.seekBar_HighGoal_Teleop1);
+        seekBar_LowGoal_Teleop1 = (SeekBar) findViewById(R.id.seekBar_LowGoal_Teleop1);
+        seekBar_HighGoal_Teleop2 = (SeekBar) findViewById(R.id.seekBar_HighGoal_Teleop2);
+        seekBar_LowGoal_Teleop2 = (SeekBar) findViewById(R.id.seekBar_LowGoal_Teleop2);
+        seekBar_HighGoal_Teleop3 = (SeekBar) findViewById(R.id.seekBar_HighGoal_Teleop3);
+        seekBar_LowGoal_Teleop3 = (SeekBar) findViewById(R.id.seekBar_LowGoal_Teleop3);
+
+        chkBox_highGoal = (CheckBox) findViewById(R.id.chkBox_highGoal);
+        chkBox_lowGoal = (CheckBox) findViewById(R.id.chkBox_lowGoal);
+        chkBox_highGoal1 = (CheckBox) findViewById(R.id.chkBox_highGoal1);
+        chkBox_lowGoal1 = (CheckBox) findViewById(R.id.chkBox_lowGoal1);
+        chkBox_highGoal2 = (CheckBox) findViewById(R.id.chkBox_highGoal2);
+        chkBox_lowGoal2 = (CheckBox) findViewById(R.id.chkBox_lowGoal2);
+        chkBox_highGoal3 = (CheckBox) findViewById(R.id.chkBox_highGoal3);
+        chkBox_lowGoal3 = (CheckBox) findViewById(R.id.chkBox_lowGoal3);
+
+
         chkBox_PU_Gears_floor = (CheckBox) findViewById(R.id.chkBox_PU_Gears_floor);
-        txt_shooting_cycle = (TextView) findViewById(R.id.txt_shooting_cycle);
         editText_TeleComments = (EditText) findViewById(R.id.editText_teleComments);
         button_shooting_cyclesPlus = (Button) findViewById(R.id.button_shooting_cyclesPlus);
         button_shooting_cyclesMinus = (Button) findViewById(R.id.button_shooting_cyclesMinus);
@@ -103,24 +142,27 @@ public class TeleopScoutActivity extends Activity {
         chk_climbattempted = (CheckBox) findViewById(R.id.chk_climbattempt);
         chk_touchpad = (CheckBox) findViewById(R.id.chk_touchpad);
         chk_touchpadpts = (CheckBox) findViewById(R.id.chk_touchpadpts);
-        chkBox_highGoal = (CheckBox) findViewById(R.id.chkBox_highGoal);
-        chkBox_lowGoal = (CheckBox) findViewById(R.id.chkBox_lowGoal);
-        seekBar_HighGoal_Teleop = (SeekBar) findViewById(R.id.seekBar_HighGoal_Teleop);
-        txt_seekBarHGvalue = (TextView) findViewById(R.id.txt_seekBarHGvalue);
-        txt_seekBarHGvalue.setVisibility(View.GONE);
-        seekBar_LowGoal_Teleop = (SeekBar) findViewById(R.id.seekBar_LowGoal_Teleop);
-        txt_seekBarLGvalue = (TextView) findViewById(R.id.txt_seekBarLGvalue);
-        txt_seekBarLGvalue.setVisibility(View.GONE);
+        txt_seekBarHGvalue.setVisibility(View.INVISIBLE);
+        txt_seekBarLGvalue.setVisibility(View.INVISIBLE);
+        txt_seekBarHGvalue1.setVisibility(View.INVISIBLE);
+        txt_seekBarLGvalue1.setVisibility(View.INVISIBLE);
+        txt_seekBarHGvalue2.setVisibility(View.INVISIBLE);
+        txt_seekBarLGvalue2.setVisibility(View.INVISIBLE);
+        txt_seekBarHGvalue3.setVisibility(View.INVISIBLE);
+        txt_seekBarLGvalue3.setVisibility(View.INVISIBLE);
         seekBar_HighGoal_Teleop.setEnabled(false);
         seekBar_HighGoal_Teleop.setVisibility(View.GONE);
         seekBar_LowGoal_Teleop.setEnabled(false);
         seekBar_LowGoal_Teleop.setVisibility(View.GONE);
-//        txt_shooting_cycle.setVisibility(View.GONE);
-//        lbl_shooting_cycles.setVisibility(View.GONE);
-//        button_shooting_cyclesMinus.setVisibility(View.GONE);
-//        button_shooting_cyclesMinus.setEnabled(false);
-//        button_shooting_cyclesPlus.setVisibility(View.GONE);
-//        button_shooting_cyclesPlus.setEnabled(false);
+        lbl_shooting_cycles.setVisibility(View.VISIBLE);
+        button_shooting_cyclesMinus.setVisibility(View.VISIBLE);
+        button_shooting_cyclesMinus.setEnabled(true);
+        button_shooting_cyclesPlus.setVisibility(View.VISIBLE);
+        button_shooting_cyclesPlus.setEnabled(true);
+        chkBox_highGoal.setVisibility(View.INVISIBLE);
+        chkBox_highGoal.setEnabled(false);
+        chkBox_lowGoal.setVisibility(View.INVISIBLE);
+        chkBox_lowGoal.setEnabled(false);
 
 
         lbl_GearsAttempted.setText(Integer.toString(tele_gears_attempt));
@@ -130,15 +172,150 @@ public class TeleopScoutActivity extends Activity {
                 if (tele_cycles >= 1) {
                     tele_cycles--;
                 }
+                if (tele_cycles == 0) {
+                    chkBox_highGoal.setVisibility(View.INVISIBLE);
+                    chkBox_highGoal.setEnabled(false);
+                    chkBox_lowGoal.setVisibility(View.INVISIBLE);
+                    chkBox_lowGoal.setEnabled(false);
+                    seekBar_HighGoal_Teleop.setEnabled(false);
+                    seekBar_HighGoal_Teleop.setVisibility(View.INVISIBLE);
+                    seekBar_LowGoal_Teleop.setEnabled(false);
+                    seekBar_LowGoal_Teleop.setVisibility(View.INVISIBLE);
+                    txt_seekBarHGvalue.setVisibility(View.INVISIBLE);
+                    txt_seekBarLGvalue.setVisibility(View.INVISIBLE);
+                    chkBox_highGoal.setChecked(false);
+                    chkBox_lowGoal.setChecked(false);
+                    seekBar_LowGoal_Teleop.setProgress(100);
+                    seekBar_HighGoal_Teleop.setProgress(100);
+
+
+                } //else {
+//                    chkBox_highGoal.setVisibility(View.VISIBLE);
+//                    chkBox_highGoal.setEnabled(true);
+//                    chkBox_lowGoal.setVisibility(View.VISIBLE);
+//                    chkBox_lowGoal.setEnabled(true);
+//                    seekBar_HighGoal_Teleop.setEnabled(true);
+//                    seekBar_HighGoal_Teleop.setVisibility(View.VISIBLE);
+//                    seekBar_LowGoal_Teleop.setEnabled(true);
+//                    seekBar_LowGoal_Teleop.setVisibility(View.VISIBLE);
+//                    txt_seekBarHGvalue.setVisibility(View.VISIBLE);
+//                    txt_seekBarLGvalue.setVisibility(View.VISIBLE);
+//                }
+
                 Log.w(TAG, "Number of Cycles = " + tele_cycles);
                 lbl_shooting_cycles.setText(Integer.toString(tele_cycles));
             }
         });
         button_shooting_cyclesPlus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (tele_cycles <= 15) {
+                if (tele_cycles <= 3) {
                     tele_cycles++;
                 }
+                if (TeleopScoutActivity.this.tele_cycles == 1) {
+
+                    chkBox_highGoal.setVisibility(View.VISIBLE);
+                    chkBox_highGoal.setEnabled(true);
+                    chkBox_lowGoal.setVisibility(View.VISIBLE);
+                    chkBox_lowGoal.setEnabled(true);
+                    //txt_seekBarHGvalue.setVisibility(View.VISIBLE);
+                    //txt_seekBarLGvalue.setVisibility(View.VISIBLE);
+
+                }
+                else if (TeleopScoutActivity.this.tele_cycles == 2) {
+
+                    chkBox_highGoal1.setVisibility(View.VISIBLE);
+                    chkBox_highGoal1.setEnabled(true);
+                    chkBox_lowGoal1.setVisibility(View.VISIBLE);
+                    chkBox_lowGoal1.setEnabled(true);
+                    //txt_seekBarHGvalue1.setVisibility(View.VISIBLE);
+                    //txt_seekBarLGvalue1.setVisibility(View.VISIBLE);
+
+                    chkBox_highGoal.setVisibility(View.GONE);
+                    chkBox_highGoal.setEnabled(false);
+                    chkBox_lowGoal.setVisibility(View.GONE);
+                    chkBox_lowGoal.setEnabled(false);
+                    txt_seekBarHGvalue.setVisibility(View.GONE);
+                    txt_seekBarLGvalue.setVisibility(View.GONE);
+                    seekBar_HighGoal_Teleop.setVisibility(View.GONE);
+                    seekBar_LowGoal_Teleop.setVisibility(View.GONE);
+                    seekBar_HighGoal_Teleop.setEnabled(false);
+                    seekBar_LowGoal_Teleop.setEnabled(false);
+
+                }
+                else if (TeleopScoutActivity.this.tele_cycles == 3) {
+
+                    chkBox_highGoal2.setVisibility(View.VISIBLE);
+                    chkBox_highGoal2.setEnabled(true);
+                    chkBox_lowGoal2.setVisibility(View.VISIBLE);
+                    chkBox_lowGoal2.setEnabled(true);
+                    //txt_seekBarHGvalue2.setVisibility(View.VISIBLE);
+                    //txt_seekBarLGvalue2.setVisibility(View.VISIBLE);
+
+                    chkBox_highGoal1.setVisibility(View.INVISIBLE);
+                    chkBox_highGoal1.setEnabled(false);
+                    chkBox_lowGoal1.setVisibility(View.INVISIBLE);
+                    chkBox_lowGoal1.setEnabled(false);
+                    txt_seekBarHGvalue1.setVisibility(View.INVISIBLE);
+                    txt_seekBarLGvalue1.setVisibility(View.INVISIBLE);
+                    seekBar_HighGoal_Teleop1.setVisibility(View.GONE);
+                    seekBar_LowGoal_Teleop1.setVisibility(View.GONE);
+                    seekBar_HighGoal_Teleop1.setEnabled(false);
+                    seekBar_LowGoal_Teleop1.setEnabled(false);
+
+                }
+                else if (TeleopScoutActivity.this.tele_cycles == 4) {
+
+                    chkBox_highGoal3.setVisibility(View.VISIBLE);
+                    chkBox_highGoal3.setEnabled(true);
+                    chkBox_lowGoal3.setVisibility(View.VISIBLE);
+                    chkBox_lowGoal3.setEnabled(true);
+                    //txt_seekBarHGvalue3.setVisibility(View.VISIBLE);
+                    //txt_seekBarLGvalue3.setVisibility(View.VISIBLE);
+
+                    chkBox_highGoal2.setVisibility(View.INVISIBLE);
+                    chkBox_highGoal2.setEnabled(false);
+                    chkBox_lowGoal2.setVisibility(View.INVISIBLE);
+                    chkBox_lowGoal2.setEnabled(false);
+                    txt_seekBarHGvalue2.setVisibility(View.INVISIBLE);
+                    txt_seekBarLGvalue2.setVisibility(View.INVISIBLE);
+                    seekBar_HighGoal_Teleop2.setVisibility(View.GONE);
+                    seekBar_LowGoal_Teleop2.setVisibility(View.GONE);
+                    seekBar_HighGoal_Teleop2.setEnabled(false);
+                    seekBar_LowGoal_Teleop2.setEnabled(false);
+
+                }
+                else {
+
+                    chkBox_highGoal.setVisibility(View.INVISIBLE);
+                    chkBox_highGoal.setEnabled(false);
+                    chkBox_lowGoal.setVisibility(View.INVISIBLE);
+                    chkBox_lowGoal.setEnabled(false);
+                    txt_seekBarHGvalue.setVisibility(View.INVISIBLE);
+                    txt_seekBarLGvalue.setVisibility(View.INVISIBLE);
+
+                    chkBox_highGoal1.setVisibility(View.INVISIBLE);
+                    chkBox_highGoal1.setEnabled(false);
+                    chkBox_lowGoal1.setVisibility(View.INVISIBLE);
+                    chkBox_lowGoal1.setEnabled(false);
+                    txt_seekBarHGvalue1.setVisibility(View.INVISIBLE);
+                    txt_seekBarLGvalue1.setVisibility(View.INVISIBLE);
+
+                    chkBox_highGoal2.setVisibility(View.INVISIBLE);
+                    chkBox_highGoal2.setEnabled(false);
+                    chkBox_lowGoal2.setVisibility(View.INVISIBLE);
+                    chkBox_lowGoal2.setEnabled(false);
+                    txt_seekBarHGvalue2.setVisibility(View.INVISIBLE);
+                    txt_seekBarLGvalue2.setVisibility(View.INVISIBLE);
+
+                    chkBox_highGoal3.setVisibility(View.INVISIBLE);
+                    chkBox_highGoal3.setEnabled(false);
+                    chkBox_lowGoal3.setVisibility(View.INVISIBLE);
+                    chkBox_lowGoal3.setEnabled(false);
+                    txt_seekBarHGvalue3.setVisibility(View.INVISIBLE);
+                    txt_seekBarLGvalue3.setVisibility(View.INVISIBLE);
+
+                }
+
                 Log.w(TAG, "Number of Cycles = " + tele_cycles);
                 lbl_shooting_cycles.setText(Integer.toString(tele_cycles));
             }
@@ -192,6 +369,16 @@ public class TeleopScoutActivity extends Activity {
 
             public void onClick(View v) {
                 Log.i(TAG, "Clicked Final");
+
+                Log.w(TAG, "NUMBER OF CYCLES = " + tele_cycles);
+                if (tele_cycles >= 1) {
+                    tele_hg_percent = (tele_hg_percent0 + tele_hg_percent1 + tele_hg_percent2 + tele_hg_percent3)/tele_cycles;
+                    tele_lg_percent = (tele_lg_percent0 + tele_lg_percent1 +tele_lg_percent2 + tele_lg_percent3)/tele_cycles;
+                    Log.w(TAG, "TELE_HG_PERCENT = " + tele_hg_percent);
+                    Log.w(TAG, "TELE_LG_PERCENT = " + tele_lg_percent);
+                } else {
+                    tele_cycles = 0;
+                }
 
                 updateDev("Final");         // Update 'Phase' for stoplight indicator in ScoutM aster
                 storeTeleData();            // Put all the TeleOps data collected in Match object
@@ -341,8 +528,9 @@ public class TeleopScoutActivity extends Activity {
                                           boolean fromUser) {
                 // TODO Auto-generated method stub
 
-                tele_hg_percent=progress;	//we can use the progress value of pro as anywhere
-                txt_seekBarHGvalue.setText(Integer.toString(tele_hg_percent));
+                tele_hg_percent0=progress;	//we can use the progress value of pro as anywhere
+                txt_seekBarHGvalue.setText(Integer.toString(tele_hg_percent0));
+                Log.w(TAG, "HG SEEKBAR VALUE = " + tele_hg_percent0);
             }
 
         });
@@ -351,19 +539,14 @@ public class TeleopScoutActivity extends Activity {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-            Log.i(TAG, "chkBox_highGoal Listener");
+            Log.i(TAG, "chkBox_highGoal0 Listener");
             if (buttonView.isChecked()) {
                 //checked
-                Log.i(TAG,"TextBox is checked.");
+                Log.i(TAG, "TextBox is checked.");
                 seekBar_HighGoal_Teleop.setEnabled(true);
                 seekBar_HighGoal_Teleop.setVisibility(View.VISIBLE);
                 txt_seekBarHGvalue.setVisibility(View.VISIBLE);
                 tele_hg = true;
-
-                txt_shooting_cycle.setVisibility(View.VISIBLE);
-                lbl_shooting_cycles.setVisibility(View.VISIBLE);
-                button_shooting_cyclesMinus.setVisibility(View.VISIBLE);
-                button_shooting_cyclesPlus.setVisibility(View.VISIBLE);
 
             }
             else
@@ -374,11 +557,6 @@ public class TeleopScoutActivity extends Activity {
                 seekBar_HighGoal_Teleop.setVisibility(View.GONE);
                 txt_seekBarHGvalue.setVisibility(View.GONE);
                 tele_hg = false;
-
-                txt_shooting_cycle.setVisibility(View.GONE);
-                lbl_shooting_cycles.setVisibility(View.GONE);
-                button_shooting_cyclesMinus.setVisibility(View.GONE);
-                button_shooting_cyclesPlus.setVisibility(View.GONE);
 
             }
 
@@ -404,8 +582,9 @@ public class TeleopScoutActivity extends Activity {
                                           boolean fromUser) {
                 // TODO Auto-generated method stub
 
-                tele_lg_percent=progress;	//we can use the progress value of pro as anywhere
-                txt_seekBarLGvalue.setText(Integer.toString(tele_lg_percent));
+                tele_lg_percent0=progress;	//we can use the progress value of pro as anywhere
+                txt_seekBarLGvalue.setText(Integer.toString(tele_lg_percent0));
+                Log.w(TAG, "LG SEEKBAR VALUE = " + tele_lg_percent0);
             }
 
         });
@@ -413,7 +592,7 @@ public class TeleopScoutActivity extends Activity {
 
            @Override
            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-               Log.i(TAG, "chkBox_lowGoal Listener");
+               Log.i(TAG, "chkBox_lowGoal0 Listener");
                if (buttonView.isChecked()) {
                    //checked
                    Log.i(TAG,"TextBox is checked.");
@@ -421,11 +600,6 @@ public class TeleopScoutActivity extends Activity {
                    seekBar_LowGoal_Teleop.setVisibility(View.VISIBLE);
                    txt_seekBarLGvalue.setVisibility(View.VISIBLE);
                    tele_lg = true;
-
-//                   txt_shooting_cycle.setVisibility(View.VISIBLE);
-//                   lbl_shooting_cycles.setVisibility(View.VISIBLE);
-//                   button_shooting_cyclesMinus.setVisibility(View.VISIBLE);
-//                   button_shooting_cyclesPlus.setVisibility(View.VISIBLE);
 
                }
                else
@@ -437,15 +611,286 @@ public class TeleopScoutActivity extends Activity {
                    txt_seekBarLGvalue.setVisibility(View.GONE);
                    tele_lg = false;
 
-//                   txt_shooting_cycle.setVisibility(View.GONE);
-//                   lbl_shooting_cycles.setVisibility(View.GONE);
-//                   button_shooting_cyclesMinus.setVisibility(View.GONE);
-//                   button_shooting_cyclesPlus.setVisibility(View.GONE);
-
                }
            }
        }
         );
+
+
+        seekBar_HighGoal_Teleop1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar_HighGoal_Teleop1) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar_HighGoal_Teleop1) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void onProgressChanged(SeekBar seekBar_HighGoal_Teleop1, int progress,
+                                          boolean fromUser) {
+                // TODO Auto-generated method stub
+                tele_hg_percent1=progress;	//we can use the progress value of pro as anywhere
+                txt_seekBarHGvalue1.setText(Integer.toString(tele_hg_percent1));
+                Log.w(TAG, "HG SEEKBAR VALUE = " + tele_hg_percent1);
+            }
+        });
+        chkBox_highGoal1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+           @Override
+           public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+           Log.i(TAG, "chkBox_highGoal1 Listener");
+           if (buttonView.isChecked()) {
+               //checked
+               Log.i(TAG, "TextBox is checked.");
+               seekBar_HighGoal_Teleop1.setEnabled(true);
+               seekBar_HighGoal_Teleop1.setVisibility(View.VISIBLE);
+               txt_seekBarHGvalue1.setVisibility(View.VISIBLE);
+               tele_hg = true;
+           }
+           else
+           {
+               //not checked
+               Log.i(TAG,"TextBox is unchecked.");
+               seekBar_HighGoal_Teleop1.setEnabled(false);
+               seekBar_HighGoal_Teleop1.setVisibility(View.GONE);
+               txt_seekBarHGvalue1.setVisibility(View.GONE);
+               tele_hg = false;
+           }
+           }
+        }
+        );
+        seekBar_LowGoal_Teleop1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar_LowGoal_Teleop1) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar_LowGoal_Teleop1) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void onProgressChanged(SeekBar seekBar_LowGoal_Teleop1, int progress,
+                                          boolean fromUser) {
+                // TODO Auto-generated method stub
+                tele_lg_percent1=progress;	//we can use the progress value of pro as anywhere
+                txt_seekBarLGvalue1.setText(Integer.toString(tele_lg_percent1));
+                Log.w(TAG, "LG SEEKBAR VALUE = " + tele_lg_percent1);
+            }
+        });
+        chkBox_lowGoal1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.i(TAG, "chkBox_lowGoal1 Listener");
+                if (buttonView.isChecked()) {
+                    //checked
+                    Log.i(TAG,"TextBox is checked.");
+                    seekBar_LowGoal_Teleop1.setEnabled(true);
+                    seekBar_LowGoal_Teleop1.setVisibility(View.VISIBLE);
+                    txt_seekBarLGvalue1.setVisibility(View.VISIBLE);
+                    tele_lg = true;
+                }
+                else
+                {
+                    //not checked
+                    Log.i(TAG,"TextBox is unchecked.");
+                    seekBar_LowGoal_Teleop1.setEnabled(false);
+                    seekBar_LowGoal_Teleop1.setVisibility(View.GONE);
+                    txt_seekBarLGvalue1.setVisibility(View.GONE);
+                    tele_lg = false;
+                }
+            }
+        }
+        );
+
+
+        seekBar_HighGoal_Teleop2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar_HighGoal_Teleop2) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar_HighGoal_Teleop2) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void onProgressChanged(SeekBar seekBar_HighGoal_Teleop2, int progress,
+                                          boolean fromUser) {
+                // TODO Auto-generated method stub
+                tele_hg_percent2=progress;	//we can use the progress value of pro as anywhere
+                txt_seekBarHGvalue2.setText(Integer.toString(tele_hg_percent2));
+                Log.w(TAG, "HG SEEKBAR VALUE = " + tele_hg_percent2);
+            }
+        });
+        chkBox_highGoal2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.i(TAG, "chkBox_highGoal2 Listener");
+                if (buttonView.isChecked()) {
+                    //checked
+                    Log.i(TAG, "TextBox is checked.");
+                    seekBar_HighGoal_Teleop2.setEnabled(true);
+                    seekBar_HighGoal_Teleop2.setVisibility(View.VISIBLE);
+                    txt_seekBarHGvalue2.setVisibility(View.VISIBLE);
+                    tele_hg = true;
+                }
+                else
+                {
+                    //not checked
+                    Log.i(TAG,"TextBox is unchecked.");
+                    seekBar_HighGoal_Teleop2.setEnabled(false);
+                    seekBar_HighGoal_Teleop2.setVisibility(View.GONE);
+                    txt_seekBarHGvalue2.setVisibility(View.GONE);
+                    tele_hg = false;
+                }
+            }
+        }
+        );
+        seekBar_LowGoal_Teleop2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar_LowGoal_Teleop2) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar_LowGoal_Teleop2) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void onProgressChanged(SeekBar seekBar_LowGoal_Teleop2, int progress,
+                                          boolean fromUser) {
+                // TODO Auto-generated method stub
+                tele_lg_percent2=progress;	//we can use the progress value of pro as anywhere
+                txt_seekBarLGvalue2.setText(Integer.toString(tele_lg_percent2));
+                Log.w(TAG, "LG SEEKBAR VALUE = " + tele_lg_percent2);
+            }
+        });
+        chkBox_lowGoal2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+           @Override
+           public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+               Log.i(TAG, "chkBox_lowGoal2 Listener");
+               if (buttonView.isChecked()) {
+                   //checked
+                   Log.i(TAG,"TextBox is checked.");
+                   seekBar_LowGoal_Teleop2.setEnabled(true);
+                   seekBar_LowGoal_Teleop2.setVisibility(View.VISIBLE);
+                   txt_seekBarLGvalue2.setVisibility(View.VISIBLE);
+                   tele_lg = true;
+               }
+               else
+               {
+                   //not checked
+                   Log.i(TAG,"TextBox is unchecked.");
+                   seekBar_LowGoal_Teleop2.setEnabled(false);
+                   seekBar_LowGoal_Teleop2.setVisibility(View.GONE);
+                   txt_seekBarLGvalue2.setVisibility(View.GONE);
+                   tele_lg = false;
+               }
+           }
+        }
+        );
+
+        seekBar_HighGoal_Teleop3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar_HighGoal_Teleop3) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar_HighGoal_Teleop3) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void onProgressChanged(SeekBar seekBar_HighGoal_Teleop3, int progress,
+                                          boolean fromUser) {
+                // TODO Auto-generated method stub
+                tele_hg_percent3=progress;	//we can use the progress value of pro as anywhere
+                txt_seekBarHGvalue3.setText(Integer.toString(tele_hg_percent3));
+                Log.w(TAG, "HG SEEKBAR VALUE = " + tele_hg_percent3);
+            }
+        });
+        chkBox_highGoal3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.i(TAG, "chkBox_highGoal3 Listener");
+                if (buttonView.isChecked()) {
+                    //checked
+                    Log.i(TAG, "TextBox is checked.");
+                    seekBar_HighGoal_Teleop3.setEnabled(true);
+                    seekBar_HighGoal_Teleop3.setVisibility(View.VISIBLE);
+                    txt_seekBarHGvalue3.setVisibility(View.VISIBLE);
+                    tele_hg = true;
+                }
+                else
+                {
+                    //not checked
+                    Log.i(TAG,"TextBox is unchecked.");
+                    seekBar_HighGoal_Teleop3.setEnabled(false);
+                    seekBar_HighGoal_Teleop3.setVisibility(View.GONE);
+                    txt_seekBarHGvalue3.setVisibility(View.GONE);
+                    tele_hg = false;
+                }
+            }
+        }
+        );
+        seekBar_LowGoal_Teleop3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar_LowGoal_Teleop3) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar_LowGoal_Teleop3) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void onProgressChanged(SeekBar seekBar_LowGoal_Teleop3, int progress,
+                                          boolean fromUser) {
+                // TODO Auto-generated method stub
+                tele_lg_percent3=progress;	//we can use the progress value of pro as anywhere
+                txt_seekBarLGvalue3.setText(Integer.toString(tele_lg_percent3));
+                Log.w(TAG, "LG SEEKBAR VALUE = " + tele_lg_percent3);
+            }
+        });
+        chkBox_lowGoal3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+           @Override
+           public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+               Log.i(TAG, "chkBox_lowGoal3 Listener");
+               if (buttonView.isChecked()) {
+                   //checked
+                   Log.i(TAG,"TextBox is checked.");
+                   seekBar_LowGoal_Teleop3.setEnabled(true);
+                   seekBar_LowGoal_Teleop3.setVisibility(View.VISIBLE);
+                   txt_seekBarLGvalue3.setVisibility(View.VISIBLE);
+                   tele_lg = true;
+               }
+               else
+               {
+                   //not checked
+                   Log.i(TAG,"TextBox is unchecked.");
+                   seekBar_LowGoal_Teleop3.setEnabled(false);
+                   seekBar_LowGoal_Teleop3.setVisibility(View.GONE);
+                   txt_seekBarLGvalue3.setVisibility(View.GONE);
+                   tele_lg = false;
+               }
+           }
+        }
+        );
+//        Log.w(TAG, "NUMBER OF CYCLES = " + tele_cycles);
+//        if (tele_cycles >= 1) {
+//            tele_hg_percent = (tele_hg_percent0 + tele_hg_percent1 + tele_hg_percent2 + tele_hg_percent3)/tele_cycles;
+//            tele_lg_percent = (tele_lg_percent0 + tele_lg_percent1 +tele_lg_percent2 + tele_lg_percent3)/tele_cycles;
+//            Log.w(TAG, "TELE_HG_PERCENT = " + tele_hg_percent);
+//            Log.w(TAG, "TELE_LG_PERCENT = " + tele_lg_percent);
+//        } else {
+//            tele_cycles = 0;
+//        }
+
 
         editText_TeleComments.addTextChangedListener(new TextWatcher() {
             @Override
@@ -471,6 +916,9 @@ public class TeleopScoutActivity extends Activity {
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void storeTeleData() {
         Log.i(TAG, ">>>>  storeTeleData  <<<<");
+        Log.w(TAG, "TELE CYCLES" + tele_cycles);
+        Log.w(TAG, "TELE HG" + tele_hg_percent);
+        Log.w(TAG, "TELE LG" + tele_lg_percent);
         Pearadox.Match_Data.setTele_gears_placed(tele_gears_placed);
         Pearadox.Match_Data.setTele_gears_attempt(tele_gears_attempt);
         Pearadox.Match_Data.setTele_hg(tele_hg);

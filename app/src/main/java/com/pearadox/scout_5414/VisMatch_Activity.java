@@ -17,7 +17,8 @@ public class VisMatch_Activity extends AppCompatActivity {
     String tnum = "";
     String tname = "";
     String underScore = new String(new char[60]).replace("\0", "_");  // string of 'x' underscores
-    TextView txt_team, txt_teamName, txt_NumMatches;
+    String matches = "";
+    TextView txt_team, txt_teamName, txt_NumMatches, txt_Matches;
     TextView txt_auto_HGpercent, txt_auto_LGpercent, txt_auto_gearRatio, txt_auto_baselineRatio, txt_tele_gearRatio, txt_climbAttempts, txt_successfulClimbs, txt_tele_HGpercent, txt_tele_LGpercent;
     /* Comment Boxes */     TextView txt_AutoComments, txt_TeleComments, txt_FinalComments;
     TextView txt_sB1, txt_sB2, txt_sB3, txt_sB4, txt_sB5;
@@ -60,6 +61,7 @@ public class VisMatch_Activity extends AppCompatActivity {
         tname = param2;      // Save Team #
 
 
+        txt_Matches = (TextView) findViewById(R.id.txt_Matches);
         txt_team = (TextView) findViewById(R.id.txt_team);
         txt_teamName = (TextView) findViewById(R.id.txt_teamName);
         txt_NumMatches = (TextView) findViewById(R.id.txt_NumMatches);
@@ -108,7 +110,7 @@ public class VisMatch_Activity extends AppCompatActivity {
 
         auto_HGtotalShooting = 0; auto_LGtotalShooting = 0; tele_HGtotalShooting = 0; tele_LGtotalShooting = 0; auto_totalgearsAttempted = 0; auto_totalgearsPlaced = 0; tele_totalGearsAttempted = 0; tele_totalGearsPlaced = 0; numAutoBaseline = 0;
         auto_B1 = 0; auto_B2 = 0; auto_B3 = 0; auto_B4 = 0; auto_B1 = 0;
-        auto_Comments = ""; tele_Comments = ""; final_Comments="";
+        auto_Comments = ""; tele_Comments = ""; final_Comments=""; matches = "";
         final_LostComm = 0; final_LostParts = 0; final_DefGood = 0; final_DefBlock = 0;  final_DefDump = 0; final_DefStarve = 0; final_NumPen = 0;
 
 
@@ -116,6 +118,7 @@ public class VisMatch_Activity extends AppCompatActivity {
         for (int i = 0; i < numObjects; i++) {
             Log.w(TAG, "In for loop!   " + i);
             match_inst = Pearadox.Matches_Data.get(i);      // Get instance of Match Data
+            matches = matches + match_inst.getMatch() + "  ";
 
             if (match_inst.isAuto_baseline()) {
                 numAutoBaseline++;
@@ -252,6 +255,8 @@ public class VisMatch_Activity extends AppCompatActivity {
         Log.w(TAG, "Number of Attempted Climbs = " + numTeleClimbAttempt);
         Log.w(TAG, "Number of Successful Climbs = " + numTeleClimbSuccess);
 
+        txt_Matches.setText(matches);
+
         Log.w(TAG, "Auto HG Shooting = " + auto_HGtotalShooting + "   " + numAutoHG);
         if (numAutoHG > 0) {      // Don't divide by zero!!
             float auto_HGPer = ((float)auto_HGtotalShooting) / numAutoHG;
@@ -292,9 +297,9 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_tele_gearRatio.setText(tele_totalGearsPlaced + "/" + tele_totalGearsAttempted);
         txt_climbAttempts.setText(numTeleClimbAttempt + "/" + numObjects);
         txt_successfulClimbs.setText(numTeleClimbSuccess + "/" + numObjects);
-
+        Log.w(TAG, "NUMTELEHG = " + numTeleHG);
         if (numTeleHG > 0) {      // Don't divide by zero!!
-            float tele_HGPer = ((float)auto_LGtotalShooting) / numTeleHG;
+            float tele_HGPer = ((float)tele_HGtotalShooting) / numTeleHG;
             Log.w(TAG, "Percentage of HG Shooting in Tele = " + ((float)tele_HGtotalShooting) / numTeleHG);
             txt_tele_HGpercent.setText(String.format("%3.2f", (tele_HGPer)) + "%");
         } else {

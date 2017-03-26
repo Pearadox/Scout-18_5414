@@ -192,10 +192,11 @@
         android:id="@+id/txt_Number_Penalties"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Number of Penalties"
         android:layout_alignBaseline="@+id/button_Number_PenaltiesPlus"
         android:layout_alignBottom="@+id/button_Number_PenaltiesPlus"
-        android:layout_alignEnd="@+id/chk_starve" />
+        android:layout_alignEnd="@+id/chk_starve"
+        android:text="Number of Penalties"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/lbl_Number_Penalties"
@@ -211,9 +212,10 @@
         android:id="@+id/txt_teamnum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Robot Team Number"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/TextView"
-        android:layout_alignParentStart="true" />
+        android:text="Robot Team Number"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/txt_robotnum"
