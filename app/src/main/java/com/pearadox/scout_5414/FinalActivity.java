@@ -38,6 +38,8 @@ import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static com.pearadox.scout_5414.R.id.radgrp_Scout;
@@ -85,7 +87,7 @@ public class FinalActivity extends Activity {
 
     /* */
     public String finalComment = " ";
-    public static String currentDateTimeString = " ";
+    public static String timeStamp = " ";
 
 
 // ===========================================================================
@@ -115,9 +117,20 @@ public class FinalActivity extends Activity {
         txt_robotnum.setText(tn);
 
         //TODO create field for firebase!!!!
-        currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+        //currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
-        Log.w(TAG, currentDateTimeString);
+        //Log.w(TAG, currentDateTimeString);
+
+
+
+//        String oldstring = "2011-01-18 00:00:00.0";
+//        try {
+//            Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse(oldstring);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+        timeStamp = new SimpleDateFormat("yyyy.MM.dd  hh:mm:ss a").format(new Date());
+        Log.w(TAG, timeStamp);
 
         lbl_Number_Penalties = (TextView) findViewById(R.id.lbl_Number_Penalties);
         radioButton_def_bad = (RadioButton) findViewById(R.id.radioButton_def_bad);
@@ -317,7 +330,7 @@ public class FinalActivity extends Activity {
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void storeFinalData() {
         Log.i(TAG, ">>>>  storeFinalData  <<<<");
-        Log.w(TAG, currentDateTimeString + " is the current date and time.");
+        Log.w(TAG, timeStamp + " is the current date and time.");
         Pearadox.Match_Data.setFinal_lostParts(lost_Parts);
         Pearadox.Match_Data.setFinal_lostComms(lost_Comms);
         Pearadox.Match_Data.setFinal_defense_good(final_defense_good);
@@ -327,7 +340,7 @@ public class FinalActivity extends Activity {
         Pearadox.Match_Data.setFinal_def_Gear(final_def_Gear);
         Pearadox.Match_Data.setFinal_num_Penalties(final_num_Penalties);
 
-        Pearadox.Match_Data.setFinal_dateTime(currentDateTimeString);
+        Pearadox.Match_Data.setFinal_dateTime(timeStamp);
 
         //ToDo - add remaining Final elements
          /* */
