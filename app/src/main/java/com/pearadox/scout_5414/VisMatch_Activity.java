@@ -122,40 +122,40 @@ public class VisMatch_Activity extends AppCompatActivity {
 
             if (match_inst.isAuto_baseline()) {
                 numAutoBaseline++;
-                Log.w(TAG, "Auto Baseline = " + match_inst.isAuto_baseline());
-                Log.w(TAG, "Auto Baseline Number= " + numAutoBaseline);
+//                Log.w(TAG, "Auto Baseline = " + match_inst.isAuto_baseline());
+//                Log.w(TAG, "Auto Baseline Number= " + numAutoBaseline);
             }
 
-            Log.w(TAG, "Auto HG Boolean = " + match_inst.isAuto_hg());
+//            Log.w(TAG, "Auto HG Boolean = " + match_inst.isAuto_hg());
             if (match_inst.isAuto_hg()) {
                 auto_HGtotalShooting = auto_HGtotalShooting + match_inst.getAuto_hg_percent();
                 numAutoHG++;
-                Log.w(TAG, "numAutoHG = " + numAutoHG);
+//                Log.w(TAG, "numAutoHG = " + numAutoHG);
             }
-            Log.w(TAG, "Auto HG = " + match_inst.getAuto_hg_percent());
+//            Log.w(TAG, "Auto HG = " + match_inst.getAuto_hg_percent());
 
             if (match_inst.isAuto_lg()) {       /* Matthew - <<<<<<<<<<<<<<<<  match_inst _NOT_ Match_Data */
                 auto_LGtotalShooting = auto_LGtotalShooting + match_inst.getAuto_lg_percent();
                 numAutoLG++;
-                Log.w(TAG, "numAutoLG = " + numAutoLG);
+//                Log.w(TAG, "numAutoLG = " + numAutoLG);
 
             }
-            Log.w(TAG, "Auto LG = " + match_inst.getAuto_lg_percent());
+//            Log.w(TAG, "Auto LG = " + match_inst.getAuto_lg_percent());
 //            Log.w(TAG, "Auto LG Boolean = " + match_inst.isAuto_lg());
 
 
             auto_totalgearsPlaced = auto_totalgearsPlaced + match_inst.getAuto_gears_placed();
-            Log.w(TAG, "Auto Gears Placed = " + match_inst.getAuto_gears_placed());
+//            Log.w(TAG, "Auto Gears Placed = " + match_inst.getAuto_gears_placed());
 
             auto_totalgearsAttempted = auto_totalgearsAttempted + match_inst.getAuto_gears_attempt();
-            Log.w(TAG, "Auto Gears Attempted = " + match_inst.getAuto_gears_attempt());
+//            Log.w(TAG, "Auto Gears Attempted = " + match_inst.getAuto_gears_attempt());
 
-            Log.w(TAG, "Auto Comment = " + match_inst.getAuto_comment() + "  " + match_inst.getAuto_comment().length());
+//            Log.w(TAG, "Auto Comment = " + match_inst.getAuto_comment() + "  " + match_inst.getAuto_comment().length());
             if (match_inst.getAuto_comment().length() > 1) {
                 auto_Comments = auto_Comments + match_inst.getMatch() + "-" + match_inst.getAuto_comment() + "\n" + underScore  + "\n" ;
             }
             String pos = match_inst.getAuto_start().trim();
-            Log.w(TAG, "Start Pos. " + pos);
+//            Log.w(TAG, "Start Pos. " + pos);
             switch (pos) {
                 case "B1":
                     auto_B1++;
@@ -173,47 +173,47 @@ public class VisMatch_Activity extends AppCompatActivity {
                     auto_B5++;
                     break;
                 default:                //
-                    Log.w(TAG, "***  Invalid Start Position!!!  ***" );
+                    Log.e(TAG, "***  Invalid Start Position!!!  ***" );
             }
 
-            //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
-            tele_HGtotalShooting = tele_HGtotalShooting + match_inst.getTele_hg_percent();
-            tele_LGtotalShooting = tele_LGtotalShooting + match_inst.getTele_lg_percent();
+            //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+//            tele_HGtotalShooting = tele_HGtotalShooting + match_inst.getTele_hg_percent();
+//            tele_LGtotalShooting = tele_LGtotalShooting + match_inst.getTele_lg_percent();
 
             tele_totalGearsPlaced = tele_totalGearsPlaced + match_inst.getTele_gears_placed();
-            Log.w(TAG, "Tele Gears Placed = " + match_inst.getTele_gears_placed());
+//            Log.w(TAG, "Tele Gears Placed = " + match_inst.getTele_gears_placed());
             tele_totalGearsAttempted = tele_totalGearsAttempted + match_inst.getTele_gears_attempt();
-            Log.w(TAG, "Tele Gears Attempted = " + match_inst.getTele_gears_attempt());
+//            Log.w(TAG, "Tele Gears Attempted = " + match_inst.getTele_gears_attempt());
 
 
-            Log.w(TAG, "Tele HG Boolean = " + match_inst.isTele_hg());
+//            Log.w(TAG, "Tele HG Boolean = " + match_inst.isTele_hg());
             if (match_inst.isTele_hg()) {
                 tele_HGtotalShooting = tele_HGtotalShooting + match_inst.getTele_hg_percent();
                 numTeleHG++;
-                Log.w(TAG, "numTeleHG = " + numTeleHG);
+//                Log.w(TAG, "numTeleHG = " + numTeleHG);
             }
-            Log.w(TAG, "Tele HG = " + match_inst.getTele_hg_percent());
+//            Log.w(TAG, "Tele HG = " + match_inst.getTele_hg_percent());
             if (match_inst.isTele_lg()) {       /* Matthew - <<<<<<<<<<<<<<<<  match_inst _NOT_ Match_Data */
                 tele_LGtotalShooting = tele_LGtotalShooting + match_inst.getTele_lg_percent();
                 numTeleLG++;
-                Log.w(TAG, "numTeleLG = " + numTeleLG);
+//                Log.w(TAG, "numTeleLG = " + numTeleLG);
 
             }
-            Log.w(TAG, "Tele LG = " + match_inst.getAuto_lg_percent());
+//            Log.w(TAG, "Tele LG = " + match_inst.getAuto_lg_percent());
 
 
             if (match_inst.isTele_climb_attempt()) {
                 numTeleClimbAttempt++;
-                Log.w(TAG, "Tele Climb Attempt = " + match_inst.isTele_climb_attempt());
-                Log.w(TAG, "Tele Climb Attempt Number= " + numTeleClimbAttempt);
+//                Log.w(TAG, "Tele Climb Attempt = " + match_inst.isTele_climb_attempt());
+//                Log.w(TAG, "Tele Climb Attempt Number= " + numTeleClimbAttempt);
             }
             if (match_inst.isTele_climb_success()) {
                 numTeleClimbSuccess++;
-                Log.w(TAG, "Tele Climb Success = " + match_inst.isTele_climb_success());
-                Log.w(TAG, "Tele Climb Success Number= " + numTeleClimbSuccess);
+//                Log.w(TAG, "Tele Climb Success = " + match_inst.isTele_climb_success());
+//                Log.w(TAG, "Tele Climb Success Number= " + numTeleClimbSuccess);
             }
 
-            Log.w(TAG, "Tele Comment = " + match_inst.getTele_comment() + "  " + match_inst.getTele_comment().length());
+//            Log.w(TAG, "Tele Comment = " + match_inst.getTele_comment() + "  " + match_inst.getTele_comment().length());
             if (match_inst.getTele_comment().length() > 1) {
                 tele_Comments = tele_Comments + match_inst.getMatch() + "-" + match_inst.getTele_comment() + "\n" + underScore  + "\n" ;
             }
@@ -242,7 +242,7 @@ public class VisMatch_Activity extends AppCompatActivity {
                 final_NumPen = final_NumPen + match_inst.getFinal_num_Penalties();
             }
 
-            Log.w(TAG, "Final Comment = " + match_inst.getFinal_comment() + "  " + match_inst.getFinal_comment().length());
+//            Log.w(TAG, "Final Comment = " + match_inst.getFinal_comment() + "  " + match_inst.getFinal_comment().length());
             if (match_inst.getFinal_comment().length() > 1) {
                 final_Comments = final_Comments + match_inst.getMatch() + "-" + match_inst.getFinal_comment() + "\n" + underScore  + "\n" ;
             }
@@ -252,33 +252,31 @@ public class VisMatch_Activity extends AppCompatActivity {
 // ================================================================
 // ======  Now start displaying all the data we collected  ========
 // ================================================================
-        Log.w(TAG, "Number of Attempted Climbs = " + numTeleClimbAttempt);
-        Log.w(TAG, "Number of Successful Climbs = " + numTeleClimbSuccess);
 
         txt_Matches.setText(matches);
 
-        Log.w(TAG, "Auto HG Shooting = " + auto_HGtotalShooting + "   " + numAutoHG);
+//        Log.w(TAG, "Auto HG Shooting = " + auto_HGtotalShooting + "   " + numAutoHG);
         if (numAutoHG > 0) {      // Don't divide by zero!!
             float auto_HGPer = ((float)auto_HGtotalShooting) / numAutoHG;
-            Log.w(TAG, "Percentage of HG Shooting in Auto = " + ((float)auto_HGtotalShooting) / numAutoHG);
+//            Log.w(TAG, "Percentage of HG Shooting in Auto = " + ((float)auto_HGtotalShooting) / numAutoHG);
             txt_auto_HGpercent.setText(String.format("%3.2f", (auto_HGPer)) + "%");
         } else {
             txt_auto_HGpercent.setText(" ");
         }
 
-        Log.w(TAG, "Auto LG Shooting = " + auto_LGtotalShooting + "   " + numAutoLG);
+//        Log.w(TAG, "Auto LG Shooting = " + auto_LGtotalShooting + "   " + numAutoLG);
         if (numAutoLG > 0) {      // Don't divide by zero!!
             float auto_LGPer = ((float)auto_LGtotalShooting) / numAutoLG;
-            Log.w(TAG, "Percentage of LG Shooting in Auto = " + ((float)auto_LGtotalShooting) / numAutoLG);
+//            Log.w(TAG, "Percentage of LG Shooting in Auto = " + ((float)auto_LGtotalShooting) / numAutoLG);
             txt_auto_LGpercent.setText(String.format("%3.2f",(auto_LGPer)) + "%");
         } else {
             txt_auto_LGpercent.setText("");
         }
 
-        Log.w(TAG, "Ratio of Placed to Attempted Gears in Auto = " + auto_totalgearsPlaced + "/" + auto_totalgearsAttempted);
+//        Log.w(TAG, "Ratio of Placed to Attempted Gears in Auto = " + auto_totalgearsPlaced + "/" + auto_totalgearsAttempted);
         txt_auto_gearRatio.setText(auto_totalgearsPlaced + "/" + auto_totalgearsAttempted);
 
-        Log.w(TAG, "Ratio of Crossing Baseline to Number of Matches = " + numAutoBaseline + "/" + numObjects);
+//        Log.w(TAG, "Ratio of Crossing Baseline to Number of Matches = " + numAutoBaseline + "/" + numObjects);
         txt_auto_baselineRatio.setText(numAutoBaseline +  "/" + numObjects);
 
 //        Log.w(TAG, "Auto Gears Attempted = " + auto_gearsAttempted);
@@ -292,15 +290,15 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_AutoComments.setText(auto_Comments);
 
         // ==============================================
-        // ToDo - display Tele elements
+        // Display Tele elements
         Log.w(TAG, "Ratio of Placed to Attempted Gears in Tele = " + tele_totalGearsPlaced + "/" + tele_totalGearsAttempted);
         txt_tele_gearRatio.setText(tele_totalGearsPlaced + "/" + tele_totalGearsAttempted);
         txt_climbAttempts.setText(numTeleClimbAttempt + "/" + numObjects);
         txt_successfulClimbs.setText(numTeleClimbSuccess + "/" + numObjects);
-        Log.w(TAG, "NUMTELEHG = " + numTeleHG);
+//        Log.w(TAG, "NUM-TELE-HG = " + numTeleHG);
         if (numTeleHG > 0) {      // Don't divide by zero!!
             float tele_HGPer = ((float)tele_HGtotalShooting) / numTeleHG;
-            Log.w(TAG, "Percentage of HG Shooting in Tele = " + ((float)tele_HGtotalShooting) / numTeleHG);
+//            Log.w(TAG, "Percentage of HG Shooting in Tele = " + ((float)tele_HGtotalShooting) / numTeleHG);
             txt_tele_HGpercent.setText(String.format("%3.2f", (tele_HGPer)) + "%");
         } else {
             txt_tele_HGpercent.setText(" ");
@@ -308,7 +306,7 @@ public class VisMatch_Activity extends AppCompatActivity {
 
         if (numTeleLG > 0) {      // Don't divide by zero!!
             float tele_LGPer = ((float)tele_LGtotalShooting) / numTeleLG;
-            Log.w(TAG, "Percentage of LG Shooting in Tele = " + ((float)tele_LGtotalShooting) / numTeleLG);
+//            Log.w(TAG, "Percentage of LG Shooting in Tele = " + ((float)tele_LGtotalShooting) / numTeleLG);
             txt_tele_LGpercent.setText(String.format("%3.2f",(tele_LGPer)) + "%");
         } else {
             txt_tele_LGpercent.setText(" ");
