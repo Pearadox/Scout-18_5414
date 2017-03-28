@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.SimpleAdapter;
@@ -36,10 +37,10 @@ public class DraftScout_Activity extends AppCompatActivity {
     TextView txt_EventName, txt_NumTeams;
     ListView lstView_Teams;
     TextView TeamData, BA, Stats;
+//    Button btn_Up, btn_Down, btn_Delete;
     ArrayAdapter<String> adaptTeams;
 //    ArrayList<String> draftList = new ArrayList<String>();
-    static final ArrayList<HashMap<String,String>> draftList =
-            new ArrayList<HashMap<String,String>>();
+    static final ArrayList<HashMap<String,String>> draftList = new ArrayList<HashMap<String,String>>();
     public int teamSelected = 0;
     String tnum = "";
     Team[] teams;
@@ -62,6 +63,12 @@ public class DraftScout_Activity extends AppCompatActivity {
         lstView_Teams = (ListView) findViewById(R.id.lstView_Teams);
         txt_EventName.setText(Pearadox.FRC_EventName);              // Event Name
         txt_NumTeams.setText(String.valueOf(Pearadox.numTeams));    // # of Teams
+//        Button btn_Up = (Button) findViewById(R.id.btn_Up);         // Listner defined in Layout XML
+//        btn_Up.setOnClickListener(buttonUp_Click);
+//        Button btn_Down = (Button) findViewById(R.id.btn_Down);     // Listner defined in Layout XML
+//        btn_Down.setOnClickListener(buttonDown_Click);
+//        Button btn_Delete = (Button) findViewById(R.id.btn_Delete); // Listner defined in Layout XML
+//        btn_Delete.setOnClickListener(buttonDelete_Click);
         Log.w(TAG, "***** Matches Loaded. # = "  + Pearadox.Matches_Data.size());
 
         pfDatabase = FirebaseDatabase.getInstance();
@@ -100,13 +107,43 @@ public class DraftScout_Activity extends AppCompatActivity {
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public void buttonUp_Click(View view) {
-        Log.i(TAG, " buttonUp_Click   " );
+        Log.i(TAG, " buttonUp_Click   " + teamSelected);
+        HashMap<String, String> temp = new HashMap<String, String>();
+
+        // only if the first item isn't the current one
+        if(teamSelected > 0)
+        {
+            // add a duplicate item up in the listbox
+            temp.get("team");
+            temp.get("BA");
+            temp.get("Stats");
+            draftList.set(teamSelected - 1, temp);
+//            draftList.AddItem(draftList.Text, teamSelected - 1);
+            // make it the current item
+            draftList.contains(teamSelected - 2);
+            // delete the old occurrence of this item
+            draftList.remove(teamSelected + 2);
+        }
 
     }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public void buttonDown_Click(View view) {
-        Log.i(TAG, " buttonDown_Click   " );
+        Log.i(TAG, " buttonDown_Click   " + teamSelected);
+
+
+    }
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    public void buttonDelete_Click(View view) {
+        Log.i(TAG, ">>>>> buttonDelete_Click  "  + teamSelected);
+
+        Log.w(TAG, "@@@ Teams B4 : " + draftList.size());
+        lstView_Teams = (ListView) findViewById(R.id.lstView_Teams);
+        draftList.remove(teamSelected);
+        Log.w(TAG, "@@@ Teams After : " + draftList.size());
+        lstView_Teams.setAdapter(adaptTeams);
+//        adaptTeams.notifyDataSetChanged();
 
     }
 
@@ -238,8 +275,6 @@ public class DraftScout_Activity extends AppCompatActivity {
         });
     }
 
-
-
 //###################################################################
 //###################################################################
 //###################################################################
@@ -248,7 +283,7 @@ public void onStart() {
         super.onStart();
         Log.v(TAG, "onStart");
 
-        addMD_VE_Listener(pfMatchData_DBReference);        // Load Matches
+        addMD_VE_Listener(pfMatchData_DBReference);        // Load _ALL_ Matches
 
 }
 @Override

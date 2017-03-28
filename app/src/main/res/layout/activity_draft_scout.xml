@@ -54,17 +54,6 @@
         android:textSize="14dp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/lbl_MoveTeam"
-        android:layout_width="160dp"
-        android:layout_height="25dp"
-        android:layout_alignBaseline="@+id/txt_EventName"
-        android:layout_alignBottom="@+id/txt_EventName"
-        android:layout_alignStart="@+id/btn_Up"
-        android:text="   Move Selected Team"
-        android:textColor="@color/white"
-        android:textSize="14dp"
-        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/txt_NumTeams"
@@ -85,23 +74,59 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="21dp" />
 
-    <Button
-        android:id="@+id/btn_Up"
-        android:layout_width="70sp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/lstView_Teams"
-        android:layout_marginStart="63dp"
-        android:layout_toEndOf="@+id/imageView_DS"
-        android:onClick="buttonUp_Click"
-        android:text="UP" />
+    <!--<TextView-->
+        <!--android:id="@+id/lbl_MoveTeam"-->
+        <!--android:layout_width="120dp"-->
+        <!--android:layout_height="15dp"-->
+        <!--android:layout_alignBottom="@+id/txt_NumTeams"-->
+        <!--android:layout_alignStart="@+id/btn_Up"-->
+        <!--android:text="   Move Selected Team"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:textSize="10dp"-->
+        <!--android:textStyle="bold" />-->
 
-    <Button
-        android:id="@+id/btn_Down"
-        android:layout_width="70sp"
-        android:layout_height="wrap_content"
-        android:onClick="buttonDown_Click"
-        android:text="DOWN"
-        android:layout_below="@+id/lbl_MoveTeam"
-        android:layout_alignEnd="@+id/lbl_MoveTeam" />
+    <!--<TextView-->
+        <!--android:id="@+id/lbl_Selected"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="15dp"-->
+        <!--android:layout_above="@+id/btn_Delete"-->
+        <!--android:layout_alignStart="@+id/btn_Delete"-->
+        <!--android:text="   Selected"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:textSize="10dp"-->
+        <!--android:textStyle="bold" />-->
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_Up"-->
+        <!--android:layout_width="55sp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="19dp"-->
+        <!--android:onClick="buttonUp_Click"-->
+        <!--android:text="UP"-->
+        <!--android:textSize="10sp"-->
+        <!--android:layout_below="@+id/lbl_Selected"-->
+        <!--android:layout_toEndOf="@+id/imageView_DS" />-->
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_Down"-->
+        <!--android:layout_width="55sp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:onClick="buttonDown_Click"-->
+        <!--android:text="DOWN"-->
+        <!--android:textSize="10sp"-->
+        <!--android:layout_alignBaseline="@+id/btn_Delete"-->
+        <!--android:layout_alignBottom="@+id/btn_Delete"-->
+        <!--android:layout_alignEnd="@+id/lbl_MoveTeam" />-->
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_Delete"-->
+        <!--android:layout_width="70sp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:onClick="buttonDelete_Click"-->
+        <!--android:text="DELETE"-->
+        <!--android:textSize="12sp"-->
+        <!--android:layout_below="@+id/lbl_NumTeamsView"-->
+        <!--android:layout_toStartOf="@+id/lbl_NumTeamsView"-->
+        <!--android:layout_marginEnd="39dp" />-->
 
 </RelativeLayout>
