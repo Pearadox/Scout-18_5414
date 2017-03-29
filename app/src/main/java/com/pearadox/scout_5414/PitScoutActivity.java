@@ -70,6 +70,8 @@ public class PitScoutActivity extends AppCompatActivity {
     RadioGroup radgrp_Dim;      RadioButton radio_Dim;
     CheckBox chkBox_Gear, chkBox_Fuel, chkBox_Shooter, chkBox_Vision, chkBox_Pneumatics, chkBox_FuelManip, chkBox_Climb;
     Button btn_Save;
+    Uri currentImageUri;
+    String currentImagePath;
     int REQUEST_IMAGE_CAPTURE = 2;
     public static String[] teams = new String[Pearadox.numTeams+1];  // Team list (array of just Team Names)
     public static String[] wheels = new String[]
@@ -373,17 +375,26 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             toast.show();
         } else {
+            File dirPhotos = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/" + Pearadox.FRC_Event + "/");
+            currentImagePath = String.valueOf(dirPhotos);
             String picname = "robot_" + teamSelected.trim() + ".png";
-            File dirPhotos = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/" + Pearadox.FRC_Event + "/");
-            Log.d(TAG, "SD card Path = " + dirPhotos);
-            dirPhotos = new File(dirPhotos, picname);
-            Log.d(TAG, "File = " + dirPhotos);
-            Uri outputFileUri = Uri.fromFile(dirPhotos);
-
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File x = new File (dirPhotos, picname);
+            currentImageUri = Uri.fromFile(x);
+            Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, currentImageUri); // set the image file name
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+//            String picname = "robot_" + teamSelected.trim() + ".png";
+//            File dirPhotos = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/" + Pearadox.FRC_Event + "/");
+//            Log.d(TAG, "SD card Path = " + dirPhotos);
+//            dirPhotos = new File(dirPhotos, picname);
+//            Log.d(TAG, "File = " + dirPhotos);
+//            Uri outputFileUri = Uri.fromFile(dirPhotos);
+//
+//            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//            takePictureIntent.PutExtra (MediaStore.ExtraOutput, outputFileUri);
 //            Intent takePictureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 //            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+//            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             Log.d(TAG, "Photo taken");
         }
     }
@@ -393,16 +404,36 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
 //        Log.i(TAG, "*****  onActivityResult " + requestCode);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == PitScoutActivity.RESULT_OK) {
 //            Log.d(TAG, "requestCode = '" + requestCode + "'");
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            galleryAddPic();
+            File savedFile;
+            if(currentImagePath == null){
+                savedFile= new File(currentImageUri.getPath());
+            }else{
+                savedFile = new File(currentImagePath);
+            }
+//            ThumbPictureConverter thumbPic = new ThumbPictureConverter(savedFile);
+//            mImageView.setImageURI(Uri.fromFile(thumbPic.getThumbFile()));
+//            Bundle extras = data.getExtras();
+//            Bitmap imageBitmap = (Bitmap) extras.get("data");
 //            Log.d(TAG, "*** data '" + data + "'");
             ImageView img_Photo = (ImageView) findViewById(R.id.img_Photo);
-            img_Photo.setImageBitmap(imageBitmap);
+//            img_Photo.setImageBitmap(imageBitmap);      // Show on screen
+
 //            if (Pearadox.is_Network) {      // is Internet available?      Commented out because 'tethered' show No internet
-                encodeBitmapAndSaveToFirebase(imageBitmap);
+//                encodeBitmapAndSaveToFirebase(imageBitmap);
 //            }
         }
     }
+
+    private void galleryAddPic() {
+        /**
+         * copy current image to Galerry
+         */
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        mediaScanIntent.setData(currentImageUri);
+        this.sendBroadcast(mediaScanIntent);
+    }
+
     public void encodeBitmapAndSaveToFirebase(Bitmap bitmap) {
         Log.i(TAG, "$$$$$  encodeBitmapAndSaveToFirebase  $$$$$");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
