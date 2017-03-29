@@ -32,15 +32,18 @@
             android:name=".MatchScoutActivity"
             android:configChanges="orientation"
             android:windowSoftInputMode="adjustNothing" />
+
         <activity
             android:name=".PitScoutActivity"
             android:configChanges="orientation"
             android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".Visualizer_Activity" />
+
         <activity
             android:name=".FinalActivity"
             android:configChanges="orientation"
             android:windowSoftInputMode="adjustNothing" />
+
         <activity android:name=".ArenaLayoutActivity" />
         <activity
             android:name=".TeleopScoutActivity"
@@ -52,7 +55,14 @@
         <activity
             android:name=".VisMatch_Activity"
             android:configChanges="orientation" />
-        <activity android:name=".DraftScout_Activity"></activity>
+
+        <activity android:name=".DraftScout_Activity">
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
     </application>
 
 </manifest>

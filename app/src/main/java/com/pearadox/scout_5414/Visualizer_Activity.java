@@ -207,8 +207,8 @@ public class Visualizer_Activity extends AppCompatActivity {
         pfMatch_DBReference = pfDatabase.getReference("matches/" + Pearadox.FRC_Event); // List of Matches
         pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
 //        pfCur_Match_DBReference = pfDatabase.getReference("current-match"); // _THE_ current Match
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
+//        FirebaseStorage storage = FirebaseStorage.getInstance();
+//        StorageReference storageRef = storage.getReference();
 
         Spinner spinner_MatchType = (Spinner) findViewById(R.id.spinner_MatchType);
         String[] devices = getResources().getStringArray(R.array.mtchtyp_array);
@@ -350,7 +350,6 @@ public class Visualizer_Activity extends AppCompatActivity {
         tnum = (String) txt_teamR1.getText();
         team_name = (String) txt_teamR1_Name.getText();
         Log.w(TAG, "*** Team " + tnum + " " + team_name + "  URL ='" + FB_url[0] + "' ");
-//        FB_url[0] = "https://firebasestorage.googleapis.com/v0/b/paradox-2017.appspot.com/o/images%2Ftxlu%2Frobot_1296.png?alt=media&token=e6c8fbc1-f0e1-4ddc-9e01-f30a2a32a291";
         launchVizPit(tnum, team_name, FB_url[0]);
     }
     public void btn_PitR2_Click(View view) {
@@ -622,8 +621,8 @@ public class Visualizer_Activity extends AppCompatActivity {
         URL = "";
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-        StorageReference pathReference = storageRef.child("images/" + Pearadox.FRC_Event + "/" + team.trim() + ".png");
-        Log.e(TAG, "images/" + Pearadox.FRC_Event + "/" + team.trim() + ".png" + "\n \n");
+        StorageReference pathReference = storageRef.child("images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png");
+        Log.e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
 
         pathReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -632,15 +631,17 @@ public class Visualizer_Activity extends AppCompatActivity {
                 URL = uri.toString();
             }
         });
+        Log.w(TAG, "URL: " + URL);
         // ToDo - Remove when "real" photos available
-        if (team.matches(" 118")) {
-            Log.i(TAG, "********  Team 118 \n \n ");
-            URL = "https://firebasestorage.googleapis.com/v0/b/paradox-2017.appspot.com/o/images%2Ftxlu%2Frobot_118.png?alt=media&token=647da8f9-d3f3-4f0a-b4c4-c892aea20b79";
-        }
-        if (team.matches("5414")) {
-            URL = "https://firebasestorage.googleapis.com/v0/b/paradox-2017.appspot.com/o/images%2Ftxho%2Frobot_5414.png?alt=media&token=3dbd8a30-3eb1-4421-a64b-f74fdf41e9d5";
-        }
+//        if (team.matches(" 118")) {
+//            Log.i(TAG, "********  Team 118 \n \n ");
+//            URL = "https://firebasestorage.googleapis.com/v0/b/paradox-2017.appspot.com/o/images%2Ftxho%2Frobot_118.png?alt=media&token=647da8f9-d3f3-4f0a-b4c4-c892aea20b79";
+//        }
+//        if (team.matches("5414")) {
+//            URL = "https://firebasestorage.googleapis.com/v0/b/paradox-2017.appspot.com/o/images%2Ftxho%2Frobot_5414.png?alt=media&token=3dbd8a30-3eb1-4421-a64b-f74fdf41e9d5";
+//        }
         // ToDo ----------------------------------------
+
     }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
