@@ -47,10 +47,13 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
+import java.io.OutputStream;
+import java.nio.channels.FileChannel;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -88,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
     String team_num, team_name, team_loc;
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name, team_loc);
     String key = null;
+    Uri currentImageUri;
     boolean netOK = false;
 
     // ===========================================================================
@@ -331,6 +335,7 @@ public class MainActivity extends AppCompatActivity {
             pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
 
             File direct_pit = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/" + Pearadox.FRC_Event);
+            File bkup_pit = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/" + Pearadox.FRC_Event + "/bkup");
             Log.w(TAG, ">>>>> Path" + direct_pit);
             if (direct_pit != null) {
                 String[] filenames = direct_pit.list();
@@ -351,8 +356,11 @@ public class MainActivity extends AppCompatActivity {
                         String keyID = team_num;
                         pfPitData_DBReference.child(keyID).setValue(Pit_Data);      // Store it to Firebase
                         num_PitObjs++;
+                        String src = direct_pit + "/" + tmpf;
+                        String dest = bkup_pit + "/" + tmpf;
+                        copyFile(src, dest);     // Copy to Backup
                         File goner = new File(direct_pit + "/" + tmpf);
-//                    boolean deleted = goner.delete();
+                        boolean deleted = goner.delete();
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -365,53 +373,34 @@ public class MainActivity extends AppCompatActivity {
             }  // End If
 // ---------------------------------------
 //      ToDo - Read all data from SD card and write to Firebase (Photos)
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReference();
+//            FirebaseStorage storage = FirebaseStorage.getInstance();
+//            StorageReference storageRef = storage.getReference();
             File direct_img = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/" + Pearadox.FRC_Event);
-            Log.w(TAG, ">>>>> Path" + direct_img);
+            File bkup_img = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/" + Pearadox.FRC_Event + "/bkup");
+            Log.w(TAG, ">>>>> D-Path" + direct_img);
+            Log.w(TAG, ">>>>> B-Path" + bkup_img + " \n \n");
             if (direct_img != null) {
-                String[] filenames = direct_img.list();
+                String[] imgfilenames = direct_img.list();
+                Log.w(TAG, " Files: '" + imgfilenames + "' ");
                 num_Photos = 0;
-                for (String tmpf : filenames) {
+                for (String tmpf : imgfilenames) {
                     Log.w(TAG, " filename " + tmpf);
-                    num_Photos++;
-                    Uri file = Uri.fromFile(new File(direct_img + "/" + tmpf));
-                    Log.w(TAG, " URI " + file);
-//                StorageReference imgRef = storageRef.child("images/" + Pearadox.FRC_Event);
-                    StorageReference imgRef = storageRef.child("images/");
-                    Log.e(TAG, "***  HTTP error in Firebase putFile;  _NOT_ written to Firebase  *** ");
+                    if (!tmpf.matches("bkup")) {
+                        num_Photos++;
+//                    Uri file = Uri.fromFile(new File(direct_img + "/" + tmpf));
+                        File x = new File(direct_img, tmpf);
+                        currentImageUri = Uri.fromFile(x);
+                        Log.w(TAG, " URI " + currentImageUri);
+                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                        StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event).child(tmpf);
 
-//                imgRef.putFile(file)
-//                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                            @Override
-//                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//
-//                                //and displaying a success toast
-//                                Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
-//                            }
-//                        })
-//                        .addOnFailureListener(new OnFailureListener() {
-//                            @Override
-//                            public void onFailure(@NonNull Exception exception) {
-//
-//                                //and displaying error message
-//                                Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
-//                            }
-//                        });
-////                uploadTask = imgRef.putFile(file);
-//                // Register observers to listen for when the download is done or if it fails
-////                uploadTask.addOnFailureListener(new OnFailureListener() {
-////                    @Override
-////                    public void onFailure(@NonNull Exception exception) {
-////                        // Handle unsuccessful uploads
-////                    }
-////                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-////                    @Override
-////                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-////                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-////                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-////                    }
-////                });
+                        UploadTask uploadTask = storageReference.putFile(currentImageUri);
+                        String src = direct_img + "/" + tmpf;
+                        String dest = bkup_img + "/" + tmpf;
+                        copyFile(src, dest);     // Copy to Backup
+                        File goner = new File(direct_img + "/" + tmpf);
+                        boolean deleted = goner.delete();     // Delete
+                    }
                 }  // End for
                 Log.w(TAG, " ####### Photos = " + num_Photos);
             }  // End If
@@ -421,11 +410,13 @@ public class MainActivity extends AppCompatActivity {
             txt_messageLine.setText("*** Saving Match Data to Firebase ***");
 
             File direct_match = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/" + Pearadox.FRC_Event);
+            File bkup_match = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/" + Pearadox.FRC_Event + "/bkup");
             Log.w(TAG, ">>>>> Path" + direct_match);
             if (direct_match != null) {
-                String[] filenames = direct_match.list();
+                String[] matfilenames = direct_match.list();
+                Log.w(TAG, " Files: '" + matfilenames + "' ");
                 num_MatchObjs = 0;
-                for (String tmpf : filenames) {
+                for (String tmpf : matfilenames) {
                     String mID_team = tmpf.replaceFirst("[.][^.]+$", "");    // fileNameWithOutExt
                     Log.w(TAG, "*******  Match ID & Team:" + mID_team);
                     try {
@@ -440,9 +431,11 @@ public class MainActivity extends AppCompatActivity {
                         String keyID = mID_team;
                         pfMatchData_DBReference.child(keyID).setValue(Match_Data);      // Store it to Firebase
                         num_MatchObjs++;
-                        // ToDo copy file to BackUp directory then delete
+                        String src = direct_match + "/" + tmpf;
+                        String dest = bkup_match + "/" + tmpf;
+                        copyFile(src, dest);     // Copy to Backup
                         File goner = new File(direct_match + "/" + tmpf);
-//                    boolean deleted = goner.delete();     // Delete
+                        boolean deleted = goner.delete();     // Delete
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -463,6 +456,46 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void copyFile(String sourcepath, String targetpath) {
+        Log.i(TAG, "#### copyFile ####   Src:" + sourcepath + "  Dest:" + targetpath);
+
+        File sourceLocation= new File (sourcepath);
+        File targetLocation= new File (targetpath);
+
+        InputStream in = null;
+        try {
+            in = new FileInputStream(sourceLocation);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        OutputStream out = null;
+        try {
+            out = new FileOutputStream(targetLocation);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        // Copy the bits from instream to outstream
+        byte[] buf = new byte[1024];
+        int len;
+        try {
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void updateDev(boolean x) {     // x=true LOGON  x=false LOGOFF
         Log.i(TAG, "#### updateDev #### " + x);
@@ -616,9 +649,19 @@ private void preReqs() {
             if(direct_iHou.mkdir())
             { }        //directory is created;
         }
+        File direct_iHBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txho/bkup");
+        if(!direct_iHBkup.exists())  {
+            if(direct_iHBkup.mkdir())
+            { }        //directory is created;
+        }
         File direct_iWaco = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txwa");
         if(!direct_iWaco.exists())  {
             if(direct_iWaco.mkdir())
+            { }        //directory is created;
+        }
+        File direct_iWBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txwa/bkup");
+        if(!direct_iWBkup.exists())  {
+            if(direct_iWBkup.mkdir())
             { }        //directory is created;
         }
 //=================================================================
@@ -637,9 +680,19 @@ private void preReqs() {
             if(direct_mHou.mkdir())
             { }        //directory is created;
         }
+        File direct_mHBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txho/bkup");
+        if(!direct_mHBkup.exists())  {
+            if(direct_mHBkup.mkdir())
+            { }        //directory is created;
+        }
         File direct_mWaco = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txwa");
         if(!direct_mWaco.exists())  {
             if(direct_mWaco.mkdir())
+            { }        //directory is created;
+        }
+        File direct_mWBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txwa/bkup");
+        if(!direct_mWBkup.exists())  {
+            if(direct_mWBkup.mkdir())
             { }        //directory is created;
         }
 //=================================================================
@@ -658,9 +711,19 @@ private void preReqs() {
             if(direct_pHou.mkdir())
             { }        //directory is created;
         }
+        File direct_pHouBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txho/bkup");
+        if(!direct_pHouBkup.exists())  {
+            if(direct_pHouBkup.mkdir())
+            { }        //directory is created;
+        }
         File direct_pWaco = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txwa");
         if(!direct_pWaco.exists())  {
             if(direct_pWaco.mkdir())
+            { }        //directory is created;
+        }
+        File direct_pWBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txwa/bkup");
+        if(!direct_pWBkup.exists())  {
+            if(direct_pWBkup.mkdir())
             { }        //directory is created;
         }
         Log.i(TAG, "FRC files created");
