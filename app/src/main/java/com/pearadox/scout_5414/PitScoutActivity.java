@@ -116,7 +116,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         Bundle bundle = this.getIntent().getExtras();
         String param1 = bundle.getString("dev");
         String param2 = bundle.getString("stud");
-        Log.d(TAG, param1 + " " + param2);      // ** DEBUG **
+        Log.w(TAG, param1 + " " + param2);      // ** DEBUG **
         scout = param2; // Scout of record
 
         txt_EventName = (TextView) findViewById(R.id.txt_EventName);
@@ -157,7 +157,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    Log.d(TAG, " editTxt_Team listener; Team = " + editTxt_Team.getText());
+                    Log.w(TAG, " editTxt_Team listener; Team = " + editTxt_Team.getText());
                     if (editTxt_Team.getText().length() < 3 || editTxt_Team.getText().length() > 4) {
                         final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
                         tg.startTone(ToneGenerator.TONE_PROP_BEEP);
@@ -324,7 +324,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
 
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    Log.d(TAG, " txtEd_FuelCap listener"  + txtEd_FuelCap.getText());
+                    Log.w(TAG, " txtEd_FuelCap listener"  + txtEd_FuelCap.getText());
                     storSize = Integer.valueOf(String.valueOf(txtEd_FuelCap.getText()));
                     return true;
                 }
@@ -386,9 +386,9 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
             startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
 //            String picname = "robot_" + teamSelected.trim() + ".png";
 //            File dirPhotos = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/" + Pearadox.FRC_Event + "/");
-//            Log.d(TAG, "SD card Path = " + dirPhotos);
+//            Log.w(TAG, "SD card Path = " + dirPhotos);
 //            dirPhotos = new File(dirPhotos, picname);
-//            Log.d(TAG, "File = " + dirPhotos);
+//            Log.w(TAG, "File = " + dirPhotos);
 //            Uri outputFileUri = Uri.fromFile(dirPhotos);
 //
 //            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -396,7 +396,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
 //            Intent takePictureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 //            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
 //            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-            Log.d(TAG, "Photo taken");
+            Log.w(TAG, "Photo taken");
         }
     }
 
@@ -404,7 +404,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        Log.i(TAG, "*****  onActivityResult " + requestCode);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == PitScoutActivity.RESULT_OK) {
-//            Log.d(TAG, "requestCode = '" + requestCode + "'");
+//            Log.w(TAG, "requestCode = '" + requestCode + "'");
             galleryAddPic();
             File savedFile;
             if(currentImagePath == null){
@@ -412,18 +412,18 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
             }else{
                 savedFile = new File(currentImagePath);
             }
-//            ThumbPictureConverter thumbPic = new ThumbPictureConverter(savedFile);
-//            mImageView.setImageURI(Uri.fromFile(thumbPic.getThumbFile()));
-//            Bundle extras = data.getExtras();
-//            Bitmap imageBitmap = (Bitmap) extras.get("data");
-//            Log.d(TAG, "*** data '" + data + "'");
-            ImageView img_Photo = (ImageView) findViewById(R.id.img_Photo);
-//            img_Photo.setImageBitmap(imageBitmap);      // Show on screen
-            SaveToFirebase(savedFile);
 
-//            if (Pearadox.is_Network) {      // is Internet available?      Commented out because 'tethered' show No internet
-//                encodeBitmapAndSaveToFirebase(imageBitmap);
-//            }
+            String filename = "robot_" + teamSelected.trim() + ".png";
+            File directPhotos = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/" + Pearadox.FRC_Event + "/" + filename);
+
+            ImageView img_Photo = (ImageView) findViewById(R.id.img_Photo);
+            Log.d(TAG, "@@@ PHOTO EXISTS LOCALLY @@@ ");
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            Bitmap bitmap = BitmapFactory.decodeFile(directPhotos.getAbsolutePath(),bmOptions);
+            bitmap = Bitmap.createScaledBitmap(bitmap,img_Photo.getWidth(),img_Photo.getHeight(),true);
+            img_Photo.setImageBitmap(bitmap);
+
+            SaveToFirebase(savedFile);
         }
     }
 
@@ -450,7 +450,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         Log.i(TAG, "$$$$$  encodeBitmapAndSaveToFirebase  $$$$$");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         String picname = "robot_" + teamSelected.trim() + ".png";
-        Log.d(TAG, "Photo = '" + picname + "'");
+        Log.w(TAG, "Photo = '" + picname + "'");
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);     // ByteArrayOutputStream
         byte[] data = baos.toByteArray();
         //                  gs://paradox-2017.appspot.com/images/txZZ/
@@ -475,7 +475,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
                                    View view, int pos, long id) {
             Log.i(TAG, "*****  team_OnItemSelectedListener " + pos);
             teamSelected = parent.getItemAtPosition(pos).toString();
-            Log.d(TAG, ">>>>>  '" + teamSelected + "'");
+            Log.w(TAG, ">>>>>  '" + teamSelected + "'");
             txt_TeamName = (TextView) findViewById(R.id.txt_TeamName);
             findTeam(teamSelected);
             txt_TeamName.setText(team_inst.getTeam_name());
@@ -494,15 +494,20 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         // First check SD card
         String filename = "robot_" + team.trim() + ".png";
         File directPhotos = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/" + Pearadox.FRC_Event + "/" + filename);
-        Log.d(TAG, "SD card Path = " + directPhotos);
+        Log.w(TAG, "SD card Path = " + directPhotos);
+        ImageView img_Photo = (ImageView) findViewById(R.id.img_Photo);
         if(directPhotos.exists())  {
-            Log.d(TAG, "@@@ PHOTO EXISTS LOCALLY @@@ ");
-            Bitmap imageBitmap = BitmapFactory.decodeFile(directPhotos.getAbsolutePath());
-            img_Photo.setImageBitmap(imageBitmap);
+            Log.w(TAG, "@@@ PHOTO EXISTS LOCALLY @@@ ");
+//            Bitmap imageBitmap = BitmapFactory.decodeFile(directPhotos.getAbsolutePath());
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            Bitmap bitmap = BitmapFactory.decodeFile(directPhotos.getAbsolutePath(),bmOptions);
+            bitmap = Bitmap.createScaledBitmap(bitmap,img_Photo.getWidth(),img_Photo.getHeight(),true);
+            img_Photo.setImageBitmap(bitmap);
 
         } else {
+            img_Photo.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
 //            if (Pearadox.is_Network) {      // is Internet available?   Commented out because 'tethered' show No internet
-                Log.d(TAG, "### Checking on Firebase Images ### ");
+                Log.w(TAG, "### Checking on Firebase Images ### ");
                 //ToDo - check on Firebase (if internet is up)
 //            }
         }
@@ -517,7 +522,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
             String num = " ";
             num = parent.getItemAtPosition(pos).toString();
             numTraction = Integer.parseInt(num);
-            Log.d(TAG, ">>>>>  '" + numTraction + "'");
+            Log.w(TAG, ">>>>>  '" + numTraction + "'");
             updateNumWhls();
         }
         public void onNothingSelected(AdapterView<?> parent) {
@@ -530,7 +535,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
             String num = " ";
             num = parent.getItemAtPosition(pos).toString();
             numOmnis = Integer.parseInt(num);
-            Log.d(TAG, ">>>>>  '" + numOmnis + "'");
+            Log.w(TAG, ">>>>>  '" + numOmnis + "'");
             updateNumWhls();
         }
         public void onNothingSelected(AdapterView<?> parent) {
@@ -543,7 +548,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
             String num = " ";
             num = parent.getItemAtPosition(pos).toString();
             numMecanums = Integer.parseInt(num);
-            Log.d(TAG, ">>>>>  '" + numMecanums + "'");
+            Log.w(TAG, ">>>>>  '" + numMecanums + "'");
             updateNumWhls();
         }
         public void onNothingSelected(AdapterView<?> parent) {
@@ -568,7 +573,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         for (int i = 0; i < Pearadox.numTeams; i++) {        // check each team entry
             if (Pearadox.team_List.get(i).getTeam_num().equals(tnum)) {
                 team_inst = Pearadox.team_List.get(i);
-//                Log.d(TAG, "===  Team " + team_inst.getTeam_num() + " " + team_inst.getTeam_name() + " " + team_inst.getTeam_loc());
+//                Log.w(TAG, "===  Team " + team_inst.getTeam_num() + " " + team_inst.getTeam_name() + " " + team_inst.getTeam_loc());
                 found = true;
                 break;  // found it!
             }
@@ -589,7 +594,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
             teams[i+1] = team_inst.getTeam_num();
             tNum ++;
         }  // end For
-        Log.d(TAG, "# of teams = " + tNum);
+        Log.w(TAG, "# of teams = " + tNum);
 
     }
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
@@ -608,13 +613,13 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
             radio_Dim.setChecked(false);
         } else {
             if (value.equals("Short")) {           // Short?
-                Log.d(TAG, "Short");
+                Log.w(TAG, "Short");
                 dim_Tall = false;
             } else {                               // Tall
-                Log.d(TAG, "Tall");
+                Log.w(TAG, "Tall");
                 dim_Tall = true;
             }
-            Log.d(TAG, "RadioDim - Tall = '" + dim_Tall + "'");
+            Log.w(TAG, "RadioDim - Tall = '" + dim_Tall + "'");
         }
     }
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -650,7 +655,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         String filename = Pit_Data.getPit_team().trim() + ".dat";
         ObjectOutput out = null;
         File directMatch = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/" + Pearadox.FRC_Event + "/" + filename);
-        Log.d(TAG, "SD card Path = " + directMatch);
+        Log.w(TAG, "SD card Path = " + directMatch);
         if(directMatch.exists())  {
             // Todo - Replace TOAST with Dialog Box  - "Do you really ..."
             Toast toast = Toast.makeText(getBaseContext(), "Data for " + filename + " already exists!!", Toast.LENGTH_LONG);
@@ -712,7 +717,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         super.onStop();
         Log.v(TAG, "onStop");
         if (!dataSaved) {
-            Log.d(TAG, "** Data _NOT_ saved!!  **");
+            Log.w(TAG, "** Data _NOT_ saved!!  **");
             // Handled with Dialog box
         }
     }
