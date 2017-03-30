@@ -613,6 +613,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                 Log.e(TAG,  FB_num + "  uri: " + uri.toString());
                 ImageView tbl_robotR1 = (ImageView) findViewById(R.id.tbl_robotR1);
                 URL = uri.toString();
+                FB_url[0] = URL;
                 if (URL.length() > 0) {
                     Picasso.with(Visualizer_Activity.this).load(URL).into(tbl_robotR1);
                 }
@@ -634,6 +635,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                 Log.e(TAG,  FB_num + "  uri: " + uri.toString());
                 ImageView tbl_robotR2 = (ImageView) findViewById(R.id.tbl_robotR2);
                 URL = uri.toString();
+                FB_url[1] = URL;
                 if (URL.length() > 0) {
                     Picasso.with(Visualizer_Activity.this).load(URL).into(tbl_robotR2);
                 }
@@ -653,6 +655,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                 Log.e(TAG,  FB_num + "  uri: " + uri.toString());
                 ImageView tbl_robotR3 = (ImageView) findViewById(R.id.tbl_robotR3);
                 URL = uri.toString();
+                FB_url[2] = URL;
                 if (URL.length() > 0) {
                     Picasso.with(Visualizer_Activity.this).load(URL).into(tbl_robotR3);
                 }
@@ -672,6 +675,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                 Log.e(TAG,  FB_num + "  uri: " + uri.toString());
                 ImageView tbl_robotB1 = (ImageView) findViewById(R.id.tbl_robotB1);
                 URL = uri.toString();
+                FB_url[3] = URL;
                 if (URL.length() > 0) {
                     Picasso.with(Visualizer_Activity.this).load(URL).into(tbl_robotB1);
                 }
@@ -691,6 +695,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                 Log.e(TAG,  FB_num + "  uri: " + uri.toString());
                 ImageView tbl_robotB2 = (ImageView) findViewById(R.id.tbl_robotB2);
                 URL = uri.toString();
+                FB_url[4] = URL;
                 if (URL.length() > 0) {
                     Picasso.with(Visualizer_Activity.this).load(URL).into(tbl_robotB2);
                 }
@@ -710,6 +715,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                 Log.e(TAG,  FB_num + "  uri: " + uri.toString());
                 ImageView tbl_robotB3 = (ImageView) findViewById(R.id.tbl_robotB3);
                 URL = uri.toString();
+                FB_url[5] = URL;
                 if (URL.length() > 0) {
                     Picasso.with(Visualizer_Activity.this).load(URL).into(tbl_robotB3);
                 }
