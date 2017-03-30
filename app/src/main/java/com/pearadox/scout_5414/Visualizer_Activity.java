@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,7 +23,11 @@ import android.widget.Toast;
 import android.util.Log;
 import android.view.Gravity;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -91,12 +96,15 @@ public class Visualizer_Activity extends AppCompatActivity {
     private DatabaseReference pfMatch_DBReference;
     private DatabaseReference pfMatchData_DBReference;
 //    private DatabaseReference pfCur_Match_DBReference;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     ArrayList<p_Firebase.teamsObj> teams = new ArrayList<p_Firebase.teamsObj>();
     ImageView tbl_robotR1, tbl_robotR2, tbl_robotR3, tbl_robotB1, tbl_robotB2, tbl_robotB3;
     String tnum = "";
     Bitmap img;
     String URL = "";
+    String FB_teams[] = new String[]{"","","","","",""};
     String FB_url[] = new String[]{"","","","","",""};
+    int FB_num;
     FirebaseStorage storage;
     StorageReference storageRef;
 
@@ -563,85 +571,73 @@ public class Visualizer_Activity extends AppCompatActivity {
         ImageView tbl_robotB3 = (ImageView) findViewById(R.id.tbl_robotB3);
 
         tnum = (String) txt_teamR1.getText();
-        getURL(tnum);   // Get the Firebase URL if photo exists
-        FB_url[0] = URL;
-//        FB_url[0] = "gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event + "/robot_" + tnum + ".png";
-        Log.w(TAG, "FireBase storage '" + FB_url[0] + "'");
-        if (FB_url[0].length() > 1) {
-            Picasso.with(this).load(FB_url[0]).into(tbl_robotR1);
-        } else {
-            tbl_robotR1.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
-        }
+//        FB_teams[0] = tnum;
+        tbl_robotR1.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+        getURL0(tnum);       // Get URLs for Robot photos (if they exist) and load them
         tnum = (String) txt_teamR2.getText();
-        getURL(tnum);   // Get the Firebase URL if photo exists
-        FB_url[1] = URL;
-        if (FB_url[1].length() > 1) {
-            Picasso.with(this).load(FB_url[1]).into(tbl_robotR2);
-        } else {
-            tbl_robotR2.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
-        }
+        tbl_robotR2.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
         tnum = (String) txt_teamR3.getText();
-        getURL(tnum);   // Get the Firebase URL if photo exists
-        FB_url[2] = URL;
-        if (FB_url[2].length() > 1) {
-            Picasso.with(this).load(FB_url[2]).into(tbl_robotR3);
-        } else {
-            tbl_robotR3.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
-        }
+        tbl_robotR3.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
         tnum = (String) txt_teamB1.getText();
-        getURL(tnum);   // Get the Firebase URL if photo exists
-        FB_url[3] = URL;
-        if (FB_url[3].length() > 1) {
-            Picasso.with(this).load(FB_url[3]).into(tbl_robotB1);
-        } else {
-            tbl_robotB1.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
-        }
+        tbl_robotB1.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
         tnum = (String) txt_teamB2.getText();
-        getURL(tnum);   // Get the Firebase URL if photo exists
-        FB_url[4] = URL;
-        if (FB_url[4].length() > 1) {
-            Picasso.with(this).load(FB_url[4]).into(tbl_robotB2);
-        } else {
-            tbl_robotB2.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
-        }
+        tbl_robotB2.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+        getURL4(tnum);       // Get URLs for Robot photos (if they exist) and load them
         tnum = (String) txt_teamB3.getText();
-        getURL(tnum);   // Get the Firebase URL if photo exists
-        FB_url[5] = URL;
-        if (FB_url[5].length() > 1) {
-            Picasso.with(this).load(FB_url[5]).into(tbl_robotB3);
-        } else {
-            tbl_robotB3.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
-        }
-//        Toast.makeText(getBaseContext(), "Robot images loaded", Toast.LENGTH_LONG).show();  //** DEBUG
+        tbl_robotB3.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+
     }
 
-    private void getURL(String team) {
-        Log.i(TAG, ">>>>>  getURL: " + team);
+    private void getURL0(String team) {
+        Log.i(TAG, ">>>>>  getURL: ");
 
+//        ImageView tbl_robotR1 = (ImageView) findViewById(R.id.tbl_robotR1);
+//        ImageView tbl_robotR2 = (ImageView) findViewById(R.id.tbl_robotR2);
+//        ImageView tbl_robotR3 = (ImageView) findViewById(R.id.tbl_robotR3);
+//        ImageView tbl_robotB1 = (ImageView) findViewById(R.id.tbl_robotB1);
+//        ImageView tbl_robotB2 = (ImageView) findViewById(R.id.tbl_robotB2);
+//        ImageView tbl_robotB3 = (ImageView) findViewById(R.id.tbl_robotB3);
         URL = "";
+
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
-        StorageReference pathReference = storageRef.child("images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png");
+        StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event).child("robot_" + team.trim() + ".png");
         Log.e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
 
-        pathReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Log.e(TAG, "uri: " + uri.toString());
+                Log.e(TAG,  FB_num + "  uri: " + uri.toString());
+                ImageView tbl_robotR1 = (ImageView) findViewById(R.id.tbl_robotR1);
                 URL = uri.toString();
+                if (URL.length() > 0) {
+                    Picasso.with(Visualizer_Activity.this).load(URL).into(tbl_robotR1);
+                }
             }
         });
-        Log.w(TAG, "URL: " + URL);
-        // ToDo - Remove when "real" photos available
-//        if (team.matches(" 118")) {
-//            Log.i(TAG, "********  Team 118 \n \n ");
-//            URL = "https://firebasestorage.googleapis.com/v0/b/paradox-2017.appspot.com/o/images%2Ftxho%2Frobot_118.png?alt=media&token=647da8f9-d3f3-4f0a-b4c4-c892aea20b79";
-//        }
-//        if (team.matches("5414")) {
-//            URL = "https://firebasestorage.googleapis.com/v0/b/paradox-2017.appspot.com/o/images%2Ftxho%2Frobot_5414.png?alt=media&token=3dbd8a30-3eb1-4421-a64b-f74fdf41e9d5";
-//        }
-        // ToDo ----------------------------------------
 
+        //        Toast.makeText(getBaseContext(), "Robot images loaded", Toast.LENGTH_LONG).show();  //** DEBUG
+    }
+    private void getURL4(String team) {
+        Log.i(TAG, ">>>>>  getURL: ");
+        URL = "";
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event).child("robot_" + team.trim() + ".png");
+        Log.e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
+
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.e(TAG,  FB_num + "  uri: " + uri.toString());
+                ImageView tbl_robotB2 = (ImageView) findViewById(R.id.tbl_robotB2);
+                URL = uri.toString();
+                if (URL.length() > 0) {
+                    Picasso.with(Visualizer_Activity.this).load(URL).into(tbl_robotB2);
+                }
+            }
+        });
+
+        //        Toast.makeText(getBaseContext(), "Robot images loaded", Toast.LENGTH_LONG).show();  //** DEBUG
     }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -1023,6 +1019,20 @@ public class Visualizer_Activity extends AppCompatActivity {
         });
     }
 
+    private void signInAnonymously() {
+        mAuth.signInAnonymously().addOnSuccessListener(this, new  OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                // do your stuff
+            }
+        })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Log.e(TAG, "signInAnonymously:FAILURE", exception);
+                    }
+                });
+    }
 
 //###################################################################
 //###################################################################
@@ -1032,6 +1042,12 @@ public void onStart() {
     super.onStart();
     Log.v(TAG, "onStart");
 
+    FirebaseUser user = mAuth.getCurrentUser();
+    if (user != null) {
+        // do your stuff
+    } else {
+        signInAnonymously();
+    }
     loadMatches();  // Find all matches for this event
 }
     @Override
