@@ -72,6 +72,7 @@ public class PitScoutActivity extends AppCompatActivity {
     Button btn_Save;
     Uri currentImageUri;
     String currentImagePath;
+    String picname;
     int REQUEST_IMAGE_CAPTURE = 2;
     public static String[] teams = new String[Pearadox.numTeams+1];  // Team list (array of just Team Names)
     public static String[] wheels = new String[]
@@ -377,7 +378,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         } else {
             File dirPhotos = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/" + Pearadox.FRC_Event + "/");
             currentImagePath = String.valueOf(dirPhotos);
-            String picname = "robot_" + teamSelected.trim() + ".png";
+            picname = "robot_" + teamSelected.trim() + ".png";
             File x = new File (dirPhotos, picname);
             currentImageUri = Uri.fromFile(x);
             Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
@@ -418,11 +419,22 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
 //            Log.d(TAG, "*** data '" + data + "'");
             ImageView img_Photo = (ImageView) findViewById(R.id.img_Photo);
 //            img_Photo.setImageBitmap(imageBitmap);      // Show on screen
+            SaveToFirebase(savedFile);
 
 //            if (Pearadox.is_Network) {      // is Internet available?      Commented out because 'tethered' show No internet
 //                encodeBitmapAndSaveToFirebase(imageBitmap);
 //            }
         }
+    }
+
+    private void SaveToFirebase(File savedFile) {
+        Log.i(TAG, "$$$$$  SaveToFirebase  $$$$$" + savedFile);
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/"+ Pearadox.FRC_Event).child(picname);
+
+        UploadTask uploadTask = storageReference.putFile(currentImageUri);
+
     }
 
     private void galleryAddPic() {
