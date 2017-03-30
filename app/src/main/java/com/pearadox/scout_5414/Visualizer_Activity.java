@@ -576,20 +576,24 @@ public class Visualizer_Activity extends AppCompatActivity {
         getURL0(tnum);       // Get URLs for Robot photos (if they exist) and load them
         tnum = (String) txt_teamR2.getText();
         tbl_robotR2.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+        getURL1(tnum);       // Get URLs for Robot photos (if they exist) and load them
         tnum = (String) txt_teamR3.getText();
         tbl_robotR3.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+        getURL2(tnum);       // Get URLs for Robot photos (if they exist) and load them
         tnum = (String) txt_teamB1.getText();
         tbl_robotB1.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+        getURL3(tnum);       // Get URLs for Robot photos (if they exist) and load them
         tnum = (String) txt_teamB2.getText();
         tbl_robotB2.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
         getURL4(tnum);       // Get URLs for Robot photos (if they exist) and load them
         tnum = (String) txt_teamB3.getText();
         tbl_robotB3.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+        getURL5(tnum);       // Get URLs for Robot photos (if they exist) and load them
 
     }
 
     private void getURL0(String team) {
-        Log.i(TAG, ">>>>>  getURL: ");
+        Log.i(TAG, ">>>>>  getURL0: " + team);
 
 //        ImageView tbl_robotR1 = (ImageView) findViewById(R.id.tbl_robotR1);
 //        ImageView tbl_robotR2 = (ImageView) findViewById(R.id.tbl_robotR2);
@@ -617,10 +621,66 @@ public class Visualizer_Activity extends AppCompatActivity {
 
         //        Toast.makeText(getBaseContext(), "Robot images loaded", Toast.LENGTH_LONG).show();  //** DEBUG
     }
-    private void getURL4(String team) {
-        Log.i(TAG, ">>>>>  getURL: ");
+    private void getURL1(String team) {
+        Log.i(TAG, ">>>>>  getURL1: " + team);
         URL = "";
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event).child("robot_" + team.trim() + ".png");
+        Log.e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
 
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.e(TAG,  FB_num + "  uri: " + uri.toString());
+                ImageView tbl_robotR2 = (ImageView) findViewById(R.id.tbl_robotR2);
+                URL = uri.toString();
+                if (URL.length() > 0) {
+                    Picasso.with(Visualizer_Activity.this).load(URL).into(tbl_robotR2);
+                }
+            }
+        });
+    }
+    private void getURL2(String team) {
+        Log.i(TAG, ">>>>>  getURL2: " + team);
+        URL = "";
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event).child("robot_" + team.trim() + ".png");
+        Log.e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
+
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.e(TAG,  FB_num + "  uri: " + uri.toString());
+                ImageView tbl_robotR3 = (ImageView) findViewById(R.id.tbl_robotR3);
+                URL = uri.toString();
+                if (URL.length() > 0) {
+                    Picasso.with(Visualizer_Activity.this).load(URL).into(tbl_robotR3);
+                }
+            }
+        });
+    }
+    private void getURL3(String team) {
+        Log.i(TAG, ">>>>>  getURL3: " + team);
+        URL = "";
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event).child("robot_" + team.trim() + ".png");
+        Log.e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
+
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.e(TAG,  FB_num + "  uri: " + uri.toString());
+                ImageView tbl_robotB1 = (ImageView) findViewById(R.id.tbl_robotB1);
+                URL = uri.toString();
+                if (URL.length() > 0) {
+                    Picasso.with(Visualizer_Activity.this).load(URL).into(tbl_robotB1);
+                }
+            }
+        });
+    }
+    private void getURL4(String team) {
+        Log.i(TAG, ">>>>>  getURL4: " + team);
+        URL = "";
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event).child("robot_" + team.trim() + ".png");
         Log.e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
@@ -636,8 +696,25 @@ public class Visualizer_Activity extends AppCompatActivity {
                 }
             }
         });
+    }
+    private void getURL5(String team) {
+        Log.i(TAG, ">>>>>  getURL5: " + team);
+        URL = "";
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event).child("robot_" + team.trim() + ".png");
+        Log.e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
 
-        //        Toast.makeText(getBaseContext(), "Robot images loaded", Toast.LENGTH_LONG).show();  //** DEBUG
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.e(TAG,  FB_num + "  uri: " + uri.toString());
+                ImageView tbl_robotB3 = (ImageView) findViewById(R.id.tbl_robotB3);
+                URL = uri.toString();
+                if (URL.length() > 0) {
+                    Picasso.with(Visualizer_Activity.this).load(URL).into(tbl_robotB3);
+                }
+            }
+        });
     }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
