@@ -86,13 +86,13 @@ public class VisPit_Activity extends AppCompatActivity {
         Log.i(TAG, "$$$$$  getTeam_Pit  $$$$$  " + team);
 
         String child = "pit_team";
-        String key = team.trim();
-        Log.w(TAG, "   Q U E R Y  " + child + "  " + team);
+        String key = team;      // Removed .trim()       GLF 3/31/2017
+        Log.w(TAG, "   Q U E R Y  " + child + "  '" + key + "' \n ");
         Query query = pfPitData_DBReference.orderByChild(child).equalTo(key);
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.w(TAG, "%%%  ChildAdded");
+                Log.w(TAG, "%%%%%%%%%%%%  ChildAdded");
                 System.out.println(dataSnapshot.getValue());
                 System.out.println("\n \n ");
                 pitData Pit_Data = dataSnapshot.getValue(pitData.class);

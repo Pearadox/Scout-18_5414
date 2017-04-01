@@ -354,6 +354,11 @@ public class MainActivity extends AppCompatActivity {
                         //      ToDo - Check to see if already in FB or Delete file from SD card
 
                         String keyID = team_num;
+                        if (team_num.length() == 3) {
+                            Log.w(TAG, "***************** Team " + team_num + " *****************");
+                            team_num = " " + team_num;
+                            Log.w(TAG, " '" + team_num + "'   \n \n");
+                        }
                         pfPitData_DBReference.child(keyID).setValue(Pit_Data);      // Store it to Firebase
                         num_PitObjs++;
                         String src = direct_pit + "/" + tmpf;
