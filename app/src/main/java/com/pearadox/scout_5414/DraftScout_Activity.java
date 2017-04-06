@@ -46,10 +46,12 @@ public class DraftScout_Activity extends AppCompatActivity {
     Team[] teams;
     public static int BAnumTeams = 0;                                      // # of teams from Blue Alliance
     String gearChk=""; String climbChk=""; String climbRatio=""; String autoRatio=""; String teleRatio="";
-    String load_team;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfMatchData_DBReference;
     matchData match_inst = new matchData();
+    // -----  Array of Match Data Objects for Draft Scout
+    public static ArrayList<matchData> All_Matches = new ArrayList<matchData>();
+    String load_team, load_name;
 
 
     @Override
@@ -69,7 +71,7 @@ public class DraftScout_Activity extends AppCompatActivity {
 //        btn_Down.setOnClickListener(buttonDown_Click);
 //        Button btn_Delete = (Button) findViewById(R.id.btn_Delete); // Listner defined in Layout XML
 //        btn_Delete.setOnClickListener(buttonDelete_Click);
-        Log.w(TAG, "***** Matches Loaded. # = "  + Pearadox.Matches_Data.size());
+        Log.w(TAG, "***** Matches Loaded. # = "  + All_Matches.size());
 
         pfDatabase = FirebaseDatabase.getInstance();
         pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
@@ -147,6 +149,62 @@ public class DraftScout_Activity extends AppCompatActivity {
 
     }
 
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    public void buttonMatch_Click(View view) {
+        Log.i(TAG, ">>>>> buttonMatch_Click  " + teamSelected);
+        HashMap<String, String> temp = new HashMap<String, String>();
+        String teamHash;
+
+        draftList.get(teamSelected);
+        temp = draftList.get(teamSelected);
+        teamHash = temp.get("team");
+        Log.w(TAG, "teamHash: '" + teamHash + "' \n ");
+        load_team = teamHash.substring(0,4);
+        load_name = teamHash.substring(7,teamHash.length());
+        Log.w(TAG, "team & name: '" + load_team + "'  [" + load_name +"]");
+        addMatchData_Team_Listener(pfMatchData_DBReference);        // Load Matches for _THIS_ selected team
+    }
+
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private void addMatchData_Team_Listener(final DatabaseReference pfMatchData_DBReference) {
+        pfMatchData_DBReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i(TAG, "<<<< addMatchData_Team_Listener >>>> Match Data for team " + load_team);
+                Pearadox.Matches_Data.clear();
+                matchData mdobj = new matchData();
+                Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
+                Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
+                while (iterator.hasNext()) {
+                    mdobj = iterator.next().getValue(matchData.class);
+                    if (mdobj.getTeam_num().matches(load_team)) {
+                        Pearadox.Matches_Data.add(mdobj);
+                    }
+                }
+                Log.i(TAG, "***** Matches Loaded. # = "  + Pearadox.Matches_Data.size());
+                if (Pearadox.Matches_Data.size() > 0) {
+                    Intent match_intent = new Intent(DraftScout_Activity.this, VisMatch_Activity.class);
+                    Bundle VZbundle = new Bundle();
+                    VZbundle.putString("team", load_team);        // Pass data to activity
+                    VZbundle.putString("name", load_name);        // Pass data to activity
+                    match_intent.putExtras(VZbundle);
+                    startActivity(match_intent);               // Start Visualizer for Match Data
+                } else {
+                    Toast toast = Toast.makeText(getBaseContext(), "★★★★  There is _NO_ Match Data for Team " + load_team + "  ★★★★", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                /*listener failed or was removed for security reasons*/
+            }
+        });
+    }
+
+
     private void loadTeams() {
         Log.i(TAG, "@@@@  loadTeams started  @@@@");
 // ----------  Blue Alliance  -----------
@@ -202,28 +260,28 @@ public class DraftScout_Activity extends AppCompatActivity {
         int autoGears = 0; int teleGears = 0;int teleAttempt = 0; int climbs = 0; int climbAttemps = 0; int numMatches = 0;
         boolean gear_pu =false;
 
-        for (int i = 0; i < Pearadox.Matches_Data.size(); i++) {
-            match_inst = Pearadox.Matches_Data.get(i);      // Get instance of Match Data
+        for (int i = 0; i < All_Matches.size(); i++) {
+            match_inst = All_Matches.get(i);      // Get instance of Match Data
             if (match_inst.getTeam_num().matches(team)) {
-                Log.e(TAG, i + "  " + match_inst.getMatch() + "  Team=" + team);
+//                Log.e(TAG, i + "  " + match_inst.getMatch() + "  Team=" + team);
                 numMatches++;
                 autoGears = autoGears + match_inst.getAuto_gears_placed();
-                Log.w(TAG, "Auto Gears = " + match_inst.getAuto_gears_placed());
+//                Log.w(TAG, "Auto Gears = " + match_inst.getAuto_gears_placed());
                 teleGears = teleGears + match_inst.getTele_gears_placed();
-                Log.w(TAG, "Tele Gears Placed = " + match_inst.getTele_gears_placed());
+//                Log.w(TAG, "Tele Gears Placed = " + match_inst.getTele_gears_placed());
                 teleAttempt = teleAttempt + match_inst.getTele_gears_attempt();
-                Log.w(TAG, "Tele Gears Attempted = " + match_inst.getTele_gears_attempt());
+//                Log.w(TAG, "Tele Gears Attempted = " + match_inst.getTele_gears_attempt());
                 if (match_inst.isTele_climb_attempt()) {
                     climbAttemps++;
-                    Log.w(TAG, "Tele Climb Attempt Number= " + climbAttemps);
+//                    Log.w(TAG, "Tele Climb Attempt Number= " + climbAttemps);
                 }
                 if (match_inst.isTele_climb_success()) {
                     climbs++;
-                    Log.w(TAG, "Tele Climb Success Number= " + climbs);
+//                    Log.w(TAG, "Tele Climb Success Number= " + climbs);
                 }
                 if (match_inst.isTele_gear_pickup()) {
                     gear_pu = true;
-                    Log.w(TAG, "Tele Climb Attempt Number= ");
+//                    Log.w(TAG, "Tele Climb Attempt Number= ");
                 }
 
             }
@@ -257,16 +315,16 @@ public class DraftScout_Activity extends AppCompatActivity {
         pfMatchData_DBReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, "<<<< getFB_Data >>>> Match Data for team " + load_team);
-                Pearadox.Matches_Data.clear();
+                Log.i(TAG, "<<<< getFB_Data >>>> _ALL_ Match Data ");
+                All_Matches.clear();
                 matchData mdobj = new matchData();
                 Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
                 Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
                 while (iterator.hasNext()) {
                     mdobj = iterator.next().getValue(matchData.class);
-                    Pearadox.Matches_Data.add(mdobj);
+                    All_Matches.add(mdobj);
                 }
-                Log.w(TAG, "***** Matches Loaded. # = "  + Pearadox.Matches_Data.size());
+                Log.w(TAG, "***** Matches Loaded. # = "  + All_Matches.size());
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

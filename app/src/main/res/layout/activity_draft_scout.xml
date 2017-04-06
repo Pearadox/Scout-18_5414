@@ -85,16 +85,16 @@
         <!--android:textSize="10dp"-->
         <!--android:textStyle="bold" />-->
 
-    <!--<TextView-->
-        <!--android:id="@+id/lbl_Selected"-->
-        <!--android:layout_width="100dp"-->
-        <!--android:layout_height="15dp"-->
-        <!--android:layout_above="@+id/btn_Delete"-->
-        <!--android:layout_alignStart="@+id/btn_Delete"-->
-        <!--android:text="   Selected"-->
-        <!--android:textColor="@color/white"-->
-        <!--android:textSize="10dp"-->
-        <!--android:textStyle="bold" />-->
+    <TextView
+        android:id="@+id/lbl_Selected"
+        android:layout_width="100dp"
+        android:layout_height="15dp"
+        android:layout_above="@+id/btn_Match"
+        android:layout_alignStart="@+id/btn_Match"
+        android:text="   Selected"
+        android:textColor="@color/white"
+        android:textSize="10dp"
+        android:textStyle="bold" />
 
     <!--<Button-->
         <!--android:id="@+id/btn_Up"-->
@@ -118,15 +118,15 @@
         <!--android:layout_alignBottom="@+id/btn_Delete"-->
         <!--android:layout_alignEnd="@+id/lbl_MoveTeam" />-->
 
-    <!--<Button-->
-        <!--android:id="@+id/btn_Delete"-->
-        <!--android:layout_width="70sp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:onClick="buttonDelete_Click"-->
-        <!--android:text="DELETE"-->
-        <!--android:textSize="12sp"-->
-        <!--android:layout_below="@+id/lbl_NumTeamsView"-->
-        <!--android:layout_toStartOf="@+id/lbl_NumTeamsView"-->
-        <!--android:layout_marginEnd="39dp" />-->
+    <Button
+        android:id="@+id/btn_Match"
+        android:layout_width="70sp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_NumTeamsView"
+        android:layout_marginEnd="39dp"
+        android:layout_toStartOf="@+id/lbl_NumTeamsView"
+        android:onClick="buttonMatch_Click"
+        android:text="MATCH DATA"
+        android:textSize="12sp" />
 
 </RelativeLayout>
