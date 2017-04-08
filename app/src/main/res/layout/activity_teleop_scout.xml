@@ -518,7 +518,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/button_GearAttemptedM"
         android:layout_toEndOf="@+id/space_constrainHighGoal"
-        android:text="Can they pickup gears from the floor?" />
+        android:text="Did they pickup gears from the floor?" />
 
     <TextView
         android:id="@+id/lbl_robotnum"
