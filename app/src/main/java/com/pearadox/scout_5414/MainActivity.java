@@ -649,6 +649,16 @@ private void preReqs() {
 
             }        //directory is created;
         }
+        File direct_iCmp = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/cmptx");
+        if(!direct_iCmp.exists())  {
+            if(direct_iCmp.mkdir())
+            { }        //directory is created;
+        }
+        File direct_iCBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/cmptx/bkup");
+        if(!direct_iCBkup.exists())  {
+            if(direct_iCBkup.mkdir())
+            { }        //directory is created;
+        }
         File direct_iHou = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txho");
         if(!direct_iHou.exists())  {
             if(direct_iHou.mkdir())
@@ -680,6 +690,16 @@ private void preReqs() {
             if(direct_mLub.mkdir())
             { }        //directory is created;
         }
+        File direct_mCmp = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/cmptx");
+        if(!direct_mCmp.exists())  {
+            if(direct_mCmp.mkdir())
+            { }        //directory is created;
+        }
+        File direct_mCBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/cmptx/bkup");
+        if(!direct_mCBkup.exists())  {
+            if(direct_mCBkup.mkdir())
+            { }        //directory is created;
+        }
         File direct_mHou = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txho");
         if(!direct_mHou.exists())  {
             if(direct_mHou.mkdir())
@@ -709,6 +729,16 @@ private void preReqs() {
         File direct_pLub = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txlu");
         if(!direct_pLub.exists())  {
             if(direct_pLub.mkdir())
+            { }        //directory is created;
+        }
+        File direct_pCmp = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/cmptx");
+        if(!direct_pCmp.exists())  {
+            if(direct_pCmp.mkdir())
+            { }        //directory is created;
+        }
+        File direct_pCBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/cmptx/bkup");
+        if(!direct_pCBkup.exists())  {
+            if(direct_pCBkup.mkdir())
             { }        //directory is created;
         }
         File direct_pHou = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txho");
@@ -839,6 +869,9 @@ private void preReqs() {
             spinner_Device.setClickable(true);
             spinner_Student.setClickable(true);
             switch (ev) {
+                case "FIRST Championship (Houston)":          // txwa
+                    Pearadox.FRC_Event = "cmptx";
+                    break;
                 case "Brazos Valley Regional":          // txwa
                     Pearadox.FRC_Event = "txwa";
                     break;
