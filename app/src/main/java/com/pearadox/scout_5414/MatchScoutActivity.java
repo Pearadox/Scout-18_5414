@@ -676,6 +676,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         Pearadox.Match_Data.setAuto_lg_percent(LGSvalue);
         Pearadox.Match_Data.setAuto_start(startPos);
         Pearadox.Match_Data.setAuto_stop(stopPos);
+//        Log.w(TAG, ">>>>>>>>>  gearPos = " + gearPos + "  \n  \n");
         Pearadox.Match_Data.setAuto_gear_pos(gearPos);
         Pearadox.Match_Data.setAuto_rope(brought_rope);
         Pearadox.Match_Data.setAuto_act_hopper(activate_hopper);
@@ -684,6 +685,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         Pearadox.Match_Data.setAuto_fuel_amount(fuel);
 
         Pearadox.Match_Data.setFinal_studID(studID);
+        Log.w(TAG, "*******  All done with AUTO setters!!");
     }
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
