@@ -89,7 +89,7 @@ public class MatchScoutActivity extends AppCompatActivity {
     int fuel = 10;
     public String startPos = " ";
     public String stopPos = " ";
-    public String gearPos = " ";
+    public String gearPos = "0";        // initialie to Zero - Firebase tries to convert String-to-Int (ERROR)  GLF 4/10
     public String ballsCollected = " ";
     public boolean pu_Fuel = false;
     public boolean pu_Gear = false;
