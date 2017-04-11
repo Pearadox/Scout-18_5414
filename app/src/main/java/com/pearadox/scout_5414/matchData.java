@@ -244,6 +244,9 @@ public matchData() {
     }
 
     public String getAuto_gear_pos() {
+        if (auto_gear_pos.matches(" ")) {
+            auto_gear_pos = "0";         // default to zero   GLF 4/10
+        }
         return auto_gear_pos;
     }
 
