@@ -29,6 +29,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -133,49 +134,23 @@ public class Visualizer_Activity extends AppCompatActivity {
         TBA t = new TBA();
         Event e = t.getEvent("txlu", 2017);
         teams1 = e.teams.clone();
-//        Team[] teams1 = e.teams;
         Log.e(TAG, "BLUE1 " + teams1.length);
         BA1numTeams = e.teams.length;
-        for(int i = 0; i < teams1.length; i++) {
-            System.out.println("Team #: "+teams1[i].team_number+ "  " +teams1[i].rank+" OPR: "+teams1[i].opr+ "  " +teams1[i].touchpad);
-            System.out.println("        "+teams1[i].record+" RankScore: "+teams1[i].rankingScore+ "  " +teams1[i].pressure + "\n ");
-        }
+//        for(int i = 0; i < teams1.length; i++) {
+//            System.out.println("Team #: "+teams1[i].team_number+ "  " +teams1[i].rank+" OPR: "+teams1[i].opr+ "  " +teams1[i].touchpad);
+//            System.out.println("        "+teams1[i].record+" RankScore: "+teams1[i].rankingScore+ "  " +teams1[i].pressure + "\n ");
+//        }
 
         Event x = t.getEvent("txho", 2017);
         teams2 = x.teams.clone();
 //        Team[] teams2 = x.teams;
         Log.e(TAG, "BLUE2 " + teams2.length);
         BA2numTeams = x.teams.length;
-        for(int i = 0; i < teams2.length; i++) {
-            System.out.println("Team #: "+teams2[i].team_number+ "  " +teams2[i].rank+" OPR: "+teams2[i].opr+ "  " +teams2[i].touchpad);
-            System.out.println("        "+teams2[i].record+" RankScore: "+teams2[i].rankingScore+ "  " +teams2[i].pressure + "\n ");
-        }
-
-//        Event e = tba.getEvent("txlu", 2017);       // event/2017txlu will give top 15 OPR
-//        System.out.println(e.name);
-//        System.out.println(e.location);
-//        System.out.println(e.start_date);
-//        if (!e.name.isEmpty()) {
-//            Team[] teams = e.teams;
-//            System.out.println(e.teams.length + "\n ");
-//            Log.w(TAG, "Rank " + e.teams[0].team_number + " " + e.teams[0].rank + " " + e.teams[0].defense + "\n ");
-//            Log.w(TAG, "Rank " + e.teams[1].team_number + " " + e.teams[1].rank + " " + e.teams[1].rankingScore + "\n ");
-//            Log.w(TAG, "Rank " + e.teams[2].team_number + " " + e.teams[2].rank + " " + e.teams[2].rankingScore + "\n ");
-//            Log.w(TAG, "Rank " + e.teams[3].team_number + " " + e.teams[3].rank + " " + e.teams[3].rankingScore + "\n ");
-//            Log.w(TAG, "Rank " + e.teams[4].team_number + " " + e.teams[4].rank + " " + e.teams[4].rankingScore + "\n ");
-//            Log.w(TAG, "Rank " + e.teams[5].team_number + " " + e.teams[5].rank + " " + e.teams[5].rankingScore + "\n ");
-//
-//            Log.w(TAG, "Teams " + teams[0].team_number + " " + teams[0].record + " " + teams[0].defense+ " " + teams[0].auto+ " " + teams[0].goals + "\n ");
-//            Log.w(TAG, "Teams " + teams[1].team_number + " " + teams[1].record + " " + teams[1].defense+ " " + teams[1].auto+ " " + teams[1].goals + "\n ");
-//            Log.w(TAG, "Teams " + teams[2].team_number + " " + teams[2].record + " " + teams[2].defense+ " " + teams[2].auto+ " " + teams[2].goals + "\n ");
-//            Log.w(TAG, "Teams " + teams[3].team_number + " " + teams[3].record + " " + teams[3].defense+ " " + teams[3].auto+ " " + teams[3].goals + "\n ");
-//            Log.w(TAG, "Teams " + teams[4].team_number + " " + teams[4].record + " " + teams[4].defense+ " " + teams[4].auto+ " " + teams[4].goals + "\n ");
-//            Log.w(TAG, "Teams " + teams[5].team_number + " " + teams[5].record + " " + teams[5].defense+ " " + teams[5].auto+ " " + teams[5].goals + "\n ");
-//        } else {
-//            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-//            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
-//
+//        for(int i = 0; i < teams2.length; i++) {
+//            System.out.println("Team #: "+teams2[i].team_number+ "  " +teams2[i].rank+" OPR: "+teams2[i].opr+ "  " +teams2[i].touchpad);
+//            System.out.println("        "+teams2[i].record+" RankScore: "+teams2[i].rankingScore+ "  " +teams2[i].pressure + "\n ");
 //        }
+
         if (!e.name.isEmpty() && !x.name.isEmpty()) {
             BA_avail = true;
 //            BAnumTeams = e.teams.length;
@@ -454,31 +429,45 @@ public class Visualizer_Activity extends AppCompatActivity {
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void launchVizMatch(String team, String name) {
-        Log.i(TAG, ">>>>> launchVizMatch   <<<<<");
+        Log.i(TAG, ">>>>> launchVizMatch   <<<<<"  + team + " " + name);
 
         load_team = team;
         load_name = name;
-        addMD_VE_Listener(pfMatchData_DBReference);        // Load Matches
+//        addMD_VE_Listener(pfMatchData_DBReference.orderByChild("match"));        // Load Matches
+        childTeamMD_Listner();
 
     }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    private void addMD_VE_Listener(final DatabaseReference pfMatchData_DBReference) {
-        pfMatchData_DBReference.addValueEventListener(new ValueEventListener() {
+    private void childTeamMD_Listner() {
+//    private void addMD_VE_Listener(final Query pfMatchData_DBReference) {
+        Log.i(TAG, "<<<< getFB_Data >>>> Match Data for team " + load_team);
+        String child = "team_num";
+        String key = load_team;
+        Query query = pfMatchData_DBReference.orderByChild(child).equalTo(key);
+        query.addChildEventListener(new ChildEventListener() {
+
+            //        pfMatchData_DBReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, "<<<< getFB_Data >>>> Match Data for team " + load_team);
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.w(TAG, "<<<< getFB_Data >>>> Match Data for team " + load_team);
                 Pearadox.Matches_Data.clear();
                 matchData mdobj = new matchData();
                 Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
                 Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
                 while (iterator.hasNext()) {
+                    Log.w(TAG, " WHILE: "  + Pearadox.Matches_Data.size());
+                    System.out.println(dataSnapshot.getValue());
+                    System.out.println("  \n  \n");
                     mdobj = iterator.next().getValue(matchData.class);
                     if (mdobj.getTeam_num().matches(load_team)) {
+                        Log.w(TAG, " Match: " + mdobj.getMatch() + " # "  + Pearadox.Matches_Data.size());
+                        System.out.println("  \n");
                         Pearadox.Matches_Data.add(mdobj);
                     }
                }
-                Log.i(TAG, "***** Matches Loaded. # = "  + Pearadox.Matches_Data.size());
+                Log.w(TAG, "***** Matches Loaded. # = "  + Pearadox.Matches_Data.size());
                 if (Pearadox.Matches_Data.size() > 0) {
                     Intent pit_intent = new Intent(Visualizer_Activity.this, VisMatch_Activity.class);
                     Bundle VZbundle = new Bundle();
@@ -492,6 +481,18 @@ public class Visualizer_Activity extends AppCompatActivity {
                     toast.show();
 
                 }
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Log.w(TAG, "%%%  ChildChanged");
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Log.w(TAG, "%%%  ChildRemoved");
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                Log.w(TAG, "%%%  ChildMoved");
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
