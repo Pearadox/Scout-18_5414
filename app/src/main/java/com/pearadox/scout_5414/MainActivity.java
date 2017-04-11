@@ -38,6 +38,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -218,6 +219,8 @@ public class MainActivity extends AppCompatActivity {
 //                                    }
                                     break;
                                 case "Draft Scout":          // Draft Scout
+                                    radgrp_Scout.setVisibility(View.GONE);    // Hide scout group    GLF 4/9
+                                    radgrp_Scout.setEnabled(false);
                                     if (Pearadox.is_Network) {
                                         netOK = true;
                                         Log.w(TAG, "Draft Internet Connected");
@@ -293,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
 //                                        viz_intent.putExtras(VZbundle);
 //                                        startActivity(viz_intent);                        // Start Visualizer
 //                                    }
-//                                    break;
+                                    break;
                                 case ("Red-1"):             //#Red or Blue Scout
                                 case ("Red-2"):             //#
                                 case ("Red-3"):             //#
@@ -351,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public void buttonStore_Click(View view) {
         Log.i(TAG, " buttonStore_Click   '" + Pearadox.FRC_Event + "'  \n ");
-        if (Pearadox.FRC_Event.length() == 4) {
+        if (Pearadox.FRC_Event.length() == 4 | Pearadox.FRC_Event.length() == 5) {
             txt_messageLine = (TextView) findViewById(R.id.txt_messageLine);
             txt_messageLine.setText("*** Saving Pit Data to Firebase ***");
             pfPitData_DBReference = pfDatabase.getReference("pit-data/" + Pearadox.FRC_Event); // Pit Scout Data
@@ -570,7 +573,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        private void addTeam_VE_Listener(final DatabaseReference pfTeam_DBReference) {
+        private void addTeam_VE_Listener(final Query pfTeam_DBReference) {
         pfTeam_DBReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -910,7 +913,7 @@ private void preReqs() {
             }
             Log.w(TAG, " Event code = '" + Pearadox.FRC_Event + "'  \n ");
             pfTeam_DBReference = pfDatabase.getReference("teams/" + Pearadox.FRC_Event);   // Team data from Firebase D/B
-            addTeam_VE_Listener(pfTeam_DBReference);        // Load Teams since we now know event
+            addTeam_VE_Listener(pfTeam_DBReference.orderByChild("team_num"));        // Load Teams since we now know event
         }
         public void onNothingSelected(AdapterView<?> parent) {
             // Do nothing.
