@@ -46,6 +46,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -84,6 +85,8 @@ public class PitScoutActivity extends AppCompatActivity {
     private DatabaseReference pfPitData_DBReference;
     FirebaseStorage storage;
     StorageReference storageRef;
+    String URL = "";
+    Boolean imageOnFB = false;      // Does image already exist in Firebase
 
     boolean dataSaved = false;      // Make sure they save before exiting
     // ===================  Data Elements for Pit Scout object ===================
@@ -417,13 +420,17 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
             File directPhotos = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/" + Pearadox.FRC_Event + "/" + filename);
 
             ImageView img_Photo = (ImageView) findViewById(R.id.img_Photo);
-            Log.d(TAG, "@@@ PHOTO EXISTS LOCALLY @@@ ");
+            Log.w(TAG, "@@@ PHOTO EXISTS LOCALLY @@@ ");
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
             Bitmap bitmap = BitmapFactory.decodeFile(directPhotos.getAbsolutePath(),bmOptions);
             bitmap = Bitmap.createScaledBitmap(bitmap,img_Photo.getWidth(),img_Photo.getHeight(),true);
             img_Photo.setImageBitmap(bitmap);
 
-            SaveToFirebase(savedFile);
+            if (!imageOnFB) {
+                SaveToFirebase(savedFile);
+            }else{
+                Log.w(TAG, "*** PHOTO EXISTS ON FIREBASE *** ");
+            }
         }
     }
 
@@ -505,11 +512,31 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
             img_Photo.setImageBitmap(bitmap);
 
         } else {
-            img_Photo.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
 //            if (Pearadox.is_Network) {      // is Internet available?   Commented out because 'tethered' show No internet
-                Log.w(TAG, "### Checking on Firebase Images ### ");
-                //ToDo - check on Firebase (if internet is up)
+            Log.w(TAG, "### Checking on Firebase Images ### ");
+            //ToDo - check on Firebase (if internet is up)
 //            }
+            URL = "";
+
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event).child("robot_" + team.trim() + ".png");
+            Log.e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
+            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Log.e(TAG, "  uri: " + uri.toString());
+                    ImageView img_Photo = (ImageView) findViewById(R.id.img_Photo);
+                    URL = uri.toString();
+                    if (URL.length() > 0) {
+                        Picasso.with(PitScoutActivity.this).load(URL).into(img_Photo);
+                        imageOnFB = true;
+                    } else {
+                        img_Photo.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+                        imageOnFB = false;
+                    }
+                }
+            });
+
         }
 
 
