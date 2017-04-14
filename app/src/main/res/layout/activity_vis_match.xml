@@ -139,11 +139,11 @@
         android:id="@+id/lbl_B1_B5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" _B1_B2_B3_B4_B5_"
-        android:textColor="@color/white"
         android:layout_alignBaseline="@+id/txt_auto_HGpercent"
         android:layout_alignBottom="@+id/txt_auto_HGpercent"
-        android:layout_toEndOf="@+id/txt_teamName" />
+        android:layout_toEndOf="@+id/txt_teamName"
+        android:text=" _B1_B2__B3__B4_B5_"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/lbl_StartPos"
@@ -158,64 +158,99 @@
         android:id="@+id/txt_sB1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
-        android:textColor="@color/red"
         android:layout_below="@+id/lbl_B1_B5"
+        android:layout_marginStart="10dp"
         android:layout_toEndOf="@+id/txt_teamName"
-        android:layout_marginStart="10dp" />
+        android:text="00"
+        android:textColor="@color/red" />
+
+    <TextView
+        android:id="@+id/txt_gP1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00"
+        android:textColor="@color/red"
+        android:layout_below="@+id/lbl_P1_P3"
+        android:layout_alignStart="@+id/lbl_P1_P3" />
+
+    <TextView
+        android:id="@+id/txt_gP2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00"
+        android:textColor="@color/red"
+        android:layout_below="@+id/lbl_P1_P3"
+        android:layout_toEndOf="@+id/txt_sB3" />
+
+    <TextView
+        android:id="@+id/txt_gP2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txt_NumMatches"
+        android:layout_below="@+id/lbl_P1_P3"
+        android:layout_toEndOf="@+id/lbl_Matches"
+        android:text="00"
+        android:textColor="@color/red" />
 
     <TextView
         android:id="@+id/txt_sB2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
-        android:textColor="@color/red"
         android:layout_below="@+id/lbl_B1_B5"
-        android:layout_toEndOf="@+id/txt_final_LostComm" />
+        android:layout_toEndOf="@+id/txt_final_LostComm"
+        android:text="00"
+        android:textColor="@color/red" />
 
     <TextView
         android:id="@+id/txt_sB3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
+        android:text="00"
         android:textColor="@color/red"
         android:layout_below="@+id/lbl_B1_B5"
-        android:layout_toEndOf="@+id/txt_sB2"
-        android:layout_marginStart="19dp" />
+        android:layout_toEndOf="@+id/txt_gP1" />
 
     <TextView
         android:id="@+id/txt_sB4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
+        android:text="00"
         android:textColor="@color/red"
         android:layout_below="@+id/lbl_B1_B5"
-        android:layout_alignEnd="@+id/lbl_StartPos"
-        android:layout_marginEnd="10dp" />
+        android:layout_toEndOf="@+id/lbl_Matches" />
 
     <TextView
         android:id="@+id/txt_sB5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
+        android:text="00"
         android:textColor="@color/red"
         android:layout_below="@+id/lbl_B1_B5"
-        android:layout_alignEnd="@+id/lbl_B1_B5"
-        android:layout_marginEnd="11dp" />
+        android:layout_toEndOf="@+id/txt_gP2" />
+
+    <TextView
+        android:id="@+id/lbl_P1_P3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txt_auto_baselineRatio"
+        android:layout_alignBottom="@+id/txt_auto_baselineRatio"
+        android:layout_toEndOf="@+id/txt_sB2"
+        android:text="  Gear Pos.\n     1 \\_/ 3 \n          2"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/txt_AutoComments"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="51dp"
+        android:layout_marginTop="13dp"
         android:background="@drawable/border"
         android:ems="12"
-        android:lines="5"
+        android:lines="4"
         android:scrollbars="vertical"
         android:text="Comments"
         android:textColor="@color/red"
         android:textSize="14dp"
-        android:layout_below="@+id/lbl_baselineRatio"
+        android:layout_below="@+id/txt_gP1"
         android:layout_alignParentStart="true" />
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
