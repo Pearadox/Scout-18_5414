@@ -170,7 +170,8 @@
         android:layout_height="wrap_content"
         android:text="00"
         android:textColor="@color/red"
-        android:layout_below="@+id/lbl_P1_P3"
+        android:layout_alignBaseline="@+id/txt_gP3"
+        android:layout_alignBottom="@+id/txt_gP3"
         android:layout_alignStart="@+id/lbl_P1_P3" />
 
     <TextView
@@ -179,18 +180,18 @@
         android:layout_height="wrap_content"
         android:text="00"
         android:textColor="@color/red"
-        android:layout_below="@+id/lbl_P1_P3"
-        android:layout_toEndOf="@+id/txt_sB3" />
+        android:layout_above="@+id/txt_AutoComments"
+        android:layout_toStartOf="@+id/txt_sB4" />
 
     <TextView
         android:id="@+id/txt_gP3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/txt_NumMatches"
-        android:layout_below="@+id/lbl_P1_P3"
-        android:layout_toEndOf="@+id/lbl_Matches"
         android:text="00"
-        android:textColor="@color/red" />
+        android:textColor="@color/red"
+        android:layout_below="@+id/lbl_P1_P3"
+        android:layout_alignStart="@+id/txt_NumMatches"
+        android:layout_marginTop="18dp" />
 
     <TextView
         android:id="@+id/txt_sB2"
@@ -208,7 +209,8 @@
         android:text="00"
         android:textColor="@color/red"
         android:layout_below="@+id/lbl_B1_B5"
-        android:layout_toEndOf="@+id/txt_gP1" />
+        android:layout_toStartOf="@+id/txt_sB4"
+        android:layout_marginEnd="13dp" />
 
     <TextView
         android:id="@+id/txt_sB4"
@@ -226,17 +228,16 @@
         android:text="00"
         android:textColor="@color/red"
         android:layout_below="@+id/lbl_B1_B5"
-        android:layout_toEndOf="@+id/txt_gP2" />
+        android:layout_alignEnd="@+id/txt_AutoComments" />
 
     <TextView
         android:id="@+id/lbl_P1_P3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/txt_auto_baselineRatio"
-        android:layout_alignBottom="@+id/txt_auto_baselineRatio"
-        android:layout_toEndOf="@+id/txt_sB2"
         android:text="  Gear Pos.\n     1 \\_/ 3 \n          2"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:layout_below="@+id/txt_sB3"
+        android:layout_toEndOf="@+id/txt_sB2" />
 
     <TextView
         android:id="@+id/txt_AutoComments"
