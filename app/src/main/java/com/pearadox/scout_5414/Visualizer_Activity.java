@@ -433,25 +433,25 @@ public class Visualizer_Activity extends AppCompatActivity {
 
         load_team = team;
         load_name = name;
-//        addMD_VE_Listener(pfMatchData_DBReference.orderByChild("match"));        // Load Matches
-        childTeamMD_Listner();
+        addMD_VE_Listener(pfMatchData_DBReference.orderByChild("match"));        // Load Matches
+//        childTeamMD_Listner();
 
     }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    private void childTeamMD_Listner() {
-//    private void addMD_VE_Listener(final Query pfMatchData_DBReference) {
+//    private void childTeamMD_Listner() {
+    private void addMD_VE_Listener(final Query pfMatchData_DBReference) {
         Log.i(TAG, "<<<< getFB_Data >>>> Match Data for team " + load_team);
-        String child = "team_num";
-        String key = load_team;
-        Query query = pfMatchData_DBReference.orderByChild(child).equalTo(key);
-        query.addChildEventListener(new ChildEventListener() {
+//        String child = "team_num";
+//        String key = load_team;
+//        Query query = pfMatchData_DBReference.orderByChild(child).equalTo(key);
+//        query.addChildEventListener(new ChildEventListener() {
 
-            //        pfMatchData_DBReference.addValueEventListener(new ValueEventListener() {
+            pfMatchData_DBReference.addValueEventListener(new ValueEventListener() {
             @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.w(TAG, "<<<< getFB_Data >>>> Match Data for team " + load_team);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.w(TAG, "@@@@ onChildAdded @@@@ Match Data for team " + load_team);
                 Pearadox.Matches_Data.clear();
                 matchData mdobj = new matchData();
                 Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
@@ -482,18 +482,18 @@ public class Visualizer_Activity extends AppCompatActivity {
 
                 }
             }
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Log.w(TAG, "%%%  ChildChanged");
-            }
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Log.w(TAG, "%%%  ChildRemoved");
-            }
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                Log.w(TAG, "%%%  ChildMoved");
-            }
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                Log.w(TAG, "%%%  ChildChanged");
+//            }
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//                Log.w(TAG, "%%%  ChildRemoved");
+//            }
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//                Log.w(TAG, "%%%  ChildMoved");
+//            }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 /*listener failed or was removed for security reasons*/
