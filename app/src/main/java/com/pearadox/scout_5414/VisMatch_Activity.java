@@ -22,6 +22,7 @@ public class VisMatch_Activity extends AppCompatActivity {
     TextView txt_auto_HGpercent, txt_auto_LGpercent, txt_auto_gearRatio, txt_auto_baselineRatio, txt_tele_gearRatio, txt_climbAttempts, txt_successfulClimbs, txt_tele_HGpercent, txt_tele_LGpercent;
     /* Comment Boxes */     TextView txt_AutoComments, txt_TeleComments, txt_FinalComments;
     TextView txt_sB1, txt_sB2, txt_sB3, txt_sB4, txt_sB5;
+    TextView txt_gP1, txt_gP2, txt_gP3;
     TextView txt_final_LostComm, txt_final_LostParts, txt_final_DefGood, txt_final_DefBlock,txt_final_DefDump, txt_final_DefStarve, txt_final_NumPen;
     /* Labels */    TextView lbl_Autonomous, lbl_autoHGshootingPercent, lbl_autoLGshootingPercent, lbl_tele_gearRatio, lbl_climbAttempts, lbl_successfulClimbs;
     //----------------------------------
@@ -30,6 +31,7 @@ public class VisMatch_Activity extends AppCompatActivity {
     int auto_totalgearsAttempted = 0;
     int auto_totalgearsPlaced = 0;
     int auto_B1 = 0; int auto_B2 = 0; int auto_B3 = 0; int auto_B4 = 0; int auto_B5 = 0;
+    int auto_gP1 = 0; int auto_gP2 = 0; int auto_gP3 = 0;
     String auto_collectedBalls = "";
     String auto_Comments = "";
     //----------------------------------
@@ -73,6 +75,9 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_sB3 = (TextView) findViewById(R.id.txt_sB3);
         txt_sB4 = (TextView) findViewById(R.id.txt_sB4);
         txt_sB5 = (TextView) findViewById(R.id.txt_sB5);
+        txt_gP1 = (TextView) findViewById(R.id.txt_gP1);
+        txt_gP2 = (TextView) findViewById(R.id.txt_gP2);
+        txt_gP3 = (TextView) findViewById(R.id.txt_gP3);
         txt_AutoComments = (TextView) findViewById(R.id.txt_AutoComments);
         txt_TeleComments = (TextView) findViewById(R.id.txt_TeleComments);
         txt_FinalComments = (TextView) findViewById(R.id.txt_FinalComments);
@@ -174,6 +179,26 @@ public class VisMatch_Activity extends AppCompatActivity {
                     break;
                 default:                //
                     Log.e(TAG, "***  Invalid Start Position!!!  ***" );
+            }
+            String post = match_inst.getAuto_gear_pos().trim();
+            Log.w(TAG, "Gear Pos. " + post);
+            switch (post) {
+                case "1":
+                    auto_gP1++;
+                    break;
+                case "2":
+                    auto_gP2++;
+                    break;
+                case "3":
+                    auto_gP3++;
+                    break;
+                case "0":
+                case " ":
+                case "":
+                    // Do nothing
+                    break;
+                default:                //
+                    Log.e(TAG, "***  Invalid Gear Post!!  ***" );
             }
 
             //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -286,6 +311,10 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_sB3.setText(String.valueOf(auto_B3));
         txt_sB4.setText(String.valueOf(auto_B4));
         txt_sB5.setText(String.valueOf(auto_B5));
+
+        txt_gP1.setText(String.valueOf(auto_gP1));
+        txt_gP2.setText(String.valueOf(auto_gP2));
+        txt_gP3.setText(String.valueOf(auto_gP3));
 
         txt_AutoComments.setText(auto_Comments);
 
