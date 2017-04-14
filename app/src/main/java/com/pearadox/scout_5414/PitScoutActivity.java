@@ -41,6 +41,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -486,7 +487,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
             txt_TeamName = (TextView) findViewById(R.id.txt_TeamName);
             findTeam(teamSelected);
             txt_TeamName.setText(team_inst.getTeam_name());
-            // ToDo - see if photo already exists
+
             chkForPhoto(teamSelected);
         }
         public void onNothingSelected(AdapterView<?> parent) {
@@ -514,9 +515,10 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         } else {
 //            if (Pearadox.is_Network) {      // is Internet available?   Commented out because 'tethered' show No internet
             Log.w(TAG, "### Checking on Firebase Images ### ");
-            //ToDo - check on Firebase (if internet is up)
 //            }
             URL = "";
+            img_Photo.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+            imageOnFB = false;
 
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event).child("robot_" + team.trim() + ".png");
@@ -534,12 +536,10 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
                         img_Photo.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
                         imageOnFB = false;
                     }
+
                 }
             });
-
         }
-
-
     }
 
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
