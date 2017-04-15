@@ -142,7 +142,7 @@
         android:layout_alignBaseline="@+id/txt_auto_HGpercent"
         android:layout_alignBottom="@+id/txt_auto_HGpercent"
         android:layout_toEndOf="@+id/txt_teamName"
-        android:text=" _B1_B2__B3__B4_B5_"
+        android:text=" _B1_B2__B3_B4_B5_"
         android:textColor="@color/white" />
 
     <TextView
@@ -172,7 +172,7 @@
         android:textColor="@color/red"
         android:layout_alignBaseline="@+id/txt_gP3"
         android:layout_alignBottom="@+id/txt_gP3"
-        android:layout_alignStart="@+id/lbl_P1_P3" />
+        android:layout_alignStart="@+id/txt_sB1" />
 
     <TextView
         android:id="@+id/txt_gP2"
@@ -181,7 +181,7 @@
         android:text="00"
         android:textColor="@color/red"
         android:layout_above="@+id/txt_AutoComments"
-        android:layout_toStartOf="@+id/txt_sB4" />
+        android:layout_alignStart="@+id/txt_sB2" />
 
     <TextView
         android:id="@+id/txt_gP3"
@@ -189,9 +189,9 @@
         android:layout_height="wrap_content"
         android:text="00"
         android:textColor="@color/red"
+        android:layout_marginTop="4dp"
         android:layout_below="@+id/lbl_P1_P3"
-        android:layout_alignStart="@+id/txt_NumMatches"
-        android:layout_marginTop="18dp" />
+        android:layout_alignEnd="@+id/lbl_P1_P3" />
 
     <TextView
         android:id="@+id/txt_sB2"
@@ -228,7 +228,7 @@
         android:text="00"
         android:textColor="@color/red"
         android:layout_below="@+id/lbl_B1_B5"
-        android:layout_alignEnd="@+id/txt_AutoComments" />
+        android:layout_toEndOf="@+id/txt_sB4" />
 
     <TextView
         android:id="@+id/lbl_P1_P3"
@@ -236,8 +236,8 @@
         android:layout_height="wrap_content"
         android:text="  Gear Pos.\n     1 \\_/ 3 \n          2"
         android:textColor="@color/white"
-        android:layout_below="@+id/txt_sB3"
-        android:layout_toEndOf="@+id/txt_sB2" />
+        android:layout_below="@+id/txt_sB1"
+        android:layout_alignEnd="@+id/txt_sB3" />
 
     <TextView
         android:id="@+id/txt_AutoComments"
