@@ -189,7 +189,7 @@
         android:layout_height="wrap_content"
         android:text="00"
         android:textColor="@color/red"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="1dp"
         android:layout_below="@+id/lbl_P1_P3"
         android:layout_alignEnd="@+id/lbl_P1_P3" />
 
@@ -228,7 +228,7 @@
         android:text="00"
         android:textColor="@color/red"
         android:layout_below="@+id/lbl_B1_B5"
-        android:layout_toEndOf="@+id/txt_sB4" />
+        android:layout_alignEnd="@+id/txt_NumMatches" />
 
     <TextView
         android:id="@+id/lbl_P1_P3"
