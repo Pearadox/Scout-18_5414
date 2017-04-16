@@ -57,9 +57,10 @@ public class Visualizer_Activity extends AppCompatActivity {
     public static int BA2numTeams = 0;
     public static ArrayList<String> BAteams_List = new ArrayList<String>();     // Teams (in RANK order)
     public boolean BA_avail = false;
-    Team[] teams1; Team[] teams2;
-    String WLT = ""; String kPa = ""; String NTP = "";
-    // -----------------------
+    Team[] teams1; Team[] teams2; Event[] evt1;
+    String rank1 = ""; String rank2 = "";  String OPR1 = "";  String OPR2 = ""; String NTP1 = ""; String NTP2 = "";
+    String WLT1 = ""; String WLT2 = ""; String kPa1 = ""; String kPa2 = ""; String EVT1 = ""; String EVT2 = "";
+    // ----------------------- String NTP1 = "";
     ArrayAdapter<String> adapter_typ;
     public String typSelected = " ";
     Spinner spinner_MatchType;
@@ -71,10 +72,10 @@ public class Visualizer_Activity extends AppCompatActivity {
     ArrayAdapter<String> adaptMatch;
     public int matchSelected = 0;
     public String OPR = " ";                // Offensive Power Rating
-    public static String[] OPR_Teams = new String[]       // Top 15 OPRs from TXLU
-            {"2481", "1477", " 118", "3366", "5572", " 192", " 624", "2468", "2341", "2164", "4696", "1817", "2613", "2352", "3847"};
-    public static String[] OPR_rating = new String[]       // Top 15 OPRs from TXLU
-            {"128.5","118.2","109.4"," 99.3"," 96.3"," 87.7"," 87.5"," 84.9"," 84.2"," 79.5"," 79.4"," 78.7"," 74.8"," 72.4"," 68.7"};
+//    public static String[] OPR_Teams = new String[]       // Top 15 OPRs from TXLU
+//            {"2481", "1477", " 118", "3366", "5572", " 192", " 624", "2468", "2341", "2164", "4696", "1817", "2613", "2352", "3847"};
+//    public static String[] OPR_rating = new String[]       // Top 15 OPRs from TXLU
+//            {"128.5","118.2","109.4"," 99.3"," 96.3"," 87.7"," 87.5"," 84.9"," 84.2"," 79.5"," 79.4"," 78.7"," 74.8"," 72.4"," 68.7"};
     public String matchID = "T00";          // Type + #
     public String next_Match = " ";         // List of next Matches for 5414
     TextView txt_EventName, txt_MatchID, txt_NextMatch;
@@ -141,32 +142,26 @@ public class Visualizer_Activity extends AppCompatActivity {
 //            System.out.println("        "+teams1[i].record+" RankScore: "+teams1[i].rankingScore+ "  " +teams1[i].pressure + "\n ");
 //        }
 
-        Event x = t.getEvent("txho", 2017);
-        teams2 = x.teams.clone();
-//        Team[] teams2 = x.teams;
-        Log.e(TAG, "BLUE2 " + teams2.length);
-        BA2numTeams = x.teams.length;
+//        Event x = t.getEvent("txho", 2017);
+//        teams2 = x.teams.clone();
+////        Team[] teams2 = x.teams;
+//        Log.e(TAG, "BLUE2 " + teams2.length);
+//        BA2numTeams = x.teams.length;
 //        for(int i = 0; i < teams2.length; i++) {
 //            System.out.println("Team #: "+teams2[i].team_number+ "  " +teams2[i].rank+" OPR: "+teams2[i].opr+ "  " +teams2[i].touchpad);
 //            System.out.println("        "+teams2[i].record+" RankScore: "+teams2[i].rankingScore+ "  " +teams2[i].pressure + "\n ");
 //        }
 
-        if (!e.name.isEmpty() && !x.name.isEmpty()) {
-            BA_avail = true;
-//            BAnumTeams = e.teams.length;
-//            BAteams_List.clear();
-//            for (int i = 0; i < BAnumTeams; i++) {   // Load teams in Rank order
-//                BAteams_List.add(String.valueOf(e.teams[i].team_number));
-//            }
-//            Log.w(TAG, "BAteams_List = " + BAteams_List.size());
-        } else {
-            BA_avail = false;
-            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
-            Toast toast = Toast.makeText(getBaseContext(), "***  Data from the Blue Alliance is _NOT_ available this session  ***", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-            toast.show();
-        }
+//        if (!e.name.isEmpty() && !x.name.isEmpty()) {
+//            BA_avail = true;
+//        } else {
+//            BA_avail = false;
+//            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+//            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+//            Toast toast = Toast.makeText(getBaseContext(), "***  Data from the Blue Alliance is _NOT_ available this session  ***", Toast.LENGTH_LONG);
+//            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+//            toast.show();
+//        }
 
 
 //      -----------------------------------------
@@ -323,6 +318,19 @@ public class Visualizer_Activity extends AppCompatActivity {
         tbl_rate2B2.setText("");
         tbl_rate2B3.setText("");
 
+        ImageView tbl_robotR1 = (ImageView) findViewById(R.id.tbl_robotR1);
+        ImageView tbl_robotR2 = (ImageView) findViewById(R.id.tbl_robotR2);
+        ImageView tbl_robotR3 = (ImageView) findViewById(R.id.tbl_robotR3);
+        ImageView tbl_robotB1 = (ImageView) findViewById(R.id.tbl_robotB1);
+        ImageView tbl_robotB2 = (ImageView) findViewById(R.id.tbl_robotB2);
+        ImageView tbl_robotB3 = (ImageView) findViewById(R.id.tbl_robotB3);
+        tbl_robotR1.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+        tbl_robotR2.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+        tbl_robotR3.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+        tbl_robotB1.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+        tbl_robotB2.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+        tbl_robotB3.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
+
     }
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -451,19 +459,19 @@ public class Visualizer_Activity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 //            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.w(TAG, "@@@@ onChildAdded @@@@ Match Data for team " + load_team);
+//                Log.w(TAG, "@@@@ onChildAdded @@@@ Match Data for team " + load_team);
                 Pearadox.Matches_Data.clear();
                 matchData mdobj = new matchData();
                 Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
                 Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
                 while (iterator.hasNext()) {
                     Log.w(TAG, " WHILE: "  + Pearadox.Matches_Data.size());
-                    System.out.println(dataSnapshot.getValue());
-                    System.out.println("  \n  \n");
+//                    System.out.println(dataSnapshot.getValue());
+//                    System.out.println("  \n  \n");
                     mdobj = iterator.next().getValue(matchData.class);
                     if (mdobj.getTeam_num().matches(load_team)) {
                         Log.w(TAG, " Match: " + mdobj.getMatch() + " # "  + Pearadox.Matches_Data.size());
-                        System.out.println("  \n");
+//                        System.out.println("  \n");
                         Pearadox.Matches_Data.add(mdobj);
                     }
                }
@@ -557,6 +565,7 @@ public class Visualizer_Activity extends AppCompatActivity {
     public void buttonView_Click(View view) {
         Log.w(TAG, " Start Button Click  " + matchID);
 
+        clearTeams();
         getTeams();         // Get the teams for match selected
     }
 
@@ -816,134 +825,128 @@ public class Visualizer_Activity extends AppCompatActivity {
                     tbl_rate2B2 = (TextView) findViewById(R.id.tbl_rate2B2);
                     tbl_rate2B3 = (TextView) findViewById(R.id.tbl_rate2B3);
 
+
                     Log.w(TAG, "@@@@@@@@@@@@@@@@@@@ GET TEAM DATA  @@@@@@@@@@@@@@@@@@@");  //** DEBUG
-                    team_inst = teams.get(0);
+                    team_inst = teams.get(0);       // Team#R1
                     txt_teamR1.setText(team_inst.getTeam_num());
                     txt_teamR1_Name.setText(team_inst.getTeam_name());
                     tbl_teamR1.setText(team_inst.getTeam_num());
-                    rank[0] = get_BA1data(team_inst.getTeam_num().trim());
-                    if (rank[0] > 0) {
-                        tbl_event1R1.setText("TXLU \n" + WLT);
-//                        OPR = chkOPR(team_inst.getTeam_num());
-                        tbl_rate1R1.setText("OPR " + OPR + "   ↑ " + NTP + "  \n" + "Rank=" + rank[0] + "  kPa=" + kPa);
-                    } else {
-                        tbl_event1R1.setText("");
-                        tbl_rate1R1.setText("");
-                    }
-                    rank[0] = get_BA2data(team_inst.getTeam_num().trim());
-                    if (rank[0] > 0) {
-                        tbl_event2R1.setText("TXHO \n" + WLT);
-//                        OPR = chkOPR(team_inst.getTeam_num());
-                        tbl_rate2R1.setText("OPR " + OPR + "   ↑ " + NTP + "  \n" + "Rank=" + rank[0] + "  kPa=" + kPa);
+                    get_BA1data(team_inst.getTeam_num().trim());
+//                    if (rank[0] > 0) {
+                        tbl_event1R1.setText(EVT1 + " \n" + WLT1);
+                        tbl_rate1R1.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
+//                    } else {
+//                        tbl_event1R1.setText("");
+//                        tbl_rate1R1.setText("");
+//                    }
+//                    rank[0] = get_BA2data(team_inst.getTeam_num().trim());
+                    if (!EVT2.matches("    ")) {
+                        tbl_event2R1.setText(EVT2 + " \n" + WLT2);
+                        tbl_rate2R1.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
                     } else {
                         tbl_event2R1.setText("");
                         tbl_rate2R1.setText("");
                     }
-                    team_inst = teams.get(1);
+
+                    team_inst = teams.get(1);       // Team#R2
                     txt_teamR2.setText(team_inst.getTeam_num());
                     txt_teamR2_Name.setText(team_inst.getTeam_name());
                     tbl_teamR2.setText(team_inst.getTeam_num());
-                    rank[0] = get_BA1data(team_inst.getTeam_num().trim());
-                    if (rank[0] > 0) {
-                        tbl_event1R2.setText("TXLU \n" + WLT);
-//                        OPR = chkOPR(team_inst.getTeam_num());
-                        tbl_rate1R2.setText("OPR " + OPR + "   ↑ " + NTP + "  \n" + "Rank=" + rank[0] + "  kPa=" + kPa);
-                    } else {
-                        tbl_event1R2.setText("");
-                        tbl_rate1R2.setText("");
-                    }
-                    rank[0] = get_BA2data(team_inst.getTeam_num().trim());
-                    if (rank[0] > 0) {
-                        tbl_event2R2.setText("TXHO \n" + WLT);
-//                        OPR = chkOPR(team_inst.getTeam_num());
-                        tbl_rate2R2.setText("OPR " + OPR + "   ↑ " + NTP + "  \n" + "Rank=" + rank[0] + "  kPa=" + kPa);
+                    get_BA1data(team_inst.getTeam_num().trim());
+//                    if (rank[0] > 0) {
+                        tbl_event1R2.setText(EVT1 + " \n" + WLT1);
+                        tbl_rate1R2.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
+//                    } else {
+//                        tbl_event1R2.setText("");
+//                        tbl_rate1R2.setText("");
+//                    }
+//                    rank[0] = get_BA2data(team_inst.getTeam_num().trim());
+                    if (!EVT2.matches("    ")) {
+                        tbl_event2R2.setText(EVT2 + " \n" + WLT2);
+                        tbl_rate2R2.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
                     } else {
                         tbl_event2R2.setText("");
                         tbl_rate2R2.setText("");
                     }
-                    team_inst = teams.get(2);
+                    team_inst = teams.get(2);       // Team#R3
                     txt_teamR3.setText(team_inst.getTeam_num());
                     txt_teamR3_Name.setText(team_inst.getTeam_name());
                     tbl_teamR3.setText(team_inst.getTeam_num());
-                    rank[0] = get_BA1data(team_inst.getTeam_num().trim());
-                    if (rank[0] > 0) {
-                        tbl_event1R3.setText("TXLU \n" + WLT);
+                    get_BA1data(team_inst.getTeam_num().trim());
+//                    if (rank[0] > 0) {
+                        tbl_event1R3.setText(EVT1 + " \n" + WLT1);
 //                        OPR = chkOPR(team_inst.getTeam_num());
-                        tbl_rate1R3.setText("OPR " + OPR + "   ↑ " + NTP + "  \n" + "Rank=" + rank[0] + "  kPa=" + kPa);
-                    } else {
-                        tbl_event1R3.setText("");
-                        tbl_rate1R3.setText("");
-                    }
-                    rank[0] = get_BA2data(team_inst.getTeam_num().trim());
-                    if (rank[0] > 0) {
-                        tbl_event2R3.setText("TXHO \n" + WLT);
-//                        OPR = chkOPR(team_inst.getTeam_num());
-                        tbl_rate2R3.setText("OPR " + OPR + "   ↑ " + NTP + "  \n" + "Rank=" + rank[0] + "  kPa=" + kPa);
+                        tbl_rate1R3.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
+//                    } else {
+//                        tbl_event1R3.setText("");
+//                        tbl_rate1R3.setText("");
+//                    }
+//                    rank[0] = get_BA2data(team_inst.getTeam_num().trim());
+                    if (!EVT2.matches("    ")) {
+                        tbl_event2R3.setText(EVT2 + " \n" + WLT2);
+                        tbl_rate2R3.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
                     } else {
                         tbl_event2R3.setText("");
                         tbl_rate2R3.setText("");
                     }
-                    team_inst = teams.get(3);
+                    team_inst = teams.get(3);       // Team#B1
                     txt_teamB1.setText(team_inst.getTeam_num());
                     txt_teamB1_Name.setText(team_inst.getTeam_name());
                     tbl_teamB1.setText(team_inst.getTeam_num());
-                    rank[0] = get_BA1data(team_inst.getTeam_num().trim());
-                    if (rank[0] > 0) {
-                        tbl_event1B1.setText("TXLU \n" + WLT);
+                    get_BA1data(team_inst.getTeam_num().trim());
+//                    if (rank[0] > 0) {
+                        tbl_event1B1.setText(EVT1 + " \n" + WLT1);
 //                        OPR = chkOPR(team_inst.getTeam_num());
-                        tbl_rate1B1.setText("OPR " + OPR + "   ↑ " + NTP + "  \n" + "Rank=" + rank[0] + "  kPa=" + kPa);
-                    } else {
-                        tbl_event1B1.setText("");
-                        tbl_rate1B1.setText("");
-                    }
-                    rank[0] = get_BA2data(team_inst.getTeam_num().trim());
-                    if (rank[0] > 0) {
-                        tbl_event2B1.setText("TXHO \n" + WLT);
-//                        OPR = chkOPR(team_inst.getTeam_num());
-                        tbl_rate2B1.setText("OPR " + OPR + "   ↑ " + NTP + "  \n" + "Rank=" + rank[0] + "  kPa=" + kPa);
+                        tbl_rate1B1.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
+//                    } else {
+//                        tbl_event1B1.setText("");
+//                        tbl_rate1B1.setText("");
+//                    }
+//                    rank[0] = get_BA2data(team_inst.getTeam_num().trim());
+                    if (!EVT2.matches("    ")) {
+                        tbl_event2B1.setText(EVT2 + " \n" + WLT2);
+                        tbl_rate2B1.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
                     } else {
                         tbl_event2B1.setText("");
                         tbl_rate2B1.setText("");
                     }
-                    team_inst = teams.get(4);
+                    team_inst = teams.get(4);       // Team#B2
                     txt_teamB2.setText(team_inst.getTeam_num());
                     txt_teamB2_Name.setText(team_inst.getTeam_name());
                     tbl_teamB2.setText(team_inst.getTeam_num());
-                    rank[0] = get_BA1data(team_inst.getTeam_num().trim());
-                    if (rank[0] > 0) {
-                        tbl_event1B2.setText("TXLU \n" + WLT);
+                    get_BA1data(team_inst.getTeam_num().trim());
+//                    if (rank[0] > 0) {
+                        tbl_event1B2.setText(EVT1 + " \n" + WLT1);
 //                        OPR = chkOPR(team_inst.getTeam_num());
-                        tbl_rate1B2.setText("OPR " + OPR + "   ↑ " + NTP + "  \n" + "Rank=" + rank[0] + "  kPa=" + kPa);
-                    } else {
-                        tbl_event1B2.setText("");
-                        tbl_rate1B2.setText("");
-                    }
-                    rank[0] = get_BA2data(team_inst.getTeam_num().trim());
-                    if (rank[0] > 0) {
-                        tbl_event2B2.setText("TXHO \n" + WLT);
-//                        OPR = chkOPR(team_inst.getTeam_num());
-                        tbl_rate2B2.setText("OPR " + OPR + "   ↑ " + NTP + "  \n" + "Rank=" + rank[0] + "  kPa=" + kPa);
+                        tbl_rate1B2.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
+//                    } else {
+//                        tbl_event1B2.setText("");
+//                        tbl_rate1B2.setText("");
+//                    }
+//                    rank[0] = get_BA2data(team_inst.getTeam_num().trim());
+                    if (!EVT2.matches("    ")) {
+                        tbl_event2B2.setText(EVT2 + " \n" + WLT2);
+                        tbl_rate2B2.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
                     } else {
                         tbl_event2B2.setText("");
                         tbl_rate2B2.setText("");
                     }
-                    team_inst = teams.get(5);
+                    team_inst = teams.get(5);       // Team#B3
                     txt_teamB3.setText(team_inst.getTeam_num());
                     txt_teamB3_Name.setText(team_inst.getTeam_name());
                     tbl_teamB3.setText(team_inst.getTeam_num());
-                    rank[0] = get_BA1data(team_inst.getTeam_num().trim());
-                    if (rank[0] > 0) {
-                        tbl_event1B3.setText("TXLU \n" + WLT);
-//                        OPR = chkOPR(team_inst.getTeam_num());
-                        tbl_rate1B3.setText("OPR " + OPR + "   ↑ " + NTP + "  \n" + "Rank=" + rank[0] + "  kPa=" + kPa);
-                    } else {
-                        tbl_event1B3.setText("");
-                        tbl_rate1B3.setText("");
-                    }
-                    rank[0] = get_BA2data(team_inst.getTeam_num().trim());
-                    if (rank[0] > 0) {
-                        tbl_event2B3.setText("TXHO \n" + WLT);
-                        tbl_rate2B3.setText("OPR " + OPR + "   ↑ " + NTP + "  \n" + "Rank=" + rank[0] + "  kPa=" + kPa);
+                    get_BA1data(team_inst.getTeam_num().trim());
+//                    if (rank[0] > 0) {
+                        tbl_event1B3.setText(EVT1 + " \n" + WLT1);
+                        tbl_rate1B3.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
+//                    } else {
+//                        tbl_event1B3.setText("");
+//                        tbl_rate1B3.setText("");
+//                    }
+//                    rank[0] = get_BA2data(team_inst.getTeam_num().trim());
+                    if (!EVT2.matches("    ")) {
+                        tbl_event2B3.setText(EVT2 + " \n" + WLT2);
+                        tbl_rate2B3.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
                     } else {
                         tbl_event2B3.setText("");
                         tbl_rate2B3.setText("");
@@ -978,29 +981,148 @@ public class Visualizer_Activity extends AppCompatActivity {
         Log.i(TAG, "###  chkOPR ### " + team);
         // ToDo - Get OPR data from Blue Alliance
         String opr = "000.0";
-        for(int i = 0; i < OPR_Teams.length; i++) {   // Search Teams to find Rank
-            Log.w(TAG, "opr Team " + OPR_Teams[i]);
-            if (OPR_Teams[i].matches(team)) {
-                opr = OPR_rating[i];
-            }
-        }
+//        for(int i = 0; i < OPR_Teams.length; i++) {   // Search Teams to find Rank
+//            Log.w(TAG, "opr Team " + OPR_Teams[i]);
+//            if (OPR_Teams[i].matches(team)) {
+//                opr = OPR_rating[i];
+//            }
+//        }
         return opr;
     }
 
     private int get_BA1data(String team) {
         Log.i(TAG, "%%%  get_BA1data %%% " + team);
-        int rank = 0;
-        String team_num = "";  WLT ="";
+        int rank = 0; int numEvts = 0; int bad1 = 99;
+        TBA BA1 = new TBA();
+        Event[] events = new TBA().getTeamEvents(Integer.parseInt(team), 2017);
+        evt1 = events.clone();
+        System.out.println("events: "+ events.length );
+        for(int i = 0; i < events.length; i++) {   // Search Teams to find Rank
+            Log.w(TAG, "%%% Event %%% " + evt1[i].name + "  " + evt1[i].event_code + " " + evt1[i].name.substring(0,7));
+            // ToDo - add ALL divisions check
+            if (evt1[i].name.substring(0,7).matches("Galileo") || evt1[i].name.substring(0,5).matches("FIRST") || evt1[i].name.substring(0,8).matches("Roebling")) {
+                bad1 = i;
+            } else {
+                numEvts++;
+            }
+        }
+        Log.w(TAG, "#=" + events.length + " numEvts=" + numEvts + "  " + bad1 + " \n ");
+        switch (events.length) {
+            case 1:
+                EVT1 = evt1[0].event_code.toUpperCase();
+                EVT2 = "    ";
+                break;
+            case 2:
+                if (bad1 == 99) {
+                    EVT1 = evt1[0].event_code.toUpperCase();
+                    EVT2 = evt1[1].event_code.toUpperCase();
+                } else {
+                    if (bad1 == 0) {
+                        EVT1 = evt1[1].event_code.toUpperCase();
+                        EVT2 = "    ";
+                    } else {
+                        EVT1 = evt1[0].event_code.toUpperCase();
+                        EVT2 = "    ";
+                    }
+                }
+                break;
+            case 3:
+                Log.w(TAG, " CASE #3  numEvts=" + numEvts + "  " + bad1);
+                if (bad1 == 99) {       // Use last 2
+                    EVT1 = evt1[1].event_code.toUpperCase();
+                    EVT2 = evt1[2].event_code.toUpperCase();
+                } else {
+                    if (bad1 == 0) {
+                        Log.w(TAG, " CASE #3 " + evt1[1].event_code + "  " + evt1[2].event_code);
+                        EVT1 = evt1[1].event_code.toUpperCase();
+                        EVT2 = evt1[2].event_code.toUpperCase();
+                    } else {
+                        if (bad1 == 1) {
+                            EVT1 = evt1[0].event_code.toUpperCase();
+                            EVT2 = evt1[2].event_code.toUpperCase();
+                        } else {
+                            EVT1 = evt1[0].event_code.toUpperCase();
+                            EVT2 = evt1[1].event_code.toUpperCase();
+                        }
+                    }
+                }
+                break;
+            case 4:
+                Log.w(TAG, " WOW!! #4  numEvts=" + numEvts + "  " + bad1);
+                if (bad1 == 99) {
+                    EVT1 = evt1[2].event_code.toUpperCase();
+                    EVT2 = evt1[3].event_code.toUpperCase();
+                } else {
+                    if (bad1 == 0) {
+                        EVT1 = evt1[2].event_code.toUpperCase();
+                        EVT2 = evt1[3].event_code.toUpperCase();
+                    } else {
+                        if (bad1 == 1) {
+                            EVT1 = evt1[2].event_code.toUpperCase();
+                            EVT2 = evt1[3].event_code.toUpperCase();
+                        } else {
+                            if (bad1 == 2) {
+                                EVT1 = evt1[1].event_code.toUpperCase();
+                                EVT2 = evt1[3].event_code.toUpperCase();
+                            } else {
+                            }
+                        }
+                    }
+                }
+                break;
+            default:                // ????
+                Log.e(TAG, "*** Error - numEvts??  ***  " + numEvts);
+        }
+
+        Log.w(TAG, "Evt1=" + EVT1 + "  Evt2=" + EVT2);
+        TBA t = new TBA();
+        Event e = t.getEvent(EVT1.toLowerCase(), 2017);
+        teams1 = e.teams.clone();
+        Log.e(TAG, "BLUE1 " + teams1.length);
+        BA1numTeams = e.teams.length;
+
+//        Team t = BA1.getTeam(Integer.parseInt(team));
+//        System.out.println("Team #: "+t.team_number + "  " +t.rank +" OPR: "+t.opr+ "  " +t.touchpad );
+//        System.out.println("  Record: " +t.record + "  " +t.pressure +" pts "+t.matchPoints+ "  score" +t.rankingScore + " \n \n");
+
+        String team_num = "";  rank1=""; WLT1=""; OPR1="";NTP1="";kPa1="";
         for(int i = 0; i < BA1numTeams; i++) {   // Search Teams to find Rank
             team_num = String.valueOf(teams1[i].team_number);
 //            Log.w(TAG, "LOOP " + i + " " + team_num);
             if (team_num.matches(team)) {
-                Log.w(TAG, ">>>>>>>>>>>>>>>>  Found Team # " + team);
-                rank = i + 1;                                       // Rank
-                OPR = String.format("%3.1f",(teams1[i].opr));       // OPR
-                NTP = String.format("%3.1f",(teams1[i].touchpad));  // Touchpad
-                kPa = String.format("%3.1f",(teams1[i].pressure));  // kPa - Pressure
-                WLT = teams1[i].record;                             // W-L-T Record
+//                Log.w(TAG, ">>>>>>>>>>>>>>>>  Found Team # " + team);
+                rank1 = String.valueOf(i + 1);                                       // Rank
+                OPR1 = String.format("%3.1f",(teams1[i].opr));       // OPR
+                NTP1 = String.format("%3.1f",(teams1[i].touchpad));  // Touchpad
+                kPa1 = String.format("%3.1f",(teams1[i].pressure));  // kPa - Pressure
+                WLT1 = teams1[i].record;                             // W-L-T Record
+            }
+        }
+
+        if (!EVT2.matches("    ")) {
+            Event x = t.getEvent(EVT2.toLowerCase(), 2017);
+            teams2 = x.teams.clone();
+//        Team[] teams2 = x.teams;
+            Log.e(TAG, "BLUE2 " + teams2.length);
+            BA2numTeams = x.teams.length;
+
+            team_num = "";
+            rank2 = "";
+            WLT2 = "";
+            OPR2 = "";
+            NTP2 = "";
+            kPa2 = "";
+            for (int i = 0; i < BA2numTeams; i++) {      // Search Teams to find Rank
+                team_num = String.valueOf(teams2[i].team_number);
+//            Log.w(TAG, "LOOP " + i + " " + team_num);
+                if (team_num.matches(team)) {
+//                    Log.w(TAG, ">>>>>>>>>>>>>>>>  Found Team # " + team);
+                    rank2 = String.valueOf(i + 1);                        // Rank
+                    OPR2 = String.format("%3.1f", (teams2[i].opr));       // OPR
+                    NTP2 = String.format("%3.1f", (teams2[i].touchpad));  // Touchpad
+                    kPa2 = String.format("%3.1f", (teams2[i].pressure));  // kPa - Pressure
+                    WLT2 = teams2[i].record;                              // W-L-T Record
+                }
             }
         }
         return rank;
@@ -1009,19 +1131,20 @@ public class Visualizer_Activity extends AppCompatActivity {
     private int get_BA2data(String team) {
         Log.i(TAG, "@@@  get_BA2data @@@ " + team);
         int rank = 0;
-        String team_num = "";  WLT ="";
-        for(int i = 0; i < BA2numTeams; i++) {      // Search Teams to find Rank
-            team_num = String.valueOf(teams2[i].team_number);
-//            Log.w(TAG, "LOOP " + i + " " + team_num);
-            if (team_num.matches(team)) {
-                Log.w(TAG, ">>>>>>>>>>>>>>>>  Found Team # " + team);
-                rank = i + 1;                                       // Rank
-                OPR = String.format("%3.1f",(teams2[i].opr));       // OPR
-                NTP = String.format("%3.1f",(teams2[i].touchpad));  // Touchpad
-                kPa = String.format("%3.1f",(teams2[i].pressure));  // kPa - Pressure
-                WLT = teams2[i].record;                             // W-L-T Record
-            }
-        }
+//        String team_num = "";  WLT1 =""; WLT2 ="";
+//        for(int i = 0; i < BA2numTeams; i++) {      // Search Teams to find Rank
+//            team_num = String.valueOf(teams2[i].team_number);
+////            Log.w(TAG, "LOOP " + i + " " + team_num);
+//            if (team_num.matches(team)) {
+//                Log.w(TAG, ">>>>>>>>>>>>>>>>  Found Team # " + team);
+//                rank = i + 1;                                       // Rank
+//                EVT = "TXHO";
+//                OPR = String.format("%3.1f",(teams2[i].opr));       // OPR
+//                NTP = String.format("%3.1f",(teams2[i].touchpad));  // Touchpad
+//                kPa = String.format("%3.1f",(teams2[i].pressure));  // kPa - Pressure
+//                WLT = teams2[i].record;                             // W-L-T Record
+//            }
+//        }
         return rank;
     }
 
@@ -1069,6 +1192,7 @@ public class Visualizer_Activity extends AppCompatActivity {
 //                    Log.w(TAG,"      " + match_inst.getMatch());
 //                    matchList.add(match_inst.getMatch() + "  Time: " + match_inst.getTime() + "  " + match_inst.getMtype());
                     matchList.add(match_inst.getMatch() +  "  " + match_inst.getMtype());
+                    // Create the list of _OUR_ matches across the top
                     if (match_inst.getR1().matches("5414")) {
                         next_Match =  next_Match + match_inst.getMatch() + "  ";
                     }
