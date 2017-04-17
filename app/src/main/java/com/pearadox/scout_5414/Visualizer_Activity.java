@@ -1,10 +1,13 @@
 package com.pearadox.scout_5414;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import java.util.ArrayList;
@@ -61,6 +65,7 @@ public class Visualizer_Activity extends AppCompatActivity {
     String rank1 = ""; String rank2 = "";  String OPR1 = "";  String OPR2 = ""; String NTP1 = ""; String NTP2 = "";
     String WLT1 = ""; String WLT2 = ""; String kPa1 = ""; String kPa2 = ""; String EVT1 = ""; String EVT2 = "";
     // ----------------------- String NTP1 = "";
+    ProgressBar progressBar1;
     ArrayAdapter<String> adapter_typ;
     public String typSelected = " ";
     Spinner spinner_MatchType;
@@ -166,6 +171,8 @@ public class Visualizer_Activity extends AppCompatActivity {
 
 //      -----------------------------------------
 
+        progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
+        progressBar1.setVisibility(View.INVISIBLE);
         txt_dev = (TextView) findViewById(R.id.txt_Dev);
         txt_stud = (TextView) findViewById(R.id.txt_TeamName);
         txt_NextMatch = (TextView) findViewById(R.id.txt_NextMatch);
@@ -827,6 +834,13 @@ public class Visualizer_Activity extends AppCompatActivity {
 
 
                     Log.w(TAG, "@@@@@@@@@@@@@@@@@@@ GET TEAM DATA  @@@@@@@@@@@@@@@@@@@");  //** DEBUG
+
+                    ProgressDialog pd = new ProgressDialog(Visualizer_Activity.this);
+                    pd.setTitle("Loading Blue Alliance data for ALL teams");
+                    pd.setMessage("Please wait for Blue Alliance data");
+                    pd.setCancelable(false);
+                    pd.show();
+
                     team_inst = teams.get(0);       // Team#R1
                     txt_teamR1.setText(team_inst.getTeam_num());
                     txt_teamR1_Name.setText(team_inst.getTeam_name());
@@ -952,6 +966,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                         tbl_rate2B3.setText("");
                     }
 
+                    pd.dismiss();
                     loadTblData();      // Load the images (if any)
 
                 }
@@ -999,8 +1014,9 @@ public class Visualizer_Activity extends AppCompatActivity {
         System.out.println("events: "+ events.length );
         for(int i = 0; i < events.length; i++) {   // Search Teams to find Rank
             Log.w(TAG, "%%% Event %%% " + evt1[i].name + "  " + evt1[i].event_code + " " + evt1[i].name.substring(0,7));
-            // ToDo - add ALL divisions check
-            if (evt1[i].name.substring(0,7).matches("Galileo") || evt1[i].name.substring(0,5).matches("FIRST") || evt1[i].name.substring(0,8).matches("Roebling")) {
+            if (evt1[i].name.substring(0,7).matches("Galileo") || evt1[i].name.substring(0,6).matches("Hopper") || evt1[i].name.substring(0,6).matches("Turing") ||
+                    evt1[i].name.substring(0,6).matches("Carver") || evt1[i].name.substring(0,6).matches("Newton") || evt1[i].name.substring(0,8).matches("Roebling")
+                    || evt1[i].name.substring(0,5).matches("FIRST")) {
                 bad1 = i;
             } else {
                 numEvts++;
@@ -1073,6 +1089,7 @@ public class Visualizer_Activity extends AppCompatActivity {
             default:                // ????
                 Log.e(TAG, "*** Error - numEvts??  ***  " + numEvts);
         }
+//        new Load_BAdata_Task();
 
         Log.w(TAG, "Evt1=" + EVT1 + "  Evt2=" + EVT2);
         TBA t = new TBA();
@@ -1128,9 +1145,32 @@ public class Visualizer_Activity extends AppCompatActivity {
         return rank;
     }
 
-    private int get_BA2data(String team) {
-        Log.i(TAG, "@@@  get_BA2data @@@ " + team);
-        int rank = 0;
+    public class Load_BAdata_Task extends AsyncTask<Void, Integer, String> {
+        int count = 0;
+
+        @Override
+        protected void onPreExecute() {
+            progressBar1.setVisibility(ProgressBar.VISIBLE);
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            while (count < 5) {
+                SystemClock.sleep(1000);
+                count++;
+                publishProgress(count * 20);
+            }
+            return "Complete";
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            progressBar1.setProgress(values[0]);
+        }
+    }
+//    private int get_BA2data(String team) {
+//        Log.i(TAG, "@@@  get_BA2data @@@ " + team);
+//        int rank = 0;
 //        String team_num = "";  WLT1 =""; WLT2 ="";
 //        for(int i = 0; i < BA2numTeams; i++) {      // Search Teams to find Rank
 //            team_num = String.valueOf(teams2[i].team_number);
@@ -1145,8 +1185,8 @@ public class Visualizer_Activity extends AppCompatActivity {
 //                WLT = teams2[i].record;                             // W-L-T Record
 //            }
 //        }
-        return rank;
-    }
+//        return rank;
+//    }
 
     private void findTeam(String tnum) {
         Log.i(TAG, "$$$$$  findTeam " + tnum);
