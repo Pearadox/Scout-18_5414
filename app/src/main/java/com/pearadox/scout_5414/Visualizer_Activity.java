@@ -51,6 +51,9 @@ import com.cpjd.models.Event;
 import com.cpjd.models.Team;
 import android.os.StrictMode;
 
+import static android.os.AsyncTask.execute;
+import static android.util.Log.*;
+
 
 public class Visualizer_Activity extends AppCompatActivity {
 
@@ -61,10 +64,7 @@ public class Visualizer_Activity extends AppCompatActivity {
     public static int BA2numTeams = 0;
     public static ArrayList<String> BAteams_List = new ArrayList<String>();     // Teams (in RANK order)
     public boolean BA_avail = false;
-    Team[] teams1; Team[] teams2; Event[] evt1;
-    String rank1 = ""; String rank2 = "";  String OPR1 = "";  String OPR2 = ""; String NTP1 = ""; String NTP2 = "";
-    String WLT1 = ""; String WLT2 = ""; String kPa1 = ""; String kPa2 = ""; String EVT1 = ""; String EVT2 = "";
-    // ----------------------- String NTP1 = "";
+    // -----------------------
     ProgressBar progressBar1;
     ArrayAdapter<String> adapter_typ;
     public String typSelected = " ";
@@ -76,7 +76,7 @@ public class Visualizer_Activity extends AppCompatActivity {
     ArrayList<String> matchList = new ArrayList<String>();
     ArrayAdapter<String> adaptMatch;
     public int matchSelected = 0;
-    public String OPR = " ";                // Offensive Power Rating
+//    public String OPR = " ";                // Offensive Power Rating
 //    public static String[] OPR_Teams = new String[]       // Top 15 OPRs from TXLU
 //            {"2481", "1477", " 118", "3366", "5572", " 192", " 624", "2468", "2341", "2164", "4696", "1817", "2613", "2352", "3847"};
 //    public static String[] OPR_rating = new String[]       // Top 15 OPRs from TXLU
@@ -104,7 +104,7 @@ public class Visualizer_Activity extends AppCompatActivity {
     private DatabaseReference pfMatchData_DBReference;
 //    private DatabaseReference pfCur_Match_DBReference;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    ArrayList<p_Firebase.teamsObj> teams = new ArrayList<p_Firebase.teamsObj>();
+    ArrayList<p_Firebase.teamsObj> Scout_teams = new ArrayList<p_Firebase.teamsObj>();
     ImageView tbl_robotR1, tbl_robotR2, tbl_robotR3, tbl_robotB1, tbl_robotB2, tbl_robotB3;
     String tnum = "";
     Bitmap img;
@@ -114,16 +114,18 @@ public class Visualizer_Activity extends AppCompatActivity {
     int FB_num;
     FirebaseStorage storage;
     StorageReference storageRef;
+    ArrayList<BA_data> BA_Vis = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visualizer);
-        Log.i(TAG, "@@@@  Visualizer_Activity started  @@@@");
+        i(TAG, "@@@@  Visualizer_Activity started  @@@@");
         Bundle bundle = this.getIntent().getExtras();
         String param1 = bundle.getString("dev");
         String param2 = bundle.getString("stud");
-        Log.w(TAG, param1 + " " + param2);      // ** DEBUG **
+        w(TAG, param1 + " " + param2);      // ** DEBUG **
 
 // ----------  Blue Alliance  -----------
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
@@ -138,10 +140,10 @@ public class Visualizer_Activity extends AppCompatActivity {
         Settings.GET_EVENT_STATS = true;
 
         TBA t = new TBA();
-        Event e = t.getEvent("txlu", 2017);
-        teams1 = e.teams.clone();
-        Log.e(TAG, "BLUE1 " + teams1.length);
-        BA1numTeams = e.teams.length;
+//        Event e = t.getEvent("txlu", 2017);
+//        teams1 = e.teams.clone();
+//        Log.e(TAG, "BLUE1 " + teams1.length);
+//        BA1numTeams = e.teams.length;
 //        for(int i = 0; i < teams1.length; i++) {
 //            System.out.println("Team #: "+teams1[i].team_number+ "  " +teams1[i].rank+" OPR: "+teams1[i].opr+ "  " +teams1[i].touchpad);
 //            System.out.println("        "+teams1[i].record+" RankScore: "+teams1[i].rankingScore+ "  " +teams1[i].pressure + "\n ");
@@ -217,12 +219,12 @@ public class Visualizer_Activity extends AppCompatActivity {
         listView_Matches.setOnItemClickListener(new AdapterView.OnItemClickListener()	{
             public void onItemClick(AdapterView<?> parent,
                                     View view, int pos, long id) {
-                Log.w(TAG,"*** listView_Matches ***   Item Selected: " + pos);
+                w(TAG,"*** listView_Matches ***   Item Selected: " + pos);
                 matchSelected = pos;
                 listView_Matches.setSelector(android.R.color.holo_blue_light);
         		/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
                 matchID = matchList.get(matchSelected).substring(0,3);
-                Log.w(TAG,"   MatchID: " + matchID);
+                w(TAG,"   MatchID: " + matchID);
                 txt_MatchID = (TextView) findViewById(R.id.txt_MatchID);
                 txt_MatchID.setText(matchID);
             }
@@ -234,7 +236,7 @@ public class Visualizer_Activity extends AppCompatActivity {
 
 
     private void clearTeams() {
-        Log.i(TAG, "Clearing Team data");
+        i(TAG, "Clearing Team data");
         txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
         txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
         txt_teamR3 = (TextView) findViewById(R.id.txt_teamR3);
@@ -342,16 +344,16 @@ public class Visualizer_Activity extends AppCompatActivity {
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public void btn_PitR1_Click(View view) {
-        Log.i(TAG, " btn_PitR1_Click   ");
+        i(TAG, " btn_PitR1_Click   ");
         txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
         txt_teamR1_Name = (TextView) findViewById(R.id.txt_teamR1_Name);
         tnum = (String) txt_teamR1.getText();
         team_name = (String) txt_teamR1_Name.getText();
-        Log.w(TAG, "*** Team " + tnum + " " + team_name + "  URL ='" + FB_url[0] + "' ");
+        w(TAG, "*** Team " + tnum + " " + team_name + "  URL ='" + FB_url[0] + "' ");
         launchVizPit(tnum, team_name, FB_url[0]);
     }
     public void btn_PitR2_Click(View view) {
-        Log.i(TAG, " btn_PitR2_Click   ");
+        i(TAG, " btn_PitR2_Click   ");
         txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
         txt_teamR2_Name = (TextView) findViewById(R.id.txt_teamR2_Name);
         tnum = (String) txt_teamR2.getText();
@@ -359,7 +361,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         launchVizPit(tnum, team_name, FB_url[1]);
     }
     public void btn_PitR3_Click(View view) {
-        Log.i(TAG, " btn_PitR3_Click   ");
+        i(TAG, " btn_PitR3_Click   ");
         txt_teamR3 = (TextView) findViewById(R.id.txt_teamR3);
         txt_teamR3_Name = (TextView) findViewById(R.id.txt_teamR3_Name);
         tnum = (String) txt_teamR3.getText();
@@ -367,7 +369,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         launchVizPit(tnum, team_name, FB_url[2]);
     }
     public void btn_PitB1_Click(View view) {
-        Log.i(TAG, " btn_PitB1_Click   ");
+        i(TAG, " btn_PitB1_Click   ");
         txt_teamB1 = (TextView) findViewById(R.id.txt_teamB1);
         txt_teamB1_Name = (TextView) findViewById(R.id.txt_teamB1_Name);
         tnum = (String) txt_teamB1.getText();
@@ -375,7 +377,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         launchVizPit(tnum, team_name, FB_url[3]);
     }
     public void btn_PitB2_Click(View view) {
-        Log.i(TAG, " btn_PitB2_Click   ");
+        i(TAG, " btn_PitB2_Click   ");
         txt_teamB2 = (TextView) findViewById(R.id.txt_teamB2);
         txt_teamB2_Name = (TextView) findViewById(R.id.txt_teamB2_Name);
         tnum = (String) txt_teamB2.getText();
@@ -383,7 +385,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         launchVizPit(tnum, team_name, FB_url[4]);
     }
     public void btn_PitB3_Click(View view) {
-        Log.i(TAG, " btn_PitB3_Click   ");
+        i(TAG, " btn_PitB3_Click   ");
         txt_teamB3 = (TextView) findViewById(R.id.txt_teamB3);
         txt_teamB3_Name = (TextView) findViewById(R.id.txt_teamB3_Name);
         tnum = (String) txt_teamB3.getText();
@@ -393,16 +395,16 @@ public class Visualizer_Activity extends AppCompatActivity {
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public void btn_MatchR1_Click(View view) {
-        Log.i(TAG, " btn_MatchR1_Click   ");
+        i(TAG, " btn_MatchR1_Click   ");
         txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
         txt_teamR1_Name = (TextView) findViewById(R.id.txt_teamR1_Name);
         tnum = (String) txt_teamR1.getText();
         team_name = (String) txt_teamR1_Name.getText();
-        Log.w(TAG, "*** Team " + tnum + " " + team_name);
+        w(TAG, "*** Team " + tnum + " " + team_name);
         launchVizMatch(tnum, team_name);
     }
     public void btn_MatchR2_Click(View view) {
-        Log.i(TAG, " btn_MatchR2_Click   ");
+        i(TAG, " btn_MatchR2_Click   ");
         txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
         txt_teamR2_Name = (TextView) findViewById(R.id.txt_teamR2_Name);
         tnum = (String) txt_teamR2.getText();
@@ -410,7 +412,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         launchVizMatch(tnum, team_name);
     }
     public void btn_MatchR3_Click(View view) {
-        Log.i(TAG, " btn_MatchR3_Click   ");
+        i(TAG, " btn_MatchR3_Click   ");
         txt_teamR3 = (TextView) findViewById(R.id.txt_teamR3);
         txt_teamR3_Name = (TextView) findViewById(R.id.txt_teamR3_Name);
         tnum = (String) txt_teamR3.getText();
@@ -418,7 +420,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         launchVizMatch(tnum, team_name);
     }
     public void btn_MatchB1_Click(View view) {
-        Log.i(TAG, " btn_MatchB1_Click   ");
+        i(TAG, " btn_MatchB1_Click   ");
         txt_teamB1 = (TextView) findViewById(R.id.txt_teamB1);
         txt_teamB1_Name = (TextView) findViewById(R.id.txt_teamB1_Name);
         tnum = (String) txt_teamB1.getText();
@@ -426,7 +428,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         launchVizMatch(tnum, team_name);
     }
     public void btn_MatchB2_Click(View view) {
-        Log.i(TAG, " btn_MatchB2_Click   ");
+        i(TAG, " btn_MatchB2_Click   ");
         txt_teamB2 = (TextView) findViewById(R.id.txt_teamB2);
         txt_teamB2_Name = (TextView) findViewById(R.id.txt_teamB2_Name);
         tnum = (String) txt_teamB2.getText();
@@ -434,7 +436,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         launchVizMatch(tnum, team_name);
     }
     public void btn_MatchB3_Click(View view) {
-        Log.i(TAG, " btn_MatchB3_Click   ");
+        i(TAG, " btn_MatchB3_Click   ");
         txt_teamB3 = (TextView) findViewById(R.id.txt_teamB3);
         txt_teamB3_Name = (TextView) findViewById(R.id.txt_teamB3_Name);
         tnum = (String) txt_teamB3.getText();
@@ -444,7 +446,7 @@ public class Visualizer_Activity extends AppCompatActivity {
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void launchVizMatch(String team, String name) {
-        Log.i(TAG, ">>>>> launchVizMatch   <<<<<"  + team + " " + name);
+        i(TAG, ">>>>> launchVizMatch   <<<<<"  + team + " " + name);
 
         load_team = team;
         load_name = name;
@@ -456,7 +458,7 @@ public class Visualizer_Activity extends AppCompatActivity {
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 //    private void childTeamMD_Listner() {
     private void addMD_VE_Listener(final Query pfMatchData_DBReference) {
-        Log.i(TAG, "<<<< getFB_Data >>>> Match Data for team " + load_team);
+        i(TAG, "<<<< getFB_Data >>>> Match Data for team " + load_team);
 //        String child = "team_num";
 //        String key = load_team;
 //        Query query = pfMatchData_DBReference.orderByChild(child).equalTo(key);
@@ -472,17 +474,17 @@ public class Visualizer_Activity extends AppCompatActivity {
                 Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
                 Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
                 while (iterator.hasNext()) {
-                    Log.w(TAG, " WHILE: "  + Pearadox.Matches_Data.size());
+                    w(TAG, " WHILE: "  + Pearadox.Matches_Data.size());
 //                    System.out.println(dataSnapshot.getValue());
 //                    System.out.println("  \n  \n");
                     mdobj = iterator.next().getValue(matchData.class);
                     if (mdobj.getTeam_num().matches(load_team)) {
-                        Log.w(TAG, " Match: " + mdobj.getMatch() + " # "  + Pearadox.Matches_Data.size());
+                        w(TAG, " Match: " + mdobj.getMatch() + " # "  + Pearadox.Matches_Data.size());
 //                        System.out.println("  \n");
                         Pearadox.Matches_Data.add(mdobj);
                     }
                }
-                Log.w(TAG, "***** Matches Loaded. # = "  + Pearadox.Matches_Data.size());
+                w(TAG, "***** Matches Loaded. # = "  + Pearadox.Matches_Data.size());
                 if (Pearadox.Matches_Data.size() > 0) {
                     Intent pit_intent = new Intent(Visualizer_Activity.this, VisMatch_Activity.class);
                     Bundle VZbundle = new Bundle();
@@ -518,7 +520,7 @@ public class Visualizer_Activity extends AppCompatActivity {
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void launchVizPit(String team, String name, String imgURL) {
-        Log.i(TAG,">>>>>>>>  launchVizPit " + team + " " + name + " " + imgURL);      // ** DEBUG **
+        i(TAG,">>>>>>>>  launchVizPit " + team + " " + name + " " + imgURL);      // ** DEBUG **
         Intent pit_intent = new Intent(Visualizer_Activity.this, VisPit_Activity.class);
         Bundle VZbundle = new Bundle();
         VZbundle.putString("team", team);        // Pass data to activity
@@ -534,7 +536,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {
             typSelected = parent.getItemAtPosition(pos).toString();
-            Log.w(TAG, ">>>>>  '" + typSelected + "'");
+            w(TAG, ">>>>>  '" + typSelected + "'");
             switch (typSelected) {
                 case "Practice":        // Practice round
                     matchID = "X";
@@ -546,7 +548,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                     matchID = "P";
                     break;
                 default:                // ????
-                    Log.e(TAG, "*** Error - bad TYPE indicator  ***");
+                    e(TAG, "*** Error - bad TYPE indicator  ***");
             }
         }
         public void onNothingSelected(AdapterView<?> parent) {
@@ -559,9 +561,9 @@ public class Visualizer_Activity extends AppCompatActivity {
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {
             NumSelected = parent.getItemAtPosition(pos).toString();
-            Log.w(TAG, ">>>>>  '" + NumSelected + "'");
+            w(TAG, ">>>>>  '" + NumSelected + "'");
             matchID = matchID + NumSelected;
-            Log.w(TAG, ">>>>>  Match = '" + matchID + "'");
+            w(TAG, ">>>>>  Match = '" + matchID + "'");
         }
         public void onNothingSelected(AdapterView<?> parent) {
             // Do nothing.
@@ -570,7 +572,8 @@ public class Visualizer_Activity extends AppCompatActivity {
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public void buttonView_Click(View view) {
-        Log.w(TAG, " Start Button Click  " + matchID);
+        w(TAG, " Start Button Click  " + matchID);
+        progressBar1.setVisibility(View.VISIBLE);
 
         clearTeams();
         getTeams();         // Get the teams for match selected
@@ -578,7 +581,7 @@ public class Visualizer_Activity extends AppCompatActivity {
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void loadTblData () {
-        Log.i(TAG, "#### loadTblData  ####");
+        i(TAG, "#### loadTblData  ####");
         // Start getting data for Table
         ImageView tbl_robotR1 = (ImageView) findViewById(R.id.tbl_robotR1);
         ImageView tbl_robotR2 = (ImageView) findViewById(R.id.tbl_robotR2);
@@ -610,7 +613,7 @@ public class Visualizer_Activity extends AppCompatActivity {
     }
 
     private void getURL0(String team) {
-        Log.i(TAG, ">>>>>  getURL0: " + team);
+        i(TAG, ">>>>>  getURL0: " + team);
 
 //        ImageView tbl_robotR1 = (ImageView) findViewById(R.id.tbl_robotR1);
 //        ImageView tbl_robotR2 = (ImageView) findViewById(R.id.tbl_robotR2);
@@ -622,12 +625,12 @@ public class Visualizer_Activity extends AppCompatActivity {
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event).child("robot_" + team.trim() + ".png");
-        Log.e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
+        e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
 
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Log.e(TAG,  FB_num + "  uri: " + uri.toString());
+                e(TAG,  FB_num + "  uri: " + uri.toString());
                 ImageView tbl_robotR1 = (ImageView) findViewById(R.id.tbl_robotR1);
                 URL = uri.toString();
                 FB_url[0] = URL;
@@ -640,16 +643,16 @@ public class Visualizer_Activity extends AppCompatActivity {
         //        Toast.makeText(getBaseContext(), "Robot images loaded", Toast.LENGTH_LONG).show();  //** DEBUG
     }
     private void getURL1(String team) {
-        Log.i(TAG, ">>>>>  getURL1: " + team);
+        i(TAG, ">>>>>  getURL1: " + team);
         URL = "";
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event).child("robot_" + team.trim() + ".png");
-        Log.e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
+        e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
 
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Log.e(TAG,  FB_num + "  uri: " + uri.toString());
+                e(TAG,  FB_num + "  uri: " + uri.toString());
                 ImageView tbl_robotR2 = (ImageView) findViewById(R.id.tbl_robotR2);
                 URL = uri.toString();
                 FB_url[1] = URL;
@@ -660,16 +663,16 @@ public class Visualizer_Activity extends AppCompatActivity {
         });
     }
     private void getURL2(String team) {
-        Log.i(TAG, ">>>>>  getURL2: " + team);
+        i(TAG, ">>>>>  getURL2: " + team);
         URL = "";
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event).child("robot_" + team.trim() + ".png");
-        Log.e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
+        e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
 
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Log.e(TAG,  FB_num + "  uri: " + uri.toString());
+                e(TAG,  FB_num + "  uri: " + uri.toString());
                 ImageView tbl_robotR3 = (ImageView) findViewById(R.id.tbl_robotR3);
                 URL = uri.toString();
                 FB_url[2] = URL;
@@ -680,16 +683,16 @@ public class Visualizer_Activity extends AppCompatActivity {
         });
     }
     private void getURL3(String team) {
-        Log.i(TAG, ">>>>>  getURL3: " + team);
+        i(TAG, ">>>>>  getURL3: " + team);
         URL = "";
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event).child("robot_" + team.trim() + ".png");
-        Log.e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
+        e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
 
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Log.e(TAG,  FB_num + "  uri: " + uri.toString());
+                e(TAG,  FB_num + "  uri: " + uri.toString());
                 ImageView tbl_robotB1 = (ImageView) findViewById(R.id.tbl_robotB1);
                 URL = uri.toString();
                 FB_url[3] = URL;
@@ -700,16 +703,16 @@ public class Visualizer_Activity extends AppCompatActivity {
         });
     }
     private void getURL4(String team) {
-        Log.i(TAG, ">>>>>  getURL4: " + team);
+        i(TAG, ">>>>>  getURL4: " + team);
         URL = "";
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event).child("robot_" + team.trim() + ".png");
-        Log.e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
+        e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
 
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Log.e(TAG,  FB_num + "  uri: " + uri.toString());
+                e(TAG,  FB_num + "  uri: " + uri.toString());
                 ImageView tbl_robotB2 = (ImageView) findViewById(R.id.tbl_robotB2);
                 URL = uri.toString();
                 FB_url[4] = URL;
@@ -720,16 +723,16 @@ public class Visualizer_Activity extends AppCompatActivity {
         });
     }
     private void getURL5(String team) {
-        Log.i(TAG, ">>>>>  getURL5: " + team);
+        i(TAG, ">>>>>  getURL5: " + team);
         URL = "";
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event).child("robot_" + team.trim() + ".png");
-        Log.e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
+        e(TAG, "images/" + Pearadox.FRC_Event + "/robot_" + team.trim() + ".png" + "\n \n");
 
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Log.e(TAG,  FB_num + "  uri: " + uri.toString());
+                e(TAG,  FB_num + "  uri: " + uri.toString());
                 ImageView tbl_robotB3 = (ImageView) findViewById(R.id.tbl_robotB3);
                 URL = uri.toString();
                 FB_url[5] = URL;
@@ -742,8 +745,8 @@ public class Visualizer_Activity extends AppCompatActivity {
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void getTeams() {
-        Log.i(TAG, "$$$$$  getTeams");
-        Log.w(TAG, ">>>>>  Match = '" + matchID + "'");
+        i(TAG, "$$$$$  getTeams");
+        w(TAG, ">>>>>  Match = '" + matchID + "'");
         final int[] rank = {0};
         txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
         txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
@@ -757,24 +760,25 @@ public class Visualizer_Activity extends AppCompatActivity {
         txt_teamB1_Name = (TextView) findViewById(R.id.txt_teamB1_Name);
         txt_teamB2_Name = (TextView) findViewById(R.id.txt_teamB2_Name);
         txt_teamB3_Name = (TextView) findViewById(R.id.txt_teamB3_Name);
+
 //        int z = matchID.length();
-        if (matchID.length() == 3) {
-            Log.i(TAG, "\n   Q U E R Y  ");
+        if (matchID.length() >= 3) {        // Worlds = 103 matches!!  GLF 4/17
+            i(TAG, "\n   Q U E R Y  ");
             String child = "match";
             String key = matchID;
             Query query = pfMatch_DBReference.orderByChild(child).equalTo(key);
             query.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Log.w(TAG, "%%%  ChildAdded");
-                    System.out.println(dataSnapshot.getValue());
+                    w(TAG, "%%%  ChildAdded");
+//                    System.out.println(dataSnapshot.getValue());
                     p_Firebase.matchObj mobj = dataSnapshot.getValue(p_Firebase.matchObj.class);
-                    System.out.println("Match: " + mobj.getMatch());
-                    System.out.println("Type: " + mobj.getMtype());
-                    System.out.println("Date: " + mobj.getDate());
-                    System.out.println("R1: " + mobj.getR1());
-                    System.out.println("B3: " + mobj.getB3());
-                    teams.clear();          // empty the list
+//                    System.out.println("Match: " + mobj.getMatch());
+//                    System.out.println("Type: " + mobj.getMtype());
+//                    System.out.println("Date: " + mobj.getDate());
+//                    System.out.println("R1: " + mobj.getR1());
+//                    System.out.println("B3: " + mobj.getB3());
+                    Scout_teams.clear();          // empty the list
                     String tn = mobj.getR1();
                     findTeam(tn);
                     tn = mobj.getR2();
@@ -787,7 +791,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                     findTeam(tn);
                     tn = mobj.getB3();
                     findTeam(tn);
-                    Log.w(TAG, ">>>> # team instances = " + teams.size());  //** DEBUG
+                    w(TAG, ">>>> # team instances = " + Scout_teams.size());  //** DEBUG
 
                     txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
                     txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
@@ -807,180 +811,52 @@ public class Visualizer_Activity extends AppCompatActivity {
                     tbl_teamB1 = (TextView) findViewById(R.id.tbl_teamB1);
                     tbl_teamB2 = (TextView) findViewById(R.id.tbl_teamB2);
                     tbl_teamB3 = (TextView) findViewById(R.id.tbl_teamB3);
-                    tbl_event1R1 = (TextView) findViewById(R.id.tbl_event1R1);
-                    tbl_event1R2 = (TextView) findViewById(R.id.tbl_event1R2);
-                    tbl_event1R3 = (TextView) findViewById(R.id.tbl_event1R3);
-                    tbl_event1B1 = (TextView) findViewById(R.id.tbl_event1B1);
-                    tbl_event1B2 = (TextView) findViewById(R.id.tbl_event1B2);
-                    tbl_event1B3 = (TextView) findViewById(R.id.tbl_event1B3);
-                    tbl_rate1R1 = (TextView) findViewById(R.id.tbl_rate1R1);
-                    tbl_rate1R2 = (TextView) findViewById(R.id.tbl_rate1R2);
-                    tbl_rate1R3 = (TextView) findViewById(R.id.tbl_rate1R3);
-                    tbl_rate1B1 = (TextView) findViewById(R.id.tbl_rate1B1);
-                    tbl_rate1B2 = (TextView) findViewById(R.id.tbl_rate1B2);
-                    tbl_rate1B3 = (TextView) findViewById(R.id.tbl_rate1B3);
-                    tbl_event2R1 = (TextView) findViewById(R.id.tbl_event2R1);
-                    tbl_event2R2 = (TextView) findViewById(R.id.tbl_event2R2);
-                    tbl_event2R3 = (TextView) findViewById(R.id.tbl_event2R3);
-                    tbl_event2B1 = (TextView) findViewById(R.id.tbl_event2B1);
-                    tbl_event2B2 = (TextView) findViewById(R.id.tbl_event2B2);
-                    tbl_event2B3 = (TextView) findViewById(R.id.tbl_event2B3);
-                    tbl_rate2R1 = (TextView) findViewById(R.id.tbl_rate2R1);
-                    tbl_rate2R2 = (TextView) findViewById(R.id.tbl_rate2R2);
-                    tbl_rate2R3 = (TextView) findViewById(R.id.tbl_rate2R3);
-                    tbl_rate2B1 = (TextView) findViewById(R.id.tbl_rate2B1);
-                    tbl_rate2B2 = (TextView) findViewById(R.id.tbl_rate2B2);
-                    tbl_rate2B3 = (TextView) findViewById(R.id.tbl_rate2B3);
 
 
-                    Log.w(TAG, "@@@@@@@@@@@@@@@@@@@ GET TEAM DATA  @@@@@@@@@@@@@@@@@@@");  //** DEBUG
+                    w(TAG, "@@@@@@@@@@@@@@@@@@@ GET TEAM DATA  @@@@@@@@@@@@@@@@@@@");  //** DEBUG
 
-                    ProgressDialog pd = new ProgressDialog(Visualizer_Activity.this);
-                    pd.setTitle("Loading Blue Alliance data for ALL teams");
-                    pd.setMessage("Please wait for Blue Alliance data");
-                    pd.setCancelable(false);
-                    pd.show();
-
-                    team_inst = teams.get(0);       // Team#R1
+                    team_inst = Scout_teams.get(0);       // Team#R1
                     txt_teamR1.setText(team_inst.getTeam_num());
                     txt_teamR1_Name.setText(team_inst.getTeam_name());
                     tbl_teamR1.setText(team_inst.getTeam_num());
-                    get_BA1data(team_inst.getTeam_num().trim());
-//                    if (rank[0] > 0) {
-                        tbl_event1R1.setText(EVT1 + " \n" + WLT1);
-                        tbl_rate1R1.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
-//                    } else {
-//                        tbl_event1R1.setText("");
-//                        tbl_rate1R1.setText("");
-//                    }
-//                    rank[0] = get_BA2data(team_inst.getTeam_num().trim());
-                    if (!EVT2.matches("    ")) {
-                        tbl_event2R1.setText(EVT2 + " \n" + WLT2);
-                        tbl_rate2R1.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
-                    } else {
-                        tbl_event2R1.setText("");
-                        tbl_rate2R1.setText("");
-                    }
-
-                    team_inst = teams.get(1);       // Team#R2
+                    team_inst = Scout_teams.get(1);       // Team#R2
                     txt_teamR2.setText(team_inst.getTeam_num());
                     txt_teamR2_Name.setText(team_inst.getTeam_name());
                     tbl_teamR2.setText(team_inst.getTeam_num());
-                    get_BA1data(team_inst.getTeam_num().trim());
-//                    if (rank[0] > 0) {
-                        tbl_event1R2.setText(EVT1 + " \n" + WLT1);
-                        tbl_rate1R2.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
-//                    } else {
-//                        tbl_event1R2.setText("");
-//                        tbl_rate1R2.setText("");
-//                    }
-//                    rank[0] = get_BA2data(team_inst.getTeam_num().trim());
-                    if (!EVT2.matches("    ")) {
-                        tbl_event2R2.setText(EVT2 + " \n" + WLT2);
-                        tbl_rate2R2.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
-                    } else {
-                        tbl_event2R2.setText("");
-                        tbl_rate2R2.setText("");
-                    }
-                    team_inst = teams.get(2);       // Team#R3
+                    team_inst = Scout_teams.get(2);       // Team#R3
                     txt_teamR3.setText(team_inst.getTeam_num());
                     txt_teamR3_Name.setText(team_inst.getTeam_name());
                     tbl_teamR3.setText(team_inst.getTeam_num());
-                    get_BA1data(team_inst.getTeam_num().trim());
-//                    if (rank[0] > 0) {
-                        tbl_event1R3.setText(EVT1 + " \n" + WLT1);
-//                        OPR = chkOPR(team_inst.getTeam_num());
-                        tbl_rate1R3.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
-//                    } else {
-//                        tbl_event1R3.setText("");
-//                        tbl_rate1R3.setText("");
-//                    }
-//                    rank[0] = get_BA2data(team_inst.getTeam_num().trim());
-                    if (!EVT2.matches("    ")) {
-                        tbl_event2R3.setText(EVT2 + " \n" + WLT2);
-                        tbl_rate2R3.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
-                    } else {
-                        tbl_event2R3.setText("");
-                        tbl_rate2R3.setText("");
-                    }
-                    team_inst = teams.get(3);       // Team#B1
+                    team_inst = Scout_teams.get(3);       // Team#B1
                     txt_teamB1.setText(team_inst.getTeam_num());
                     txt_teamB1_Name.setText(team_inst.getTeam_name());
                     tbl_teamB1.setText(team_inst.getTeam_num());
-                    get_BA1data(team_inst.getTeam_num().trim());
-//                    if (rank[0] > 0) {
-                        tbl_event1B1.setText(EVT1 + " \n" + WLT1);
-//                        OPR = chkOPR(team_inst.getTeam_num());
-                        tbl_rate1B1.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
-//                    } else {
-//                        tbl_event1B1.setText("");
-//                        tbl_rate1B1.setText("");
-//                    }
-//                    rank[0] = get_BA2data(team_inst.getTeam_num().trim());
-                    if (!EVT2.matches("    ")) {
-                        tbl_event2B1.setText(EVT2 + " \n" + WLT2);
-                        tbl_rate2B1.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
-                    } else {
-                        tbl_event2B1.setText("");
-                        tbl_rate2B1.setText("");
-                    }
-                    team_inst = teams.get(4);       // Team#B2
+                    team_inst = Scout_teams.get(4);       // Team#B2
                     txt_teamB2.setText(team_inst.getTeam_num());
                     txt_teamB2_Name.setText(team_inst.getTeam_name());
                     tbl_teamB2.setText(team_inst.getTeam_num());
-                    get_BA1data(team_inst.getTeam_num().trim());
-//                    if (rank[0] > 0) {
-                        tbl_event1B2.setText(EVT1 + " \n" + WLT1);
-//                        OPR = chkOPR(team_inst.getTeam_num());
-                        tbl_rate1B2.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
-//                    } else {
-//                        tbl_event1B2.setText("");
-//                        tbl_rate1B2.setText("");
-//                    }
-//                    rank[0] = get_BA2data(team_inst.getTeam_num().trim());
-                    if (!EVT2.matches("    ")) {
-                        tbl_event2B2.setText(EVT2 + " \n" + WLT2);
-                        tbl_rate2B2.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
-                    } else {
-                        tbl_event2B2.setText("");
-                        tbl_rate2B2.setText("");
-                    }
-                    team_inst = teams.get(5);       // Team#B3
+                    team_inst = Scout_teams.get(5);       // Team#B3
                     txt_teamB3.setText(team_inst.getTeam_num());
                     txt_teamB3_Name.setText(team_inst.getTeam_name());
                     tbl_teamB3.setText(team_inst.getTeam_num());
-                    get_BA1data(team_inst.getTeam_num().trim());
-//                    if (rank[0] > 0) {
-                        tbl_event1B3.setText(EVT1 + " \n" + WLT1);
-                        tbl_rate1B3.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
-//                    } else {
-//                        tbl_event1B3.setText("");
-//                        tbl_rate1B3.setText("");
-//                    }
-//                    rank[0] = get_BA2data(team_inst.getTeam_num().trim());
-                    if (!EVT2.matches("    ")) {
-                        tbl_event2B3.setText(EVT2 + " \n" + WLT2);
-                        tbl_rate2B3.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
-                    } else {
-                        tbl_event2B3.setText("");
-                        tbl_rate2B3.setText("");
-                    }
 
-                    pd.dismiss();
+                    w(TAG, "***  Calling Async class  ***");  //** DEBUG
+                    new Load_BAdata_Task().execute();     // Load Blue Alliance data Asyncronously
+
                     loadTblData();      // Load the images (if any)
 
                 }
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                    Log.w(TAG, "%%%  ChildChanged");
+                    w(TAG, "%%%  ChildChanged");
                 }
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    Log.w(TAG, "%%%  ChildRemoved");
+                    w(TAG, "%%%  ChildRemoved");
                 }
                 @Override
                 public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                    Log.w(TAG, "%%%  ChildMoved");
+                    w(TAG, "%%%  ChildMoved");
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
@@ -993,7 +869,7 @@ public class Visualizer_Activity extends AppCompatActivity {
     }
 
     private String chkOPR(String team) {
-        Log.i(TAG, "###  chkOPR ### " + team);
+        i(TAG, "###  chkOPR ### " + team);
         // ToDo - Get OPR data from Blue Alliance
         String opr = "000.0";
 //        for(int i = 0; i < OPR_Teams.length; i++) {   // Search Teams to find Rank
@@ -1005,15 +881,309 @@ public class Visualizer_Activity extends AppCompatActivity {
         return opr;
     }
 
+
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private class Load_BAdata_Task extends AsyncTask<Void, Integer, String> {
+        int progress = 0;
+        int progIncrement = 100 / 12;       // ~8
+        ProgressDialog pd;
+        Team[] teams1; Team[] teams2; Event[] evt1;
+        String rank1 = ""; String rank2 = "";  String OPR1 = "";  String OPR2 = ""; String NTP1 = ""; String NTP2 = "";
+        String WLT1 = ""; String WLT2 = ""; String kPa1 = ""; String kPa2 = ""; String EVT1 = ""; String EVT2 = "";
+
+    @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.i("Viz_Async", "***  onPreExecute  ***");
+            progressBar1.setVisibility(ProgressBar.VISIBLE);
+
+            pd = new ProgressDialog(Visualizer_Activity.this);
+            pd.setTitle("Loading Blue Alliance data for ALL teams");
+            pd.setMessage("Please wait for Blue Alliance data");
+//            pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//            pd.setMax(100);
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            Log.i("Viz_Async", "***  doInBackground  ***" + progIncrement);
+            progress += 3;
+            tnum = "";      // 1st show a blank team
+            publishProgress(progress);
+            int done = 0;
+            BA_Vis.clear();
+            p_Firebase.teamsObj BAteam_inst = new p_Firebase.teamsObj(team_num, team_name,  team_loc);
+
+            for(int x = 0; x < 6; x++) {
+                BA_data BA_inst = new BA_data();
+                BAteam_inst = Scout_teams.get(x);       // Team#
+                tnum = BAteam_inst.getTeam_num();
+                Log.w("Viz_Async", x + "  %%%%%%%%  Team: " + tnum);
+
+                done = get_BA1data(BAteam_inst.getTeam_num().trim());
+                BA_inst.BA_team = tnum;
+                BA_inst.BA_evt1 = EVT1;
+                BA_inst.BA_wlt1 = WLT1;
+                BA_inst.BA_opr1 = OPR1;
+                BA_inst.BA_rank1 = rank1;
+                BA_inst.BA_kPa1 = kPa1;
+                BA_inst.BA_tPts1 = NTP1;
+                progress = progress + progIncrement;
+                publishProgress(progress);
+
+                SystemClock.sleep(500);
+                BA_inst.BA_evt2 = EVT2;
+                BA_inst.BA_wlt2 = WLT2;
+                BA_inst.BA_opr2 = OPR2;
+                BA_inst.BA_rank2 = rank2;
+                BA_inst.BA_kPa2 = kPa2;
+                BA_inst.BA_tPts2 = NTP2;
+                BA_Vis.add(BA_inst);
+//                Log.w("Viz_Async", "Team:" + BA_inst.BA_team);
+//                System.out.println("BA_Vis: " + BA_Vis.size() + " \n ");
+
+                progress = progress + progIncrement;
+                publishProgress(progress);
+            }
+//            Log.w("Viz_Async", "BA_Vis # Objs = " + BA_Vis.size());
+
+            return null; 		// end of Asynch Task
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            Log.i("Viz_Async", "***  onProgressUpdate  ***  " + progress + "  '" + tnum + "'");
+            progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
+            progressBar1.setProgress(values[0]);
+            pd.setMessage("Please wait for Blue Alliance data - Team: " + tnum);
+        }
+
+    protected void onPostExecute(String result) {
+        super.onPostExecute(result);
+        Log.i("Viz_Async", "***  onPostExecute  ***  " + result);
+
+        progressBar1.setProgress(100);
+        SystemClock.sleep(1000);
+        if (pd != null) {
+            if (pd.isShowing()) {
+                pd.dismiss();
+            }
+        } else {
+            Log.e("Viz_Async", "***  pd = NULL  ***  ");
+        }
+
+//        for(int i = 0; i < 6; i++) {
+//            BA_data BA_inst = new BA_data();
+//            Log.e("Viz_Async", "*POST* " + i);
+//            BA_inst = BA_Vis.get(i);    // Team R1
+//            load_team = BA_inst.getBA_team();
+//            String e1 = BA_inst.getBA_evt1();
+//            String o1 = BA_inst.getBA_opr1();
+//            String r1 = BA_inst.getBA_rank1();
+//            String w1 = BA_inst.getBA_wlt1();
+//            String e2 = BA_inst.getBA_evt2();
+//            String o2 = BA_inst.getBA_opr2();
+//            String r2 = BA_inst.getBA_rank2();
+//            String w2 = BA_inst.getBA_wlt2();
+//            System.out.println("*POST* " + load_team + e1 +o1 +r1 +w1 + e2 +o2 +r2 +w2 + " \n ");
+//        }
+
+        tbl_event1R1 = (TextView) findViewById(R.id.tbl_event1R1);
+        tbl_event1R2 = (TextView) findViewById(R.id.tbl_event1R2);
+        tbl_event1R3 = (TextView) findViewById(R.id.tbl_event1R3);
+        tbl_event1B1 = (TextView) findViewById(R.id.tbl_event1B1);
+        tbl_event1B2 = (TextView) findViewById(R.id.tbl_event1B2);
+        tbl_event1B3 = (TextView) findViewById(R.id.tbl_event1B3);
+        tbl_rate1R1 = (TextView) findViewById(R.id.tbl_rate1R1);
+        tbl_rate1R2 = (TextView) findViewById(R.id.tbl_rate1R2);
+        tbl_rate1R3 = (TextView) findViewById(R.id.tbl_rate1R3);
+        tbl_rate1B1 = (TextView) findViewById(R.id.tbl_rate1B1);
+        tbl_rate1B2 = (TextView) findViewById(R.id.tbl_rate1B2);
+        tbl_rate1B3 = (TextView) findViewById(R.id.tbl_rate1B3);
+        tbl_event2R1 = (TextView) findViewById(R.id.tbl_event2R1);
+        tbl_event2R2 = (TextView) findViewById(R.id.tbl_event2R2);
+        tbl_event2R3 = (TextView) findViewById(R.id.tbl_event2R3);
+        tbl_event2B1 = (TextView) findViewById(R.id.tbl_event2B1);
+        tbl_event2B2 = (TextView) findViewById(R.id.tbl_event2B2);
+        tbl_event2B3 = (TextView) findViewById(R.id.tbl_event2B3);
+        tbl_rate2R1 = (TextView) findViewById(R.id.tbl_rate2R1);
+        tbl_rate2R2 = (TextView) findViewById(R.id.tbl_rate2R2);
+        tbl_rate2R3 = (TextView) findViewById(R.id.tbl_rate2R3);
+        tbl_rate2B1 = (TextView) findViewById(R.id.tbl_rate2B1);
+        tbl_rate2B2 = (TextView) findViewById(R.id.tbl_rate2B2);
+        tbl_rate2B3 = (TextView) findViewById(R.id.tbl_rate2B3);
+
+        BA_data BA_inst = new BA_data();
+        BA_inst = BA_Vis.get(0);    // Team R1
+//        Log.e("Viz_Async", ">>>  Team: " + BA_inst.getBA_team());
+        EVT1 = BA_inst.getBA_evt1();
+        rank1 = BA_inst.getBA_rank1();
+        WLT1 = BA_inst.getBA_wlt1();
+        OPR1 = BA_inst.getBA_opr1();
+        NTP1 = BA_inst.getBA_tPts1();
+        kPa1 = BA_inst.getBA_kPa1();
+        tbl_event1R1.setText(EVT1 + " \n" + WLT1);
+        tbl_rate1R1.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
+        EVT2 = BA_inst.getBA_evt2();
+        rank2 = BA_inst.getBA_rank2();
+        WLT2 = BA_inst.getBA_wlt2();
+        OPR2 = BA_inst.getBA_opr2();
+        NTP2 = BA_inst.getBA_tPts2();
+        kPa2 = BA_inst.getBA_kPa2();
+        if (!EVT2.matches("    ")) {
+            tbl_event2R1.setText(EVT2 + " \n" + WLT2);
+            tbl_rate2R1.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
+        } else {
+            tbl_event2R1.setText("");
+            tbl_rate2R1.setText("");
+        }
+
+        BA_inst = BA_Vis.get(1);    // Team R2
+//        Log.e("Viz_Async", ">>>  Team: " + BA_inst.getBA_team());
+        EVT1 = BA_inst.getBA_evt1();
+        rank1 = BA_inst.getBA_rank1();
+        WLT1 = BA_inst.getBA_wlt1();
+        OPR1 = BA_inst.getBA_opr1();
+        NTP1 = BA_inst.getBA_tPts1();
+        kPa1 = BA_inst.getBA_kPa1();
+        tbl_event1R2.setText(EVT1 + " \n" + WLT1);
+        tbl_rate1R2.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
+        EVT2 = BA_inst.getBA_evt2();
+        rank2 = BA_inst.getBA_rank2();
+        WLT2 = BA_inst.getBA_wlt2();
+        OPR2 = BA_inst.getBA_opr2();
+        NTP2 = BA_inst.getBA_tPts2();
+        kPa2 = BA_inst.getBA_kPa2();
+        if (!EVT2.matches("    ")) {
+            tbl_event2R2.setText(EVT2 + " \n" + WLT2);
+            tbl_rate2R2.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
+        } else {
+            tbl_event2R2.setText("");
+            tbl_rate2R2.setText("");
+        }
+
+        BA_inst = BA_Vis.get(2);    // Team R3
+//        Log.e("Viz_Async", ">>>  Team: " + BA_inst.getBA_team());
+        EVT1 = BA_inst.getBA_evt1();
+        rank1 = BA_inst.getBA_rank1();
+        WLT1 = BA_inst.getBA_wlt1();
+        OPR1 = BA_inst.getBA_opr1();
+        NTP1 = BA_inst.getBA_tPts1();
+        kPa1 = BA_inst.getBA_kPa1();
+        tbl_event1R3.setText(EVT1 + " \n" + WLT1);
+        tbl_rate1R3.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
+        EVT2 = BA_inst.getBA_evt2();
+        rank2 = BA_inst.getBA_rank2();
+        WLT2 = BA_inst.getBA_wlt2();
+        OPR2 = BA_inst.getBA_opr2();
+        NTP2 = BA_inst.getBA_tPts2();
+        kPa2 = BA_inst.getBA_kPa2();
+        if (!EVT2.matches("    ")) {
+            tbl_event2R3.setText(EVT2 + " \n" + WLT2);
+            tbl_rate2R3.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
+        } else {
+            tbl_event2R3.setText("");
+            tbl_rate2R3.setText("");
+        }
+
+        BA_inst = BA_Vis.get(3);    // Team B1
+//        Log.e("Viz_Async", ">>>  Team: " + BA_inst.getBA_team());
+        EVT1 = BA_inst.getBA_evt1();
+        rank1 = BA_inst.getBA_rank1();
+        WLT1 = BA_inst.getBA_wlt1();
+        OPR1 = BA_inst.getBA_opr1();
+        NTP1 = BA_inst.getBA_tPts1();
+        kPa1 = BA_inst.getBA_kPa1();
+        tbl_event1B1.setText(EVT1 + " \n" + WLT1);
+        tbl_rate1B1.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
+        EVT2 = BA_inst.getBA_evt2();
+        rank2 = BA_inst.getBA_rank2();
+        WLT2 = BA_inst.getBA_wlt2();
+        OPR2 = BA_inst.getBA_opr2();
+        NTP2 = BA_inst.getBA_tPts2();
+        kPa2 = BA_inst.getBA_kPa2();
+        if (!EVT2.matches("    ")) {
+            tbl_event2B1.setText(EVT2 + " \n" + WLT2);
+            tbl_rate2B1.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
+        } else {
+            tbl_event2B1.setText("");
+            tbl_rate2B1.setText("");
+        }
+
+        BA_inst = BA_Vis.get(4);    // Team B2
+//        Log.e("Viz_Async", ">>>  Team: " + BA_inst.getBA_team());
+        EVT1 = BA_inst.getBA_evt1();
+        rank1 = BA_inst.getBA_rank1();
+        WLT1 = BA_inst.getBA_wlt1();
+        OPR1 = BA_inst.getBA_opr1();
+        NTP1 = BA_inst.getBA_tPts1();
+        kPa1 = BA_inst.getBA_kPa1();
+        tbl_event1B2.setText(EVT1 + " \n" + WLT1);
+        tbl_rate1B2.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
+        EVT2 = BA_inst.getBA_evt2();
+        rank2 = BA_inst.getBA_rank2();
+        WLT2 = BA_inst.getBA_wlt2();
+        OPR2 = BA_inst.getBA_opr2();
+        NTP2 = BA_inst.getBA_tPts2();
+        kPa2 = BA_inst.getBA_kPa2();
+        if (!EVT2.matches("    ")) {
+            tbl_event2B2.setText(EVT2 + " \n" + WLT2);
+            tbl_rate2B2.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
+        } else {
+            tbl_event2B2.setText("");
+            tbl_rate2B2.setText("");
+        }
+
+        BA_inst = BA_Vis.get(5);    // Team B3
+//        Log.e("Viz_Async", ">>>  Team: " + BA_inst.getBA_team());
+        EVT1 = BA_inst.getBA_evt1();
+        rank1 = BA_inst.getBA_rank1();
+        WLT1 = BA_inst.getBA_wlt1();
+        OPR1 = BA_inst.getBA_opr1();
+        NTP1 = BA_inst.getBA_tPts1();
+        kPa1 = BA_inst.getBA_kPa1();
+        tbl_event1B3.setText(EVT1 + " \n" + WLT1);
+        tbl_rate1B3.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
+        EVT2 = BA_inst.getBA_evt2();
+        rank2 = BA_inst.getBA_rank2();
+        WLT2 = BA_inst.getBA_wlt2();
+        OPR2 = BA_inst.getBA_opr2();
+        NTP2 = BA_inst.getBA_tPts2();
+        kPa2 = BA_inst.getBA_kPa2();
+        if (!EVT2.matches("    ")) {
+            tbl_event2B3.setText(EVT2 + " \n" + WLT2);
+            tbl_rate2B3.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
+        } else {
+            tbl_event2B3.setText("");
+            tbl_rate2B3.setText("");
+        }
+        progressBar1.setVisibility(View.INVISIBLE);
+
+    }
+
     private int get_BA1data(String team) {
-        Log.i(TAG, "%%%  get_BA1data %%% " + team);
-        int rank = 0; int numEvts = 0; int bad1 = 99;
-        TBA BA1 = new TBA();
+        Log.i("Viz_Async", "%%%  get_BA1data %%% " + team);
+        int done = 0; int numEvts = 0; int bad1 = 99;
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
+        StrictMode.setThreadPolicy(policy);
+        TBA.setID("Pearadox", "Scout-5414", "V1");
+//        final TBA tba = new TBA();
+        Settings.FIND_TEAM_RANKINGS = true;
+        Settings.GET_EVENT_TEAMS = true;
+        Settings.GET_EVENT_MATCHES = true;
+        Settings.GET_EVENT_ALLIANCES = true;
+        Settings.GET_EVENT_AWARDS = true;
+        Settings.GET_EVENT_STATS = true;
+
+        final TBA BA1 = new TBA();
         Event[] events = new TBA().getTeamEvents(Integer.parseInt(team), 2017);
         evt1 = events.clone();
-        System.out.println("events: "+ events.length );
+        System.out.println("events: "+ events.length + "  Team:" + team);
         for(int i = 0; i < events.length; i++) {   // Search Teams to find Rank
-            Log.w(TAG, "%%% Event %%% " + evt1[i].name + "  " + evt1[i].event_code + " " + evt1[i].name.substring(0,7));
+//            Log.w("Viz_Async", "%%% Event %%% " + evt1[i].name + "  " + evt1[i].event_code + " " + evt1[i].name.substring(0,7));
             if (evt1[i].name.substring(0,7).matches("Galileo") || evt1[i].name.substring(0,6).matches("Hopper") || evt1[i].name.substring(0,6).matches("Turing") ||
                     evt1[i].name.substring(0,6).matches("Carver") || evt1[i].name.substring(0,6).matches("Newton") || evt1[i].name.substring(0,8).matches("Roebling")
                     || evt1[i].name.substring(0,5).matches("FIRST")) {
@@ -1022,7 +1192,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                 numEvts++;
             }
         }
-        Log.w(TAG, "#=" + events.length + " numEvts=" + numEvts + "  " + bad1 + " \n ");
+//        Log.w("Viz_Async", "BA1  #=" + events.length + " numEvts=" + numEvts + "  " + bad1 + " \n ");
         switch (events.length) {
             case 1:
                 EVT1 = evt1[0].event_code.toUpperCase();
@@ -1043,13 +1213,13 @@ public class Visualizer_Activity extends AppCompatActivity {
                 }
                 break;
             case 3:
-                Log.w(TAG, " CASE #3  numEvts=" + numEvts + "  " + bad1);
+//                Log.w("Viz_Async", " CASE #3  numEvts=" + numEvts + "  " + bad1);
                 if (bad1 == 99) {       // Use last 2
                     EVT1 = evt1[1].event_code.toUpperCase();
                     EVT2 = evt1[2].event_code.toUpperCase();
                 } else {
                     if (bad1 == 0) {
-                        Log.w(TAG, " CASE #3 " + evt1[1].event_code + "  " + evt1[2].event_code);
+//                        Log.w("Viz_Async", " CASE #3 " + evt1[1].event_code + "  " + evt1[2].event_code);
                         EVT1 = evt1[1].event_code.toUpperCase();
                         EVT2 = evt1[2].event_code.toUpperCase();
                     } else {
@@ -1064,7 +1234,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                 }
                 break;
             case 4:
-                Log.w(TAG, " WOW!! #4  numEvts=" + numEvts + "  " + bad1);
+//                Log.w("Viz_Async", " WOW!! #4  numEvts=" + numEvts + "  " + bad1);
                 if (bad1 == 99) {
                     EVT1 = evt1[2].event_code.toUpperCase();
                     EVT2 = evt1[3].event_code.toUpperCase();
@@ -1087,15 +1257,16 @@ public class Visualizer_Activity extends AppCompatActivity {
                 }
                 break;
             default:                // ????
-                Log.e(TAG, "*** Error - numEvts??  ***  " + numEvts);
+                Log.e("Viz_Async", "*** Error - numEvts??  ***  " + numEvts);
         }
-//        new Load_BAdata_Task();
 
-        Log.w(TAG, "Evt1=" + EVT1 + "  Evt2=" + EVT2);
+//        Log.w("Viz_Async", "Evt1=" + EVT1 + "  Evt2=" + EVT2);
+        done = 1;
+
         TBA t = new TBA();
         Event e = t.getEvent(EVT1.toLowerCase(), 2017);
         teams1 = e.teams.clone();
-        Log.e(TAG, "BLUE1 " + teams1.length);
+//        Log.e("Viz_Async", "BLUE1 " + teams1.length);
         BA1numTeams = e.teams.length;
 
 //        Team t = BA1.getTeam(Integer.parseInt(team));
@@ -1105,7 +1276,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         String team_num = "";  rank1=""; WLT1=""; OPR1="";NTP1="";kPa1="";
         for(int i = 0; i < BA1numTeams; i++) {   // Search Teams to find Rank
             team_num = String.valueOf(teams1[i].team_number);
-//            Log.w(TAG, "LOOP " + i + " " + team_num);
+//            Log.w("Viz_Async", "LOOP " + i + " " + team_num);
             if (team_num.matches(team)) {
 //                Log.w(TAG, ">>>>>>>>>>>>>>>>  Found Team # " + team);
                 rank1 = String.valueOf(i + 1);                                       // Rank
@@ -1119,21 +1290,15 @@ public class Visualizer_Activity extends AppCompatActivity {
         if (!EVT2.matches("    ")) {
             Event x = t.getEvent(EVT2.toLowerCase(), 2017);
             teams2 = x.teams.clone();
-//        Team[] teams2 = x.teams;
-            Log.e(TAG, "BLUE2 " + teams2.length);
+//            Log.e("Viz_Async", "BLUE2 " + teams2.length);
             BA2numTeams = x.teams.length;
 
-            team_num = "";
-            rank2 = "";
-            WLT2 = "";
-            OPR2 = "";
-            NTP2 = "";
-            kPa2 = "";
+            team_num = ""; rank2 = ""; WLT2 = ""; OPR2 = ""; NTP2 = ""; kPa2 = "";
             for (int i = 0; i < BA2numTeams; i++) {      // Search Teams to find Rank
                 team_num = String.valueOf(teams2[i].team_number);
-//            Log.w(TAG, "LOOP " + i + " " + team_num);
+//            Log.w("Viz_Async", "LOOP " + i + " " + team_num);
                 if (team_num.matches(team)) {
-//                    Log.w(TAG, ">>>>>>>>>>>>>>>>  Found Team # " + team);
+//                    Log.w("Viz_Async", ">>>>>>>>>>>>>>>>  Found Team # " + team);
                     rank2 = String.valueOf(i + 1);                        // Rank
                     OPR2 = String.format("%3.1f", (teams2[i].opr));       // OPR
                     NTP2 = String.format("%3.1f", (teams2[i].touchpad));  // Touchpad
@@ -1142,32 +1307,12 @@ public class Visualizer_Activity extends AppCompatActivity {
                 }
             }
         }
-        return rank;
+        return done;
     }
 
-    public class Load_BAdata_Task extends AsyncTask<Void, Integer, String> {
-        int count = 0;
-
-        @Override
-        protected void onPreExecute() {
-            progressBar1.setVisibility(ProgressBar.VISIBLE);
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-            while (count < 5) {
-                SystemClock.sleep(1000);
-                count++;
-                publishProgress(count * 20);
-            }
-            return "Complete";
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            progressBar1.setProgress(values[0]);
-        }
-    }
+}
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 //    private int get_BA2data(String team) {
 //        Log.i(TAG, "@@@  get_BA2data @@@ " + team);
 //        int rank = 0;
@@ -1189,12 +1334,12 @@ public class Visualizer_Activity extends AppCompatActivity {
 //    }
 
     private void findTeam(String tnum) {
-        Log.i(TAG, "$$$$$  findTeam " + tnum);
+        i(TAG, "$$$$$  findTeam " + tnum);
         boolean found = false;
         for (int i = 0; i < Pearadox.numTeams; i++) {        // check each team entry
             if (Pearadox.team_List.get(i).getTeam_num().equals(tnum)) {
                 team_inst = Pearadox.team_List.get(i);
-                teams.add(team_inst);
+                Scout_teams.add(team_inst);
 //                Log.w(TAG, "===  Team " + team_inst.getTeam_num() + " " + team_inst.getTeam_name() + " " + team_inst.getTeam_loc());
                 found = true;
                 break;  // found it!
@@ -1203,24 +1348,24 @@ public class Visualizer_Activity extends AppCompatActivity {
         if (!found) {
             Toast.makeText(getBaseContext(),"** Team '" + tnum + "' from Matches table _NOT_ found in Team list  ** ", Toast.LENGTH_LONG).show();
             p_Firebase.teamsObj team_dummy = new p_Firebase.teamsObj("****", "team _NOT_ found in Team list - Check for TYPOs in Match Sched."," ");
-            teams.add(team_dummy);
+            Scout_teams.add(team_dummy);
         }
     }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void loadMatches() {
-        Log.i(TAG, "###  loadMatches  ###");
+        i(TAG, "###  loadMatches  ###");
 
         addMatchSched_VE_Listener(pfMatch_DBReference.orderByChild("match"));
 
     }
 
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void addMatchSched_VE_Listener(final Query pfMatch_DBReference) {
         pfMatch_DBReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, "******* Firebase retrieve Match Schedule  *******");
+                i(TAG, "******* Firebase retrieve Match Schedule  *******");
                 txt_NextMatch = (TextView) findViewById(R.id.txt_NextMatch);
                 matchList.clear();
                 next_Match = "";
@@ -1252,7 +1397,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                         next_Match =  next_Match + match_inst.getMatch() + "  ";
                     }
                 }
-                Log.w(TAG,"### Matches ###  : " + matchList.size());
+                w(TAG,"### Matches ###  : " + matchList.size());
                 txt_NextMatch.setText(next_Match);
                 listView_Matches = (ListView) findViewById(R.id.listView_Matches);
                 adaptMatch = new ArrayAdapter<String>(Visualizer_Activity.this, R.layout.match_list_layout, matchList);
@@ -1277,7 +1422,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        Log.e(TAG, "signInAnonymously:FAILURE", exception);
+                        e(TAG, "signInAnonymously:FAILURE", exception);
                     }
                 });
     }
@@ -1288,7 +1433,7 @@ public class Visualizer_Activity extends AppCompatActivity {
 @Override
 public void onStart() {
     super.onStart();
-    Log.v(TAG, "onStart");
+    v(TAG, "onStart");
 
     FirebaseUser user = mAuth.getCurrentUser();
     if (user != null) {
@@ -1301,18 +1446,18 @@ public void onStart() {
     @Override
     public void onResume() {
         super.onResume();
-        Log.v(TAG, "onResume");
+        v(TAG, "onResume");
     }
     @Override
     public void onStop() {
         super.onStop();
-        Log.v(TAG, "onStop");
+        v(TAG, "onStop");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.v(TAG, "OnDestroy");
+        v(TAG, "OnDestroy");
     }
 
 }
