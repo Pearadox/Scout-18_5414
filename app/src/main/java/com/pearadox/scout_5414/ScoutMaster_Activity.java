@@ -118,7 +118,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                 matchSelected = pos;
                 listView_Matches.setSelector(android.R.color.holo_blue_light);
         		/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
-                matchID = matchList.get(matchSelected).substring(0,3);
+                matchID = matchList.get(matchSelected).substring(0,4);      // GLF 4/19  (103 matches!!)
                 Log.w(TAG,"   MatchID: " + matchID);
                 txt_MatchID = (TextView) findViewById(R.id.txt_MatchID);
                 txt_MatchID.setText(matchID);
@@ -162,7 +162,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
             matchSelected = matchSelected + 1;                        // increment selection
             Log.w(TAG, "}}}}}}     matchSelected = " + matchSelected);
             listView_Matches.setSelection(matchSelected);
-            matchID = matchList.get(matchSelected).substring(0, 3);
+            matchID = matchList.get(matchSelected).substring(0, 4);         // GLF 4/19  (103 matches!!)
             Log.w(TAG, "<<<<<  matchID  >>>>>> " + matchID);
             txt_MatchID = (TextView) findViewById(R.id.txt_MatchID);
             txt_MatchID.setText(matchID);
@@ -239,7 +239,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
         txt_teamB2_Name = (TextView) findViewById(R.id.txt_teamB2_Name);
         txt_teamB3_Name = (TextView) findViewById(R.id.txt_teamB3_Name);
         int z = matchID.length();
-        if (z == 3) {
+        if (z >= 3) {                       // GLF 4/19   (103 teams!!)
             Log.i(TAG, "   Q U E R Y  ");
             String child = "match";
             String key = matchID;
@@ -313,8 +313,9 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                 }
             });
         } else {
-//            Toast.makeText(getBaseContext(), "** Select both Match TYPE & NUMBER ** ", Toast.LENGTH_LONG).show();
-            // ToDo - turn toggle back to logon
+            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 200);
+            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+            Toast.makeText(getBaseContext(), "** Invalid Match ID!! ** ", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -331,6 +332,8 @@ public class ScoutMaster_Activity extends AppCompatActivity {
             }
         }  // end For
         if (!found) {
+            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 200);
+            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
             Toast.makeText(getBaseContext(),"** Team '" + tnum + "' from Matches table _NOT_ found in Team list  ** ", Toast.LENGTH_LONG).show();
             p_Firebase.teamsObj team_dummy = new p_Firebase.teamsObj("****", "team _NOT_ found in Team list - Check for TYPOs in Match Sched."," ");
             teams.add(team_dummy);

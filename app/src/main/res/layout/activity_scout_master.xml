@@ -549,16 +549,16 @@
 
     <TextView
         android:id="@+id/txt_MatchID"
-        android:layout_width="50sp"
+        android:layout_width="wrap_content"
         android:layout_height="30sp"
+        android:layout_alignStart="@+id/btn_Next"
+        android:layout_below="@+id/btn_Start"
         android:layout_marginStart="44dp"
-        android:text="T00"
+        android:layout_marginTop="14dp"
+        android:text="T0000"
         android:textColor="@android:color/holo_blue_light"
         android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_below="@+id/btn_Start"
-        android:layout_alignStart="@+id/btn_Next"
-        android:layout_marginTop="14dp" />
+        android:textStyle="bold" />
 
 
 </RelativeLayout>
