@@ -1,6 +1,7 @@
 package com.pearadox.scout_5414;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
@@ -64,6 +65,7 @@ public class Visualizer_Activity extends AppCompatActivity {
     public static int BA2numTeams = 0;
     public static ArrayList<String> BAteams_List = new ArrayList<String>();     // Teams (in RANK order)
     public boolean BA_avail = false;
+    Team[] teamsTBA;
     // -----------------------
     ProgressBar progressBar1;
     ArrayAdapter<String> adapter_typ;
@@ -140,8 +142,8 @@ public class Visualizer_Activity extends AppCompatActivity {
         Settings.GET_EVENT_STATS = true;
 
         TBA t = new TBA();
-//        Event e = t.getEvent("txlu", 2017);
-//        teams1 = e.teams.clone();
+        Event e = t.getEvent("txlu", 2017);
+        teamsTBA = e.teams.clone();
 //        Log.e(TAG, "BLUE1 " + teams1.length);
 //        BA1numTeams = e.teams.length;
 //        for(int i = 0; i < teams1.length; i++) {
@@ -223,7 +225,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                 matchSelected = pos;
                 listView_Matches.setSelector(android.R.color.holo_blue_light);
         		/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
-                matchID = matchList.get(matchSelected).substring(0,3);
+                matchID = matchList.get(matchSelected).substring(0,4);      // GLF 4/20  (112 matches!!)
                 w(TAG,"   MatchID: " + matchID);
                 txt_MatchID = (TextView) findViewById(R.id.txt_MatchID);
                 txt_MatchID.setText(matchID);
@@ -903,9 +905,17 @@ public class Visualizer_Activity extends AppCompatActivity {
             pd.setMessage("Please wait for Blue Alliance data");
 //            pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 //            pd.setMax(100);
-            pd.setCancelable(false);
-            pd.show();
-        }
+            pd.setCancelable(true);         // GLF 4/20 (for Andrew!)
+            pd.setButton(ProgressDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Cancel download task
+                pd.cancel();
+                pd.dismiss();
+            }
+        });
+        pd.show();
+    }
 
         @Override
         protected String doInBackground(Void... params) {
@@ -1379,22 +1389,22 @@ public class Visualizer_Activity extends AppCompatActivity {
                     matchList.add(match_inst.getMatch() +  "  " + match_inst.getMtype());
                     // Create the list of _OUR_ matches across the top
                     if (match_inst.getR1().matches("5414")) {
-                        next_Match =  next_Match + match_inst.getMatch() + "  ";
+                        next_Match =  next_Match + match_inst.getMatch() + " ";
                     }
                     if (match_inst.getR2().matches("5414")) {
-                        next_Match =  next_Match + match_inst.getMatch() + "  ";
+                        next_Match =  next_Match + match_inst.getMatch() + " ";
                     }
                     if (match_inst.getR3().matches("5414")) {
-                        next_Match =  next_Match + match_inst.getMatch() + "  ";
+                        next_Match =  next_Match + match_inst.getMatch() + " ";
                     }
                     if (match_inst.getB1().matches("5414")) {
-                        next_Match =  next_Match + match_inst.getMatch() + "  ";
+                        next_Match =  next_Match + match_inst.getMatch() + " ";
                     }
                     if (match_inst.getB2().matches("5414")) {
-                        next_Match =  next_Match + match_inst.getMatch() + "  ";
+                        next_Match =  next_Match + match_inst.getMatch() + " ";
                     }
                     if (match_inst.getB3().matches("5414")) {
-                        next_Match =  next_Match + match_inst.getMatch() + "  ";
+                        next_Match =  next_Match + match_inst.getMatch() + " ";
                     }
                 }
                 w(TAG,"### Matches ###  : " + matchList.size());
