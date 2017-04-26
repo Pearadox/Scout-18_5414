@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -34,6 +35,9 @@ import android.widget.ToggleButton;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -55,11 +59,16 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
 
 import static android.R.id.input;
+import static android.util.Log.e;
+import static android.util.Log.i;
+import static android.util.Log.v;
+import static android.util.Log.w;
 import static android.view.View.VISIBLE;
 
 // Debug & Messaging
@@ -89,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference pfTeam_DBReference;
     private DatabaseReference pfPitData_DBReference;
     private DatabaseReference pfMatchData_DBReference;
+    private DatabaseReference pfMatch_DBReference;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     String team_num, team_name, team_loc;
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name, team_loc);
     String key = null;
@@ -149,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
             pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Devices
             pfPitData_DBReference = pfDatabase.getReference("pit-data/" + Pearadox.FRC_Event); // Pit Scout Data
             pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
+            pfMatch_DBReference = pfDatabase.getReference("matches/" + Pearadox.FRC_Event); // List of Matches
         } else {        // Use smaller list in 'Values/strings'
             pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Devices
 //            loadStudentString();
@@ -897,15 +909,19 @@ private void preReqs() {
             switch (ev) {
                 case "FIRST Championship (Houston)":          // txwa
                     Pearadox.FRC_Event = "cmptx";
+                    Pearadox.FRC_ChampDiv = "gal";         // Galileo Division
                     break;
                 case "Brazos Valley Regional":          // txwa
                     Pearadox.FRC_Event = "txwa";
+                    Pearadox.FRC_ChampDiv = "txwa";         // Galileo Division
                     break;
                 case ("Lone Star Central Regional"):    // txho
                     Pearadox.FRC_Event = "txho";
+                    Pearadox.FRC_ChampDiv = "txho";         // Galileo Division
                     break;
                 case ("Hub City Regional"):             // txlu
                     Pearadox.FRC_Event = "txlu";
+                    Pearadox.FRC_ChampDiv = "txlu";         // Galileo Division
                     break;
                 default:                // ?????
                     Toast.makeText(getBaseContext(), "Event code not recognized", Toast.LENGTH_LONG).show();
@@ -985,9 +1001,16 @@ private void preReqs() {
         }
     }
 
+
 //###################################################################
 //###################################################################
 //###################################################################
+@Override
+public void onStart() {
+    super.onStart();
+    Log.v(TAG, "onStart");
+
+}
 @Override
 public void onResume() {
     super.onResume();

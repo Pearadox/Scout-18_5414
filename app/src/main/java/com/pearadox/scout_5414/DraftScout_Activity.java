@@ -221,10 +221,10 @@ public class DraftScout_Activity extends AppCompatActivity {
         String tn = "";
 
         TBA t = new TBA();
-        Event e = t.getEvent(Pearadox.FRC_Event, 2017);
+        Event e = t.getEvent(Pearadox.FRC_ChampDiv, 2017);
         teams = e.teams.clone();
 //        Team[] teams1 = e.teams;
-        Log.e(TAG, Pearadox.FRC_Event + "Teams= " + teams.length);
+        Log.e(TAG, Pearadox.FRC_ChampDiv + "Teams= " + teams.length);
         draftList.clear();
         BAnumTeams = e.teams.length;
         if (BAnumTeams > 0) {
