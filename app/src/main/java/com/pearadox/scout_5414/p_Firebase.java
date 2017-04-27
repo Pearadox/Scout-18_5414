@@ -60,17 +60,17 @@ public class p_Firebase {
         public devicesObj() {
         }
 
-        public devicesObj(String dev_name, String dev_desc, String dev_id, String stud_id, String phase, String batt_stat, String btUUID) {
-            this.dev_name = dev_name;
-            this.dev_desc = dev_desc;
-            this.dev_id = dev_id;
-            this.stud_id = stud_id;
-            this.phase = phase;
-            this.phase = batt_stat;
-            this.btUUID = btUUID;
-        }
+    public devicesObj(String dev_name, String dev_desc, String dev_id, String stud_id, String phase, String batt_stat, String btUUID) {
+        this.dev_name = dev_name;
+        this.dev_desc = dev_desc;
+        this.dev_id = dev_id;
+        this.stud_id = stud_id;
+        this.phase = phase;
+        this.batt_stat = batt_stat;
+        this.btUUID = btUUID;
+    }
 
-        public String getDev_name() {
+    public String getDev_name() {
             return dev_name;
         }
 

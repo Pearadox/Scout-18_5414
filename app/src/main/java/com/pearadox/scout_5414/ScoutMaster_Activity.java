@@ -100,6 +100,14 @@ public class ScoutMaster_Activity extends AppCompatActivity {
         adaptMatch = new ArrayAdapter<String>(this, R.layout.match_list_layout, matchList);
         listView_Matches.setAdapter(adaptMatch);
         adaptMatch.notifyDataSetChanged();
+        txt_BattR1 = (TextView) findViewById(R.id.txt_BattR1);
+        txt_BattR2 = (TextView) findViewById(R.id.txt_BattR2);
+        txt_BattR3 = (TextView) findViewById(R.id.txt_BattR3);
+        txt_BattB1 = (TextView) findViewById(R.id.txt_BattB1);
+        txt_BattB2 = (TextView) findViewById(R.id.txt_BattB2);
+        txt_BattB3 = (TextView) findViewById(R.id.txt_BattB3);
+        txt_BattR1.setText(" ");  txt_BattR2.setText(" ");  txt_BattR3.setText(" ");
+        txt_BattB1.setText(" ");  txt_BattB2.setText(" ");  txt_BattB3.setText(" ");
 
         pfDatabase = FirebaseDatabase.getInstance();
         pfTeam_DBReference = pfDatabase.getReference("teams/" + Pearadox.FRC_Event);    // Team data from Firebase D/B
@@ -638,18 +646,123 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                 break;
             case ("Red-2"):
                 txt_BattR2.setText(batt_Stat + "%");
+                switch (rng) {
+                    case 1:
+                        imgBatt_R2.setImageDrawable(getResources().getDrawable(R.drawable.batt_100));
+                        break;
+                    case 2:
+                        imgBatt_R2.setImageDrawable(getResources().getDrawable(R.drawable.batt_80));
+                        break;
+                    case 3:
+                        imgBatt_R2.setImageDrawable(getResources().getDrawable(R.drawable.batt_60));
+                        break;
+                    case 4:
+                        imgBatt_R2.setImageDrawable(getResources().getDrawable(R.drawable.batt_40));
+                        break;
+                    case 5:
+                        imgBatt_R2.setImageDrawable(getResources().getDrawable(R.drawable.batt_20));
+                        break;
+                    case 6:
+                        imgBatt_R2.setImageDrawable(getResources().getDrawable(R.drawable.batt_0));
+                        break;
+                    default:
+                } // End Switch - percent
                 break;
             case ("Red-3"):
                 txt_BattR3.setText(batt_Stat + "%");
+                switch (rng) {
+                    case 1:
+                        imgBatt_R3.setImageDrawable(getResources().getDrawable(R.drawable.batt_100));
+                        break;
+                    case 2:
+                        imgBatt_R3.setImageDrawable(getResources().getDrawable(R.drawable.batt_80));
+                        break;
+                    case 3:
+                        imgBatt_R3.setImageDrawable(getResources().getDrawable(R.drawable.batt_60));
+                        break;
+                    case 4:
+                        imgBatt_R3.setImageDrawable(getResources().getDrawable(R.drawable.batt_40));
+                        break;
+                    case 5:
+                        imgBatt_R3.setImageDrawable(getResources().getDrawable(R.drawable.batt_20));
+                        break;
+                    case 6:
+                        imgBatt_R3.setImageDrawable(getResources().getDrawable(R.drawable.batt_0));
+                        break;
+                    default:
+                } // End Switch - percent
                 break;
             case ("Blue-1"):
                 txt_BattB1.setText(batt_Stat + "%");
+                switch (rng) {
+                    case 1:
+                        imgBatt_B1.setImageDrawable(getResources().getDrawable(R.drawable.batt_100));
+                        break;
+                    case 2:
+                        imgBatt_B1.setImageDrawable(getResources().getDrawable(R.drawable.batt_80));
+                        break;
+                    case 3:
+                        imgBatt_B1.setImageDrawable(getResources().getDrawable(R.drawable.batt_60));
+                        break;
+                    case 4:
+                        imgBatt_B1.setImageDrawable(getResources().getDrawable(R.drawable.batt_40));
+                        break;
+                    case 5:
+                        imgBatt_B1.setImageDrawable(getResources().getDrawable(R.drawable.batt_20));
+                        break;
+                    case 6:
+                        imgBatt_B1.setImageDrawable(getResources().getDrawable(R.drawable.batt_0));
+                        break;
+                    default:
+                } // End Switch - percent
                 break;
             case ("Blue-2"):
                 txt_BattB2.setText(batt_Stat + "%");
+                switch (rng) {
+                    case 1:
+                        imgBatt_B2.setImageDrawable(getResources().getDrawable(R.drawable.batt_100));
+                        break;
+                    case 2:
+                        imgBatt_B2.setImageDrawable(getResources().getDrawable(R.drawable.batt_80));
+                        break;
+                    case 3:
+                        imgBatt_B2.setImageDrawable(getResources().getDrawable(R.drawable.batt_60));
+                        break;
+                    case 4:
+                        imgBatt_B2.setImageDrawable(getResources().getDrawable(R.drawable.batt_40));
+                        break;
+                    case 5:
+                        imgBatt_B2.setImageDrawable(getResources().getDrawable(R.drawable.batt_20));
+                        break;
+                    case 6:
+                        imgBatt_B2.setImageDrawable(getResources().getDrawable(R.drawable.batt_0));
+                        break;
+                    default:
+                } // End Switch - percent
                 break;
             case ("Blue-3"):
                 txt_BattB3.setText(batt_Stat + "%");
+                switch (rng) {
+                    case 1:
+                        imgBatt_B3.setImageDrawable(getResources().getDrawable(R.drawable.batt_100));
+                        break;
+                    case 2:
+                        imgBatt_B3.setImageDrawable(getResources().getDrawable(R.drawable.batt_80));
+                        break;
+                    case 3:
+                        imgBatt_B3.setImageDrawable(getResources().getDrawable(R.drawable.batt_60));
+                        break;
+                    case 4:
+                        imgBatt_B3.setImageDrawable(getResources().getDrawable(R.drawable.batt_40));
+                        break;
+                    case 5:
+                        imgBatt_B3.setImageDrawable(getResources().getDrawable(R.drawable.batt_20));
+                        break;
+                    case 6:
+                        imgBatt_B3.setImageDrawable(getResources().getDrawable(R.drawable.batt_0));
+                        break;
+                    default:
+                } // End Switch - percent
                 break;
             default:                //
                 Log.w(TAG, "*** Error DEV = " + device);
