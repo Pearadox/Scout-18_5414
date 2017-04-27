@@ -2,8 +2,10 @@ package com.pearadox.scout_5414;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+import android.os.BatteryManager;
 import android.os.Vibrator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -125,7 +127,40 @@ public class MatchScoutActivity extends AppCompatActivity {
         pfMatch_DBReference = pfDatabase.getReference("matches");           // List of Students
         pfCur_Match_DBReference = pfDatabase.getReference("current-match"); // _THE_ current Match
         pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Students
-        updateDev("Auto");      // Update 'Phase' for stoplight indicator in ScoutM aster
+        updateDev("Auto");      // Update 'Phase' for stoplight indicator in ScoutMaster
+
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = this.registerReceiver(null, ifilter);
+        int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+        float batteryPct = level / (float)scale;
+        int pct = (int) (batteryPct * 100);
+        String batpct = String.valueOf(pct);
+        Log.w(TAG, "Battery=" + batteryPct + "  " + batpct);      // ** DEBUG **
+        switch (Pearadox.FRC514_Device) {
+            case ("Red-1"):             //#Red or Blue Scout
+                key = "1";
+                break;
+            case ("Red-2"):             //#
+                key = "2";
+                break;
+            case ("Red-3"):             //#
+                key = "3";
+                break;
+            case ("Blue-1"):            //#
+                key = "4";
+                break;
+            case ("Blue-2"):            //#
+                key = "5";
+                break;
+            case ("Blue-3"):            //#####
+                key = "6";
+                break;
+            default:                //
+                Log.d(TAG, "DEV = NULL" );
+        }
+        Log.w(TAG, "batt_stat=" + key + "  " + batpct);      // ** DEBUG **
+        pfDevice_DBReference.child(key).child("batt_stat").setValue(batpct);
 
         txt_dev = (TextView) findViewById(R.id.txt_Dev);
         txt_stud = (TextView) findViewById(R.id.txt_stud);

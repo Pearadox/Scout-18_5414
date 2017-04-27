@@ -601,19 +601,19 @@ public class ScoutMaster_Activity extends AppCompatActivity {
             bat_level = 0;
         }
         int rng = 0;
-        if (isBetween(bat_level, 81, 100)) {
+        if (isBetween(bat_level, 90, 100)) {
             rng = 1;
         }
-        else if (isBetween(bat_level, 71, 80)) {
+        else if (isBetween(bat_level, 71, 89)) {
             rng = 2;
         }
-        else if (isBetween(bat_level, 51, 60)) {
+        else if (isBetween(bat_level, 51, 69)) {
             rng = 3;
         }
-        else if (isBetween(bat_level, 31, 40)) {
+        else if (isBetween(bat_level, 31, 49)) {
             rng = 4;
         }
-        else if (isBetween(bat_level, 11, 20)) {
+        else if (isBetween(bat_level, 11, 29)) {
             rng = 5;
         }
         else if (bat_level < 11) {
