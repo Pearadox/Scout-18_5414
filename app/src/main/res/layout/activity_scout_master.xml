@@ -36,7 +36,7 @@
         android:layout_width="80dp"
         android:layout_height="25dp"
         android:layout_below="@+id/textClock"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="40dp"
         android:layout_toEndOf="@+id/lbl_space1"
         android:layout_weight="1"
         android:textStyle="bold"
@@ -54,6 +54,28 @@
         android:textAlignment="viewEnd"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:id="@+id/imgPearadox"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@mipmap/p_logo"
+        android:layout_below="@+id/imageView_SM"
+        android:layout_toEndOf="@+id/lbl_space1"
+        android:layout_marginTop="13dp" />
+        android:layout_below="@+id/imageView_SM"
+        android:layout_toEndOf="@+id/lbl_space1" />
+
+    <TextView
+        android:id="@+id/txt_NextMatch"
+        android:layout_width="390sp"
+        android:layout_height="20sp"
+        android:layout_marginStart="12dp"
+        android:text="Q001 Q002 Q003 Q004 Q005 Q006 Q007 Q008 Q009 Q010 "
+        android:textColor="@color/yellow"
+        android:textStyle="bold"
+        android:layout_alignBottom="@+id/imgPearadox"
+        android:layout_toEndOf="@+id/imgPearadox" />
 
     <TextView
         android:id="@+id/lbl_space1"
@@ -340,6 +362,20 @@
             android:textSize="16sp"
             android:textColor="@color/orange"
             android:text="Johnathan L. Zimmerwhistle"  />
+        <ImageView
+            android:id="@+id/imgBatt_R1"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="Battery Status"
+            android:src="@drawable/batt_0" />
+        <TextView
+            android:id="@+id/txt_BattR1"
+            android:layout_width="210dp"
+            android:layout_height="30sp"
+            android:textSize="16sp"
+            android:textColor="@color/orange"
+            android:text="100%"  />
     </LinearLayout>
 
     <LinearLayout
@@ -369,6 +405,20 @@
             android:textSize="16sp"
             android:textColor="@color/orange"
             android:text="Johnathan L. Zimmerwhistle" />
+        <ImageView
+            android:id="@+id/imgBatt_R2"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="Battery Status"
+            android:src="@drawable/batt_0" />
+        <TextView
+            android:id="@+id/txt_BattR2"
+            android:layout_width="210dp"
+            android:layout_height="30sp"
+            android:textSize="16sp"
+            android:textColor="@color/orange"
+            android:text="100%"  />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/devListR3"
@@ -397,6 +447,20 @@
             android:textSize="16sp"
             android:textColor="@color/orange"
             android:text="Johnathan L. Zimmerwhistle" />
+        <ImageView
+            android:id="@+id/imgBatt_R3"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="Battery Status"
+            android:src="@drawable/batt_0" />
+        <TextView
+            android:id="@+id/txt_BattR3"
+            android:layout_width="210dp"
+            android:layout_height="30sp"
+            android:textSize="16sp"
+            android:textColor="@color/orange"
+            android:text="100%"  />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/devListB1"
@@ -426,6 +490,20 @@
             android:textSize="16sp"
             android:textColor="@color/cyan"
             android:text="Johnathan L. Zimmerwhistle"  />
+        <ImageView
+            android:id="@+id/imgBatt_B1"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="Battery Status"
+            android:src="@drawable/batt_0" />
+        <TextView
+            android:id="@+id/txt_BattB1"
+            android:layout_width="210dp"
+            android:layout_height="30sp"
+            android:textSize="16sp"
+            android:textColor="@color/cyan"
+            android:text="100%"  />
     </LinearLayout>
 
     <LinearLayout
@@ -455,6 +533,20 @@
             android:textSize="16sp"
             android:textColor="@color/cyan"
             android:text="Johnathan L. Zimmerwhistle" />
+        <ImageView
+            android:id="@+id/imgBatt_B2"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="Battery Status"
+            android:src="@drawable/batt_0" />
+        <TextView
+            android:id="@+id/txt_BattB2"
+            android:layout_width="210dp"
+            android:layout_height="30sp"
+            android:textSize="16sp"
+            android:textColor="@color/cyan"
+            android:text="100%"  />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/devListB3"
@@ -483,6 +575,20 @@
             android:textSize="16sp"
             android:textColor="@color/cyan"
             android:text="Johnathan L. Zimmerwhistle" />
+        <ImageView
+            android:id="@+id/imgBatt_B3"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="Battery Status"
+            android:src="@drawable/batt_0" />
+        <TextView
+            android:id="@+id/txt_BattB3"
+            android:layout_width="210dp"
+            android:layout_height="30sp"
+            android:textSize="16sp"
+            android:textColor="@color/cyan"
+            android:text="100%"  />
     </LinearLayout>
 
 
@@ -506,7 +612,7 @@
         android:layout_height="wrap_content"
         android:text="Red Alliance"
         android:gravity="center_horizontal"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/linear_Matches"
         android:layout_alignParentStart="true" />
 
@@ -518,7 +624,7 @@
         android:layout_height="wrap_content"
         android:text="Blue Alliance"
         android:gravity="center_horizontal"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="08dp"
         android:layout_below="@+id/teams_sectR1"
         android:layout_alignParentStart="true" />
 
@@ -528,11 +634,11 @@
     <LinearLayout
         android:id="@+id/linear_Matches"
         android:layout_width="400sp"
-        android:layout_height="240sp"
+        android:layout_height="200sp"
         android:layout_below="@+id/lbl_Matches"
+        android:layout_toEndOf="@+id/lbl_space1"
         android:choiceMode="singleChoice"
         android:listSelector="@android:color/holo_blue_light"
-        android:layout_toEndOf="@+id/lbl_space1"
         android:orientation="vertical"
         android:weightSum="1">
 

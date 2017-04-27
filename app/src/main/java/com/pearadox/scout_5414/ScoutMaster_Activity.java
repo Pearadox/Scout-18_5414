@@ -54,16 +54,20 @@ public class ScoutMaster_Activity extends AppCompatActivity {
     ArrayAdapter<String> adapter_Num;
     public String NumSelected = " ";
     public int matchSelected = 0;
-    public String matchID = "T00";      // Type + #
+    public String matchID = "T00";              // Type + #
+    public String batt_Stat = "00";             // Battery Status (
     ListView listView_Matches;
     ArrayList<String> matchList = new ArrayList<String>();
     ArrayAdapter<String> adaptMatch;
+    public String next_Match = " ";             // List of next Matches for 5414
     Button btn_Start, btn_Next;
-    TextView txt_EventName, txt_MatchID;
+    TextView txt_EventName, txt_MatchID, txt_NextMatch;
     TextView txt_teamR1, txt_teamR2, txt_teamR3, txt_teamB1, txt_teamB2, txt_teamB3;
     TextView txt_teamR1_Name, txt_teamR2_Name, txt_teamR3_Name, txt_teamB1_Name, txt_teamB2_Name, txt_teamB3_Name;
     TextView txt_scoutR1, txt_scoutR2, txt_scoutR3, txt_scoutB1, txt_scoutB2, txt_scoutB3;
+    TextView txt_BattR1, txt_BattR2, txt_BattR3, txt_BattB1, txt_BattB2, txt_BattB3;
     ImageView imgStat_R1, imgStat_R2, imgStat_R3, imgStat_B1, imgStat_B2, imgStat_B3;
+    ImageView imgBatt_R1, imgBatt_R2, imgBatt_R3, imgBatt_B1, imgBatt_B2, imgBatt_B3;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfStudent_DBReference;
     private DatabaseReference pfDevice_DBReference;
@@ -90,6 +94,8 @@ public class ScoutMaster_Activity extends AppCompatActivity {
         txt_EventName.setText(Pearadox.FRC_EventName);          // Event Name
         txt_MatchID = (TextView) findViewById(R.id.txt_MatchID);
         txt_MatchID.setText(" ");
+        txt_NextMatch = (TextView) findViewById(R.id.txt_NextMatch);
+        txt_NextMatch.setText("");
         listView_Matches = (ListView) findViewById(R.id.listView_Matches);
         adaptMatch = new ArrayAdapter<String>(this, R.layout.match_list_layout, matchList);
         listView_Matches.setAdapter(adaptMatch);
@@ -409,6 +415,9 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                     device = dev_Obj.getDev_name();
                     studname = dev_Obj.getStud_id();
                     status = dev_Obj.getPhase();
+                    batt_Stat = dev_Obj.getBatt_stat();
+                    Log.w(TAG, "Battery Status = '" + batt_Stat + "'  \n");
+                    set_BattStatus(device);
                     Log.w(TAG, "%%%%  " + studname + " is logged onto " + device + " at Phase '" + status + "' ");
                     numDevs++;
 //                    if (studname.length() > 2) {
@@ -558,24 +567,101 @@ public class ScoutMaster_Activity extends AppCompatActivity {
             }
         });
     }
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    public static boolean isBetween(int x, int lower, int upper) {
+        return lower <= x && x <= upper;
+    }
+
+    private void set_BattStatus(String device) {
+        Log.w(TAG, "####  set_BattStatus  ####  " + device + "  " + batt_Stat.length());
+        txt_BattR1 = (TextView) findViewById(R.id.txt_BattR1);
+        txt_BattR2 = (TextView) findViewById(R.id.txt_BattR2);
+        txt_BattR3 = (TextView) findViewById(R.id.txt_BattR3);
+        txt_BattB1 = (TextView) findViewById(R.id.txt_BattB1);
+        txt_BattB2 = (TextView) findViewById(R.id.txt_BattB2);
+        txt_BattB3 = (TextView) findViewById(R.id.txt_BattB3);
+        ImageView imgBatt_R1 = (ImageView) findViewById(R.id.imgBatt_R1);
+        ImageView imgBatt_R2 = (ImageView) findViewById(R.id.imgBatt_R2);
+        ImageView imgBatt_R3 = (ImageView) findViewById(R.id.imgBatt_R3);
+        ImageView imgBatt_B1 = (ImageView) findViewById(R.id.imgBatt_B1);
+        ImageView imgBatt_B2 = (ImageView) findViewById(R.id.imgBatt_B2);
+        ImageView imgBatt_B3 = (ImageView) findViewById(R.id.imgBatt_B3);
+
+        int bat_level = 0;
+        if (batt_Stat.length() > 1) {
+            bat_level = Integer.parseInt(batt_Stat);
+        } else {
+            bat_level = 0;
+        }
+        int rng = 0;
+        if (isBetween(bat_level, 81, 100)) {
+            rng = 1;
+        }
+        else if (isBetween(bat_level, 71, 80)) {
+            rng = 2;
+        }
+        else if (isBetween(bat_level, 51, 60)) {
+            rng = 3;
+        }
+        else if (isBetween(bat_level, 31, 40)) {
+            rng = 4;
+        }
+        else if (isBetween(bat_level, 11, 20)) {
+            rng = 5;
+        }
+        else if (bat_level < 11) {
+            rng = 6;
+        }
+        switch (device) {
+            case ("Red-1"):             //#Red or Blue Scout
+                txt_BattR1.setText(batt_Stat + "%");
+                switch (rng) {
+                    case 1:
+                        imgBatt_R1.setImageDrawable(getResources().getDrawable(R.drawable.batt_100));
+                    break;
+                    case 2:
+                        imgBatt_R1.setImageDrawable(getResources().getDrawable(R.drawable.batt_80));
+                        break;
+                    case 3:
+                        imgBatt_R1.setImageDrawable(getResources().getDrawable(R.drawable.batt_60));
+                        break;
+                    case 4:
+                        imgBatt_R1.setImageDrawable(getResources().getDrawable(R.drawable.batt_40));
+                        break;
+                    case 5:
+                        imgBatt_R1.setImageDrawable(getResources().getDrawable(R.drawable.batt_20));
+                        break;
+                    case 6:
+                        imgBatt_R1.setImageDrawable(getResources().getDrawable(R.drawable.batt_0));
+                        break;
+                    default:
+                 } // End Switch - percent
+                break;
+            case ("Red-2"):
+                txt_BattR2.setText(batt_Stat + "%");
+                break;
+            case ("Red-3"):
+                txt_BattR3.setText(batt_Stat + "%");
+                break;
+            case ("Blue-1"):
+                txt_BattB1.setText(batt_Stat + "%");
+                break;
+            case ("Blue-2"):
+                txt_BattB2.setText(batt_Stat + "%");
+                break;
+            case ("Blue-3"):
+                txt_BattB3.setText(batt_Stat + "%");
+                break;
+            default:                //
+                Log.w(TAG, "*** Error DEV = " + device);
+        } // End Switch - Device
+
+    }
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void loadMatches() {
         Log.i(TAG, "###  loadMatches  ###");
 
         addMatchSched_VE_Listener(pfMatch_DBReference.orderByChild("match"));
-//        matchList.add("Q01"  + "  Time: 2:00PM" );
-//        matchList.add("Q02"  + "  Time: 2:15PM" );
-//        matchList.add("Q03"  + "  Time: 2:30PM" );
-//        matchList.add("Q04"  + "  Time: 2:45PM" );
-//        matchList.add("Q05"  + "  Time: 3:00PM" );
-//        matchList.add("Q06"  + "  Time: 3:15PM" );
-//        matchList.add("Q07"  + "  Time: 3:30PM" );
-//        matchList.add("Q08"  + "  Time: 3:45PM" );
-//        matchList.add("Q09"  + "  Time: 4:00PM" );
-//        matchList.add("Q10"  + "  Time: 4:15PM" );
-//        matchList.add("Q11"  + "  Time: 4:30PM" );
-//        matchList.add("Q12"  + "  Time: 4:45PM" );
-
     }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -584,7 +670,9 @@ public class ScoutMaster_Activity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.i(TAG, "******* Firebase retrieve Match Schedule  *******");
+                txt_NextMatch = (TextView) findViewById(R.id.txt_NextMatch);
                 matchList.clear();
+                next_Match = "";
                 p_Firebase.matchObj match_inst = new p_Firebase.matchObj();
                 Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
                 Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
@@ -592,8 +680,29 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                     match_inst = iterator.next().getValue(p_Firebase.matchObj.class);
 //                    Log.w(TAG,"      " + match_inst.getMatch());
                     matchList.add(match_inst.getMatch() + "  Time: " + match_inst.getTime() + "  " + match_inst.getMtype());
+                    // Create the list of _OUR_ matches across the top
+                    if (match_inst.getR1().matches("5414")) {
+                        next_Match =  next_Match + match_inst.getMatch() + " ";
+                    }
+                    if (match_inst.getR2().matches("5414")) {
+                        next_Match =  next_Match + match_inst.getMatch() + " ";
+                    }
+                    if (match_inst.getR3().matches("5414")) {
+                        next_Match =  next_Match + match_inst.getMatch() + " ";
+                    }
+                    if (match_inst.getB1().matches("5414")) {
+                        next_Match =  next_Match + match_inst.getMatch() + " ";
+                    }
+                    if (match_inst.getB2().matches("5414")) {
+                        next_Match =  next_Match + match_inst.getMatch() + " ";
+                    }
+                    if (match_inst.getB3().matches("5414")) {
+                        next_Match =  next_Match + match_inst.getMatch() + " ";
+                    }
                 }
                 Log.w(TAG,"### Matches ###  : " + matchList.size());
+                txt_NextMatch.setText(next_Match);
+                Pearadox.our_Matches = next_Match;
                 listView_Matches = (ListView) findViewById(R.id.listView_Matches);
                 adaptMatch = new ArrayAdapter<String>(ScoutMaster_Activity.this, R.layout.match_list_layout, matchList);
                 listView_Matches.setAdapter(adaptMatch);

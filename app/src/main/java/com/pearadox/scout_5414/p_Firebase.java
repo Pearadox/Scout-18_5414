@@ -46,7 +46,7 @@ public class p_Firebase {
         }
     }
 
-    // ==========================================================
+// ==========================================================
 // ==========================================================
     public static class devicesObj {
         private String dev_name;
@@ -54,17 +54,19 @@ public class p_Firebase {
         private String dev_id;
         private String stud_id;
         private String phase;
+        private String batt_stat;
         private String btUUID;
 
         public devicesObj() {
         }
 
-        public devicesObj(String dev_name, String dev_desc, String dev_id, String stud_id, String phase, String btUUID) {
+        public devicesObj(String dev_name, String dev_desc, String dev_id, String stud_id, String phase, String batt_stat, String btUUID) {
             this.dev_name = dev_name;
             this.dev_desc = dev_desc;
             this.dev_id = dev_id;
             this.stud_id = stud_id;
             this.phase = phase;
+            this.phase = batt_stat;
             this.btUUID = btUUID;
         }
 
@@ -114,6 +116,12 @@ public class p_Firebase {
 
         public void setBtUUID(String btUUID) {
             this.btUUID = btUUID;
+        }
+        public String getBatt_stat() {
+            return batt_stat;
+        }
+        public void setBatt_stat(String batt_stat) {
+            this.batt_stat = batt_stat;
         }
     }
 
