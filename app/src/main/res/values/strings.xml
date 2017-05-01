@@ -13,6 +13,7 @@
     <!-- ##### Events ##### -->
     <string-array name="event_array">
         <item> </item>
+        <item>UIL State Championship (Austin)</item>
         <item>FIRST Championship (Houston)</item>
         <item>Brazos Valley Regional</item>
         <item>Lone Star Central Regional</item>

@@ -697,6 +697,16 @@ private void preReqs() {
             if(direct_iCBkup.mkdir())
             { }        //directory is created;
         }
+        File direct_uCmp = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/uila");
+        if(!direct_iCmp.exists())  {
+            if(direct_iCmp.mkdir())
+            { }        //directory is created;
+        }
+        File direct_uCBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/uila/bkup");
+        if(!direct_iCBkup.exists())  {
+            if(direct_iCBkup.mkdir())
+            { }        //directory is created;
+        }
         File direct_iHou = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txho");
         if(!direct_iHou.exists())  {
             if(direct_iHou.mkdir())
@@ -758,6 +768,16 @@ private void preReqs() {
             if(direct_mWBkup.mkdir())
             { }        //directory is created;
         }
+        File direct_mAus = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/uila");
+        if(!direct_mWaco.exists())  {
+            if(direct_mWaco.mkdir())
+            { }        //directory is created;
+        }
+        File direct_mABkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/uila/bkup");
+        if(!direct_mWBkup.exists())  {
+            if(direct_mWBkup.mkdir())
+            { }        //directory is created;
+        }
 //=================================================================
         File directPit = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit");
         if(!directPit.exists())  {
@@ -795,6 +815,16 @@ private void preReqs() {
             { }        //directory is created;
         }
         File direct_pWBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txwa/bkup");
+        if(!direct_pWBkup.exists())  {
+            if(direct_pWBkup.mkdir())
+            { }        //directory is created;
+        }
+        File direct_pAus = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/uila");
+        if(!direct_pWaco.exists())  {
+            if(direct_pWaco.mkdir())
+            { }        //directory is created;
+        }
+        File direct_pABkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/uila/bkup");
         if(!direct_pWBkup.exists())  {
             if(direct_pWBkup.mkdir())
             { }        //directory is created;
@@ -907,7 +937,11 @@ private void preReqs() {
             spinner_Device.setClickable(true);
             spinner_Student.setClickable(true);
             switch (ev) {
-                case "FIRST Championship (Houston)":          // txwa
+                case "UIL State Championship (Austin)":          // uila
+                    Pearadox.FRC_Event = "uila";
+                    Pearadox.FRC_ChampDiv = "uila";         // Galileo Division
+                    break;
+                case "FIRST Championship (Houston)":          // cmptx
                     Pearadox.FRC_Event = "cmptx";
                     Pearadox.FRC_ChampDiv = "gal";         // Galileo Division
                     break;
