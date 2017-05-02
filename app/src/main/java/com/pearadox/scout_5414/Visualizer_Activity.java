@@ -225,7 +225,8 @@ public class Visualizer_Activity extends AppCompatActivity {
                 matchSelected = pos;
                 listView_Matches.setSelector(android.R.color.holo_blue_light);
         		/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
-                matchID = matchList.get(matchSelected).substring(0,4);      // GLF 4/20  (112 matches!!)
+                int blnk = matchList.get(matchSelected).indexOf(" ");          // 1st blank after MatchID
+                matchID = matchList.get(matchSelected).substring(0,blnk);      // GLF 4/20  (112 matches!!)  5/2 2 or 3 digit
                 w(TAG,"   MatchID: " + matchID);
                 txt_MatchID = (TextView) findViewById(R.id.txt_MatchID);
                 txt_MatchID.setText(matchID);
