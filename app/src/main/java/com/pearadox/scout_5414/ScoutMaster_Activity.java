@@ -132,8 +132,10 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                 matchSelected = pos;
                 listView_Matches.setSelector(android.R.color.holo_blue_light);
         		/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
-                matchID = matchList.get(matchSelected).substring(0,4);      // GLF 4/19  (103 matches!!)
-                Log.w(TAG,"   MatchID: " + matchID);
+        		int blnk = matchList.get(matchSelected).indexOf(" ");          // 1st blank after MatchID
+                Log.w(TAG,"@@@  blnk= " + blnk + " \n \n ");
+                matchID = matchList.get(matchSelected).substring(0,blnk);      // GLF 4/19  (103 matches!!) 5/2 any length
+                Log.w(TAG,"@@@   MatchID: " + matchID);
                 txt_MatchID = (TextView) findViewById(R.id.txt_MatchID);
                 txt_MatchID.setText(matchID);
             }
@@ -161,7 +163,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public void buttonNext_Click(View view) {
-        Log.w(TAG, " Next Button Click  " + matchSelected + " " + listView_Matches.getCount());
+        Log.i(TAG, " Next Button Click  " + matchSelected + " " + listView_Matches.getCount());
         if (matchSelected + 1 < listView_Matches.getCount()) {      // +1 since 1st is Zero
             String key = "0";
             pfCur_Match_DBReference.child(key).child("cur_match").setValue("");  // set to null
@@ -176,8 +178,10 @@ public class ScoutMaster_Activity extends AppCompatActivity {
             matchSelected = matchSelected + 1;                        // increment selection
             Log.w(TAG, "}}}}}}     matchSelected = " + matchSelected);
             listView_Matches.setSelection(matchSelected);
-            matchID = matchList.get(matchSelected).substring(0, 4);         // GLF 4/19  (103 matches!!)
-            Log.w(TAG, "<<<<<  matchID  >>>>>> " + matchID);
+            listView_Matches.setSelector(android.R.color.holo_blue_light);
+            int blnk = matchList.get(matchSelected).indexOf(" ");          // 1st blank after MatchID
+            matchID = matchList.get(matchSelected).substring(0,blnk);         // GLF 4/19  (103 matches!!)  5/2 any length
+            Log.w(TAG, "<<<<<  matchID  >>>>>> '" + matchID + "'");
             txt_MatchID = (TextView) findViewById(R.id.txt_MatchID);
             txt_MatchID.setText(matchID);
 
@@ -254,7 +258,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
         txt_teamB3_Name = (TextView) findViewById(R.id.txt_teamB3_Name);
         int z = matchID.length();
         if (z >= 3) {                       // GLF 4/19   (103 teams!!)
-            Log.i(TAG, "   Q U E R Y  ");
+            Log.i(TAG, "   Q U E R Y   '" + matchID + "'");
             String child = "match";
             String key = matchID;
             Query query = pfMatch_DBReference.orderByChild(child).equalTo(key);
@@ -424,7 +428,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                     studname = dev_Obj.getStud_id();
                     status = dev_Obj.getPhase();
                     batt_Stat = dev_Obj.getBatt_stat();
-                    Log.w(TAG, "Battery Status = '" + batt_Stat + "'  \n");
+//                    Log.w(TAG, "Battery Status = '" + batt_Stat + "'  \n");
                     set_BattStatus(device);
                     Log.w(TAG, "%%%%  " + studname + " is logged onto " + device + " at Phase '" + status + "' ");
                     numDevs++;
@@ -580,7 +584,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
     }
 
     private void set_BattStatus(String device) {
-        Log.w(TAG, "####  set_BattStatus  ####  " + device + "  " + batt_Stat.length());
+//        Log.w(TAG, "####  set_BattStatus  ####  " + device + "  " + batt_Stat.length());
         txt_BattR1 = (TextView) findViewById(R.id.txt_BattR1);
         txt_BattR2 = (TextView) findViewById(R.id.txt_BattR2);
         txt_BattR3 = (TextView) findViewById(R.id.txt_BattR3);
