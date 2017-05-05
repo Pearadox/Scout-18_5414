@@ -1193,18 +1193,19 @@ public class Visualizer_Activity extends AppCompatActivity {
         Event[] events = new TBA().getTeamEvents(Integer.parseInt(team), 2017);
         evt1 = events.clone();
         System.out.println("events: "+ events.length + "  Team:" + team);
-        for(int i = 0; i < events.length; i++) {   // Search Teams to find Rank
-//            Log.w("Viz_Async", "%%% Event %%% " + evt1[i].name + "  " + evt1[i].event_code + " " + evt1[i].name.substring(0,7));
-            if (evt1[i].name.substring(0,7).matches("Galileo") || evt1[i].name.substring(0,6).matches("Hopper") || evt1[i].name.substring(0,6).matches("Turing") ||
-                    evt1[i].name.substring(0,6).matches("Carver") || evt1[i].name.substring(0,6).matches("Newton") || evt1[i].name.substring(0,8).matches("Roebling")
-                    || evt1[i].name.substring(0,5).matches("FIRST")) {
+        for(int i = 0; i < evt1.length; i++) {   // Search Teams to find Rank
+            Log.w("Viz_Async", "%%% Event %%% " + evt1[i].name + "  " + evt1[i].event_code + " " + evt1[i].name.substring(0,7));
+//            if (evt1[i].name.substring(0,7).matches("Galileo") || evt1[i].name.substring(0,6).matches("Hopper") || evt1[i].name.substring(0,6).matches("Turing") ||
+//                    evt1[i].name.substring(0,6).matches("Carver") || evt1[i].name.substring(0,6).matches("Newton") || evt1[i].name.substring(0,8).matches("Roebling")
+//                    || evt1[i].name.substring(0,5).matches("FIRST")) {
+            if (evt1[i].event_code.toUpperCase().matches("TXSC")) {
                 bad1 = i;
             } else {
                 numEvts++;
             }
         }
-//        Log.w("Viz_Async", "BA1  #=" + events.length + " numEvts=" + numEvts + "  " + bad1 + " \n ");
-        switch (events.length) {
+        Log.w("Viz_Async", "BA1  #=" + events.length + " numEvts=" + numEvts + "  " + bad1 + " \n ");
+        switch (evt1.length) {
             case 1:
                 EVT1 = evt1[0].event_code.toUpperCase();
                 EVT2 = "    ";
@@ -1271,7 +1272,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                 Log.e("Viz_Async", "*** Error - numEvts??  ***  " + numEvts);
         }
 
-//        Log.w("Viz_Async", "Evt1=" + EVT1 + "  Evt2=" + EVT2);
+        Log.w("Viz_Async", "Evt1=" + EVT1 + "  Evt2=" + EVT2);
         done = 1;
 
         TBA t = new TBA();

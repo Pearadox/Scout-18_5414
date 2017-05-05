@@ -697,14 +697,14 @@ private void preReqs() {
             if(direct_iCBkup.mkdir())
             { }        //directory is created;
         }
-        File direct_uCmp = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/uila");
-        if(!direct_iCmp.exists())  {
-            if(direct_iCmp.mkdir())
+        File direct_uCmp = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txsc");
+        if(!direct_uCmp.exists())  {
+            if(direct_uCmp.mkdir())
             { }        //directory is created;
         }
-        File direct_uCBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/uila/bkup");
-        if(!direct_iCBkup.exists())  {
-            if(direct_iCBkup.mkdir())
+        File direct_uCBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txsc/bkup");
+        if(!direct_uCBkup.exists())  {
+            if(direct_uCBkup.mkdir())
             { }        //directory is created;
         }
         File direct_iHou = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txho");
@@ -768,14 +768,14 @@ private void preReqs() {
             if(direct_mWBkup.mkdir())
             { }        //directory is created;
         }
-        File direct_mAus = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/uila");
-        if(!direct_mWaco.exists())  {
-            if(direct_mWaco.mkdir())
+        File direct_mAus = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txsc");
+        if(!direct_mAus.exists())  {
+            if(direct_mAus.mkdir())
             { }        //directory is created;
         }
-        File direct_mABkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/uila/bkup");
-        if(!direct_mWBkup.exists())  {
-            if(direct_mWBkup.mkdir())
+        File direct_mABkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txsc/bkup");
+        if(!direct_mABkup.exists())  {
+            if(direct_mABkup.mkdir())
             { }        //directory is created;
         }
 //=================================================================
@@ -819,14 +819,14 @@ private void preReqs() {
             if(direct_pWBkup.mkdir())
             { }        //directory is created;
         }
-        File direct_pAus = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/uila");
-        if(!direct_pWaco.exists())  {
-            if(direct_pWaco.mkdir())
+        File direct_pAus = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txsc");
+        if(!direct_pAus.exists())  {
+            if(direct_pAus.mkdir())
             { }        //directory is created;
         }
-        File direct_pABkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/uila/bkup");
-        if(!direct_pWBkup.exists())  {
-            if(direct_pWBkup.mkdir())
+        File direct_pABkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txsc/bkup");
+        if(!direct_pABkup.exists())  {
+            if(direct_pABkup.mkdir())
             { }        //directory is created;
         }
         Log.i(TAG, "FRC files created");
@@ -937,9 +937,9 @@ private void preReqs() {
             spinner_Device.setClickable(true);
             spinner_Student.setClickable(true);
             switch (ev) {
-                case "UIL State Championship (Austin)":          // uila
-                    Pearadox.FRC_Event = "uila";
-                    Pearadox.FRC_ChampDiv = "uila";         // Galileo Division
+                case "UIL State Championship (Austin)":          // txsc
+                    Pearadox.FRC_Event = "txsc";
+                    Pearadox.FRC_ChampDiv = "txsc";
                     break;
                 case "FIRST Championship (Houston)":          // cmptx
                     Pearadox.FRC_Event = "cmptx";
@@ -947,15 +947,15 @@ private void preReqs() {
                     break;
                 case "Brazos Valley Regional":          // txwa
                     Pearadox.FRC_Event = "txwa";
-                    Pearadox.FRC_ChampDiv = "txwa";         // Galileo Division
+                    Pearadox.FRC_ChampDiv = "txwa";
                     break;
                 case ("Lone Star Central Regional"):    // txho
                     Pearadox.FRC_Event = "txho";
-                    Pearadox.FRC_ChampDiv = "txho";         // Galileo Division
+                    Pearadox.FRC_ChampDiv = "txho";
                     break;
                 case ("Hub City Regional"):             // txlu
                     Pearadox.FRC_Event = "txlu";
-                    Pearadox.FRC_ChampDiv = "txlu";         // Galileo Division
+                    Pearadox.FRC_ChampDiv = "txlu";
                     break;
                 default:                // ?????
                     Toast.makeText(getBaseContext(), "Event code not recognized", Toast.LENGTH_LONG).show();
