@@ -871,18 +871,18 @@ public class Visualizer_Activity extends AppCompatActivity {
         }
     }
 
-    private String chkOPR(String team) {
-        i(TAG, "###  chkOPR ### " + team);
-        // ToDo - Get OPR data from Blue Alliance
-        String opr = "000.0";
+//    private String chkOPR(String team) {
+//        i(TAG, "###  chkOPR ### " + team);
+//        // ToDo - Get OPR data from Blue Alliance
+//        String opr = "000.0";
 //        for(int i = 0; i < OPR_Teams.length; i++) {   // Search Teams to find Rank
 //            Log.w(TAG, "opr Team " + OPR_Teams[i]);
 //            if (OPR_Teams[i].matches(team)) {
 //                opr = OPR_rating[i];
 //            }
 //        }
-        return opr;
-    }
+//        return opr;
+//    }
 
 
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
