@@ -54,6 +54,7 @@ import android.os.StrictMode;
 
 import static android.os.AsyncTask.execute;
 import static android.util.Log.*;
+import static java.lang.Integer.*;
 
 
 public class Visualizer_Activity extends AppCompatActivity {
@@ -130,20 +131,20 @@ public class Visualizer_Activity extends AppCompatActivity {
         w(TAG, param1 + " " + param2);      // ** DEBUG **
 
 // ----------  Blue Alliance  -----------
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
-        StrictMode.setThreadPolicy(policy);
-        TBA.setID("Pearadox", "Scout-5414", "V1");
-        final TBA tba = new TBA();
-        Settings.FIND_TEAM_RANKINGS = true;
-        Settings.GET_EVENT_TEAMS = true;
-        Settings.GET_EVENT_MATCHES = true;
-        Settings.GET_EVENT_ALLIANCES = true;
-        Settings.GET_EVENT_AWARDS = true;
-        Settings.GET_EVENT_STATS = true;
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
+//        StrictMode.setThreadPolicy(policy);
+//        TBA.setID("Pearadox", "Scout-5414", "V1");
+//        final TBA tba = new TBA();
+//        Settings.FIND_TEAM_RANKINGS = true;
+//        Settings.GET_EVENT_TEAMS = true;
+//        Settings.GET_EVENT_MATCHES = true;
+//        Settings.GET_EVENT_ALLIANCES = true;
+//        Settings.GET_EVENT_AWARDS = true;
+//        Settings.GET_EVENT_STATS = true;
 
-        TBA t = new TBA();
-        Event e = t.getEvent("txlu", 2017);
-        teamsTBA = e.teams.clone();
+//        TBA t = new TBA();
+//        Event e = t.getEvent("txlu", 2017);
+//        teamsTBA = e.teams.clone();
 //        Log.e(TAG, "BLUE1 " + teams1.length);
 //        BA1numTeams = e.teams.length;
 //        for(int i = 0; i < teams1.length; i++) {
@@ -922,7 +923,9 @@ public class Visualizer_Activity extends AppCompatActivity {
         protected String doInBackground(Void... params) {
             Log.i("Viz_Async", "***  doInBackground  ***" + progIncrement);
             progress += 3;
-            tnum = "";      // 1st show a blank team
+//            tnum = " ";      // 1st show a blank team
+            tnum = Scout_teams.get(0).getTeam_num();   // 1st team
+            Log.w("Viz_Async", "Scout Team #1 = " + tnum);
             publishProgress(progress);
             int done = 0;
             BA_Vis.clear();
@@ -1181,144 +1184,189 @@ public class Visualizer_Activity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
         StrictMode.setThreadPolicy(policy);
         TBA.setID("Pearadox", "Scout-5414", "V1");
-//        final TBA tba = new TBA();
-        Settings.FIND_TEAM_RANKINGS = true;
-        Settings.GET_EVENT_TEAMS = true;
-        Settings.GET_EVENT_MATCHES = true;
-        Settings.GET_EVENT_ALLIANCES = true;
-        Settings.GET_EVENT_AWARDS = true;
-        Settings.GET_EVENT_STATS = true;
+        Settings.defaults();
+//        Settings.FIND_TEAM_RANKINGS = true;
+//        Settings.GET_EVENT_TEAMS = true;
+//        Settings.GET_EVENT_MATCHES = true;
+//        Settings.GET_EVENT_ALLIANCES = true;
+//        Settings.GET_EVENT_AWARDS = true;
+//        Settings.GET_EVENT_STATS = true;
 
         final TBA BA1 = new TBA();
-        Event[] events = new TBA().getTeamEvents(Integer.parseInt(team), 2017);
-        evt1 = events.clone();
-        System.out.println("events: "+ events.length + "  Team:" + team);
-        for(int i = 0; i < evt1.length; i++) {   // Search Teams to find Rank
-            Log.w("Viz_Async", "%%% Event %%% " + evt1[i].name + "  " + evt1[i].event_code + " " + evt1[i].name.substring(0,7));
-//            if (evt1[i].name.substring(0,7).matches("Galileo") || evt1[i].name.substring(0,6).matches("Hopper") || evt1[i].name.substring(0,6).matches("Turing") ||
-//                    evt1[i].name.substring(0,6).matches("Carver") || evt1[i].name.substring(0,6).matches("Newton") || evt1[i].name.substring(0,8).matches("Roebling")
-//                    || evt1[i].name.substring(0,5).matches("FIRST")) {
-            if (evt1[i].event_code.toUpperCase().matches("TXSC")) {
-                bad1 = i;
-            } else {
-                numEvts++;
-            }
+        Team t = BA1.getTeam(Integer.parseInt(team));
+        Log.w("Viz_Async", ">>>>>>>  Team: " + team);
+        Event main = BA1.getEvent("2017" + Pearadox.FRC_ChampDiv);
+        Settings.disableAll(); // we only want a list of events
+        Event[] teamEvents = BA1.getTeamEvents((int)t.team_number, 2017, true); // Get a list of all the events this team was in
+        System.out.println(teamEvents.length);
+        if (teamEvents.length > 1) {
+            Log.w("Viz_Async", "EVTS: " + teamEvents[teamEvents.length - 3].event_code + "  " + teamEvents[teamEvents.length - 3].event_code);
+        } else {
+            Log.w("Viz_Async", "**** ONLY 1 event!!  ****: " + teamEvents[0].event_code);
         }
-        Log.w("Viz_Async", "BA1  #=" + events.length + " numEvts=" + numEvts + "  " + bad1 + " \n ");
-        switch (evt1.length) {
-            case 1:
-                EVT1 = evt1[0].event_code.toUpperCase();
-                EVT2 = "    ";
-                break;
-            case 2:
-                if (bad1 == 99) {
-                    EVT1 = evt1[0].event_code.toUpperCase();
-                    EVT2 = evt1[1].event_code.toUpperCase();
-                } else {
-                    if (bad1 == 0) {
-                        EVT1 = evt1[1].event_code.toUpperCase();
-                        EVT2 = "    ";
-                    } else {
-                        EVT1 = evt1[0].event_code.toUpperCase();
-                        EVT2 = "    ";
-                    }
-                }
-                break;
-            case 3:
-//                Log.w("Viz_Async", " CASE #3  numEvts=" + numEvts + "  " + bad1);
-                if (bad1 == 99) {       // Use last 2
-                    EVT1 = evt1[1].event_code.toUpperCase();
-                    EVT2 = evt1[2].event_code.toUpperCase();
-                } else {
-                    if (bad1 == 0) {
-//                        Log.w("Viz_Async", " CASE #3 " + evt1[1].event_code + "  " + evt1[2].event_code);
-                        EVT1 = evt1[1].event_code.toUpperCase();
-                        EVT2 = evt1[2].event_code.toUpperCase();
-                    } else {
-                        if (bad1 == 1) {
-                            EVT1 = evt1[0].event_code.toUpperCase();
-                            EVT2 = evt1[2].event_code.toUpperCase();
-                        } else {
-                            EVT1 = evt1[0].event_code.toUpperCase();
-                            EVT2 = evt1[1].event_code.toUpperCase();
-                        }
-                    }
-                }
-                break;
-            case 4:
-//                Log.w("Viz_Async", " WOW!! #4  numEvts=" + numEvts + "  " + bad1);
-                if (bad1 == 99) {
-                    EVT1 = evt1[2].event_code.toUpperCase();
-                    EVT2 = evt1[3].event_code.toUpperCase();
-                } else {
-                    if (bad1 == 0) {
-                        EVT1 = evt1[2].event_code.toUpperCase();
-                        EVT2 = evt1[3].event_code.toUpperCase();
-                    } else {
-                        if (bad1 == 1) {
-                            EVT1 = evt1[2].event_code.toUpperCase();
-                            EVT2 = evt1[3].event_code.toUpperCase();
-                        } else {
-                            if (bad1 == 2) {
-                                EVT1 = evt1[1].event_code.toUpperCase();
-                                EVT2 = evt1[3].event_code.toUpperCase();
-                            } else {
-                            }
-                        }
-                    }
-                }
-                break;
-            default:                // ????
-                Log.e("Viz_Async", "*** Error - numEvts??  ***  " + numEvts);
-        }
+        System.out.println("  \n   ");
+        Event previous1 = teamEvents[teamEvents.length - 3];
+        Event previous2 = teamEvents[teamEvents.length - 2];
+        previous1 = new TBA().getEvent("2017" + previous1.event_code);
+        System.out.println("PREV1 " + previous1.name );
+        Settings.defaults();
+        Team withEvent1Data = previous1.fillTeamStats(t); // This team now has all it's stats filled in (from event previous1)
+        // Since TBA.com doesn't include OPR in event data, we have to pull them seperately
+        withEvent1Data = BA1.fillOPR(previous1, withEvent1Data);
+        System.out.println("EVENT-1 " + withEvent1Data.team_number + withEvent1Data.nickname + " " + withEvent1Data.rank + " " + withEvent1Data.pressure + " " + withEvent1Data.record + " " +  withEvent1Data.opr);
 
-        Log.w("Viz_Async", "Evt1=" + EVT1 + "  Evt2=" + EVT2);
-        done = 1;
+        previous2 = new TBA().getEvent("2017" + previous2.event_code);
+        Team withEvent2Data = previous2.fillTeamStats(t); // This team now has all it's stats filled in (from event previous2)
+        withEvent2Data = BA1.fillOPR(previous2, withEvent2Data);
+        System.out.println("EVENT-2 " + withEvent2Data.team_number + withEvent2Data.nickname + " " + withEvent2Data.rank + " " + withEvent2Data.pressure + " " + withEvent2Data.record + " " +  withEvent2Data.opr);
 
-        TBA t = new TBA();
-        Event e = t.getEvent(EVT1.toLowerCase(), 2017);
-        teams1 = e.teams.clone();
-//        Log.e("Viz_Async", "BLUE1 " + teams1.length);
-        BA1numTeams = e.teams.length;
+        EVT1 = previous1.event_code.toUpperCase();
+        rank1 = String.valueOf(withEvent1Data.rank);              // Rank
+        OPR1 = String.format("%3.1f",(withEvent1Data.opr));       // OPR
+        NTP1 = String.format("%3.1f",(withEvent1Data.touchpad));  // Touchpad
+        kPa1 = String.format("%3.1f",(withEvent1Data.pressure));  // kPa - Pressure
+        WLT1 = withEvent1Data.record;                             // W-L-T Record
+        EVT2 = previous2.event_code.toUpperCase();
+        rank2 = String.valueOf(withEvent2Data.rank);              // Rank
+        OPR2 = String.format("%3.1f", (withEvent2Data.opr));       // OPR
+        NTP2 = String.format("%3.1f", (withEvent2Data.touchpad));  // Touchpad
+        kPa2 = String.format("%3.1f", (withEvent2Data.pressure));  // kPa - Pressure
+        WLT2 = withEvent2Data.record;                              // W-L-T Record
 
-//        Team t = BA1.getTeam(Integer.parseInt(team));
-//        System.out.println("Team #: "+t.team_number + "  " +t.rank +" OPR: "+t.opr+ "  " +t.touchpad );
-//        System.out.println("  Record: " +t.record + "  " +t.pressure +" pts "+t.matchPoints+ "  score" +t.rankingScore + " \n \n");
+        Log.w("Viz_Async", EVT1+ rank1 + OPR1+ NTP1+ kPa1+ WLT1+ EVT2+ rank2+ OPR2+ NTP2+ kPa2+ WLT2);
+        System.out.println("  \n   \n ");
 
-        String team_num = "";  rank1=""; WLT1=""; OPR1="";NTP1="";kPa1="";
-        for(int i = 0; i < BA1numTeams; i++) {   // Search Teams to find Rank
-            team_num = String.valueOf(teams1[i].team_number);
-//            Log.w("Viz_Async", "LOOP " + i + " " + team_num);
-            if (team_num.matches(team)) {
-//                Log.w(TAG, ">>>>>>>>>>>>>>>>  Found Team # " + team);
-                rank1 = String.valueOf(i + 1);                                       // Rank
-                OPR1 = String.format("%3.1f",(teams1[i].opr));       // OPR
-                NTP1 = String.format("%3.1f",(teams1[i].touchpad));  // Touchpad
-                kPa1 = String.format("%3.1f",(teams1[i].pressure));  // kPa - Pressure
-                WLT1 = teams1[i].record;                             // W-L-T Record
-            }
-        }
 
-        if (!EVT2.matches("    ")) {
-            Event x = t.getEvent(EVT2.toLowerCase(), 2017);
-            teams2 = x.teams.clone();
-//            Log.e("Viz_Async", "BLUE2 " + teams2.length);
-            BA2numTeams = x.teams.length;
+//        final TBA BA1 = new TBA();
+//        Event[] events = new TBA().getTeamEvents(Integer.parseInt(team), 2017);
+//        evt1 = events.clone();
+//        System.out.println("events: "+ events.length + "  Team:" + team);
+//        for(int i = 0; i < evt1.length; i++) {   // Search Teams to find Rank
+//            Log.w("Viz_Async", "%%% Event %%% " + evt1[i].name + "  " + evt1[i].event_code + " " + evt1[i].name.substring(0,7));
+////            if (evt1[i].name.substring(0,7).matches("Galileo") || evt1[i].name.substring(0,6).matches("Hopper") || evt1[i].name.substring(0,6).matches("Turing") ||
+////                    evt1[i].name.substring(0,6).matches("Carver") || evt1[i].name.substring(0,6).matches("Newton") || evt1[i].name.substring(0,8).matches("Roebling")
+////                    || evt1[i].name.substring(0,5).matches("FIRST")) {
+//            if (evt1[i].event_code.toUpperCase().matches("TXSC")) {
+//                bad1 = i;
+//            } else {
+//                numEvts++;
+//            }
+//        }
+//        Log.w("Viz_Async", "BA1  #=" + events.length + " numEvts=" + numEvts + "  " + bad1 + " \n ");
+//        switch (evt1.length) {
+//            case 1:
+//                EVT1 = evt1[0].event_code.toUpperCase();
+//                EVT2 = "    ";
+//                break;
+//            case 2:
+//                if (bad1 == 99) {
+//                    EVT1 = evt1[0].event_code.toUpperCase();
+//                    EVT2 = evt1[1].event_code.toUpperCase();
+//                } else {
+//                    if (bad1 == 0) {
+//                        EVT1 = evt1[1].event_code.toUpperCase();
+//                        EVT2 = "    ";
+//                    } else {
+//                        EVT1 = evt1[0].event_code.toUpperCase();
+//                        EVT2 = "    ";
+//                    }
+//                }
+//                break;
+//            case 3:
+////                Log.w("Viz_Async", " CASE #3  numEvts=" + numEvts + "  " + bad1);
+//                if (bad1 == 99) {       // Use last 2
+//                    EVT1 = evt1[1].event_code.toUpperCase();
+//                    EVT2 = evt1[2].event_code.toUpperCase();
+//                } else {
+//                    if (bad1 == 0) {
+////                        Log.w("Viz_Async", " CASE #3 " + evt1[1].event_code + "  " + evt1[2].event_code);
+//                        EVT1 = evt1[1].event_code.toUpperCase();
+//                        EVT2 = evt1[2].event_code.toUpperCase();
+//                    } else {
+//                        if (bad1 == 1) {
+//                            EVT1 = evt1[0].event_code.toUpperCase();
+//                            EVT2 = evt1[2].event_code.toUpperCase();
+//                        } else {
+//                            EVT1 = evt1[0].event_code.toUpperCase();
+//                            EVT2 = evt1[1].event_code.toUpperCase();
+//                        }
+//                    }
+//                }
+//                break;
+//            case 4:
+////                Log.w("Viz_Async", " WOW!! #4  numEvts=" + numEvts + "  " + bad1);
+//                if (bad1 == 99) {
+//                    EVT1 = evt1[2].event_code.toUpperCase();
+//                    EVT2 = evt1[3].event_code.toUpperCase();
+//                } else {
+//                    if (bad1 == 0) {
+//                        EVT1 = evt1[2].event_code.toUpperCase();
+//                        EVT2 = evt1[3].event_code.toUpperCase();
+//                    } else {
+//                        if (bad1 == 1) {
+//                            EVT1 = evt1[2].event_code.toUpperCase();
+//                            EVT2 = evt1[3].event_code.toUpperCase();
+//                        } else {
+//                            if (bad1 == 2) {
+//                                EVT1 = evt1[1].event_code.toUpperCase();
+//                                EVT2 = evt1[3].event_code.toUpperCase();
+//                            } else {
+//                            }
+//                        }
+//                    }
+//                }
+//                break;
+//            default:                // ????
+//                Log.e("Viz_Async", "*** Error - numEvts??  ***  " + numEvts);
+//        }
+//
+//        Log.w("Viz_Async", "Evt1=" + EVT1 + "  Evt2=" + EVT2);
+//        done = 1;
+//
+//        TBA t = new TBA();
+//        Event e = t.getEvent(EVT1.toLowerCase(), 2017);
+//        teams1 = e.teams.clone();
+////        Log.e("Viz_Async", "BLUE1 " + teams1.length);
+//        BA1numTeams = e.teams.length;
+//
+////        Team t = BA1.getTeam(Integer.parseInt(team));
+////        System.out.println("Team #: "+t.team_number + "  " +t.rank +" OPR: "+t.opr+ "  " +t.touchpad );
+////        System.out.println("  Record: " +t.record + "  " +t.pressure +" pts "+t.matchPoints+ "  score" +t.rankingScore + " \n \n");
 
-            team_num = ""; rank2 = ""; WLT2 = ""; OPR2 = ""; NTP2 = ""; kPa2 = "";
-            for (int i = 0; i < BA2numTeams; i++) {      // Search Teams to find Rank
-                team_num = String.valueOf(teams2[i].team_number);
-//            Log.w("Viz_Async", "LOOP " + i + " " + team_num);
-                if (team_num.matches(team)) {
-//                    Log.w("Viz_Async", ">>>>>>>>>>>>>>>>  Found Team # " + team);
-                    rank2 = String.valueOf(i + 1);                        // Rank
-                    OPR2 = String.format("%3.1f", (teams2[i].opr));       // OPR
-                    NTP2 = String.format("%3.1f", (teams2[i].touchpad));  // Touchpad
-                    kPa2 = String.format("%3.1f", (teams2[i].pressure));  // kPa - Pressure
-                    WLT2 = teams2[i].record;                              // W-L-T Record
-                }
-            }
-        }
+//        String team_num = "";  rank1=""; WLT1=""; OPR1="";NTP1="";kPa1="";
+//        for(int i = 0; i < BA1numTeams; i++) {   // Search Teams to find Rank
+//            team_num = String.valueOf(teams1[i].team_number);
+////            Log.w("Viz_Async", "LOOP " + i + " " + team_num);
+//            if (team_num.matches(team)) {
+////                Log.w(TAG, ">>>>>>>>>>>>>>>>  Found Team # " + team);
+//                rank1 = String.valueOf(i + 1);                                       // Rank
+//                OPR1 = String.format("%3.1f",(teams1[i].opr));       // OPR
+//                NTP1 = String.format("%3.1f",(teams1[i].touchpad));  // Touchpad
+//                kPa1 = String.format("%3.1f",(teams1[i].pressure));  // kPa - Pressure
+//                WLT1 = teams1[i].record;                             // W-L-T Record
+//            }
+//        }
+//
+//        if (!EVT2.matches("    ")) {
+//            Event x = t.getEvent(EVT2.toLowerCase(), 2017);
+//            teams2 = x.teams.clone();
+////            Log.e("Viz_Async", "BLUE2 " + teams2.length);
+//            BA2numTeams = x.teams.length;
+//
+//            team_num = ""; rank2 = ""; WLT2 = ""; OPR2 = ""; NTP2 = ""; kPa2 = "";
+//            for (int i = 0; i < BA2numTeams; i++) {      // Search Teams to find Rank
+//                team_num = String.valueOf(teams2[i].team_number);
+////            Log.w("Viz_Async", "LOOP " + i + " " + team_num);
+//                if (team_num.matches(team)) {
+////                    Log.w("Viz_Async", ">>>>>>>>>>>>>>>>  Found Team # " + team);
+//                    rank2 = String.valueOf(i + 1);                        // Rank
+//                    OPR2 = String.format("%3.1f", (teams2[i].opr));       // OPR
+//                    NTP2 = String.format("%3.1f", (teams2[i].touchpad));  // Touchpad
+//                    kPa2 = String.format("%3.1f", (teams2[i].pressure));  // kPa - Pressure
+//                    WLT2 = teams2[i].record;                              // W-L-T Record
+//                }
+//            }
+//        }
         return done;
     }
 
