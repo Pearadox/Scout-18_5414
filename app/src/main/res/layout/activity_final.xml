@@ -24,7 +24,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/TextView"
-        android:layout_alignStart="@+id/editText_Comments"
         android:layout_marginStart="16dp"
         android:layout_marginTop="58dp" />
 
@@ -79,11 +78,10 @@
 
     <CheckBox
         android:id="@+id/chk_whatever"
-        android:text=" ???????"
+        android:text=" XX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="68dp"
-        android.visibilty="gone"
         android:layout_alignBaseline="@+id/chk_lostComm"
         android:layout_alignBottom="@+id/chk_lostComm"
         android:layout_toEndOf="@+id/chk_lostComm"
@@ -227,5 +225,6 @@
 
 
 </RelativeLayout>
+
 
 <!--This is for committing!-->

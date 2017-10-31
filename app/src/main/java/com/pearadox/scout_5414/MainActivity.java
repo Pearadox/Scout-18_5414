@@ -575,7 +575,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.w(TAG, "updating KEY = " + key);
                 pfDevice_DBReference.child(key).child("stud_id").setValue(studentSelected);
                 pfDevice_DBReference.child(key).child("phase").setValue("Auto");
-              } else {
+            } else {
                 Log.w(TAG, "Nulling KEY = " + key);
                 pfDevice_DBReference.child(key).child("stud_id").setValue(" ");
                 pfDevice_DBReference.child(key).child("phase").setValue(" ");
@@ -598,9 +598,15 @@ public class MainActivity extends AppCompatActivity {
                     while (iterator.hasNext()) {
                         tmobj = iterator.next().getValue(p_Firebase.teamsObj.class);
                         Pearadox.team_List.add(tmobj);
-                        Pearadox.numTeams ++;
+                        Pearadox.numTeams++;
                     }
-                    Log.i(TAG, "***** Teams Loaded. # = " + Pearadox.numTeams + "  " + Pearadox.team_List.size());
+                    if (Pearadox.numTeams == 0) {
+                        Toast toast = Toast.makeText(getBaseContext(), "*** There are _NO_ teams loaded for '" + Pearadox.FRC_Event + "' ***", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                    } else {
+                        Log.i(TAG, "***** Teams Loaded. # = " + Pearadox.numTeams + "  " + Pearadox.team_List.size());
+                    }
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
@@ -937,19 +943,23 @@ private void preReqs() {
             spinner_Device.setClickable(true);
             spinner_Student.setClickable(true);
             switch (ev) {
-                case "UIL State Championship (Austin)":          // txsc
+                case "The Remix 2017":                      // txsc
+                    Pearadox.FRC_Event = "txrm";
+                    Pearadox.FRC_ChampDiv = "txrm";
+                    break;
+                case "UIL State Championship (Austin)":     // txsc
                     Pearadox.FRC_Event = "txsc";
                     Pearadox.FRC_ChampDiv = "txsc";
                     break;
-                case "FIRST Championship (Houston)":          // cmptx
+                case "FIRST Championship (Houston)":        // cmptx
                     Pearadox.FRC_Event = "cmptx";
-                    Pearadox.FRC_ChampDiv = "gal";         // Galileo Division
+                    Pearadox.FRC_ChampDiv = "gal";          // Galileo Division
                     break;
-                case "Brazos Valley Regional":          // txwa
+                case "Brazos Valley Regional":              // txwa
                     Pearadox.FRC_Event = "txwa";
                     Pearadox.FRC_ChampDiv = "txwa";
                     break;
-                case ("Lone Star Central Regional"):    // txho
+                case ("Lone Star Central Regional"):        // txho
                     Pearadox.FRC_Event = "txho";
                     Pearadox.FRC_ChampDiv = "txho";
                     break;
