@@ -601,6 +601,8 @@ public class MainActivity extends AppCompatActivity {
                         Pearadox.numTeams++;
                     }
                     if (Pearadox.numTeams == 0) {
+                        final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                        tg.startTone(ToneGenerator.TONE_PROP_BEEP);
                         Toast toast = Toast.makeText(getBaseContext(), "*** There are _NO_ teams loaded for '" + Pearadox.FRC_Event + "' ***", Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                         toast.show();
@@ -733,6 +735,16 @@ private void preReqs() {
             if(direct_iWBkup.mkdir())
             { }        //directory is created;
         }
+        File direct_iRMix = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txrm");
+        if(!direct_iRMix.exists())  {
+            if(direct_iWaco.mkdir())
+            { }        //directory is created;
+        }
+        File direct_iRMBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txrm/bkup");
+        if(!direct_iRMBkup.exists())  {
+            if(direct_iWBkup.mkdir())
+            { }        //directory is created;
+        }
 //=================================================================
         File directMatch = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match");
         if(!directMatch.exists())  {
@@ -781,6 +793,16 @@ private void preReqs() {
         }
         File direct_mABkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txsc/bkup");
         if(!direct_mABkup.exists())  {
+            if(direct_mABkup.mkdir())
+            { }        //directory is created;
+        }
+        File direct_mRMix = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txrm");
+        if(!direct_mRMix.exists())  {
+            if(direct_mAus.mkdir())
+            { }        //directory is created;
+        }
+        File direct_mRMBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txrm/bkup");
+        if(!direct_mRMBkup.exists())  {
             if(direct_mABkup.mkdir())
             { }        //directory is created;
         }
@@ -835,10 +857,21 @@ private void preReqs() {
             if(direct_pABkup.mkdir())
             { }        //directory is created;
         }
+        File direct_pRMix = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txrm");
+        if(!direct_pRMix.exists())  {
+            if(direct_pAus.mkdir())
+            { }        //directory is created;
+        }
+        File direct_pRMBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txrm/bkup");
+        if(!direct_pRMBkup.exists())  {
+            if(direct_pABkup.mkdir())
+            { }        //directory is created;
+        }
+//=================================================================
         Log.i(TAG, "FRC files created");
-//        Toast toast = Toast.makeText(getBaseContext(), "FRC5414 ©2017  *** Files initialied ***" , Toast.LENGTH_LONG);
-//        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-//        toast.show();
+        Toast toast = Toast.makeText(getBaseContext(), "FRC5414  *** Files initialied ***" , Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
 
     }  else {
         Toast.makeText(getBaseContext(), "There is no SD card available", Toast.LENGTH_LONG).show();
