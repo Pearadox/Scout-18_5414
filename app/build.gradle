@@ -6,9 +6,9 @@ android {
     defaultConfig {
         applicationId "com.pearadox.scout_5414"
         minSdkVersion 17
-        targetSdkVersion 25
+        targetSdkVersion 23
         versionCode 3
-        versionName "3.3"
+        versionName "3.4"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
