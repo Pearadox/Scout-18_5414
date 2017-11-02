@@ -799,31 +799,35 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                     matchList.add(match_inst.getMatch() + "  Time: " + match_inst.getTime() + "  " + match_inst.getMtype());
                     // Create the list of _OUR_ matches across the top
                     if (match_inst.getR1().matches("5414")) {
-                        next_Match =  next_Match + match_inst.getMatch() + " ";
+                        next_Match = next_Match + match_inst.getMatch() + " ";
                     }
                     if (match_inst.getR2().matches("5414")) {
-                        next_Match =  next_Match + match_inst.getMatch() + " ";
+                        next_Match = next_Match + match_inst.getMatch() + " ";
                     }
                     if (match_inst.getR3().matches("5414")) {
-                        next_Match =  next_Match + match_inst.getMatch() + " ";
+                        next_Match = next_Match + match_inst.getMatch() + " ";
                     }
                     if (match_inst.getB1().matches("5414")) {
-                        next_Match =  next_Match + match_inst.getMatch() + " ";
+                        next_Match = next_Match + match_inst.getMatch() + " ";
                     }
                     if (match_inst.getB2().matches("5414")) {
-                        next_Match =  next_Match + match_inst.getMatch() + " ";
+                        next_Match = next_Match + match_inst.getMatch() + " ";
                     }
                     if (match_inst.getB3().matches("5414")) {
-                        next_Match =  next_Match + match_inst.getMatch() + " ";
+                        next_Match = next_Match + match_inst.getMatch() + " ";
                     }
                 }
-                Log.w(TAG,"### Matches ###  : " + matchList.size());
-                txt_NextMatch.setText(next_Match);
-                Pearadox.our_Matches = next_Match;
-                listView_Matches = (ListView) findViewById(R.id.listView_Matches);
-                adaptMatch = new ArrayAdapter<String>(ScoutMaster_Activity.this, R.layout.match_list_layout, matchList);
-                listView_Matches.setAdapter(adaptMatch);
-                adaptMatch.notifyDataSetChanged();
+                Log.w(TAG, "### Matches ###  : " + matchList.size());
+                if (matchList.size() > 0) {
+                    txt_NextMatch.setText(next_Match);
+                    Pearadox.our_Matches = next_Match;
+                    listView_Matches = (ListView) findViewById(R.id.listView_Matches);
+                    adaptMatch = new ArrayAdapter<String>(ScoutMaster_Activity.this, R.layout.match_list_layout, matchList);
+                    listView_Matches.setAdapter(adaptMatch);
+                    adaptMatch.notifyDataSetChanged();
+                } else {
+                    txt_NextMatch.setText("*** There are _NO_ matches stored in FireBase ***");
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

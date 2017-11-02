@@ -173,7 +173,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         txt_dev.setText(device);
         txt_stud.setText(studID);
         txt_Match.setText("");
-        if (Pearadox.is_Network) {      // is Internet available?
+        if (Pearadox.is_Network  && Pearadox.numTeams > 0) {      // is Internet available and Teams there?
             txt_MyTeam.setText("");
             editTxt_Match.setVisibility(View.INVISIBLE);
             editTxt_Match.setEnabled(false);
@@ -604,7 +604,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         button_GoToTeleopActivity.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.i(TAG, "Clicked 'NEXT/TeleOps' Button  match=" + matchID);
-                if (matchID.length() < 3) {     // Between matches??
+                if (matchID.length() < 2) {     // Between matches??
                     Toast.makeText(getBaseContext(),"*** Match has _NOT_ started; wait until you have a Team #  *** ", Toast.LENGTH_LONG).show();
 
                 } else {        // It's OK - Match has started

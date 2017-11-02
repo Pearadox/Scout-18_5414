@@ -116,7 +116,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pit_scout);
-        Log.i(TAG, "<< Pit Scout >>");
+        Log.w(TAG, "<< Pit Scout >>");
         Bundle bundle = this.getIntent().getExtras();
         String param1 = bundle.getString("dev");
         String param2 = bundle.getString("stud");
@@ -142,7 +142,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         editTxt_Team = (EditText) findViewById(R.id.editTxt_Team);
         editTxt_Team.setFocusable(true);
         editTxt_Team.setFocusableInTouchMode(true);
-        if (Pearadox.is_Network) {      // is Internet available?
+        if (Pearadox.is_Network && Pearadox.numTeams > 0) {      // is Internet available & Teams prewsent?
             loadTeams();
             spinner_Team.setVisibility(View.VISIBLE);
             editTxt_Team.setVisibility(View.GONE);
@@ -210,12 +210,12 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         chkBox_Gear.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                Log.i(TAG, "chkBox_Gear Listener");
+                Log.w(TAG, "chkBox_Gear Listener");
                 if (buttonView.isChecked()) {
-                    Log.i(TAG,"Gear is checked.");
+                    Log.w(TAG,"Gear is checked.");
                     gear_Collecter = true;
                 } else {
-                    Log.i(TAG,"Gear is unchecked.");
+                    Log.w(TAG,"Gear is unchecked.");
                     gear_Collecter = false;
                 }
             }
@@ -223,15 +223,15 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         chkBox_Fuel.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
            @Override
            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-               Log.i(TAG, "chkBox_Fuel Listener");
+               Log.w(TAG, "chkBox_Fuel Listener");
                if (buttonView.isChecked()) {
-                   Log.i(TAG,"Fuel is checked.");
+                   Log.w(TAG,"Fuel is checked.");
                    fuel_Container = true;
                    lbl_FuelEst.setVisibility(VISIBLE);
                    txtEd_FuelCap.setVisibility(VISIBLE);
                    txtEd_FuelCap.requestFocus();
                } else {
-                   Log.i(TAG,"Fuel is unchecked.");
+                   Log.w(TAG,"Fuel is unchecked.");
                    fuel_Container = false;
                    lbl_FuelEst.setVisibility(View.GONE);
                    txtEd_FuelCap.setVisibility(View.GONE);
@@ -241,12 +241,12 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         chkBox_Shooter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
            @Override
            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-               Log.i(TAG, "chkBox_Fuel Listener");
+               Log.w(TAG, "chkBox_Fuel Listener");
                if (buttonView.isChecked()) {
-                   Log.i(TAG,"shooter is checked.");
+                   Log.w(TAG,"shooter is checked.");
                    shooter = true;
                } else {
-                   Log.i(TAG,"shooter is unchecked.");
+                   Log.w(TAG,"shooter is unchecked.");
                    shooter = false;
                }
            }
@@ -254,12 +254,12 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         chkBox_Vision.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
            @Override
            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-               Log.i(TAG, "chkBox_Vision Listener");
+               Log.w(TAG, "chkBox_Vision Listener");
                if (buttonView.isChecked()) {
-                   Log.i(TAG,"Vision is checked.");
+                   Log.w(TAG,"Vision is checked.");
                    vision = true;
                } else {
-                   Log.i(TAG,"Vision is unchecked.");
+                   Log.w(TAG,"Vision is unchecked.");
                    vision = false;
                }
            }
@@ -267,12 +267,12 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         chkBox_Pneumatics.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                Log.i(TAG, "chkBox_Pneumatics Listener");
+                Log.w(TAG, "chkBox_Pneumatics Listener");
                 if (buttonView.isChecked()) {
-                    Log.i(TAG,"Pneumatics is checked.");
+                    Log.w(TAG,"Pneumatics is checked.");
                     pneumatics = true;
                 } else {
-                    Log.i(TAG,"Pneumatics is unchecked.");
+                    Log.w(TAG,"Pneumatics is unchecked.");
                     pneumatics = false;
                 }
             }
@@ -280,12 +280,12 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         chkBox_FuelManip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                Log.i(TAG, "chkBox_FuelManip Listener");
+                Log.w(TAG, "chkBox_FuelManip Listener");
                 if (buttonView.isChecked()) {
-                    Log.i(TAG,"FuelManip is checked.");
+                    Log.w(TAG,"FuelManip is checked.");
                     fuelManip = true;
                 } else {
-                    Log.i(TAG,"FuelManip is unchecked.");
+                    Log.w(TAG,"FuelManip is unchecked.");
                     fuelManip = false;
                 }
             }
@@ -293,12 +293,12 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         chkBox_Climb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                Log.i(TAG, "chkBox_Climb Listener");
+                Log.w(TAG, "chkBox_Climb Listener");
                 if (buttonView.isChecked()) {
-                    Log.i(TAG,"Climb is checked.");
+                    Log.w(TAG,"Climb is checked.");
                     climb = true;
                 } else {
-                    Log.i(TAG,"Climb is unchecked.");
+                    Log.w(TAG,"Climb is unchecked.");
                     climb = false;
                 }
             }
@@ -307,24 +307,24 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         editText_Comments.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                Log.i(TAG, "******  onTextChanged TextWatcher  ******" + s);
+//                Log.w(TAG, "******  onTextChanged TextWatcher  ******" + s);
                 comments = String.valueOf(s);
             }
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                Log.i(TAG, "******  beforeTextChanged TextWatcher  ******");
+//                Log.w(TAG, "******  beforeTextChanged TextWatcher  ******");
                 // TODO Auto-generated method stub
             }
             @Override
             public void afterTextChanged(Editable s) {
-                Log.i(TAG, "******  onTextChanged TextWatcher  ******" + s );
+                Log.w(TAG, "******  onTextChanged TextWatcher  ******" + s );
                 comments = String.valueOf(s);
             }
         });
 
         txtEd_FuelCap.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                Log.i(TAG, "******  txtEd_FuelCap listener  ******");
+                Log.w(TAG, "******  txtEd_FuelCap listener  ******");
 
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
@@ -340,7 +340,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         btn_Save = (Button) findViewById(R.id.btn_Save);
         btn_Save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.i(TAG, "Save Button Listener");
+                Log.w(TAG, "Save Button Listener");
                 Spinner spinner_Team = (Spinner) findViewById(R.id.spinner_Team);
                 storePitData();           // Put all the Pit data collected in Pit object
                 dataSaved = true;
@@ -372,7 +372,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
     }
 
     private void onLaunchCamera() {
-        Log.i(TAG, "►►►►►  LaunchCamera  ◄◄◄◄◄");
+        Log.w(TAG, "►►►►►  LaunchCamera  ◄◄◄◄◄");
         if (teamSelected.length() < 3) {        /// Make sure a Team is selected 1st
             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
             tg.startTone(ToneGenerator.TONE_PROP_BEEP);
@@ -406,7 +406,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        Log.i(TAG, "*****  onActivityResult " + requestCode);
+//        Log.w(TAG, "*****  onActivityResult " + requestCode);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == PitScoutActivity.RESULT_OK) {
 //            Log.w(TAG, "requestCode = '" + requestCode + "'");
             galleryAddPic();
@@ -436,7 +436,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
     }
 
     private void SaveToFirebase(File savedFile) {
-        Log.i(TAG, "$$$$$  SaveToFirebase  $$$$$" + savedFile);
+        Log.w(TAG, "$$$$$  SaveToFirebase  $$$$$" + savedFile);
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/"+ Pearadox.FRC_Event).child(picname);
@@ -455,7 +455,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
     }
 
     public void encodeBitmapAndSaveToFirebase(Bitmap bitmap) {
-        Log.i(TAG, "$$$$$  encodeBitmapAndSaveToFirebase  $$$$$");
+        Log.w(TAG, "$$$$$  encodeBitmapAndSaveToFirebase  $$$$$");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         String picname = "robot_" + teamSelected.trim() + ".png";
         Log.w(TAG, "Photo = '" + picname + "'");
@@ -481,7 +481,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
     public class team_OnItemSelectedListener implements OnItemSelectedListener {
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {
-            Log.i(TAG, "*****  team_OnItemSelectedListener " + pos);
+            Log.w(TAG, "*****  team_OnItemSelectedListener " + pos);
             teamSelected = parent.getItemAtPosition(pos).toString();
             Log.w(TAG, ">>>>>  '" + teamSelected + "'");
             txt_TeamName = (TextView) findViewById(R.id.txt_TeamName);
@@ -497,7 +497,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
 
 // =============================================================================
     private void chkForPhoto(String team) {
-        Log.i(TAG, "*****  chkForPhoto - team = " + team);
+        Log.w(TAG, "*****  chkForPhoto - team = " + team);
 
         // First check SD card
         String filename = "robot_" + team.trim() + ".png";
@@ -549,7 +549,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
             String num = " ";
             num = parent.getItemAtPosition(pos).toString();
             numTraction = Integer.parseInt(num);
-            Log.w(TAG, ">>>>>  '" + numTraction + "'");
+            Log.w(TAG, ">>>>> Traction '" + numTraction + "'");
             updateNumWhls();
         }
         public void onNothingSelected(AdapterView<?> parent) {
@@ -562,7 +562,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
             String num = " ";
             num = parent.getItemAtPosition(pos).toString();
             numOmnis = Integer.parseInt(num);
-            Log.w(TAG, ">>>>>  '" + numOmnis + "'");
+            Log.w(TAG, ">>>>> Omni '" + numOmnis + "'");
             updateNumWhls();
         }
         public void onNothingSelected(AdapterView<?> parent) {
@@ -575,7 +575,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
             String num = " ";
             num = parent.getItemAtPosition(pos).toString();
             numMecanums = Integer.parseInt(num);
-            Log.w(TAG, ">>>>>  '" + numMecanums + "'");
+            Log.w(TAG, ">>>>> Mecanum '" + numMecanums + "'");
             updateNumWhls();
         }
         public void onNothingSelected(AdapterView<?> parent) {
@@ -584,7 +584,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
     }
 
     private void updateNumWhls() {
-        Log.i(TAG, "######  updateNumWhls ###### T-O-M" + numTraction + numOmnis + numMecanums);
+        Log.w(TAG, "######  updateNumWhls ###### T-O-M = " + numTraction + numOmnis + numMecanums);
         int x = numTraction + numOmnis + numMecanums;
         txt_NumWheels.setText(String.valueOf(x));      // Total # of wheels
         totalWheels = x;
@@ -595,7 +595,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
 
 /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
     private void findTeam(String tnum) {
-        Log.i(TAG, "$$$$$  findTeam " + tnum);
+        Log.w(TAG, "$$$$$  findTeam " + tnum);
         boolean found = false;
         for (int i = 0; i < Pearadox.numTeams; i++) {        // check each team entry
             if (Pearadox.team_List.get(i).getTeam_num().equals(tnum)) {
@@ -612,7 +612,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
     }
 
     private void loadTeams() {
-        Log.i(TAG, "$$$$$  loadTeams $$$$$");
+        Log.w(TAG, "$$$$$  loadTeams $$$$$");
         int tNum = 0;
         teams[0] = " ";     // Make the 1st one BLANK for dropdown
         tNum ++;
@@ -626,7 +626,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
     }
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
     public void RadioClick_Dim(View view) {
-        Log.i(TAG, "@@ RadioClick_Dim @@");
+        Log.w(TAG, "@@ RadioClick_Dim @@");
         radgrp_Dim = (RadioGroup) findViewById(R.id.radgrp_Dim);
         int selectedId = radgrp_Dim.getCheckedRadioButtonId();
         radio_Dim = (RadioButton) findViewById(selectedId);
@@ -651,7 +651,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
     }
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void storePitData() {
-        Log.i(TAG, ">>>>  storePitData  <<<< " + teamSelected );
+        Log.w(TAG, ">>>>  storePitData  <<<< " + teamSelected );
 
         Pit_Data.setPit_team(teamSelected);
         Pit_Data.setPit_tall(dim_Tall);
@@ -678,7 +678,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
 //        }
     }
     private void saveDatatoSDcard() {
-        Log.i(TAG, "@@@@  saveDatatoSDcard  @@@@");
+        Log.w(TAG, "@@@@  saveDatatoSDcard  @@@@");
         String filename = Pit_Data.getPit_team().trim() + ".dat";
         ObjectOutput out = null;
         File directMatch = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/" + Pearadox.FRC_Event + "/" + filename);
