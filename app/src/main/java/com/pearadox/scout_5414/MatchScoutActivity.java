@@ -615,15 +615,21 @@ public class MatchScoutActivity extends AppCompatActivity {
                         spinner_GearPlacement.performClick();
 
                     } else {
-                        // ToDo - check to see if ALL required fields entered (Start-pos, stop, gear, ....)
-                        updateDev("Tele");      // Update 'Phase' for stoplight indicator in ScoutM aster
-                        storeAutoData();        // Put all the Autonomous data collected in Match object
+                        if (tn != null) {
+                            // ToDo - check to see if ALL required fields entered (Start-pos, stop, gear, ....)
+                            updateDev("Tele");      // Update 'Phase' for stoplight indicator in ScoutM aster
+                            storeAutoData();        // Put all the Autonomous data collected in Match object
 
-                        Intent smast_intent = new Intent(MatchScoutActivity.this, TeleopScoutActivity.class);
-                        Bundle SMbundle = new Bundle();
-                        SMbundle.putString("tnum", tn);
-                        smast_intent.putExtras(SMbundle);
-                        startActivity(smast_intent);
+                            Intent smast_intent = new Intent(MatchScoutActivity.this, TeleopScoutActivity.class);
+                            Bundle SMbundle = new Bundle();
+                            SMbundle.putString("tnum", tn);
+                            smast_intent.putExtras(SMbundle);
+                            startActivity(smast_intent);
+                        } else {
+                            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+                            Toast.makeText(getBaseContext(),"*** Team # not entered  *** ", Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
             }

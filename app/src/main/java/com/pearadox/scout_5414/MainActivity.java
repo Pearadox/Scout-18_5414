@@ -869,9 +869,9 @@ private void preReqs() {
         }
 //=================================================================
         Log.i(TAG, "FRC files created");
-        Toast toast = Toast.makeText(getBaseContext(), "FRC5414  *** Files initialied ***" , Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-        toast.show();
+//        Toast toast = Toast.makeText(getBaseContext(), "FRC5414  *** Files initialied ***" , Toast.LENGTH_LONG);
+//        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+//        toast.show();
 
     }  else {
         Toast.makeText(getBaseContext(), "There is no SD card available", Toast.LENGTH_LONG).show();
