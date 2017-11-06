@@ -737,12 +737,12 @@ private void preReqs() {
         }
         File direct_iRMix = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txrm");
         if(!direct_iRMix.exists())  {
-            if(direct_iWaco.mkdir())
+            if(direct_iRMix.mkdir())
             { }        //directory is created;
         }
         File direct_iRMBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txrm/bkup");
         if(!direct_iRMBkup.exists())  {
-            if(direct_iWBkup.mkdir())
+            if(direct_iRMBkup.mkdir())
             { }        //directory is created;
         }
 //=================================================================
@@ -798,12 +798,12 @@ private void preReqs() {
         }
         File direct_mRMix = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txrm");
         if(!direct_mRMix.exists())  {
-            if(direct_mAus.mkdir())
+            if(direct_mRMix.mkdir())
             { }        //directory is created;
         }
         File direct_mRMBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txrm/bkup");
         if(!direct_mRMBkup.exists())  {
-            if(direct_mABkup.mkdir())
+            if(direct_mRMBkup.mkdir())
             { }        //directory is created;
         }
 //=================================================================
@@ -859,12 +859,12 @@ private void preReqs() {
         }
         File direct_pRMix = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txrm");
         if(!direct_pRMix.exists())  {
-            if(direct_pAus.mkdir())
+            if(direct_pRMix.mkdir())
             { }        //directory is created;
         }
         File direct_pRMBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txrm/bkup");
         if(!direct_pRMBkup.exists())  {
-            if(direct_pABkup.mkdir())
+            if(direct_pRMBkup.mkdir())
             { }        //directory is created;
         }
 //=================================================================
@@ -976,7 +976,7 @@ private void preReqs() {
             spinner_Device.setClickable(true);
             spinner_Student.setClickable(true);
             switch (ev) {
-                case "The Remix 2017":                      // txsc
+                case "The Remix 2017":                      // txrm  ReMix
                     Pearadox.FRC_Event = "txrm";
                     Pearadox.FRC_ChampDiv = "txrm";
                     break;
