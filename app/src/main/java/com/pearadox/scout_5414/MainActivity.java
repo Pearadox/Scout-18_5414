@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (NameNotFoundException e) {
             Log.e(TAG, e.getMessage());
         }
-        Toast toast = Toast.makeText(getBaseContext(), "Pearadox Scouting App ©2017  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(getBaseContext(), "Pearadox Scouting App ©2018  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
         deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -435,7 +435,7 @@ public class MainActivity extends AppCompatActivity {
                         currentImageUri = Uri.fromFile(x);
                         Log.w(TAG, " URI " + currentImageUri);
                         FirebaseStorage storage = FirebaseStorage.getInstance();
-                        StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event).child(tmpf);
+                        StorageReference storageReference = storage.getReferenceFromUrl("gs://pearadox-2018.appspot.com/images/" + Pearadox.FRC_Event).child(tmpf);
 
                         UploadTask uploadTask = storageReference.putFile(currentImageUri);
                         String src = direct_img + "/" + tmpf;
@@ -955,7 +955,7 @@ private void preReqs() {
             return true;
         }
         if (id == R.id.action_about) {
-            Toast toast = Toast.makeText(getBaseContext(), "Pearadox Scouting App ©2017  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getBaseContext(), "Pearadox Scouting App ©2018  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             toast.show();
             return true;
