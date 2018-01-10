@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     Spinner spinner_Device, spinner_Event;
     ImageView img_netStatus;            // Internet Status
     ArrayAdapter<String> adapter_dev, adapter_StudStr, adapter_Event;
+    ArrayList<String> eventList = new ArrayList<String>();
     public String devSelected = " ";
     Spinner spinner_Student;
     public String studentSelected = " ";
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
     Boolean logged_On = false;
     Boolean Scout_Match = false, Scout_Pit = false;
     private FirebaseDatabase pfDatabase;
+    private DatabaseReference pfEvent_DBReference;
     private DatabaseReference pfStudent_DBReference;
     private DatabaseReference pfDevice_DBReference;
     private DatabaseReference pfTeam_DBReference;
@@ -131,13 +133,6 @@ public class MainActivity extends AppCompatActivity {
         Pearadox.FRC_Event = "";
         txt_messageLine = (TextView) findViewById(R.id.txt_messageLine);
         txt_messageLine.setText("Hello Pearadox!  Please select Event and then Log yourself into Device.    ");
-        final Spinner spinner_Event = (Spinner) findViewById(R.id.spinner_Event);
-        String[] events = getResources().getStringArray(R.array.event_array);
-        adapter_Event = new ArrayAdapter<String>(this, R.layout.dev_list_layout, events);
-        adapter_Event.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_Event.setAdapter(adapter_Event);
-        spinner_Event.setSelection(0, false);
-        spinner_Event.setOnItemSelectedListener(new event_OnItemSelectedListener());
 
         Spinner spinner_Device = (Spinner) findViewById(R.id.spinner_Device);
         String[] devices = getResources().getStringArray(R.array.device_array);
@@ -152,11 +147,12 @@ public class MainActivity extends AppCompatActivity {
         isInternetAvailable();          // See if device has Internet
 
 //        FirebaseDatabase.getInstance().setPersistenceEnabled(true);     // Enable 'Offline' Database
-        loadStudentString();            // Force student load from Strings
+        //loadStudentString();            // Force student load from Strings
         pfDatabase = FirebaseDatabase.getInstance();
         if (Pearadox.is_Network) {      // is Internet available?
-//            pfStudent_DBReference = pfDatabase.getReference("students");        // Get list of Students
-//            addStud_VE_Listener(pfStudent_DBReference);
+            pfEvent_DBReference = pfDatabase.getReference("competitions");      // Get list of Events/Competitions
+            pfStudent_DBReference = pfDatabase.getReference("students");        // Get list of Students
+            addStud_VE_Listener(pfStudent_DBReference);
             pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Devices
             pfPitData_DBReference = pfDatabase.getReference("pit-data/" + Pearadox.FRC_Event); // Pit Scout Data
             pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
@@ -167,14 +163,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
-        Button btn_StoreData = (Button) findViewById(R.id.btn_StoreData);   // Listner defined in Layout XML
-//        button_View.setOnClickListener(buttonStore_Click);
-
-//        if (Pearadox.is_Network) {      // is Internet available?
-            btn_StoreData.setVisibility(View.VISIBLE);
-//        } else {        // Don't show button
-//            btn_StoreData.setVisibility(View.GONE);
-//        }
 
             toggleLogon = (ToggleButton) findViewById(R.id.toggleLogon);
             toggleLogon.setOnClickListener(new View.OnClickListener() {
@@ -1078,8 +1066,53 @@ private void preReqs() {
         }
     }
 
+    private void loadEvents() {
+        i(TAG, "###  loadEvents  ###");
 
-//###################################################################
+        addEvents_VE_Listener(pfEvent_DBReference.orderByChild("match"));
+    }
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private void addEvents_VE_Listener(final Query pfEvent_DBReference) {
+        pfMatch_DBReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i(TAG, "******* Firebase retrieve Competitions  *******");
+                eventList.clear();
+                p_Firebase.eventObj event_inst = new p_Firebase.eventObj();
+                Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
+                Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
+                while (iterator.hasNext()) {
+                    event_inst = iterator.next().getValue(p_Firebase.eventObj.class);
+                    Log.w(TAG,"      " + event_inst.getcomp_name());
+//                    eventList.add(event_inst.getMatch() + "  Time: " + event_inst.getTime() + "  " + event_inst.getMtype());
+                    eventList.add(event_inst.getcomp_name() +  "  (" + event_inst.getcomp_city() + ")");
+                }
+                Log.w(TAG,"### Events ###  : " + eventList.size());
+                Spinner spinner_Event = (Spinner) findViewById(R.id.spinner_Event);
+                //String[] events = getResources().getStringArray(R.array.event_array);
+                adapter_Event = new ArrayAdapter<String>(MainActivity.this, R.layout.match_list_layout, eventList);
+                adapter_Event.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner_Event.setAdapter(adapter_Event);
+                spinner_Event.setSelection(0, false);
+                spinner_Event.setOnItemSelectedListener(new event_OnItemSelectedListener());
+
+//                listView_Matches = (ListView) findViewById(R.id.listView_Matches);
+//                adaptMatch = new ArrayAdapter<String>(Visualizer_Activity.this, );
+//                listView_Matches.setAdapter(adaptMatch);
+//                adaptMatch.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                /*listener failed or was removed for security reasons*/
+                throw databaseError.toException();
+            }
+        });
+    }
+
+
+
+    //###################################################################
 //###################################################################
 //###################################################################
 @Override

@@ -1,5 +1,5 @@
 <resources xmlns:xliff="http://schemas.android.com/tools">
-    <string name="app_name">Scout-5414</string>
+    <string name="app_name">Scout_5414</string>
     <string name="action_settings">Settings</string>
     <string name="action_about">About - Scout-5414</string>
     <string name="title_activity_vis_pit_">VisPit_Activity</string>

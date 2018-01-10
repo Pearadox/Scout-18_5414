@@ -7,6 +7,80 @@ import java.io.Serializable;
 public class p_Firebase {
 
     @IgnoreExtraProperties
+
+    public static class eventObj {
+        private String comp_code;
+        private String comp_name;
+        private String comp_div;
+        private String comp_date;
+        private String comp_city;
+        private String comp_place;
+
+        // Default constructor required for calls to
+        // DataSnapshot.getValue(teams.class)
+        public eventObj() {
+        }
+
+        public eventObj(String comp_code, String comp_name, String comp_div, String comp_date, String comp_city, String comp_place) {
+            this.comp_code = comp_code;
+            this.comp_name = comp_name;
+            this.comp_div = comp_div;
+            this.comp_date = comp_date;
+            this.comp_city = comp_city;
+            this.comp_place = comp_place;
+        }
+
+        public String getComp_code() {
+            return comp_code;
+        }
+
+        public void setComp_code(String comp_code) {
+            this.comp_code = comp_code;
+        }
+
+        public String getcomp_name() {
+            return comp_name;
+        }
+
+        public void setcomp_name(String comp_name) {
+            this.comp_name = comp_name;
+        }
+
+        public String getcomp_div() {
+            return comp_div;
+        }
+
+        public void setcomp_div(String comp_div) {
+            this.comp_div = comp_div;
+        }
+
+        public String getcomp_date() {
+            return comp_date;
+        }
+
+        public void setcomp_date(String comp_date) {
+            this.comp_date = comp_date;
+        }
+
+        public String getcomp_city() {
+            return comp_city;
+        }
+
+        public void setcomp_city(String comp_city) {
+            this.comp_city = comp_city;
+        }
+
+        public String getcomp_place() {
+            return comp_place;
+        }
+
+        public void setcomp_place(String comp_place) {
+            this.comp_place = comp_place;
+        }
+    }
+
+// ==========================================================
+// ==========================================================
     public static class teamsObj {
         private String team_num;
         private String team_name;
