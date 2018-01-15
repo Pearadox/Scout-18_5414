@@ -1089,7 +1089,7 @@ private void preReqs() {
                 Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
                 while (iterator.hasNext()) {
                     event_inst = iterator.next().getValue(p_Firebase.eventObj.class);
-                    Log.w(TAG,"      " + event_inst.getcomp_name() + "-" + event_inst.getComp_code());
+                    Log.w(TAG,"      " + event_inst.getcomp_name() + " - " + event_inst.getComp_code());
                     Pearadox.eventList.add(event_inst);
                 }
                 Log.w(TAG,"### Events ###  : " + Pearadox.eventList.size());

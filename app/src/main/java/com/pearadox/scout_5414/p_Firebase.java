@@ -17,7 +17,7 @@ public class p_Firebase {
         private String comp_place;
 
         // Default constructor required for calls to
-        // DataSnapshot.getValue(teams.class)
+        // DataSnapshot.getValue(eventObj.class)
         public eventObj() {
         }
 
