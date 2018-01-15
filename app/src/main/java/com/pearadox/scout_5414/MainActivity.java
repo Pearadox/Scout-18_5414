@@ -83,7 +83,8 @@ public class MainActivity extends AppCompatActivity {
     Spinner spinner_Device, spinner_Event;
     ImageView img_netStatus;            // Internet Status
     ArrayAdapter<String> adapter_dev, adapter_StudStr, adapter_Event;
-    ArrayList<String> eventList = new ArrayList<String>();
+//    ArrayList<String> eventList = new ArrayList<String>();
+//    ArrayList<p_Firebase.eventObj> eventList = new ArrayList<p_Firebase.eventObj>();
     public String devSelected = " ";
     Spinner spinner_Student;
     public String studentSelected = " ";
@@ -103,7 +104,8 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference pfMatch_DBReference;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     String team_num, team_name, team_loc;
-    p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name, team_loc);
+//    p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name, team_loc);
+//    p_Firebase.eventObj event_inst = new p_Firebase.eventObj(comp_code, comp_name, comp_div, comp_date, comp_city, comp_place);
     String key = null;
     Uri currentImageUri;
     boolean netOK = false;
@@ -133,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
         Pearadox.FRC_Event = "";
         txt_messageLine = (TextView) findViewById(R.id.txt_messageLine);
         txt_messageLine.setText("Hello Pearadox!  Please select Event and then Log yourself into Device.    ");
+//        loadEvents();
 
         Spinner spinner_Device = (Spinner) findViewById(R.id.spinner_Device);
         String[] devices = getResources().getStringArray(R.array.device_array);
@@ -158,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
             pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
             pfMatch_DBReference = pfDatabase.getReference("matches/" + Pearadox.FRC_Event); // List of Matches
         } else {        // Use smaller list in 'Values/strings'
-            pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Devices
 //            loadStudentString();
         }
 
@@ -577,7 +579,7 @@ public class MainActivity extends AppCompatActivity {
         pfTeam_DBReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.i(TAG, "<<<< getFB_Data >>>> Teams");
+                    Log.w(TAG, "<<<< getFB_Data >>>> Teams");
                     Pearadox.team_List.clear();
                     Pearadox.numTeams = 0;
                     p_Firebase.teamsObj tmobj = new p_Firebase.teamsObj();
@@ -871,6 +873,7 @@ private void preReqs() {
     public boolean isInternetAvailable() {
         Log.i(TAG, "<<<< Checking Internet Status >>>>");
         boolean status = false;
+        Pearadox.is_Network = false;
         ImageView img_netStatus = (ImageView) findViewById(R.id.img_netStatus);
 
         try {
@@ -914,8 +917,8 @@ private void preReqs() {
                 Pearadox.is_Network = false;
             }
         } catch (Exception e) {
-            Log.e(TAG, "*****  Error in Communication Manager  *****" );
-            e.printStackTrace();
+            Log.d(TAG, "*****  Error in Communication Manager  *****" );
+//            e.printStackTrace();
             Pearadox.is_Network = false;
             return false;
         }
@@ -1069,38 +1072,44 @@ private void preReqs() {
     private void loadEvents() {
         i(TAG, "###  loadEvents  ###");
 
-        addEvents_VE_Listener(pfEvent_DBReference.orderByChild("match"));
+        addEvents_VE_Listener(pfEvent_DBReference.orderByChild("comp-date"));
+//        addEvents_VE_Listener(pfEvent_DBReference);
     }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void addEvents_VE_Listener(final Query pfEvent_DBReference) {
-        pfMatch_DBReference.addValueEventListener(new ValueEventListener() {
+        pfEvent_DBReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, "******* Firebase retrieve Competitions  *******");
-                eventList.clear();
+                Log.d(TAG, "******* Firebase retrieve Competitions  *******");
+                Pearadox.eventList.clear();
+                Pearadox.num_Events = 0;
                 p_Firebase.eventObj event_inst = new p_Firebase.eventObj();
                 Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
                 Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
                 while (iterator.hasNext()) {
                     event_inst = iterator.next().getValue(p_Firebase.eventObj.class);
-                    Log.w(TAG,"      " + event_inst.getcomp_name());
-//                    eventList.add(event_inst.getMatch() + "  Time: " + event_inst.getTime() + "  " + event_inst.getMtype());
-                    eventList.add(event_inst.getcomp_name() +  "  (" + event_inst.getcomp_city() + ")");
+                    Log.w(TAG,"      " + event_inst.getcomp_name() + "-" + event_inst.getComp_code());
+                    Pearadox.eventList.add(event_inst);
                 }
-                Log.w(TAG,"### Events ###  : " + eventList.size());
+                Log.w(TAG,"### Events ###  : " + Pearadox.eventList.size());
+                Pearadox.num_Events = Pearadox.eventList.size() +1;     // account for 1st blank
+                Log.w(TAG, "@@@ array size = " + Pearadox.numStudents);
+                Pearadox.comp_List = new String[Pearadox.num_Events];  // Re-size for spinner
+                Arrays.fill(Pearadox.comp_List, null );
+                Pearadox.comp_List[0] = " ";       // make it so 1st Drop-Down entry is blank
+                for(int i=0 ; i < Pearadox.eventList.size() ; i++)
+                {
+                    event_inst = Pearadox.eventList.get(i);
+                    Pearadox.comp_List[i + 1] = event_inst.getcomp_name();
+                }
                 Spinner spinner_Event = (Spinner) findViewById(R.id.spinner_Event);
-                //String[] events = getResources().getStringArray(R.array.event_array);
-                adapter_Event = new ArrayAdapter<String>(MainActivity.this, R.layout.match_list_layout, eventList);
+                adapter_Event = new ArrayAdapter<String>(MainActivity.this, R.layout.match_list_layout, Pearadox.comp_List);
                 adapter_Event.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner_Event.setAdapter(adapter_Event);
                 spinner_Event.setSelection(0, false);
                 spinner_Event.setOnItemSelectedListener(new event_OnItemSelectedListener());
 
-//                listView_Matches = (ListView) findViewById(R.id.listView_Matches);
-//                adaptMatch = new ArrayAdapter<String>(Visualizer_Activity.this, );
-//                listView_Matches.setAdapter(adaptMatch);
-//                adaptMatch.notifyDataSetChanged();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -1112,14 +1121,14 @@ private void preReqs() {
 
 
 
-    //###################################################################
+//###################################################################
 //###################################################################
 //###################################################################
 @Override
 public void onStart() {
     super.onStart();
     Log.v(TAG, "onStart");
-
+    loadEvents();
 }
 @Override
 public void onResume() {

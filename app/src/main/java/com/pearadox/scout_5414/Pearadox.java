@@ -13,11 +13,14 @@ public class Pearadox {
     public static String FRC_ChampDiv;                              // FIRST Championshio Division (e.g., 'Hub City')
     public static int maxTeams = 300; 								// Maximum # of Teams per event (increase for Worlds)  GLF 4/9
     public static int maxStudents = 80; 						    // Maximum # of Students
+    public static ArrayList<p_Firebase.eventObj> eventList = new ArrayList<p_Firebase.eventObj>();
+    public static String[] comp_List = new String[8];               // Events list (array of just Names)
+    public static int num_Events = 0; 						        // Actual # of Events/Competitions
     public static ArrayList<p_Firebase.teamsObj> team_List = new ArrayList<p_Firebase.teamsObj>();
     public static int numTeams = 0; 						        // Actual # of Teams
     public static ArrayList<p_Firebase.students> stud_Lst = new ArrayList<p_Firebase.students>();
     public static String[] student_List = new String[maxStudents];  // Student list (array of just Names)
-    public static int numStudents = 0; 						        // Actual # of Students
+    public static int numStudents = 0; 						        // # of Students
     public static String FRC514_Device;                             // Device ID
     public static String Student_ID;                                // Student Name
     public static String our_Matches = "";                          // List of all matches for 5414
