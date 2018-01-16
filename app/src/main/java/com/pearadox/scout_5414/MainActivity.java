@@ -61,6 +61,7 @@ import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.IllegalFormatCodePointException;
 import java.util.Iterator;
 
 
@@ -104,8 +105,6 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference pfMatch_DBReference;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     String team_num, team_name, team_loc;
-//    p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name, team_loc);
-//    p_Firebase.eventObj event_inst = new p_Firebase.eventObj(comp_code, comp_name, comp_div, comp_date, comp_city, comp_place);
     String key = null;
     Uri currentImageUri;
     boolean netOK = false;
@@ -172,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     netOK = false;
                     RadioGroup radgrp_Scout = (RadioGroup) findViewById(R.id.radgrp_Scout);
+                    Spinner spinner_Event = (Spinner) findViewById(R.id.spinner_Event);
                     Spinner spinner_Device = (Spinner) findViewById(R.id.spinner_Device);
                     Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
                     if (spinner_Event.getSelectedItemPosition() == 0 || spinner_Device.getSelectedItemPosition() == 0 || spinner_Student.getSelectedItemPosition() == 0) {
@@ -966,38 +966,19 @@ private void preReqs() {
             Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
             spinner_Device.setClickable(true);
             spinner_Student.setClickable(true);
-            switch (ev) {
-                case "The Remix 2017":                      // txrm  ReMix
-                    Pearadox.FRC_Event = "txrm";
-                    Pearadox.FRC_ChampDiv = "txrm";
-                    break;
-                case "UIL State Championship (Austin)":     // txsc
-                    Pearadox.FRC_Event = "txsc";
-                    Pearadox.FRC_ChampDiv = "txsc";
-                    break;
-                case "FIRST Championship (Houston)":        // cmptx
-                    Pearadox.FRC_Event = "cmptx";
-                    Pearadox.FRC_ChampDiv = "gal";          // Galileo Division
-                    break;
-                case "Brazos Valley Regional":              // txwa
-                    Pearadox.FRC_Event = "txwa";
-                    Pearadox.FRC_ChampDiv = "txwa";
-                    break;
-                case ("Lone Star Central Regional"):        // txho
-                    Pearadox.FRC_Event = "txho";
-                    Pearadox.FRC_ChampDiv = "txho";
-                    break;
-                case ("Hub City Regional"):             // txlu
-                    Pearadox.FRC_Event = "txlu";
-                    Pearadox.FRC_ChampDiv = "txlu";
-                    break;
-                default:                // ?????
-                    Toast.makeText(getBaseContext(), "Event code not recognized", Toast.LENGTH_LONG).show();
-                    Pearadox.FRC_Event = "zzzz";
+            p_Firebase.eventObj event_inst = new p_Firebase.eventObj();
+            for(int i=0 ; i < Pearadox.eventList.size() ; i++)
+            {
+                event_inst = Pearadox.eventList.get(i);
+                if (event_inst.getcomp_name().equals(ev)) {
+                    Pearadox.FRC_Event = event_inst.getComp_code();
+                    Pearadox.FRC_ChampDiv = event_inst.getcomp_div();
+                }
             }
-            Log.w(TAG, " Event code = '" + Pearadox.FRC_Event + "'  \n ");
+            Log.w(TAG, "** Event code '" + Pearadox.FRC_Event + "' " + Pearadox.FRC_ChampDiv + "  \n ");
+
             pfTeam_DBReference = pfDatabase.getReference("teams/" + Pearadox.FRC_Event);   // Team data from Firebase D/B
-            addTeam_VE_Listener(pfTeam_DBReference.orderByChild("team_num"));        // Load Teams since we now know event
+            addTeam_VE_Listener(pfTeam_DBReference.orderByChild("team_num"));               // Load Teams since we now know event
         }
         public void onNothingSelected(AdapterView<?> parent) {
             // Do nothing.
