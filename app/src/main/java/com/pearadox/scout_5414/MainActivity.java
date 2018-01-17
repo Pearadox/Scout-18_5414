@@ -1054,7 +1054,6 @@ private void preReqs() {
         i(TAG, "###  loadEvents  ###");
 
         addEvents_VE_Listener(pfEvent_DBReference.orderByChild("comp-date"));
-//        addEvents_VE_Listener(pfEvent_DBReference);
     }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -1075,11 +1074,10 @@ private void preReqs() {
                 }
                 Log.w(TAG,"### Events ###  : " + Pearadox.eventList.size());
                 Pearadox.num_Events = Pearadox.eventList.size() +1;     // account for 1st blank
-                Log.w(TAG, "@@@ array size = " + Pearadox.numStudents);
                 Pearadox.comp_List = new String[Pearadox.num_Events];  // Re-size for spinner
                 Arrays.fill(Pearadox.comp_List, null );
                 Pearadox.comp_List[0] = " ";       // make it so 1st Drop-Down entry is blank
-                for(int i=0 ; i < Pearadox.eventList.size() ; i++)
+                for(int i=0 ; i < Pearadox.eventList.size() ; i++)      // create event list with ONLY name
                 {
                     event_inst = Pearadox.eventList.get(i);
                     Pearadox.comp_List[i + 1] = event_inst.getcomp_name();
