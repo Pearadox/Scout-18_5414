@@ -10,14 +10,6 @@
     <string name="event_prompt">Event?</string>
     <string name="lbl_Divider">______________________  Device Status  ______________________</string>
 
-    <!-- ##### Events ##### -->
-    <string-array name="event_array">
-        <item> </item>
-        <item>Brazos Valley Regional</item>
-        <item>Lone Star Central Regional</item>
-        <item>FIRST Championship (Houston)</item>
-        <item>UIL State Championship (Austin)</item>
-    </string-array>
 
     <!-- ##### DEVICES ##### -->
     <string-array name="device_array">
@@ -43,36 +35,6 @@
         <item>41-50</item>
     </string-array>
 
-    <!-- ##### Students list (used for Pit Scout _only_) since NO internet ##### -->
-    <string-array name="student_array">
-        <item> </item>
-        <item>Burnaman, Kaleb</item>
-        <item>Butts, Faith</item>
-        <item>Cardoso, Abel</item>
-        <item>Dizon, Lauren</item>
-        <item>De Jesus, Alexander"</item>
-        <item>Farner, Danny</item>
-        <item>Gonzales, Cristian</item>
-        <item>Gonzales, Noe</item>
-        <item>Jiang, Allen</item>
-        <item>Jiang, Sophia</item>
-        <item>Kim, Owen</item>
-        <item>Lake, Jordan</item>
-        <item>Madison, Joe</item>
-        <item>Monaghan, Matthew</item>
-        <item>Moore, Drew</item>
-        <item>Nguyen, Joshua</item>
-        <item>Norman, David</item>
-        <item>Sauter, Harrison</item>
-        <item>Streeter, Jared</item>
-        <item>Van Hoose, Lori</item>
-        <item>Weaver, Jared</item>
-        // ...
-        <item>French, Gale</item>
-        <item>Hartnett, Andrew</item>
-        <item>Hood, Laura"</item>
-        <item>Myers, Dr. Jeffrey</item>
-    </string-array>
 
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // String Values for 'non-Main' Activities
@@ -91,11 +53,8 @@
     <!-- ##### Start Position for Autononous ##### -->
     <string-array name="auto_start_array">
         <item> </item>
-        <item>B1</item>
-        <item>B2</item>
-        <item>B3</item>
-        <item>B4</item>
-        <item>B5</item>
+        <item>Side</item>
+        <item>Middle</item>
     </string-array>
 
     <!-- ##### Stop Position for Autononous ##### -->

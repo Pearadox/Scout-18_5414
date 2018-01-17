@@ -6,10 +6,10 @@
 
     <ImageView
         android:id="@+id/imageView_MS"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@mipmap/arena_layout"
-        android:contentDescription=""
         android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/txt_GearsPlaced" />
+        android:layout_toStartOf="@+id/txt_GearsPlaced"
+        android:contentDescription=""
+        android:src="@mipmap/arena_layout" />
 </LinearLayout>

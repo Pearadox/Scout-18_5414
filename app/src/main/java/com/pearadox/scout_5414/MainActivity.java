@@ -650,13 +650,13 @@ public class MainActivity extends AppCompatActivity {
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void loadStudentString() {
         Log.w(TAG, "++++++ loadStudentString ++++++ " + Pearadox.is_Network);
-        Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
-        String[] studs = getResources().getStringArray(R.array.student_array);
-        adapter_StudStr = new ArrayAdapter<String>(this, R.layout.dev_list_layout, studs);
-        adapter_StudStr.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_Student.setAdapter(adapter_StudStr);
-        spinner_Student.setSelection(0, false);
-        spinner_Student.setOnItemSelectedListener(new student_OnItemSelectedListener());
+//        Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
+//        String[] studs = getResources().getStringArray(R.array.student_array);
+//        adapter_StudStr = new ArrayAdapter<String>(this, R.layout.dev_list_layout, studs);
+//        adapter_StudStr.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinner_Student.setAdapter(adapter_StudStr);
+//        spinner_Student.setSelection(0, false);
+//        spinner_Student.setOnItemSelectedListener(new student_OnItemSelectedListener());
     }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
