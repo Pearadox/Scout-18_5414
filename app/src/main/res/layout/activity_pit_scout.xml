@@ -5,10 +5,10 @@
     android:id="@+id/activity_pit_scout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
     tools:context="com.pearadox.scout_5414.PitScoutActivity">
 
     <TextView
@@ -26,16 +26,14 @@
 
     <TextView
         android:id="@+id/txt_EventName"
-        android:text="Event Name which might be very long!!"
         android:layout_width="300dp"
         android:layout_height="25dp"
-        android:textSize="14dp"
-        android:textColor="@color/green"
+        android:layout_below="@+id/txt_Dev"
+        android:layout_toStartOf="@+id/lbl_Event"
+        android:text="Event Name which might be very long!!"
         android:textAlignment="viewEnd"
-        android:layout_alignBaseline="@+id/txt_stud"
-        android:layout_alignBottom="@+id/txt_stud"
-        android:layout_alignStart="@+id/chkBox_Pneumatics"
-        android:layout_marginStart="17dp" />
+        android:textColor="@color/green"
+        android:textSize="14dp" />
     <TextView
         android:id="@+id/txt_stud"
         android:text="Student's Name"
@@ -136,45 +134,21 @@
         android:textColor="@color/white"
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="5dp"
         android:layout_below="@+id/imageView_PS"
         android:layout_alignParentStart="true" />
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-    <RadioGroup
-        android:id="@+id/radgrp_Dim"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/lbl_Divider"  >
-
-        <RadioButton
-            android:id="@+id/radio_Short"
-            android:text="Short"
-            android:onClick="RadioClick_Dim"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="20dp"
-            android:layout_below="@+id/radgrp_Dim" />
-        <RadioButton
-            android:id="@+id/radio_Tall"
-            android:text="Tall"
-            android:onClick="RadioClick_Dim"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/lbl_Divider"
-            android:layout_toEndOf="@+id/radgrp_Dim" />
-    </RadioGroup>
-
     <TextView
         android:id="@+id/lbl_Wheels"
         android:layout_width="60sp"
         android:layout_height="30sp"
-        android:textSize="16sp"
-        android:layout_alignParentStart="true"
+        android:layout_alignStart="@+id/lbl_Divider"
+        android:layout_alignTop="@+id/spinner_Traction"
+        android:layout_weight="1"
         android:text="Wheels"
-        android:layout_below="@+id/radgrp_Dim" />
+        android:textSize="16sp" />
 
     <Spinner
         android:id="@+id/spinner_Mecanum"
@@ -194,22 +168,22 @@
 
     <TextView
         android:id="@+id/txt_NumWheels"
-        android:text="00"
         android:layout_width="40dp"
         android:layout_height="30sp"
-        android:textSize="16dp"
+        android:layout_below="@+id/lbl_Divider"
+        android:layout_marginTop="32dp"
+        android:layout_toStartOf="@+id/chkBox_Hook"
+        android:text="00"
         android:textColor="@color/yellow"
-        android:layout_alignBaseline="@+id/lbl_Wheels"
-        android:layout_alignBottom="@+id/lbl_Wheels"
-        android:layout_toStartOf="@+id/lbl_Team" />
+        android:textSize="16dp" />
 
     <ImageView
         android:id="@+id/imgView_Traction"
         android:layout_width="75sp"
         android:layout_height="75sp"
-        app:srcCompat="@drawable/wheel_traction"
-        android:layout_alignTop="@+id/txt_NumWheels"
-        android:layout_toEndOf="@+id/txt_NumWheels" />
+        android:layout_alignEnd="@+id/lbl_Team"
+        android:layout_alignTop="@+id/spinner_Traction"
+        app:srcCompat="@drawable/wheel_traction" />
 
     <Spinner
         android:id="@+id/spinner_Traction"
@@ -238,93 +212,97 @@
     // ======================================================
 
     <CheckBox
-        android:id="@+id/chkBox_Gear"
-        android:text="Gear Collector"
-        android:layout_width="160sp"
+        android:id="@+id/chkBox_Ramp"
+        android:layout_width="100sp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imgView_Traction"
-        android:layout_marginTop="26dp"
+        android:layout_alignBaseline="@+id/chkBox_Hook"
+        android:layout_alignBottom="@+id/chkBox_Hook"
         android:layout_toStartOf="@+id/imgView_Traction"
-        android:layout_alignEnd="@+id/radgrp_Dim" />
-
-    <TextView
-        android:id="@+id/lbl_FuelEst"
-        android:text="Fuel Capacity"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:visibility="gone"
-        android:layout_height="wrap_content"
-        android:layout_width="120sp"
-        android:layout_alignBaseline="@+id/chkBox_Fuel"
-        android:layout_alignBottom="@+id/chkBox_Fuel"
-        android:layout_toEndOf="@+id/chkBox_Fuel" />
+        android:text="Ramp" />
 
     <EditText
         android:id="@+id/txtEd_FuelCap"
         android:layout_width="50sp"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/spinner_Traction"
+        android:layout_alignStart="@+id/spinner_Traction"
+        android:ems="12"
         android:inputType="number"
         android:textColor="@color/limegreen"
-        android:ems="12"
-        android:visibility="gone"
-        android:layout_alignBaseline="@+id/lbl_FuelEst"
-        android:layout_alignBottom="@+id/lbl_FuelEst"
-        android:layout_alignStart="@+id/imgView_Omni" />
+        android:visibility="visible" />
 
     <CheckBox
         android:id="@+id/chkBox_FuelManip"
-        android:text="Fuel Pickup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:layout_below="@+id/chkBox_Fuel"
-        android:layout_alignParentStart="true" />
-    <CheckBox
-        android:id="@+id/chkBox_Pneumatics"
-        android:text="Pneumatics"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/chkBox_Shooter"
-        android:layout_alignBottom="@+id/chkBox_Shooter"
-        android:layout_toStartOf="@+id/chkBox_Vision"
-        android:layout_width="140sp" />
+        android:layout_alignBaseline="@+id/chkBox_Hook"
+        android:layout_alignBottom="@+id/chkBox_Hook"
+        android:layout_toStartOf="@+id/btn_Save"
+        android:text="Fuel Pickup" />
 
     <CheckBox
-        android:id="@+id/chkBox_Shooter"
-        android:text="Shooter"
+        android:id="@+id/chkBox_Pneumatics"
+        android:layout_width="140sp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/chkBox_Gear"
-        android:layout_alignBottom="@+id/chkBox_Gear"
-        android:layout_toEndOf="@+id/chkBox_Gear"
-        android:layout_width="90sp" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imgView_Traction"
+        android:layout_marginTop="27dp"
+        android:text="Pneumatics" />
+
+    <CheckBox
+        android:id="@+id/chkBox_Hook"
+        android:layout_width="90sp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkBox_CanLift"
+        android:layout_toStartOf="@+id/spinner_Traction"
+        android:text="Hook" />
 
     <CheckBox
         android:id="@+id/chkBox_Vision"
-        android:text="Vision Camera"
+        android:layout_width="140sp"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/chkBox_Pneumatics"
         android:layout_alignBottom="@+id/chkBox_Pneumatics"
-        android:layout_alignStart="@+id/imgView_Mecanum"
-        android:layout_width="140sp" />
+        android:layout_alignStart="@+id/imgView_Omni"
+        android:layout_marginStart="24dp"
+        android:text="Vision Camera" />
 
     <CheckBox
-        android:id="@+id/chkBox_Climb"
-        android:text="Climber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/chkBox_FuelManip"
-        android:layout_toEndOf="@+id/chkBox_Gear"  />
-
-    <CheckBox
-        android:id="@+id/chkBox_Fuel"
-        android:text="Fuel Container"
+        android:id="@+id/chkBox_CanLift"
         android:layout_width="160sp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_below="@+id/chkBox_Gear"
-        android:layout_alignParentStart="true" />
+        android:layout_alignStart="@+id/chkBox_Pneumatics"
+        android:layout_below="@+id/chkBox_Pneumatics"
+        android:text="Can Lift robot(s)" />
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <RadioGroup
+        android:id="@+id/radgrp_Deliver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkBox_Ramp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radio_Launch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/radgrp_Deliver"
+            android:onClick="RadioClick_Del"
+            android:paddingRight="20dp"
+            android:text="Launch" />
+
+        <RadioButton
+            android:id="@+id/radio_Place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/radgrp_Deliver"
+            android:onClick="RadioClick_Del"
+            android:text="Place" />
+    </RadioGroup>
+
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -333,6 +311,7 @@
         android:id="@+id/img_Photo"
         android:layout_width="450sp"
         android:layout_height="300sp"
+        android:visibility="gone"
         android:background="@drawable/border"
         app:srcCompat="@drawable/photo_missing"
         android:layout_alignParentBottom="true"
@@ -371,6 +350,28 @@
             android:layout_alignTop="@+id/scrollv_comm"
             android:layout_toEndOf="@+id/chk_dump" />
 
+        <TextView
+            android:id="@+id/lbl_FuelEst"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/lbl_Divider"
+            android:layout_below="@+id/lbl_Divider"
+            android:text="Robot Height (inches)"
+            android:textColor="@color/white"
+            android:textSize="16sp">
+
+        </TextView>
+
     </ScrollView>
+
+    <CheckBox
+        android:id="@+id/chkBox_Climb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/radgrp_Deliver"
+        android:layout_marginEnd="18dp"
+        android:layout_toStartOf="@+id/lbl_FuelEst"
+        android:layout_weight="1"
+        android:text="Climber" />
 
 </RelativeLayout>

@@ -1,7 +1,6 @@
 package com.pearadox.scout_5414;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.CheckBox;
@@ -46,7 +45,7 @@ public class VisPit_Activity extends AppCompatActivity {
     public String comments = "";                // Comment(s)
     public String scout = "";                   // Student who collected the data
     // ===========================================================================
-    pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,numOmnis,numMecanums,gear_Collecter,fuel_Container,storSize,shooter,vision,pneumatics,fuelManip,climb,comments,scout);
+//    pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,numOmnis,numMecanums,gear_Collecter,fuel_Container,storSize,shooter,vision,pneumatics,fuelManip,climb,comments,scout);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +105,7 @@ public class VisPit_Activity extends AppCompatActivity {
                 txt_NumOmni = (TextView) findViewById(R.id.txt_NumOmni);
                 txt_NumMecanum = (TextView) findViewById(R.id.txt_NumMecanum);
                 chkBox_Gear = (CheckBox) findViewById(R.id.chkBox_Gear);
-                chkBox_Shooter = (CheckBox) findViewById(R.id.chkBox_Shooter);
+                chkBox_Shooter = (CheckBox) findViewById(R.id.chkBox_Hook);
                 chkBox_Vision = (CheckBox) findViewById(R.id.chkBox_Vision);
                 chkBox_Pneumatics = (CheckBox) findViewById(R.id.chkBox_Pneumatics);
                 chkBox_Fuel = (CheckBox) findViewById(R.id.chkBox_Fuel);
@@ -116,28 +115,28 @@ public class VisPit_Activity extends AppCompatActivity {
                 txt_Scout = (TextView) findViewById(R.id.txt_Scout);
                 txt_Comments = (TextView) findViewById(R.id.txt_Comments);
 
-                if (Pit_Data.ispit_tall()) {
-                    txt_Dim.setText("Tall    [30 in. X 32 in. X 36 in. tall]");
-                } else {
-                    txt_Dim.setText("Short    [36 in. X 40 in. X 24 in. tall]");
-                }
+//                if (Pit_Data.ispit_tall()) {
+//                    txt_Dim.setText("Tall    [30 in. X 32 in. X 36 in. tall]");
+//                } else {
+//                    txt_Dim.setText("Short    [36 in. X 40 in. X 24 in. tall]");
+//                }
                 txt_TotWheels.setText(String.valueOf(Pit_Data.getPit_totWheels()));
                 txt_NumTrac.setText(String.valueOf(Pit_Data.getPit_numTrac()));
                 txt_NumOmni.setText(String.valueOf(Pit_Data.getPit_numOmni()));
                 txt_NumMecanum.setText(String.valueOf(Pit_Data.getPit_numMecanum()));
 
-                chkBox_Fuel.setChecked(Pit_Data.isPit_fuel_Container());
-                Log.w(TAG, ">>>>> Fuel Container = '" + Pit_Data.isPit_fuel_Container() + "'");
-                if (Pit_Data.isPit_fuel_Container()) {
-                    txt_FuelCap.setText(String.valueOf(Pit_Data.getPit_storSize()));
-                } else {
-                    txt_FuelCap.setText(" ");
-                }
-                chkBox_Gear.setChecked(Pit_Data.isPit_gear_Collect());
-                chkBox_Shooter.setChecked(Pit_Data.isPit_shooter());
-                chkBox_Vision.setChecked(Pit_Data.isPit_vision());
-                chkBox_Pneumatics.setChecked(Pit_Data.isPit_pneumatics());
-                chkBox_FuelManip.setChecked(Pit_Data.isPit_fuelManip());
+//                chkBox_Fuel.setChecked(Pit_Data.isPit_fuel_Container());
+//                Log.w(TAG, ">>>>> Fuel Container = '" + Pit_Data.isPit_fuel_Container() + "'");
+//                if (Pit_Data.isPit_fuel_Container()) {
+//                    txt_FuelCap.setText(String.valueOf(Pit_Data.getPit_storSize()));
+//                } else {
+//                    txt_FuelCap.setText(" ");
+//                }
+//                chkBox_Gear.setChecked(Pit_Data.isPit_gear_Collect());
+//                chkBox_Shooter.setChecked(Pit_Data.isPit_shooter());
+//                chkBox_Vision.setChecked(Pit_Data.isPit_vision());
+//                chkBox_Pneumatics.setChecked(Pit_Data.isPit_pneumatics());
+//                chkBox_FuelManip.setChecked(Pit_Data.isPit_fuelManip());
                 chkBox_Climb.setChecked(Pit_Data.isPit_climb());
 
                 txt_Scout.setText(Pit_Data.getPit_scout());

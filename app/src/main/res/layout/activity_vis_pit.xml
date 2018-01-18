@@ -178,13 +178,13 @@
         android:text="Pneumatics"
         android:layout_height="wrap_content"
         android:clickable="false"
-        android:layout_alignBaseline="@+id/chkBox_Shooter"
-        android:layout_alignBottom="@+id/chkBox_Shooter"
+        android:layout_alignBaseline="@+id/chkBox_Hook"
+        android:layout_alignBottom="@+id/chkBox_Hook"
         android:layout_toStartOf="@+id/chkBox_Vision"
         android:layout_width="140sp" />
 
     <CheckBox
-        android:id="@+id/chkBox_Shooter"
+        android:id="@+id/chkBox_Hook"
         android:text="Shooter"
         android:layout_height="wrap_content"
         android:clickable="false"

@@ -9,21 +9,16 @@ import android.media.ToneGenerator;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -39,9 +34,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -69,8 +62,8 @@ public class PitScoutActivity extends AppCompatActivity {
     Spinner spinner_Team, spinner_Traction, spinner_Omni, spinner_Mecanum;
     ArrayAdapter<String> adapter;
     ArrayAdapter<String> adapter_Trac, adapter_Omni, adapter_Mac ;
-    RadioGroup radgrp_Dim;      RadioButton radio_Dim;
-    CheckBox chkBox_Gear, chkBox_Fuel, chkBox_Shooter, chkBox_Vision, chkBox_Pneumatics, chkBox_FuelManip, chkBox_Climb;
+    RadioGroup radgrp_Deliver;      RadioButton radio_Deliver;
+    CheckBox chkBox_Ramp, chkBox_CanLift, chkBox_Hook, chkBox_Vision, chkBox_Pneumatics, chkBox_FuelManip, chkBox_Climb;
     Button btn_Save;
     Uri currentImageUri;
     String currentImagePath;
@@ -91,25 +84,35 @@ public class PitScoutActivity extends AppCompatActivity {
 
     boolean dataSaved = false;      // Make sure they save before exiting
     // ===================  Data Elements for Pit Scout object ===================
-    public String teamSelected = " ";           // Team #
-    public boolean dim_Tall = false;            // Dimension
+    public String teamSelected = " ";               // Team #
+    public int tall = 0;                        // Height (inches)
     public int totalWheels = 0;                 // Total # of wheels
     public int numTraction = 0;                 // Num. of Traction wheels
-    public int numOmnis = 0;                     // Num. of Omni wheels
-    public int numMecanums = 0;                  // Num. of Mecanum wheels
-    public boolean gear_Collecter = false;      // presence of gear collector
-    public boolean fuel_Container = false;      // presence of Storage bin
-    public int storSize = 0;                    // estimate of # of balls
-    public boolean shooter = false;             // presence of Shooter
+    public int numOmnis = 0;                    // Num. of Omni wheels
+    public int numMecanums = 0;                 // Num. of Mecanum wheels
     public boolean vision = false;              // presence of Vision Camera
     public boolean pneumatics = false;          // presence of Pneumatics
-    public boolean fuelManip = false;           // presence of a way to pick up fuel from floor
+    public boolean cubeManip = false;           // presence of a way to pick up cube from floor
     public boolean climb = false;               // presence of a Climbing mechanism
+    public boolean canLift = false;             // Ability to lift other robots
+    public int numLifted = 0;                   // Num. of robots can lift (1-2)
+    public boolean liftRamp = false;            // lift type Ramp
+    public boolean liftHook = false;            // lift type Hook
+                                                //==== cube Mechanism
+    public boolean cubeArm = false;             // presence of a Cube arm
+    public boolean armIntake = false;           // ++ presence of a Cube intake device      \  Only if
+    public boolean armSqueeze = false;          // ++ presence of a Cube Squeeze mechanism  /   Arm
+    public boolean cubeBox = false;             // presence of a Cube box
+    public boolean cubeBelt = false;            // presence of a Cube Conveyer Belt
+    public boolean cubeOhtr = false;            // Other ?
+                                                //==== cube Delivery
+    public boolean delLaunch = false;           // Launch
+    public boolean delPlace = false;            // Placement
     /* */
-    public String comments = "";                // Comment(s)
-    public String scout = "";                   // Student who collected the data
+    public String comments;                     // Comment(s)
+    public String scout = " ";                  // Student who collected the data
 // ===========================================================================
-pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,numOmnis,numMecanums,gear_Collecter,fuel_Container,storSize,shooter,vision,pneumatics,fuelManip,climb,comments,scout);
+pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, numOmnis, numMecanums, vision, pneumatics, cubeManip, climb, canLift, numLifted, liftRamp, liftHook, cubeArm, armIntake, armSqueeze, cubeBox, cubeBelt, cubeOhtr, delLaunch, delPlace, comments, scout);
 
 
     @Override
@@ -120,8 +123,8 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         Bundle bundle = this.getIntent().getExtras();
         String param1 = bundle.getString("dev");
         String param2 = bundle.getString("stud");
-        Log.w(TAG, param1 + " " + param2);      // ** DEBUG **
-        scout = param2; // Scout of record
+        Log.w(TAG, param1 + " " + param2);     // ** DEBUG **
+        scout = param2;                         // Scout of record
 
         txt_EventName = (TextView) findViewById(R.id.txt_EventName);
         txt_EventName.setText(Pearadox.FRC_EventName);          // Event Name
@@ -195,11 +198,11 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         spinner_Mecanum.setAdapter(adapter_Mac);
         spinner_Mecanum.setSelection(0, false);
         spinner_Mecanum.setOnItemSelectedListener(new PitScoutActivity.Mecanum_OnItemSelectedListener());
-        chkBox_Gear = (CheckBox) findViewById(R.id.chkBox_Gear);
-        chkBox_Shooter = (CheckBox) findViewById(R.id.chkBox_Shooter);
+        chkBox_Ramp = (CheckBox) findViewById(R.id.chkBox_Ramp);
+        chkBox_Hook = (CheckBox) findViewById(R.id.chkBox_Hook);
         chkBox_Vision = (CheckBox) findViewById(R.id.chkBox_Vision);
         chkBox_Pneumatics = (CheckBox) findViewById(R.id.chkBox_Pneumatics);
-        chkBox_Fuel = (CheckBox) findViewById(R.id.chkBox_Fuel);
+        chkBox_CanLift = (CheckBox) findViewById(R.id.chkBox_CanLift);
         lbl_FuelEst = (TextView) findViewById(R.id.lbl_FuelEst);
         txtEd_FuelCap = (EditText) findViewById(R.id.txtEd_FuelCap);
         chkBox_FuelManip = (CheckBox) findViewById(R.id.chkBox_FuelManip);
@@ -207,47 +210,46 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         editText_Comments = (EditText) findViewById(R.id.editText_Comments);
         editText_Comments.setClickable(true);
 
-        chkBox_Gear.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        chkBox_Ramp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                Log.w(TAG, "chkBox_Gear Listener");
+                Log.w(TAG, "chkBox_Ramp Listener");
                 if (buttonView.isChecked()) {
-                    Log.w(TAG,"Gear is checked.");
-                    gear_Collecter = true;
+                    Log.w(TAG,"Ramp is checked.");
+                    liftRamp = true;
                 } else {
-                    Log.w(TAG,"Gear is unchecked.");
-                    gear_Collecter = false;
+                    Log.w(TAG,"Ramp is unchecked.");
+                    liftRamp = false;
                 }
             }
         });
-        chkBox_Fuel.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        chkBox_CanLift.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
            @Override
            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-               Log.w(TAG, "chkBox_Fuel Listener");
+               Log.w(TAG, "chkBox_CanLift Listener");
                if (buttonView.isChecked()) {
-                   Log.w(TAG,"Fuel is checked.");
-                   fuel_Container = true;
-                   lbl_FuelEst.setVisibility(VISIBLE);
+                   Log.w(TAG,"Lift is checked.");
+//                   fuel_Container = true;
                    txtEd_FuelCap.setVisibility(VISIBLE);
                    txtEd_FuelCap.requestFocus();
                } else {
-                   Log.w(TAG,"Fuel is unchecked.");
-                   fuel_Container = false;
+                   Log.w(TAG,"Lift is unchecked.");
+//                   fuel_Container = false;
                    lbl_FuelEst.setVisibility(View.GONE);
                    txtEd_FuelCap.setVisibility(View.GONE);
                }
            }
         });
-        chkBox_Shooter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        chkBox_Hook.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
            @Override
            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-               Log.w(TAG, "chkBox_Fuel Listener");
+               Log.w(TAG, "chkBox_CanLift Listener");
                if (buttonView.isChecked()) {
-                   Log.w(TAG,"shooter is checked.");
-                   shooter = true;
+                   Log.w(TAG,"Hook is checked.");
+                   liftHook = true;
                } else {
-                   Log.w(TAG,"shooter is unchecked.");
-                   shooter = false;
+                   Log.w(TAG,"Hook is unchecked.");
+                   liftHook = false;
                }
            }
         });
@@ -283,10 +285,10 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
                 Log.w(TAG, "chkBox_FuelManip Listener");
                 if (buttonView.isChecked()) {
                     Log.w(TAG,"FuelManip is checked.");
-                    fuelManip = true;
+//                    fuelManip = true;
                 } else {
                     Log.w(TAG,"FuelManip is unchecked.");
-                    fuelManip = false;
+//                    fuelManip = false;
                 }
             }
         });
@@ -329,7 +331,7 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     Log.w(TAG, " txtEd_FuelCap listener"  + txtEd_FuelCap.getText());
-                    storSize = Integer.valueOf(String.valueOf(txtEd_FuelCap.getText()));
+                    tall = Integer.valueOf(String.valueOf(txtEd_FuelCap.getText()));
                     return true;
                 }
                 return false;
@@ -606,6 +608,8 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
             }
         }  // end For
         if (!found) {
+            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
             Log.e(TAG, "****** ERROR - Team _NOT_ found!! = " + tnum);
             txt_TeamName.setText(" ");
         }
@@ -625,28 +629,30 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
 
     }
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
-    public void RadioClick_Dim(View view) {
-        Log.w(TAG, "@@ RadioClick_Dim @@");
-        radgrp_Dim = (RadioGroup) findViewById(R.id.radgrp_Dim);
-        int selectedId = radgrp_Dim.getCheckedRadioButtonId();
-        radio_Dim = (RadioButton) findViewById(selectedId);
-        String value = radio_Dim.getText().toString();
+    public void RadioClick_Del(View view) {
+        Log.w(TAG, "@@ RadioClick_Del @@");
+        radgrp_Deliver = (RadioGroup) findViewById(R.id.radgrp_Deliver);
+        int selectedId = radgrp_Deliver.getCheckedRadioButtonId();
+        radio_Deliver = (RadioButton) findViewById(selectedId);
+        String value = radio_Deliver.getText().toString();
         if (teamSelected.length() < 3) {        /// Make sure a Team is selected 1st
             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
             tg.startTone(ToneGenerator.TONE_PROP_BEEP);
             Toast toast = Toast.makeText(getBaseContext(), "*** Select a TEAM first before entering data ***", Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             toast.show();
-            radio_Dim.setChecked(false);
-        } else {
-            if (value.equals("Short")) {           // Short?
-                Log.w(TAG, "Short");
-                dim_Tall = false;
-            } else {                               // Tall
-                Log.w(TAG, "Tall");
-                dim_Tall = true;
+                radio_Deliver.setChecked(false);
+            } else {
+                if (value.equals("Place")) {           // Place?
+                    Log.w(TAG, "Place");
+                    delPlace = true;
+                    delLaunch = false;
+            } else {                               // Launch
+                Log.w(TAG, "Launch");
+                delLaunch = true;
+                delPlace = false;
             }
-            Log.w(TAG, "RadioDim - Tall = '" + dim_Tall + "'");
+            Log.w(TAG, "RadioDel - Launch = '" + delLaunch + "'");
         }
     }
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -654,25 +660,33 @@ pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,num
         Log.w(TAG, ">>>>  storePitData  <<<< " + teamSelected );
 
         Pit_Data.setPit_team(teamSelected);
-        Pit_Data.setPit_tall(dim_Tall);
+        Pit_Data.setPit_tall(tall);
         Pit_Data.setPit_totWheels(totalWheels);
         Pit_Data.setPit_numTrac(numTraction);
         Pit_Data.setPit_numOmni(numOmnis);
         Pit_Data.setPit_numMecanum(numMecanums);
-        Pit_Data.setPit_gear_Collect(gear_Collecter);
-        Pit_Data.setPit_fuel_Container(fuel_Container);
-        Pit_Data.setPit_storSize(storSize);
-        Pit_Data.setPit_shooter(shooter);
+        Pit_Data.setPit_cubeManip(cubeManip);
         Pit_Data.setPit_vision(vision);
         Pit_Data.setPit_pneumatics(pneumatics);
-        Pit_Data.setPit_fuelManip(fuelManip);
         Pit_Data.setPit_climb(climb);
+        Pit_Data.setPit_canLift(canLift);
+        Pit_Data.setPit_numLifted (numLifted );
+        Pit_Data.setPit_liftRamp(liftRamp);
+        Pit_Data.setPit_liftHook(liftHook);
+        Pit_Data.setPit_cubeArm(cubeArm);
+        Pit_Data.setPit_armIntake(armIntake);
+        Pit_Data.setPit_armSqueeze(armSqueeze);
+        Pit_Data.setPit_cubeBox(cubeBox);
+        Pit_Data.setPit_cubeBelt(cubeBelt);
+        Pit_Data.setPit_cubeOhtr(cubeOhtr);
+        Pit_Data.setPit_delLaunch(delLaunch);
+        Pit_Data.setPit_delPlace(delPlace);
          /* */
         Pit_Data.setPit_comment(comments);
         Pit_Data.setPit_scout(scout);
 // -----------------------------------------------
-        saveDatatoSDcard();             //Save locally
-//        if (Pearadox.is_Network) {      // is Internet available?         Commented out because 'tethered' show No internet
+        saveDatatoSDcard();                 //Save locally
+//        if (Pearadox.is_Network) {        // is Internet available?         Commented out because 'tethered' show No internet
             String keyID = teamSelected;
             pfPitData_DBReference.child(keyID).setValue(Pit_Data);      // Store it to Firebase
 //        }
