@@ -52,18 +52,22 @@ import java.io.ObjectOutputStream;
 
 import static android.app.PendingIntent.getActivity;
 import static android.view.View.VISIBLE;
+import static android.view.View.generateViewId;
+import static android.view.View.inflate;
 
 public class PitScoutActivity extends AppCompatActivity {
 
     String TAG = "PitScout_Activity";      // This CLASS name
     TextView txt_EventName, txt_dev, txt_stud, txt_TeamName, txt_NumWheels, lbl_FuelEst;
-    EditText editTxt_Team, txtEd_FuelCap, editText_Comments;
+    EditText editTxt_Team, txtEd_Height, editText_Comments;
     ImageView imgScoutLogo, img_Photo;
     Spinner spinner_Team, spinner_Traction, spinner_Omni, spinner_Mecanum;
+    Spinner spinner_numRobots;
     ArrayAdapter<String> adapter;
     ArrayAdapter<String> adapter_Trac, adapter_Omni, adapter_Mac ;
     RadioGroup radgrp_Deliver;      RadioButton radio_Deliver;
     CheckBox chkBox_Ramp, chkBox_CanLift, chkBox_Hook, chkBox_Vision, chkBox_Pneumatics, chkBox_FuelManip, chkBox_Climb;
+    CheckBox chkBox_ArmPress, chkBox_ArmIntake;
     Button btn_Save;
     Uri currentImageUri;
     String currentImagePath;
@@ -72,6 +76,8 @@ public class PitScoutActivity extends AppCompatActivity {
     public static String[] teams = new String[Pearadox.numTeams+1];  // Team list (array of just Team Names)
     public static String[] wheels = new String[]
             {"0","1","2","3","4","5","6", "7", "8"};
+    public static String[] carry = new String[]             // Num. of robots this robot can lift
+            {"1","2"};
 
     String team_num, team_name, team_loc;
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name, team_loc);
@@ -143,9 +149,7 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
         txt_TeamName.setText(" ");
         Spinner spinner_Team = (Spinner) findViewById(R.id.spinner_Team);
         editTxt_Team = (EditText) findViewById(R.id.editTxt_Team);
-        editTxt_Team.setFocusable(true);
-        editTxt_Team.setFocusableInTouchMode(true);
-        if (Pearadox.is_Network && Pearadox.numTeams > 0) {      // is Internet available & Teams prewsent?
+        if (Pearadox.is_Network && Pearadox.numTeams > 0) {      // is Internet available & Teams present?
             loadTeams();
             spinner_Team.setVisibility(View.VISIBLE);
             editTxt_Team.setVisibility(View.GONE);
@@ -159,6 +163,8 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
             editTxt_Team.setVisibility(View.VISIBLE);
             editTxt_Team.setEnabled(true);
             editTxt_Team.requestFocus();        // Don't let EditText mess up layout!!
+            editTxt_Team.setFocusable(true);
+            editTxt_Team.setFocusableInTouchMode(true);
             spinner_Team.setVisibility(View.GONE);
             editTxt_Team.setOnKeyListener(new View.OnKeyListener() {
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -180,6 +186,13 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
             });
         }
 
+        final Spinner spinner_numRobots = (Spinner) findViewById(R.id.spinner_numRobots);
+        ArrayAdapter adapter_Robs = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, carry);
+        adapter_Robs.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_numRobots.setAdapter(adapter_Robs);
+        spinner_numRobots.setSelection(0, false);
+        spinner_numRobots.setOnItemSelectedListener(new PitScoutActivity.Traction_OnItemSelectedListener());
+        spinner_numRobots.setVisibility(View.GONE);
         Spinner spinner_Traction = (Spinner) findViewById(R.id.spinner_Traction);
         ArrayAdapter adapter_Trac = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, wheels);
         adapter_Trac.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -200,12 +213,15 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
         spinner_Mecanum.setOnItemSelectedListener(new PitScoutActivity.Mecanum_OnItemSelectedListener());
         chkBox_Ramp = (CheckBox) findViewById(R.id.chkBox_Ramp);
         chkBox_Hook = (CheckBox) findViewById(R.id.chkBox_Hook);
+        chkBox_Ramp.setVisibility(View.GONE);
+        chkBox_Hook.setVisibility(View.GONE);
+
         chkBox_Vision = (CheckBox) findViewById(R.id.chkBox_Vision);
         chkBox_Pneumatics = (CheckBox) findViewById(R.id.chkBox_Pneumatics);
         chkBox_CanLift = (CheckBox) findViewById(R.id.chkBox_CanLift);
-        lbl_FuelEst = (TextView) findViewById(R.id.lbl_FuelEst);
-        txtEd_FuelCap = (EditText) findViewById(R.id.txtEd_FuelCap);
-        chkBox_FuelManip = (CheckBox) findViewById(R.id.chkBox_FuelManip);
+        lbl_FuelEst = (TextView) findViewById(R.id.lbl_RoboHeight);
+        txtEd_Height = (EditText) findViewById(R.id.txtEd_Height);
+//        chkBox_FuelManip = (CheckBox) findViewById(R.id.chkBox_FuelManip);
         chkBox_Climb = (CheckBox) findViewById(R.id.chkBox_Climb);
         editText_Comments = (EditText) findViewById(R.id.editText_Comments);
         editText_Comments.setClickable(true);
@@ -230,13 +246,15 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
                if (buttonView.isChecked()) {
                    Log.w(TAG,"Lift is checked.");
 //                   fuel_Container = true;
-                   txtEd_FuelCap.setVisibility(VISIBLE);
-                   txtEd_FuelCap.requestFocus();
+                   chkBox_Ramp.setVisibility(VISIBLE);
+                   chkBox_Hook.setVisibility(VISIBLE);
+                   spinner_numRobots.setVisibility(VISIBLE);
                } else {
                    Log.w(TAG,"Lift is unchecked.");
 //                   fuel_Container = false;
-                   lbl_FuelEst.setVisibility(View.GONE);
-                   txtEd_FuelCap.setVisibility(View.GONE);
+                   chkBox_Ramp.setVisibility(View.GONE);
+                   chkBox_Hook.setVisibility(View.GONE);
+                   spinner_numRobots.setVisibility(View.GONE);
                }
            }
         });
@@ -279,19 +297,20 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
                 }
             }
         });
-        chkBox_FuelManip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                Log.w(TAG, "chkBox_FuelManip Listener");
-                if (buttonView.isChecked()) {
-                    Log.w(TAG,"FuelManip is checked.");
-//                    fuelManip = true;
-                } else {
-                    Log.w(TAG,"FuelManip is unchecked.");
-//                    fuelManip = false;
-                }
-            }
-        });
+//        chkBox_FuelManip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+//                Log.w(TAG, "chkBox_FuelManip Listener");
+//                if (buttonView.isChecked()) {
+//                    Log.w(TAG,"FuelManip is checked.");
+////                    fuelManip = true;
+//                } else {
+//                    Log.w(TAG,"FuelManip is unchecked.");
+////                    fuelManip = false;
+//                }
+//            }
+//        });
+
         chkBox_Climb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
@@ -324,14 +343,14 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
             }
         });
 
-        txtEd_FuelCap.setOnKeyListener(new View.OnKeyListener() {
+        txtEd_Height.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                Log.w(TAG, "******  txtEd_FuelCap listener  ******");
+                Log.w(TAG, "******  txtEd_Height listener  ******");
 
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    Log.w(TAG, " txtEd_FuelCap listener"  + txtEd_FuelCap.getText());
-                    tall = Integer.valueOf(String.valueOf(txtEd_FuelCap.getText()));
+                    Log.w(TAG, " txtEd_Height listener"  + txtEd_Height.getText());
+                    tall = Integer.valueOf(String.valueOf(txtEd_Height.getText()));
                     return true;
                 }
                 return false;

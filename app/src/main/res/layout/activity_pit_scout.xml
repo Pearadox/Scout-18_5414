@@ -5,41 +5,42 @@
     android:id="@+id/activity_pit_scout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="10dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="10dp"
+    android:paddingBottom="10sp"
+    android:paddingLeft="10sp"
+    android:paddingRight="10sp"
+    android:paddingTop="10sp"
     tools:context="com.pearadox.scout_5414.PitScoutActivity">
 
     <TextView
         android:id="@+id/lbl_Event"
-        android:layout_width="50dp"
-        android:layout_height="25dp"
-        android:textSize="14dp"
+        android:layout_width="50sp"
+        android:layout_height="25sp"
+        android:textSize="14sp"
         android:textColor="@color/white"
         android:text="Event"
         android:textStyle="bold"
         android:textAlignment="viewEnd"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/spinner_Mecanum"
-        android:layout_marginStart="12dp" />
+        android:layout_marginStart="12sp" />
 
     <TextView
         android:id="@+id/txt_EventName"
-        android:layout_width="300dp"
-        android:layout_height="25dp"
-        android:layout_below="@+id/txt_Dev"
-        android:layout_toStartOf="@+id/lbl_Event"
+        android:layout_width="300sp"
+        android:layout_height="25sp"
+        android:layout_alignBaseline="@+id/txt_stud"
+        android:layout_alignBottom="@+id/txt_stud"
+        android:layout_alignStart="@+id/spinner_Omni"
         android:text="Event Name which might be very long!!"
         android:textAlignment="viewEnd"
         android:textColor="@color/green"
-        android:textSize="14dp" />
+        android:textSize="14sp" />
     <TextView
         android:id="@+id/txt_stud"
         android:text="Student's Name"
-        android:layout_width="150dp"
-        android:layout_height="25dp"
-        android:textSize="14dp"
+        android:layout_width="150sp"
+        android:layout_height="25sp"
+        android:textSize="14sp"
         android:textColor="@color/magenta"
         android:layout_alignBaseline="@+id/lbl_Student"
         android:layout_alignBottom="@+id/lbl_Student"
@@ -47,17 +48,17 @@
 
     <ImageView
         android:id="@+id/imageView_PS"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
         android:src="@drawable/robo_pit"
         android:contentDescription="Pit Scout logo" />
 
     <TextView
         android:id="@+id/txt_Dev"
         android:text="Dev. Name"
-        android:layout_width="80dp"
-        android:layout_height="25dp"
-        android:textSize="14dp"
+        android:layout_width="80sp"
+        android:layout_height="25sp"
+        android:textSize="14sp"
         android:textColor="@color/yellow"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/imageView_PS"
@@ -65,9 +66,9 @@
 
     <TextView
         android:id="@+id/lbl_Student"
-        android:layout_width="70dp"
-        android:layout_height="25dp"
-        android:textSize="14dp"
+        android:layout_width="70sp"
+        android:layout_height="25sp"
+        android:textSize="14sp"
         android:textColor="@color/white"
         android:text="Student"
         android:layout_below="@+id/txt_Dev"
@@ -75,20 +76,20 @@
 
     <TextView
         android:id="@+id/lbl_Dev"
-        android:layout_width="70dp"
-        android:layout_height="25dp"
-        android:textSize="14dp"
+        android:layout_width="70sp"
+        android:layout_height="25sp"
+        android:textSize="14sp"
         android:textColor="@color/white"
         android:text="Device"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/imageView_PS"
-        android:layout_marginStart="16dp" />
+        android:layout_marginStart="16sp" />
 
     <TextView
         android:id="@+id/lbl_Team"
-        android:layout_width="70dp"
-        android:layout_height="25dp"
-        android:textSize="14dp"
+        android:layout_width="70sp"
+        android:layout_height="25sp"
+        android:textSize="14sp"
         android:textColor="@color/white"
         android:text="Team"
         android:layout_below="@+id/lbl_Student"
@@ -97,9 +98,9 @@
     <TextView
         android:id="@+id/txt_TeamName"
         android:text="Team Name"
-        android:layout_width="220dp"
-        android:layout_height="25dp"
-        android:textSize="14dp"
+        android:layout_width="220sp"
+        android:layout_height="25sp"
+        android:textSize="14sp"
         android:textColor="@color/brightblue"
         android:layout_below="@+id/lbl_Team"
         android:layout_alignStart="@+id/txt_stud" />
@@ -107,15 +108,15 @@
 // =======  Either Spinner or EditText visible (depending on Internet status) =======
     <Spinner
         android:id="@+id/spinner_Team"
-        android:layout_width="50dp"
+        android:layout_width="50sp"
         android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_stud"
         android:layout_alignStart="@+id/txt_stud" />
     <EditText
         android:id="@+id/editTxt_Team"
-        android:layout_width="50dp"
-        android:layout_height="40dp"
+        android:layout_width="50sp"
+        android:layout_height="40sp"
         android:inputType="number"
         android:ems="10"
         android:textColor="@color/brightblue"
@@ -134,11 +135,22 @@
         android:textColor="@color/white"
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="5sp"
         android:layout_below="@+id/imageView_PS"
         android:layout_alignParentStart="true" />
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <TextView
+        android:id="@+id/lbl_RoboHeight"
+        android:layout_width="170sp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/lbl_Divider"
+        android:layout_below="@+id/lbl_Divider"
+        android:text="Robot Height (inches)"
+        android:textColor="@color/grey"
+        android:textStyle="bold"
+        android:textSize="16sp"></TextView>
 
     <TextView
         android:id="@+id/lbl_Wheels"
@@ -146,36 +158,36 @@
         android:layout_height="30sp"
         android:layout_alignStart="@+id/lbl_Divider"
         android:layout_alignTop="@+id/spinner_Traction"
-        android:layout_weight="1"
         android:text="Wheels"
+        android:textStyle="bold"
         android:textSize="16sp" />
 
     <Spinner
         android:id="@+id/spinner_Mecanum"
-        android:layout_width="50dp"
+        android:layout_width="50sp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="28sp"
         android:layout_alignBottom="@+id/txt_NumWheels"
         android:layout_toEndOf="@+id/imgView_Mecanum" />
 
     <Spinner
         android:id="@+id/spinner_Omni"
-        android:layout_width="50dp"
+        android:layout_width="50sp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="19dp"
+        android:layout_marginStart="19sp"
         android:layout_alignTop="@+id/spinner_Mecanum"
         android:layout_toEndOf="@+id/imgView_Omni" />
 
     <TextView
         android:id="@+id/txt_NumWheels"
-        android:layout_width="40dp"
+        android:layout_width="40sp"
         android:layout_height="30sp"
-        android:layout_below="@+id/lbl_Divider"
-        android:layout_marginTop="32dp"
-        android:layout_toStartOf="@+id/chkBox_Hook"
+        android:layout_below="@+id/lbl_RoboHeight"
+        android:layout_marginTop="17dp"
+        android:layout_toEndOf="@+id/lbl_Wheels"
         android:text="00"
         android:textColor="@color/yellow"
-        android:textSize="16dp" />
+        android:textSize="18sp" />
 
     <ImageView
         android:id="@+id/imgView_Traction"
@@ -187,7 +199,7 @@
 
     <Spinner
         android:id="@+id/spinner_Traction"
-        android:layout_width="50dp"
+        android:layout_width="50sp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/txt_NumWheels"
         android:layout_alignEnd="@+id/txt_Dev" />
@@ -196,18 +208,17 @@
         android:id="@+id/imgView_Omni"
         android:layout_width="75sp"
         android:layout_height="75sp"
-        app:srcCompat="@drawable/wheel_omni"
-        android:layout_marginStart="11dp"
-        android:layout_alignTop="@+id/imgView_Traction"
-        android:layout_toEndOf="@+id/spinner_Traction" />
+        android:layout_below="@+id/txtEd_Height"
+        android:layout_toEndOf="@+id/spinner_Traction"
+        app:srcCompat="@drawable/wheel_omni" />
 
     <ImageView
         android:id="@+id/imgView_Mecanum"
         android:layout_width="75sp"
         android:layout_height="75sp"
-        app:srcCompat="@drawable/wheel_mecanum"
-        android:layout_alignTop="@+id/imgView_Omni"
-        android:layout_toEndOf="@+id/spinner_Omni" />
+        android:layout_alignTop="@+id/spinner_Omni"
+        android:layout_toEndOf="@+id/txt_TeamName"
+        app:srcCompat="@drawable/wheel_mecanum" />
 
     // ======================================================
 
@@ -217,11 +228,21 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/chkBox_Hook"
         android:layout_alignBottom="@+id/chkBox_Hook"
-        android:layout_toStartOf="@+id/imgView_Traction"
+        android:layout_toStartOf="@+id/chkBox_Hook"
+        android:textColor="@color/orange"
         android:text="Ramp" />
 
+    <CheckBox
+        android:id="@+id/chkBox_Hook"
+        android:layout_width="90sp"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/scrollv_comm"
+        android:layout_below="@+id/chkBox_Climb"
+        android:textColor="@color/orange"
+        android:text="Hook" />
+
     <EditText
-        android:id="@+id/txtEd_FuelCap"
+        android:id="@+id/txtEd_Height"
         android:layout_width="50sp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/spinner_Traction"
@@ -231,14 +252,14 @@
         android:textColor="@color/limegreen"
         android:visibility="visible" />
 
-    <CheckBox
-        android:id="@+id/chkBox_FuelManip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/chkBox_Hook"
-        android:layout_alignBottom="@+id/chkBox_Hook"
-        android:layout_toStartOf="@+id/btn_Save"
-        android:text="Fuel Pickup" />
+    <!--<CheckBox-->
+        <!--android:id="@+id/chkBox_FuelManip"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignBaseline="@+id/chkBox_Hook"-->
+        <!--android:layout_alignBottom="@+id/chkBox_Hook"-->
+        <!--android:layout_toStartOf="@+id/btn_Save"-->
+        <!--android:text="Fuel Pickup" />-->
 
     <CheckBox
         android:id="@+id/chkBox_Pneumatics"
@@ -246,53 +267,143 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/imgView_Traction"
-        android:layout_marginTop="27dp"
         android:text="Pneumatics" />
-
-    <CheckBox
-        android:id="@+id/chkBox_Hook"
-        android:layout_width="90sp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/chkBox_CanLift"
-        android:layout_toStartOf="@+id/spinner_Traction"
-        android:text="Hook" />
 
     <CheckBox
         android:id="@+id/chkBox_Vision"
         android:layout_width="140sp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/chkBox_Pneumatics"
-        android:layout_alignBottom="@+id/chkBox_Pneumatics"
-        android:layout_alignStart="@+id/imgView_Omni"
-        android:layout_marginStart="24dp"
+        android:layout_alignBaseline="@+id/chkBox_Climb"
+        android:layout_alignBottom="@+id/chkBox_Climb"
+        android:layout_toEndOf="@+id/chkBox_Arms"
         android:text="Vision Camera" />
+
+    <CheckBox
+        android:id="@+id/chkBox_Climb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/chkBox_CanLift"
+        android:layout_toEndOf="@+id/chkBox_ArmIntake"
+        android:text="Can Climb" />
 
     <CheckBox
         android:id="@+id/chkBox_CanLift"
         android:layout_width="160sp"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/chkBox_Pneumatics"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/chkBox_Pneumatics"
+        android:textColor="@color/red"
         android:text="Can Lift robot(s)" />
+
+    <Spinner
+        android:id="@+id/spinner_numRobots"
+        android:layout_width="50sp"
+        android:textColor="@color/orange"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/chkBox_Arms"
+        android:layout_toEndOf="@+id/chkBox_Arms"/>
+
+    //**********************************************************
+
+    <TextView
+        android:id="@+id/lbl_CubMech"
+        android:layout_width="50sp"
+        android:layout_height="30sp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/chkBox_CanLift"
+        android:text="Cube Mech."
+        android:textColor="@color/brightblue"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <CheckBox
+        android:id="@+id/chkBox_Arms"
+        android:layout_width="130sp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkBox_CanLift"
+        android:layout_toStartOf="@+id/chkBox_Box"
+        android:textColor="@color/blue"
+        android:text="Grabber Arm(s)" />
+
+    <CheckBox
+        android:id="@+id/chkBox_ArmIntake"
+        android:layout_width="140sp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkBox_Arms"
+        android:layout_toEndOf="@+id/spinner_numRobots"
+        android:text="Intake device"
+        android:textColor="@color/cyan" />
+
+    <CheckBox
+        android:id="@+id/chkBox_ArmPress"
+        android:layout_width="150sp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkBox_Arms"
+        android:layout_toEndOf="@+id/lbl_Wheels"
+        android:text="Pressure/Squeeze"
+        android:textColor="@color/cyan" />
+
+    <CheckBox
+        android:id="@+id/chkBox_Belt"
+        android:layout_width="120sp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkBox_CanLift"
+        android:layout_toStartOf="@+id/chkBox_Other"
+        android:text="Conveyer Belt"
+        android:textColor="@color/blue" />
+
+    <CheckBox
+        android:id="@+id/chkBox_Box"
+        android:layout_width="120sp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkBox_CanLift"
+        android:layout_toStartOf="@+id/chkBox_Belt"
+        android:text="Box/Platform"
+        android:textColor="@color/blue" />
+
+    <CheckBox
+        android:id="@+id/chkBox_Other"
+        android:layout_width="90sp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkBox_CanLift"
+        android:layout_toEndOf="@+id/chkBox_Ramp"
+        android:text="Other"
+        android:textColor="@color/brightblue" />
+
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <TextView
+        android:id="@+id/lbl_Delivery"
+        android:layout_width="150sp"
+        android:layout_height="30sp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/chkBox_ArmIntake"
+        android:text=" Cube Delivery Type"
+        android:textColor="@color/limegreen"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <RadioGroup
         android:id="@+id/radgrp_Deliver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/chkBox_Ramp"
+        android:layout_below="@+id/chkBox_ArmIntake"
+        android:layout_marginLeft="150dp"
         android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/radio_Launch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/radgrp_Deliver"
+            android:layout_below="@+id/chkBox_Arms"
+            android:layout_toEndOf="@+id/lbl_Delivery"
             android:onClick="RadioClick_Del"
-            android:paddingRight="20dp"
-            android:text="Launch" />
+            android:paddingRight="20sp"
+            android:text="Launch"
+            android:textColor="@color/green"
+            tools:layout_marginLeft="0dp" />
 
         <RadioButton
             android:id="@+id/radio_Place"
@@ -300,7 +411,8 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/radgrp_Deliver"
             android:onClick="RadioClick_Del"
-            android:text="Place" />
+            android:text="Place"
+            android:textColor="@color/green" />
     </RadioGroup>
 
 
@@ -311,7 +423,7 @@
         android:id="@+id/img_Photo"
         android:layout_width="450sp"
         android:layout_height="300sp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:background="@drawable/border"
         app:srcCompat="@drawable/photo_missing"
         android:layout_alignParentBottom="true"
@@ -325,53 +437,32 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignEnd="@+id/spinner_Mecanum"
-        android:layout_marginBottom="25dp" />
+        android:layout_marginBottom="25sp" />
 
     <ScrollView
         android:id="@+id/scrollv_comm"
         android:layout_width="500sp"
         android:layout_height="100sp"
-        android:isScrollContainer="false"
-        android:layout_marginTop="12dp"
-        android:layout_below="@+id/chkBox_FuelManip"
-        android:layout_alignEnd="@+id/lbl_Divider">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lbl_Delivery"
+        android:isScrollContainer="false">
 
         <EditText
             android:id="@+id/editText_Comments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/scrollv_comm"
+            android:background="@drawable/border"
+            android:ems="12"
+            android:hint="Tap to add any comments about robot"
             android:inputType="textMultiLine"
             android:lines="2"
             android:scrollbars="vertical"
-            android:ems="12"
-            android:textColor="@color/green"
-            android:background="@drawable/border"
-            android:hint="Tap to add any comments about robot"
-            android:layout_alignTop="@+id/scrollv_comm"
-            android:layout_toEndOf="@+id/chk_dump" />
-
-        <TextView
-            android:id="@+id/lbl_FuelEst"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/lbl_Divider"
-            android:layout_below="@+id/lbl_Divider"
-            android:text="Robot Height (inches)"
-            android:textColor="@color/white"
-            android:textSize="16sp">
-
-        </TextView>
+            android:textColor="@color/green" />
 
     </ScrollView>
 
-    <CheckBox
-        android:id="@+id/chkBox_Climb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/radgrp_Deliver"
-        android:layout_marginEnd="18dp"
-        android:layout_toStartOf="@+id/lbl_FuelEst"
-        android:layout_weight="1"
-        android:text="Climber" />
 
 </RelativeLayout>
+
+
