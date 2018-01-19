@@ -145,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
         spinner_Device.setOnItemSelectedListener(new device_OnItemSelectedListener());
         ImageView img_netStatus = (ImageView) findViewById(R.id.img_netStatus);
 
-        preReqs();                        // Check for pre-requisites
         isInternetAvailable();          // See if device has Internet
 
 //        FirebaseDatabase.getInstance().setPersistenceEnabled(true);     // Enable 'Offline' Database
@@ -661,6 +660,7 @@ public class MainActivity extends AppCompatActivity {
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 private void preReqs() {
+    Log.w(TAG, "*** Checking preReqs *** ");
     boolean isSdPresent;
     isSdPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
     Log.w(TAG, "SD card: " + isSdPresent);
@@ -671,193 +671,75 @@ private void preReqs() {
             if(directFRC.mkdir())
             { }        //directory is created;
         }
-        File directImg = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images");
-        if(!directImg.exists())  {
-            if(directImg.mkdir())
-            { }        //directory is created;
-        }
-        File direct_iLub = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txlu");
-        if(!direct_iLub.exists())  {
-            if(direct_iLub.mkdir())
-            {
-            } else {
-                Log.w(TAG, " ****>>> ERROR creating directory  <<<<**** " + direct_iLub);
-
-            }        //directory is created;
-        }
-        File direct_iCmp = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/cmptx");
-        if(!direct_iCmp.exists())  {
-            if(direct_iCmp.mkdir())
-            { }        //directory is created;
-        }
-        File direct_iCBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/cmptx/bkup");
-        if(!direct_iCBkup.exists())  {
-            if(direct_iCBkup.mkdir())
-            { }        //directory is created;
-        }
-        File direct_uCmp = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txsc");
-        if(!direct_uCmp.exists())  {
-            if(direct_uCmp.mkdir())
-            { }        //directory is created;
-        }
-        File direct_uCBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txsc/bkup");
-        if(!direct_uCBkup.exists())  {
-            if(direct_uCBkup.mkdir())
-            { }        //directory is created;
-        }
-        File direct_iHou = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txho");
-        if(!direct_iHou.exists())  {
-            if(direct_iHou.mkdir())
-            { }        //directory is created;
-        }
-        File direct_iHBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txho/bkup");
-        if(!direct_iHBkup.exists())  {
-            if(direct_iHBkup.mkdir())
-            { }        //directory is created;
-        }
-        File direct_iWaco = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txwa");
-        if(!direct_iWaco.exists())  {
-            if(direct_iWaco.mkdir())
-            { }        //directory is created;
-        }
-        File direct_iWBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txwa/bkup");
-        if(!direct_iWBkup.exists())  {
-            if(direct_iWBkup.mkdir())
-            { }        //directory is created;
-        }
-        File direct_iRMix = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txrm");
-        if(!direct_iRMix.exists())  {
-            if(direct_iRMix.mkdir())
-            { }        //directory is created;
-        }
-        File direct_iRMBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/txrm/bkup");
-        if(!direct_iRMBkup.exists())  {
-            if(direct_iRMBkup.mkdir())
-            { }        //directory is created;
-        }
-//=================================================================
-        File directMatch = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match");
-        if(!directMatch.exists())  {
-            if(directMatch.mkdir())
-            { }        //directory is created;
-        }
-        File direct_mLub = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txlu");
-        if(!direct_mLub.exists())  {
-            if(direct_mLub.mkdir())
-            { }        //directory is created;
-        }
-        File direct_mCmp = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/cmptx");
-        if(!direct_mCmp.exists())  {
-            if(direct_mCmp.mkdir())
-            { }        //directory is created;
-        }
-        File direct_mCBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/cmptx/bkup");
-        if(!direct_mCBkup.exists())  {
-            if(direct_mCBkup.mkdir())
-            { }        //directory is created;
-        }
-        File direct_mHou = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txho");
-        if(!direct_mHou.exists())  {
-            if(direct_mHou.mkdir())
-            { }        //directory is created;
-        }
-        File direct_mHBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txho/bkup");
-        if(!direct_mHBkup.exists())  {
-            if(direct_mHBkup.mkdir())
-            { }        //directory is created;
-        }
-        File direct_mWaco = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txwa");
-        if(!direct_mWaco.exists())  {
-            if(direct_mWaco.mkdir())
-            { }        //directory is created;
-        }
-        File direct_mWBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txwa/bkup");
-        if(!direct_mWBkup.exists())  {
-            if(direct_mWBkup.mkdir())
-            { }        //directory is created;
-        }
-        File direct_mAus = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txsc");
-        if(!direct_mAus.exists())  {
-            if(direct_mAus.mkdir())
-            { }        //directory is created;
-        }
-        File direct_mABkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txsc/bkup");
-        if(!direct_mABkup.exists())  {
-            if(direct_mABkup.mkdir())
-            { }        //directory is created;
-        }
-        File direct_mRMix = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txrm");
-        if(!direct_mRMix.exists())  {
-            if(direct_mRMix.mkdir())
-            { }        //directory is created;
-        }
-        File direct_mRMBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/txrm/bkup");
-        if(!direct_mRMBkup.exists())  {
-            if(direct_mRMBkup.mkdir())
-            { }        //directory is created;
-        }
-//=================================================================
+        // ****  Now Create the 3 main Directories  ****
         File directPit = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit");
+        Log.w(TAG, "   Pit = " + directPit);
         if(!directPit.exists())  {
             if(directPit.mkdir())
             { }        //directory is created;
         }
-        File direct_pLub = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txlu");
-        if(!direct_pLub.exists())  {
-            if(direct_pLub.mkdir())
+        File directImg = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images");
+        Log.w(TAG, "   Images = " + directImg);
+        if(!directImg.exists())  {
+            if(directImg.mkdir())
             { }        //directory is created;
         }
-        File direct_pCmp = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/cmptx");
-        if(!direct_pCmp.exists())  {
-            if(direct_pCmp.mkdir())
-            { }        //directory is created;
-        }
-        File direct_pCBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/cmptx/bkup");
-        if(!direct_pCBkup.exists())  {
-            if(direct_pCBkup.mkdir())
-            { }        //directory is created;
-        }
-        File direct_pHou = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txho");
-        if(!direct_pHou.exists())  {
-            if(direct_pHou.mkdir())
-            { }        //directory is created;
-        }
-        File direct_pHouBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txho/bkup");
-        if(!direct_pHouBkup.exists())  {
-            if(direct_pHouBkup.mkdir())
-            { }        //directory is created;
-        }
-        File direct_pWaco = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txwa");
-        if(!direct_pWaco.exists())  {
-            if(direct_pWaco.mkdir())
-            { }        //directory is created;
-        }
-        File direct_pWBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txwa/bkup");
-        if(!direct_pWBkup.exists())  {
-            if(direct_pWBkup.mkdir())
-            { }        //directory is created;
-        }
-        File direct_pAus = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txsc");
-        if(!direct_pAus.exists())  {
-            if(direct_pAus.mkdir())
-            { }        //directory is created;
-        }
-        File direct_pABkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txsc/bkup");
-        if(!direct_pABkup.exists())  {
-            if(direct_pABkup.mkdir())
-            { }        //directory is created;
-        }
-        File direct_pRMix = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txrm");
-        if(!direct_pRMix.exists())  {
-            if(direct_pRMix.mkdir())
-            { }        //directory is created;
-        }
-        File direct_pRMBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/txrm/bkup");
-        if(!direct_pRMBkup.exists())  {
-            if(direct_pRMBkup.mkdir())
+        File directMatch = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match");
+        Log.w(TAG, "   Match = " + directMatch);
+        if(!directMatch.exists())  {
+            if(directMatch.mkdir())
             { }        //directory is created;
         }
 //=================================================================
+        p_Firebase.eventObj event_inst = new p_Firebase.eventObj();
+        String ev_code = "";
+        for(int i=0 ; i < Pearadox.eventList.size() ; i++)      // createsub-directories for each event
+        {
+            event_inst = Pearadox.eventList.get(i);
+            ev_code = event_inst.getComp_code();
+            File direct_imgEvent = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/" + ev_code);
+            Log.w(TAG, "   Images = " + direct_imgEvent);
+            if (!direct_imgEvent.exists()) {
+                if (direct_imgEvent.mkdir()) {
+                    File direct_iBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/images/" + ev_code + "/bkup");
+                    if (!direct_iBkup.exists()) {
+                        if (direct_iBkup.mkdir()) {
+                        }        //directory is created;
+                    }
+                } else {
+                    Log.w(TAG, " ****>>> ERROR creating directory  <<<<**** " + direct_imgEvent);
+                }        //directory is created;
+            }
+            File direct_matchEvent = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/" + ev_code);
+            Log.w(TAG, "   Match = " + direct_matchEvent);
+            if (!direct_matchEvent.exists()) {
+                if (direct_matchEvent.mkdir()) {
+                    File direct_mBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/match/" + ev_code + "/bkup");
+                    if (!direct_mBkup.exists()) {
+                        if (direct_mBkup.mkdir()) {
+                        }        //directory is created;
+                    }
+                } else {
+                    Log.w(TAG, " ****>>> ERROR creating directory  <<<<**** " + direct_imgEvent);
+                }        //directory is created;
+            }
+            File direct_pitEvent = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/" + ev_code);
+            Log.w(TAG, "   Pit = " + direct_pitEvent);
+            if (!direct_pitEvent.exists()) {
+                if (direct_pitEvent.mkdir()) {
+                    File direct_mBkup = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/" + ev_code + "/bkup");
+                    if (!direct_mBkup.exists()) {
+                        if (direct_mBkup.mkdir()) {
+                        }        //directory is created;
+
+                }
+            }
+            } else {
+                Log.w(TAG, " ****>>> ERROR creating directory  <<<<**** " + direct_imgEvent);
+            }        //directory is created;
+        }  //End FOR
+
+    //=================================================================
         Log.i(TAG, "FRC files created");
 //        Toast toast = Toast.makeText(getBaseContext(), "FRC5414  *** Files initialied ***" , Toast.LENGTH_LONG);
 //        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
@@ -1088,7 +970,7 @@ private void preReqs() {
                 spinner_Event.setAdapter(adapter_Event);
                 spinner_Event.setSelection(0, false);
                 spinner_Event.setOnItemSelectedListener(new event_OnItemSelectedListener());
-
+                preReqs();                        // Check for pre-requisites
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

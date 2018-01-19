@@ -191,7 +191,7 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
         adapter_Robs.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_numRobots.setAdapter(adapter_Robs);
         spinner_numRobots.setSelection(0, false);
-        spinner_numRobots.setOnItemSelectedListener(new PitScoutActivity.Traction_OnItemSelectedListener());
+        spinner_numRobots.setOnItemSelectedListener(new PitScoutActivity.numRobots_OnItemSelectedListener());
         spinner_numRobots.setVisibility(View.GONE);
         Spinner spinner_Traction = (Spinner) findViewById(R.id.spinner_Traction);
         ArrayAdapter adapter_Trac = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, wheels);
@@ -215,7 +215,6 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
         chkBox_Hook = (CheckBox) findViewById(R.id.chkBox_Hook);
         chkBox_Ramp.setVisibility(View.GONE);
         chkBox_Hook.setVisibility(View.GONE);
-
         chkBox_Vision = (CheckBox) findViewById(R.id.chkBox_Vision);
         chkBox_Pneumatics = (CheckBox) findViewById(R.id.chkBox_Pneumatics);
         chkBox_CanLift = (CheckBox) findViewById(R.id.chkBox_CanLift);
@@ -227,7 +226,11 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
         chkBox_Climb = (CheckBox) findViewById(R.id.chkBox_Climb);
         editText_Comments = (EditText) findViewById(R.id.editText_Comments);
         editText_Comments.setClickable(true);
+        Toast toast = Toast.makeText(getBaseContext(), "*** Select a TEAM first before entering data ***", Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
 
+//===============================================================================================================
         chkBox_Ramp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
@@ -395,14 +398,23 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
         btn_Save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.w(TAG, "Save Button Listener");
-                Spinner spinner_Team = (Spinner) findViewById(R.id.spinner_Team);
-                storePitData();           // Put all the Pit data collected in Pit object
-                dataSaved = true;
-                if (Pearadox.is_Network) {      // is Internet available?
-                    spinner_Team.setSelection(0);       //Reset to NO selection
-                    txt_TeamName.setText(" ");
+                if (txtEd_Height.length() > 0) {
+
+                    Spinner spinner_Team = (Spinner) findViewById(R.id.spinner_Team);
+                    storePitData();           // Put all the Pit data collected in Pit object
+                    dataSaved = true;
+                    if (Pearadox.is_Network) {      // is Internet available?
+                        spinner_Team.setSelection(0);       //Reset to NO selection
+                        txt_TeamName.setText(" ");
+                    }
+                    finish();       // Exit  <<<<<<<<
+                } else {
+                    final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                    tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+                    Toast toast = Toast.makeText(getBaseContext(), "*** Enter _ALL_ data (Height) before saving ***", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
                 }
-                finish();       // Exit  <<<<<<<<
             }
         });
     }
@@ -590,7 +602,6 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
                         img_Photo.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
                         imageOnFB = false;
                     }
-
                 }
             });
         }
@@ -644,6 +655,18 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
         totalWheels = x;
         if (x < 4){
             Toast.makeText(getBaseContext(), "Robot should have at least 4 wheels", Toast.LENGTH_LONG).show();
+        }
+    }
+    public class numRobots_OnItemSelectedListener implements OnItemSelectedListener {
+        public void onItemSelected(AdapterView<?> parent,
+                                   View view, int pos, long id) {
+            String num = " ";
+            num = parent.getItemAtPosition(pos).toString();
+            numLifted = Integer.parseInt(num);
+            Log.w(TAG, ">>>>> NumRobots '" + numLifted + "'");
+        }
+        public void onNothingSelected(AdapterView<?> parent) {
+            // Do nothing.
         }
     }
 
@@ -704,7 +727,7 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
                 delLaunch = true;
                 delPlace = false;
             }
-            Log.w(TAG, "RadioDel - Launch = '" + delLaunch + "'");
+            Log.w(TAG, "RadioDel - Launch = '" + delLaunch + "'  Place = '" + delPlace + "'");
         }
     }
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
