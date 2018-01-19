@@ -66,8 +66,8 @@ public class PitScoutActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     ArrayAdapter<String> adapter_Trac, adapter_Omni, adapter_Mac ;
     RadioGroup radgrp_Deliver;      RadioButton radio_Deliver;
-    CheckBox chkBox_Ramp, chkBox_CanLift, chkBox_Hook, chkBox_Vision, chkBox_Pneumatics, chkBox_FuelManip, chkBox_Climb;
-    CheckBox chkBox_ArmPress, chkBox_ArmIntake;
+    CheckBox chkBox_Ramp, chkBox_CanLift, chkBox_Hook, chkBox_Vision, chkBox_Pneumatics, chkBox_Climb;
+    CheckBox chkBox_Arms, chkBox_ArmPress, chkBox_ArmIntake;
     Button btn_Save;
     Uri currentImageUri;
     String currentImagePath;
@@ -187,7 +187,7 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
         }
 
         final Spinner spinner_numRobots = (Spinner) findViewById(R.id.spinner_numRobots);
-        ArrayAdapter adapter_Robs = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, carry);
+        ArrayAdapter adapter_Robs = new ArrayAdapter<String>(this, R.layout.robonum_list_layout, carry);
         adapter_Robs.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_numRobots.setAdapter(adapter_Robs);
         spinner_numRobots.setSelection(0, false);
@@ -221,7 +221,9 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
         chkBox_CanLift = (CheckBox) findViewById(R.id.chkBox_CanLift);
         lbl_FuelEst = (TextView) findViewById(R.id.lbl_RoboHeight);
         txtEd_Height = (EditText) findViewById(R.id.txtEd_Height);
-//        chkBox_FuelManip = (CheckBox) findViewById(R.id.chkBox_FuelManip);
+        chkBox_Arms = (CheckBox) findViewById(R.id.chkBox_Arms);
+        chkBox_ArmPress = (CheckBox) findViewById(R.id.chkBox_ArmPress);
+        chkBox_ArmIntake = (CheckBox) findViewById(R.id.chkBox_ArmIntake);
         chkBox_Climb = (CheckBox) findViewById(R.id.chkBox_Climb);
         editText_Comments = (EditText) findViewById(R.id.editText_Comments);
         editText_Comments.setClickable(true);
@@ -297,19 +299,51 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
                 }
             }
         });
-//        chkBox_FuelManip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-//                Log.w(TAG, "chkBox_FuelManip Listener");
-//                if (buttonView.isChecked()) {
-//                    Log.w(TAG,"FuelManip is checked.");
-////                    fuelManip = true;
-//                } else {
-//                    Log.w(TAG,"FuelManip is unchecked.");
-////                    fuelManip = false;
-//                }
-//            }
-//        });
+        chkBox_Arms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.w(TAG, "chkBox_Arms Listener");
+                if (buttonView.isChecked()) {
+                    Log.w(TAG,"Arms is checked.");
+                    cubeArm = true;
+                    chkBox_ArmIntake.setVisibility(VISIBLE);
+                    chkBox_ArmPress.setVisibility(VISIBLE);
+                } else {
+                    Log.w(TAG,"Arms is unchecked.");
+                    cubeArm = false;
+                    chkBox_ArmIntake.setVisibility(View.INVISIBLE);
+                    chkBox_ArmPress.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        chkBox_ArmIntake.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.w(TAG, "chkBox_ArmIntake Listener");
+                if (buttonView.isChecked()) {
+                    Log.w(TAG,"Intake is checked.");
+                    armIntake = true;
+                } else {
+                    Log.w(TAG,"Intake is unchecked.");
+                    armIntake = false;
+                }
+            }
+        });
+
+        chkBox_ArmPress.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.w(TAG, "chkBox_ArmPress Listener");
+                if (buttonView.isChecked()) {
+                    Log.w(TAG,"Pressure/Squeeze is checked.");
+                    armSqueeze = true;
+                } else {
+                    Log.w(TAG,"Pressure/Squeeze is unchecked.");
+                    armSqueeze = false;
+                }
+            }
+        });
 
         chkBox_Climb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -334,7 +368,6 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 //                Log.w(TAG, "******  beforeTextChanged TextWatcher  ******");
-                // TODO Auto-generated method stub
             }
             @Override
             public void afterTextChanged(Editable s) {
@@ -717,7 +750,7 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
         File directMatch = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/" + Pearadox.FRC_Event + "/" + filename);
         Log.w(TAG, "SD card Path = " + directMatch);
         if(directMatch.exists())  {
-            // Todo - Replace TOAST with Dialog Box  - "Do you really ..."
+            // Todo - Replace TOAST with Dialog Box  - "Do you really ..."   _LOW_ priority
             Toast toast = Toast.makeText(getBaseContext(), "Data for " + filename + " already exists!!", Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             toast.show();
@@ -786,7 +819,6 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
     public void onDestroy() {
         super.onDestroy();
         Log.v(TAG, "OnDestroy");
-        // ToDo - ??????
     }
 
 }
