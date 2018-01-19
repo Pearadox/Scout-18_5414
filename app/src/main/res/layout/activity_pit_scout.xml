@@ -222,25 +222,6 @@
 
     // ======================================================
 
-    <CheckBox
-        android:id="@+id/chkBox_Ramp"
-        android:layout_width="100sp"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/chkBox_Hook"
-        android:layout_alignBottom="@+id/chkBox_Hook"
-        android:layout_toStartOf="@+id/chkBox_Hook"
-        android:textColor="@color/orange"
-        android:text="Ramp" />
-
-    <CheckBox
-        android:id="@+id/chkBox_Hook"
-        android:layout_width="90sp"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/scrollv_comm"
-        android:layout_below="@+id/chkBox_Climb"
-        android:textColor="@color/orange"
-        android:text="Hook" />
-
     <EditText
         android:id="@+id/txtEd_Height"
         android:layout_width="50sp"
@@ -273,25 +254,30 @@
         android:id="@+id/chkBox_Vision"
         android:layout_width="140sp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/chkBox_Climb"
-        android:layout_alignBottom="@+id/chkBox_Climb"
-        android:layout_toEndOf="@+id/chkBox_Arms"
+        android:layout_above="@+id/chkBox_CanLift"
+        android:layout_toEndOf="@+id/chkBox_CanLift"
         android:text="Vision Camera" />
 
     <CheckBox
         android:id="@+id/chkBox_Climb"
-        android:layout_width="match_parent"
+        android:layout_width="120sp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/chkBox_CanLift"
-        android:layout_toEndOf="@+id/chkBox_ArmIntake"
+        android:layout_alignStart="@+id/spinner_Omni"
+        android:layout_marginStart="18dp"
         android:text="Can Climb" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkBox_Pneumatics"
+        android:id="@+id/lin_lift">
 
     <CheckBox
         android:id="@+id/chkBox_CanLift"
         android:layout_width="160sp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/chkBox_Pneumatics"
         android:textColor="@color/red"
         android:text="Can Lift robot(s)" />
 
@@ -300,55 +286,58 @@
         android:layout_width="50sp"
         android:textColor="@color/orange"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/chkBox_Arms"
-        android:layout_toEndOf="@+id/chkBox_Arms"/>
+        android:layout_above="@+id/chkBox_Pneumatics"
+        android:layout_toEndOf="@+id/chkBox_Pneumatics"/>
+
+        <CheckBox
+            android:id="@+id/chkBox_Ramp"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/chkBox_Hook"
+            android:layout_alignBottom="@+id/chkBox_Hook"
+            android:layout_toStartOf="@+id/chkBox_Hook"
+            android:textColor="@color/orange"
+            android:text="Ramp" />
+
+        <CheckBox
+            android:id="@+id/chkBox_Hook"
+            android:layout_width="90sp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/scrollv_comm"
+            android:layout_below="@+id/chkBox_Climb"
+            android:textColor="@color/orange"
+            android:text="Hook" />
+
+</LinearLayout>
 
     //**********************************************************
-
-    <TextView
-        android:id="@+id/lbl_CubMech"
-        android:layout_width="50sp"
-        android:layout_height="30sp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/chkBox_CanLift"
-        android:text="Cube Mech."
-        android:textColor="@color/brightblue"
-        android:textSize="12sp"
-        android:textStyle="bold" />
-
-    <CheckBox
-        android:id="@+id/chkBox_Arms"
-        android:layout_width="130sp"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/chkBox_CanLift"
-        android:layout_toStartOf="@+id/chkBox_Box"
-        android:textColor="@color/blue"
-        android:text="Grabber Arm(s)" />
+        android:layout_below="@+id/lin_lift"
+        android:id="@+id/cube_mech">
 
-    <CheckBox
-        android:id="@+id/chkBox_ArmIntake"
-        android:layout_width="140sp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/chkBox_Arms"
-        android:layout_toEndOf="@+id/spinner_numRobots"
-        android:text="Intake device"
-        android:textColor="@color/cyan" />
+        <TextView
+            android:id="@+id/lbl_CubMech"
+            android:layout_width="40sp"
+            android:layout_height="match_parent"
+            android:text="Cube Mech."
+            android:textColor="@color/brightblue"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
-    <CheckBox
-        android:id="@+id/chkBox_ArmPress"
-        android:layout_width="150sp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/chkBox_Arms"
-        android:layout_toEndOf="@+id/lbl_Wheels"
-        android:text="Pressure/Squeeze"
-        android:textColor="@color/cyan" />
+        <CheckBox
+            android:id="@+id/chkBox_Arms"
+            android:layout_width="130sp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue"
+            android:text="Grabber Arm(s)" />
 
     <CheckBox
         android:id="@+id/chkBox_Belt"
         android:layout_width="120sp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/chkBox_CanLift"
-        android:layout_toStartOf="@+id/chkBox_Other"
         android:text="Conveyer Belt"
         android:textColor="@color/blue" />
 
@@ -356,8 +345,6 @@
         android:id="@+id/chkBox_Box"
         android:layout_width="120sp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/chkBox_CanLift"
-        android:layout_toStartOf="@+id/chkBox_Belt"
         android:text="Box/Platform"
         android:textColor="@color/blue" />
 
@@ -365,59 +352,120 @@
         android:id="@+id/chkBox_Other"
         android:layout_width="90sp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/chkBox_CanLift"
-        android:layout_toEndOf="@+id/chkBox_Ramp"
         android:text="Other"
-        android:textColor="@color/brightblue" />
+        android:textColor="@color/blue" />
 
+    </LinearLayout>
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-    <TextView
-        android:id="@+id/lbl_Delivery"
-        android:layout_width="150sp"
-        android:layout_height="30sp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/chkBox_ArmIntake"
-        android:text=" Cube Delivery Type"
-        android:textColor="@color/limegreen"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <RadioGroup
-        android:id="@+id/radgrp_Deliver"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/chkBox_ArmIntake"
-        android:layout_marginLeft="150dp"
-        android:orientation="horizontal">
+        android:layout_below="@+id/cube_mech"
+        android:id="@+id/arm_char">
 
-        <RadioButton
-            android:id="@+id/radio_Launch"
+        <CheckBox
+            android:id="@+id/chkBox_ArmIntake"
+            android:layout_width="120sp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60sp"
+            android:text="Intake device"
+            android:textColor="@color/cyan" />
+
+        <CheckBox
+            android:id="@+id/chkBox_ArmPress"
+            android:layout_width="150sp"
+            android:layout_height="wrap_content"
+            android:text="Pressure"
+            android:textColor="@color/cyan" />
+
+    </LinearLayout>
+
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/arm_char"
+        android:id="@+id/del_type">
+
+        <TextView
+            android:id="@+id/lbl_Delivery"
+            android:layout_width="150sp"
+            android:layout_height="30sp"
+            android:text=" Cube Delivery Type"
+            android:textColor="@color/limegreen"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/radgrp_Deliver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/chkBox_Arms"
-            android:layout_toEndOf="@+id/lbl_Delivery"
-            android:onClick="RadioClick_Del"
-            android:paddingRight="20sp"
-            android:text="Launch"
-            android:textColor="@color/green"
-            tools:layout_marginLeft="0dp" />
+            android:layout_marginLeft="150dp"
+            android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/radio_Place"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/radgrp_Deliver"
-            android:onClick="RadioClick_Del"
-            android:text="Place"
-            android:textColor="@color/green" />
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/radio_Launch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/chkBox_Arms"
+                android:layout_toEndOf="@+id/lbl_Delivery"
+                android:onClick="RadioClick_Del"
+                android:text="Launch"
+                android:textColor="@color/green"
+                tools:layout_marginLeft="0dp" />
+
+            <RadioButton
+                android:id="@+id/radio_Place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/radgrp_Deliver"
+                android:onClick="RadioClick_Del"
+                android:text="Place"
+                android:textColor="@color/green" />
+        </RadioGroup>
+    </LinearLayout>
+
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/del_type"
+        android:id="@+id/lin_comment">
+
+        <ScrollView
+            android:id="@+id/scrollv_comm"
+            android:layout_width="500sp"
+            android:layout_height="100sp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/lbl_Delivery"
+            android:isScrollContainer="false">
+
+            <EditText
+                android:id="@+id/editText_Comments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/scrollv_comm"
+                android:background="@drawable/border"
+                android:ems="12"
+                android:hint="Tap to add any comments about robot"
+                android:inputType="textMultiLine"
+                android:lines="2"
+                android:scrollbars="vertical"
+                android:textColor="@color/green" />
+
+        </ScrollView>
+    </LinearLayout>
 
 
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
     <ImageView
         android:id="@+id/img_Photo"
@@ -438,29 +486,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignEnd="@+id/spinner_Mecanum"
         android:layout_marginBottom="25sp" />
-
-    <ScrollView
-        android:id="@+id/scrollv_comm"
-        android:layout_width="500sp"
-        android:layout_height="100sp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/lbl_Delivery"
-        android:isScrollContainer="false">
-
-        <EditText
-            android:id="@+id/editText_Comments"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/scrollv_comm"
-            android:background="@drawable/border"
-            android:ems="12"
-            android:hint="Tap to add any comments about robot"
-            android:inputType="textMultiLine"
-            android:lines="2"
-            android:scrollbars="vertical"
-            android:textColor="@color/green" />
-
-    </ScrollView>
 
 
 </RelativeLayout>
