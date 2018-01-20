@@ -6,38 +6,42 @@ public class matchData implements Serializable {
     private static final long serialVersionUID = -54145414541400L;
     // ============= AUTO ================
     private String match;                   // Match ID (e.g., 'T00' where T = X(Practice), Q(ualifying) and '00' - match #
-    private String team_num;                // Team Number (e.gg., '5414'
-    private boolean auto_mode;              // Do they have Autonamous mode?
-    private boolean auto_rope;              // Do they have their own rope?
-    private boolean auto_carry_fuel;        // Do they carry fuel
-    private int auto_fuel_amount;           // Amount of fuel they carry
-    private boolean auto_gear;              // Do they carry a gear
-    private int auto_gears_placed;          // # gears placed during Auto
-    private int auto_gears_attempt;         // # gears attempted during Auto
+    private String team_num;                // Team Number (e.g., '5414')
+                                            // *** Pre-Game **
+    private boolean pre_cube;               // Do they carry a cube
+    private String pre_startPos;            // Start Position
+
+    private boolean auto_mode;              // Do they have Autonomous mode?
     private boolean auto_baseline;          // Did they cross Baseline
-    private boolean auto_hg;                // Did they shoot at High Goal
-    private int auto_hg_percent;            // What percentage HG made?
-    private boolean auto_lg;                // Did they shoor at Low Goal
-    private int auto_lg_percent;            // What percentage LG made?
-    private String auto_start;              // Where they started Auto
-    private String auto_stop;               // Where they stopped at end of Auto
-    private String auto_gear_pos;           // Where they placed their gear(s)
-    private boolean auto_act_hopper;        // Did they activate hopper
-    private String auto_fuel_collected;     // Fuel Collected Range
+    private boolean auto_cube_switch;       // cube placed on Switch during Auto
+    private boolean auto_switch_extra;      // extra cube placed on switch during Auto
+    private boolean auto_cube_scale;        // cube placed on switch during Auto
+    private boolean auto_xover_switch;      // crossed over field to Switch
+    private boolean auto_xover_scale;       // crossed over field to Scale
+    private boolean auto_wrong_switch;      // put cube in WRONG Switch
     private String auto_comment;            // Auto comment
     // ============== TELE =================
-    private int     tele_gears_placed;      // # gears placed during Tele
-    private int     tele_gears_attempt;     // # gears attempted during Tele
-    private boolean tele_gear_pickup;       // Did they pick up Gear(s)
-    private boolean tele_hg;                // Did they shoot at High Goal
-    private int     tele_hg_percent;        // What percentage HG made?
-    private boolean tele_lg;                // Did they shoot at Low Goal
-    private int     tele_lg_percent;        // What percentage LG made?
-    private int     tele_cycles;            // # cycles of shooting Upper Goal
-    private boolean tele_touch_act;         // Did they activate Touchpad
-    private boolean tele_touch_pts;         // Did they get Touchpad points
+    private int     tele_cube_switch;       // # cubes placed on Switch during Tele
+    private int     tele_switch_attempt;    // # cubes attempted on Switch during Tele
+    private int     tele_cube_scale;        // # cubes placed on Switch during Tele
+    private int     tele_scale_attempt;     // # cubes attempted on Switch during Tele
+    private int     tele_their_switch;      // # cubes placed on _THEIR_Switch during Tele
+    private int     tele_cube_exchange;     // # cubes placed in Exchange during Tele
+    private int     tele_cube_portal;       // # cubes retrieved from Portal during Tele
+    private int     tele_cube_pwrzone;      // # cubes retrieved from Power Zone during Tele
+    private int     tele_cube_floor;        // # cubes retrieved from our Floor or Platrform Zone during Tele
+    private int     tele_their_floor;       // # cubes retrieved from their Floor or Platrform Zone during Tele
+    private boolean tele_cube_pickup;       // Did they pick up cube(s)
+    private boolean tele_placed_cube;       // Did they place cube(s)
+    private boolean tele_launched_cube;     // Did they launch cube(s)
+    private boolean tele_on_platform;       // Finished on platform
     private boolean tele_climb_attempt;     // Did they ATTEMPT climb?
     private boolean tele_climb_success;     // Was climb successful?
+    private boolean tele_grab_rung;         // == Grabbed rung to climb
+    private boolean tele_grab_side;         // == Grabbed side to climb
+    private boolean tele_lift_one;          // Lifted one other robot
+    private boolean tele_lift_two;          // Lifted one other robot
+    private boolean tele_got_lift;          // Got Lifted by another robot
 
     private String tele_comment;            // Tele comment
     // ============= Final  ================
@@ -46,8 +50,7 @@ public class matchData implements Serializable {
     private boolean final_defense_good;      // Was their overall Defense Good (bad=false)
     private boolean final_def_Lane;          // Did they use Lane Defense
     private boolean final_def_Block;         // Did they use Blocking Defense
-    private boolean final_def_Hopper;        // Did they use Dump Defense (unload hoppers)
-    private boolean final_def_Gear;          // Did they use Block access to Gear placement
+    private boolean final_def_OthrSwitch;    // Did they Put cubes in Other Switch
     private int     final_num_Penalties;     // How many penalties received?
 
     private String  final_comment;           // Final comment
@@ -57,65 +60,62 @@ public class matchData implements Serializable {
 // =================================================================================
 
 
-
-    public matchData(String match, String team_num, boolean auto_mode, boolean auto_rope, boolean auto_carry_fuel, int auto_fuel_amount, boolean auto_gear, int auto_gears_placed, int auto_gears_attempt, boolean auto_baseline, boolean auto_hg, int auto_hg_percent, boolean auto_lg, int auto_lg_percent, String auto_start, String auto_stop, String auto_gear_pos, boolean auto_act_hopper, String auto_fuel_collected, String auto_comment, int tele_gears_placed, int tele_gears_attempt, boolean tele_gear_pickup, boolean tele_hg, int tele_hg_percent, boolean tele_lg, int tele_lg_percent, int tele_cycles, boolean tele_touch_act, boolean tele_touch_pts, boolean tele_climb_attempt, boolean tele_climb_success, String tele_comment, boolean final_lostParts, boolean final_lostComms, boolean final_defense_good, boolean final_def_Lane, boolean final_def_Block, boolean final_def_Hopper, boolean final_def_Gear, int final_num_Penalties, String final_comment, String final_studID, String  final_dateTime) {
+    public matchData(String match, String team_num, boolean pre_cube, String pre_startPos, boolean auto_mode, boolean auto_baseline, boolean auto_cube_switch, boolean auto_switch_extra, boolean auto_cube_scale, boolean auto_xover_switch, boolean auto_xover_scale, boolean auto_wrong_switch, String auto_comment, int tele_cube_switch, int tele_switch_attempt, int tele_cube_scale, int tele_scale_attempt, int tele_their_switch, int tele_cube_exchange, int tele_cube_portal, int tele_cube_pwrzone, int tele_cube_floor, int tele_their_floor, boolean tele_cube_pickup, boolean tele_placed_cube, boolean tele_launched_cube, boolean tele_on_platform, boolean tele_climb_attempt, boolean tele_climb_success, boolean tele_grab_rung, boolean tele_grab_side, boolean tele_lift_one, boolean tele_lift_two, boolean tele_got_lift, String tele_comment, boolean final_lostParts, boolean final_lostComms, boolean final_defense_good, boolean final_def_Lane, boolean final_def_Block, boolean final_def_OthrSwitch, int final_num_Penalties, String final_comment, String final_studID, String final_dateTime) {
         this.match = match;
         this.team_num = team_num;
+        this.pre_cube = pre_cube;
+        this.pre_startPos = pre_startPos;
         this.auto_mode = auto_mode;
-        this.auto_rope = auto_rope;
-        this.auto_carry_fuel = auto_carry_fuel;
-        this.auto_fuel_amount = auto_fuel_amount;
-        this.auto_gear = auto_gear;
-        this.auto_gears_placed = auto_gears_placed;
-        this.auto_gears_attempt = auto_gears_attempt;
         this.auto_baseline = auto_baseline;
-        this.auto_hg = auto_hg;
-        this.auto_hg_percent = auto_hg_percent;
-        this.auto_lg = auto_lg;
-        this.auto_lg_percent = auto_lg_percent;
-        this.auto_start = auto_start;
-        this.auto_stop = auto_stop;
-        this.auto_gear_pos = auto_gear_pos;
-        this.auto_act_hopper = auto_act_hopper;
-        this.auto_fuel_collected = auto_fuel_collected;
+        this.auto_cube_switch = auto_cube_switch;
+        this.auto_switch_extra = auto_switch_extra;
+        this.auto_cube_scale = auto_cube_scale;
+        this.auto_xover_switch = auto_xover_switch;
+        this.auto_xover_scale = auto_xover_scale;
+        this.auto_wrong_switch = auto_wrong_switch;
         this.auto_comment = auto_comment;
-        this.tele_gears_placed = tele_gears_placed;
-        this.tele_gears_attempt = tele_gears_attempt;
-        this.tele_gear_pickup = tele_gear_pickup;
-        this.tele_hg = tele_hg;
-        this.tele_hg_percent = tele_hg_percent;
-        this.tele_lg = tele_lg;
-        this.tele_lg_percent = tele_lg_percent;
-        this.tele_cycles = tele_cycles;
-        this.tele_touch_act = tele_touch_act;
-        this.tele_touch_pts = tele_touch_pts;
+        this.tele_cube_switch = tele_cube_switch;
+        this.tele_switch_attempt = tele_switch_attempt;
+        this.tele_cube_scale = tele_cube_scale;
+        this.tele_scale_attempt = tele_scale_attempt;
+        this.tele_their_switch = tele_their_switch;
+        this.tele_cube_exchange = tele_cube_exchange;
+        this.tele_cube_portal = tele_cube_portal;
+        this.tele_cube_pwrzone = tele_cube_pwrzone;
+        this.tele_cube_floor = tele_cube_floor;
+        this.tele_their_floor = tele_their_floor;
+        this.tele_cube_pickup = tele_cube_pickup;
+        this.tele_placed_cube = tele_placed_cube;
+        this.tele_launched_cube = tele_launched_cube;
+        this.tele_on_platform = tele_on_platform;
+        this.tele_climb_attempt = tele_climb_attempt;
         this.tele_climb_success = tele_climb_success;
+        this.tele_grab_rung = tele_grab_rung;
+        this.tele_grab_side = tele_grab_side;
+        this.tele_lift_one = tele_lift_one;
+        this.tele_lift_two = tele_lift_two;
+        this.tele_got_lift = tele_got_lift;
         this.tele_comment = tele_comment;
         this.final_lostParts = final_lostParts;
         this.final_lostComms = final_lostComms;
         this.final_defense_good = final_defense_good;
         this.final_def_Lane = final_def_Lane;
         this.final_def_Block = final_def_Block;
-        this.final_def_Hopper = final_def_Hopper;
-        this.final_def_Gear = final_def_Gear;
+        this.final_def_OthrSwitch = final_def_OthrSwitch;
         this.final_num_Penalties = final_num_Penalties;
         this.final_comment = final_comment;
         this.final_studID = final_studID;
         this.final_dateTime = final_dateTime;
     }
 
-
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // Default constructor required for calls to
 // DataSnapshot.getValue(matchData.class)
 public matchData() {
-
 }
 
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// Getters & Setters
 
     public String getMatch() {
         return match;
@@ -133,60 +133,28 @@ public matchData() {
         this.team_num = team_num;
     }
 
+    public boolean isPre_cube() {
+        return pre_cube;
+    }
+
+    public void setPre_cube(boolean pre_cube) {
+        this.pre_cube = pre_cube;
+    }
+
+    public String getPre_startPos() {
+        return pre_startPos;
+    }
+
+    public void setPre_startPos(String pre_startPos) {
+        this.pre_startPos = pre_startPos;
+    }
+
     public boolean isAuto_mode() {
         return auto_mode;
     }
 
     public void setAuto_mode(boolean auto_mode) {
         this.auto_mode = auto_mode;
-    }
-
-    public boolean isAuto_rope() {
-        return auto_rope;
-    }
-
-    public void setAuto_rope(boolean auto_rope) {
-        this.auto_rope = auto_rope;
-    }
-
-    public boolean isAuto_carry_fuel() {
-        return auto_carry_fuel;
-    }
-
-    public void setAuto_carry_fuel(boolean auto_carry_fuel) {
-        this.auto_carry_fuel = auto_carry_fuel;
-    }
-
-    public int getAuto_fuel_amount() {
-        return auto_fuel_amount;
-    }
-
-    public void setAuto_fuel_amount(int auto_fuel_amount) {
-        this.auto_fuel_amount = auto_fuel_amount;
-    }
-
-    public boolean isAuto_gear() {
-        return auto_gear;
-    }
-
-    public void setAuto_gear(boolean auto_gear) {
-        this.auto_gear = auto_gear;
-    }
-
-    public int getAuto_gears_placed() {
-        return auto_gears_placed;
-    }
-
-    public void setAuto_gears_placed(int auto_gears_placed) {
-        this.auto_gears_placed = auto_gears_placed;
-    }
-
-    public int getAuto_gears_attempt() {
-        return auto_gears_attempt;
-    }
-
-    public void setAuto_gears_attempt(int auto_gears_attempt) {
-        this.auto_gears_attempt = auto_gears_attempt;
     }
 
     public boolean isAuto_baseline() {
@@ -197,79 +165,52 @@ public matchData() {
         this.auto_baseline = auto_baseline;
     }
 
-    public boolean isAuto_hg() {
-        return auto_hg;
+    public boolean isAuto_cube_switch() {
+        return auto_cube_switch;
     }
 
-    public void setAuto_hg(boolean auto_hg) {
-        this.auto_hg = auto_hg;
+    public void setAuto_cube_switch(boolean auto_cube_switch) {
+        this.auto_cube_switch = auto_cube_switch;
     }
 
-    public int getAuto_hg_percent() {
-        return auto_hg_percent;
+    public boolean isAuto_switch_extra() {
+        return auto_switch_extra;
     }
 
-    public void setAuto_hg_percent(int auto_hg_percent) {
-        this.auto_hg_percent = auto_hg_percent;
+    public void setAuto_switch_extra(boolean auto_switch_extra) {
+        this.auto_switch_extra = auto_switch_extra;
     }
 
-    public boolean isAuto_lg() {
-        return auto_lg;
+    public boolean isAuto_cube_scale() {
+        return auto_cube_scale;
     }
 
-    public void setAuto_lg(boolean auto_lg) {
-        this.auto_lg = auto_lg;
+    public void setAuto_cube_scale(boolean auto_cube_scale) {
+        this.auto_cube_scale = auto_cube_scale;
     }
 
-    public int getAuto_lg_percent() {
-        return auto_lg_percent;
+    public boolean isAuto_xover_switch() {
+        return auto_xover_switch;
     }
 
-    public void setAuto_lg_percent(int auto_lg_percent) {
-        this.auto_lg_percent = auto_lg_percent;
+    public void setAuto_xover_switch(boolean auto_xover_switch) {
+        this.auto_xover_switch = auto_xover_switch;
     }
 
-    public String getAuto_start() {
-        return auto_start;
+    public boolean isAuto_xover_scale() {
+        return auto_xover_scale;
     }
 
-    public void setAuto_start(String auto_start) {
-        this.auto_start = auto_start;
+    public void setAuto_xover_scale(boolean auto_xover_scale) {
+        this.auto_xover_scale = auto_xover_scale;
     }
 
-    public String getAuto_stop() {
-        return auto_stop;
+    public boolean isAuto_wrong_switch() {
+        return auto_wrong_switch;
     }
 
-    public void setAuto_stop(String auto_stop) {
-        this.auto_stop = auto_stop;
-    }
-
-    public String getAuto_gear_pos() {
-        if (auto_gear_pos.matches(" ")) {
-            auto_gear_pos = "0";         // default to zero   GLF 4/10
-        }
-        return auto_gear_pos;
-    }
-
-    public void setAuto_gear_pos(String auto_gear_pos) {
-        this.auto_gear_pos = auto_gear_pos;
-    }
-
-    public boolean isAuto_act_hopper() {
-        return auto_act_hopper;
-    }
-
-    public void setAuto_act_hopper(boolean auto_act_hopper) {
-        this.auto_act_hopper = auto_act_hopper;
-    }
-
-    public String getAuto_fuel_collected() {
-        return auto_fuel_collected;
-    }
-
-    public void setAuto_fuel_collected(String auto_fuel_collected) {
-        this.auto_fuel_collected = auto_fuel_collected;
+    public void setAuto_wrong_switch(boolean auto_wrong_switch) {
+        this.auto_wrong_switch = auto_wrong_switch;
     }
 
     public String getAuto_comment() {
@@ -280,84 +221,116 @@ public matchData() {
         this.auto_comment = auto_comment;
     }
 
-    public int getTele_gears_placed() {
-        return tele_gears_placed;
+    public int getTele_cube_switch() {
+        return tele_cube_switch;
     }
 
-    public void setTele_gears_placed(int tele_gears_placed) {
-        this.tele_gears_placed = tele_gears_placed;
+    public void setTele_cube_switch(int tele_cube_switch) {
+        this.tele_cube_switch = tele_cube_switch;
     }
 
-    public int getTele_gears_attempt() {
-        return tele_gears_attempt;
+    public int getTele_switch_attempt() {
+        return tele_switch_attempt;
     }
 
-    public void setTele_gears_attempt(int tele_gears_attempt) {
-        this.tele_gears_attempt = tele_gears_attempt;
+    public void setTele_switch_attempt(int tele_switch_attempt) {
+        this.tele_switch_attempt = tele_switch_attempt;
     }
 
-    public boolean isTele_gear_pickup() {
-        return tele_gear_pickup;
+    public int getTele_cube_scale() {
+        return tele_cube_scale;
     }
 
-    public void setTele_gear_pickup(boolean tele_gear_pickup) {
-        this.tele_gear_pickup = tele_gear_pickup;
+    public void setTele_cube_scale(int tele_cube_scale) {
+        this.tele_cube_scale = tele_cube_scale;
     }
 
-    public boolean isTele_hg() {
-        return tele_hg;
+    public int getTele_scale_attempt() {
+        return tele_scale_attempt;
     }
 
-    public void setTele_hg(boolean tele_hg) {
-        this.tele_hg = tele_hg;
+    public void setTele_scale_attempt(int tele_scale_attempt) {
+        this.tele_scale_attempt = tele_scale_attempt;
     }
 
-    public int getTele_hg_percent() {
-        return tele_hg_percent;
+    public int getTele_their_switch() {
+        return tele_their_switch;
     }
 
-    public void setTele_hg_percent(int tele_hg_percent) {
-        this.tele_hg_percent = tele_hg_percent;
+    public void setTele_their_switch(int tele_their_switch) {
+        this.tele_their_switch = tele_their_switch;
     }
 
-    public boolean isTele_lg() {
-        return tele_lg;
+    public int getTele_cube_exchange() {
+        return tele_cube_exchange;
     }
 
-    public void setTele_lg(boolean tele_lg) {
-        this.tele_lg = tele_lg;
+    public void setTele_cube_exchange(int tele_cube_exchange) {
+        this.tele_cube_exchange = tele_cube_exchange;
     }
 
-    public int getTele_lg_percent() {
-        return tele_lg_percent;
+    public int getTele_cube_portal() {
+        return tele_cube_portal;
     }
 
-    public void setTele_lg_percent(int tele_lg_percent) {
-        this.tele_lg_percent = tele_lg_percent;
+    public void setTele_cube_portal(int tele_cube_portal) {
+        this.tele_cube_portal = tele_cube_portal;
     }
 
-    public int getTele_cycles() {
-        return tele_cycles;
+    public int getTele_cube_pwrzone() {
+        return tele_cube_pwrzone;
     }
 
-    public void setTele_cycles(int tele_cycles) {
-        this.tele_cycles = tele_cycles;
+    public void setTele_cube_pwrzone(int tele_cube_pwrzone) {
+        this.tele_cube_pwrzone = tele_cube_pwrzone;
     }
 
-    public boolean isTele_touch_act() {
-        return tele_touch_act;
+    public int getTele_cube_floor() {
+        return tele_cube_floor;
     }
 
-    public void setTele_touch_act(boolean tele_touch_act) {
-        this.tele_touch_act = tele_touch_act;
+    public void setTele_cube_floor(int tele_cube_floor) {
+        this.tele_cube_floor = tele_cube_floor;
     }
 
-    public boolean isTele_touch_pts() {
-        return tele_touch_pts;
+    public int getTele_their_floor() {
+        return tele_their_floor;
     }
 
-    public void setTele_touch_pts(boolean tele_touch_pts) {
-        this.tele_touch_pts = tele_touch_pts;
+    public void setTele_their_floor(int tele_their_floor) {
+        this.tele_their_floor = tele_their_floor;
+    }
+
+    public boolean isTele_cube_pickup() {
+        return tele_cube_pickup;
+    }
+
+    public void setTele_cube_pickup(boolean tele_cube_pickup) {
+        this.tele_cube_pickup = tele_cube_pickup;
+    }
+
+    public boolean isTele_placed_cube() {
+        return tele_placed_cube;
+    }
+
+    public void setTele_placed_cube(boolean tele_placed_cube) {
+        this.tele_placed_cube = tele_placed_cube;
+    }
+
+    public boolean isTele_launched_cube() {
+        return tele_launched_cube;
+    }
+
+    public void setTele_launched_cube(boolean tele_launched_cube) {
+        this.tele_launched_cube = tele_launched_cube;
+    }
+
+    public boolean isTele_on_platform() {
+        return tele_on_platform;
+    }
+
+    public void setTele_on_platform(boolean tele_on_platform) {
+        this.tele_on_platform = tele_on_platform;
     }
 
     public boolean isTele_climb_attempt() {
@@ -374,6 +347,46 @@ public matchData() {
 
     public void setTele_climb_success(boolean tele_climb_success) {
         this.tele_climb_success = tele_climb_success;
+    }
+
+    public boolean isTele_grab_rung() {
+        return tele_grab_rung;
+    }
+
+    public void setTele_grab_rung(boolean tele_grab_rung) {
+        this.tele_grab_rung = tele_grab_rung;
+    }
+
+    public boolean isTele_grab_side() {
+        return tele_grab_side;
+    }
+
+    public void setTele_grab_side(boolean tele_grab_side) {
+        this.tele_grab_side = tele_grab_side;
+    }
+
+    public boolean isTele_lift_one() {
+        return tele_lift_one;
+    }
+
+    public void setTele_lift_one(boolean tele_lift_one) {
+        this.tele_lift_one = tele_lift_one;
+    }
+
+    public boolean isTele_lift_two() {
+        return tele_lift_two;
+    }
+
+    public void setTele_lift_two(boolean tele_lift_two) {
+        this.tele_lift_two = tele_lift_two;
+    }
+
+    public boolean isTele_got_lift() {
+        return tele_got_lift;
+    }
+
+    public void setTele_got_lift(boolean tele_got_lift) {
+        this.tele_got_lift = tele_got_lift;
     }
 
     public String getTele_comment() {
@@ -424,20 +437,12 @@ public matchData() {
         this.final_def_Block = final_def_Block;
     }
 
-    public boolean isFinal_def_Hopper() {
-        return final_def_Hopper;
+    public boolean isFinal_def_OthrSwitch() {
+        return final_def_OthrSwitch;
     }
 
-    public void setFinal_def_Hopper(boolean final_def_Hopper) {
-        this.final_def_Hopper = final_def_Hopper;
-    }
-
-    public boolean isFinal_def_Gear() {
-        return final_def_Gear;
-    }
-
-    public void setFinal_def_Gear(boolean final_def_Gear) {
-        this.final_def_Gear = final_def_Gear;
+    public void setFinal_def_OthrSwitch(boolean final_def_OthrSwitch) {
+        this.final_def_OthrSwitch = final_def_OthrSwitch;
     }
 
     public int getFinal_num_Penalties() {
@@ -471,6 +476,8 @@ public matchData() {
     public void setFinal_dateTime(String final_dateTime) {
         this.final_dateTime = final_dateTime;
     }
+
+
 // End of Getters/Setters
 
 }
