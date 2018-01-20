@@ -316,7 +316,7 @@
 
         <CheckBox
             android:id="@+id/chkBox_Arms"
-            android:layout_width="130sp"
+            android:layout_width="150sp"
             android:layout_height="wrap_content"
             android:text="Grabber Arm(s)"
             android:textColor="@color/blue" />
