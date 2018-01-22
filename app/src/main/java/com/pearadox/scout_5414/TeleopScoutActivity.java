@@ -919,17 +919,18 @@ public class TeleopScoutActivity extends Activity {
         Log.w(TAG, "TELE CYCLES" + tele_cycles);
         Log.w(TAG, "TELE HG" + tele_hg_percent);
         Log.w(TAG, "TELE LG" + tele_lg_percent);
-        Pearadox.Match_Data.setTele_gears_placed(tele_gears_placed);
-        Pearadox.Match_Data.setTele_gears_attempt(tele_gears_attempt);
-        Pearadox.Match_Data.setTele_hg(tele_hg);
-        Pearadox.Match_Data.setTele_hg_percent(tele_hg_percent);
-        Pearadox.Match_Data.setTele_lg(tele_lg);
-        Pearadox.Match_Data.setTele_lg_percent(tele_lg_percent);
-        Pearadox.Match_Data.setTele_cycles(tele_cycles);
-        Pearadox.Match_Data.setTele_touch_act(tele_touch_act);
+//        Pearadox.Match_Data.setTele_gears_placed(tele_gears_placed);
+//        Pearadox.Match_Data.setTele_gears_attempt(tele_gears_attempt);
+//        Pearadox.Match_Data.setTele_hg(tele_hg);
+//        Pearadox.Match_Data.setTele_hg_percent(tele_hg_percent);
+//        Pearadox.Match_Data.setTele_lg(tele_lg);
+//        Pearadox.Match_Data.setTele_lg_percent(tele_lg_percent);
+//        Pearadox.Match_Data.setTele_cycles(tele_cycles);
+//        Pearadox.Match_Data.setTele_touch_act(tele_touch_act);
+//        Pearadox.Match_Data.setTele_gear_pickup(tele_gear_pickup);
+
         Pearadox.Match_Data.setTele_climb_attempt(tele_climb_attempt);
         Pearadox.Match_Data.setTele_climb_success(tele_climb_success);
-        Pearadox.Match_Data.setTele_gear_pickup(tele_gear_pickup);
         //ToDo - add remaining TeleOps elements
 
         Pearadox.Match_Data.setTele_comment(teleComment);
