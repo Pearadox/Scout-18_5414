@@ -336,8 +336,8 @@ public class FinalActivity extends Activity {
         Pearadox.Match_Data.setFinal_defense_good(final_defense_good);
         Pearadox.Match_Data.setFinal_def_Lane(final_def_Lane);
         Pearadox.Match_Data.setFinal_def_Block(final_def_Block);
-        Pearadox.Match_Data.setFinal_def_Hopper(final_def_Hopper);
-        Pearadox.Match_Data.setFinal_def_Gear(final_def_Gear);
+//        Pearadox.Match_Data.setFinal_def_Hopper(final_def_Hopper);
+//        Pearadox.Match_Data.setFinal_def_Gear(final_def_Gear);
         Pearadox.Match_Data.setFinal_num_Penalties(final_num_Penalties);
 
         Pearadox.Match_Data.setFinal_dateTime(timeStamp);

@@ -117,6 +117,10 @@ public matchData() {
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // Getters & Setters
 
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
     public String getMatch() {
         return match;
     }

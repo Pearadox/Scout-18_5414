@@ -41,6 +41,15 @@
         android:layout_alignParentEnd="true" />
 
     <TextView
+        android:id="@+id/lbl_Dev"
+        android:layout_width="70dp"
+        android:layout_height="25dp"
+        android:layout_toEndOf="@+id/imageView_MS"
+        android:text="Device"
+        android:textColor="@color/white"
+        android:textSize="14dp" />
+
+    <TextView
         android:id="@+id/txt_Dev"
         android:text="Dev. Name"
         android:layout_width="80dp"
@@ -152,10 +161,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_MyTeam"
-        android:text=" " />
 
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        android:text=" " />
+// End Header
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
     <TextView
         android:id="@+id/lbl_Auto"
@@ -172,20 +182,84 @@
         android:id="@+id/lbl_PreMatch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="______________________________Pre-Match_____________________________"
-        android:textColor="@color/orange"
-        android:layout_below="@+id/lbl_Auto"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp" />
+        android:layout_below="@+id/lbl_Auto"
+        android:text="______________________________Pre-Match_____________________________"
+        android:textColor="@color/orange" />
+
+    <CheckBox
+        android:id="@+id/chk_baseline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/checkbox_automode"
+        android:layout_alignBottom="@+id/checkbox_automode"
+        android:layout_alignStart="@+id/txt_EventName"
+        android:text="Crossed Baseline" />
+
+    <TextView
+        android:id="@+id/text_startpos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/lbl_AfterStart"
+        android:layout_toStartOf="@+id/spinner_startPos"
+        android:text="Start Position"
+        android:textColor="@color/white" />
+
+    <Spinner
+        android:id="@+id/spinner_startPos"
+        android:layout_width="75sp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_PreMatch"
+        android:layout_centerHorizontal="true" />
+
+    // ==============================================================================
 
     <TextView
         android:id="@+id/lbl_AfterStart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/spinner_startPos"
         android:text="_____________________________After Start____________________________"
-        android:textColor="@color/red"
-        android:layout_below="@+id/chk_gears"
-        android:layout_toEndOf="@+id/lbl_space1" />
+        android:textColor="@color/red" />
+
+    <Button
+        android:id="@+id/button_GoToArenaLayoutActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignEnd="@+id/scrollv_comm"
+        android:layout_below="@+id/lbl_AfterStart"
+        android:text="ARENA" />
+
+    <CheckBox
+        android:id="@+id/checkbox_automode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/button_GoToArenaLayoutActivity"
+        android:text="No autonomous mode?" />
+
+    <CheckBox
+        android:id="@+id/chk_cube"
+        android:layout_width="90dp"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lbl_PreMatch"
+        android:layout_weight="1.38"
+        android:text="Cube" />
+
+    // ==============================================================================
+    // Placed
+    <LinearLayout
+        android:id="@+id/lin_cubePlaced"
+        android:layout_width="match_parent"
+        android:layout_height="28sp"
+        android:layout_below="@+id/checkbox_automode"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    // ==============================================================================
 
     <Button
         android:text="TeleOps"
@@ -195,315 +269,16 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
 
-    <Button
-        android:id="@+id/button_GoToArenaLayoutActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:layout_alignTop="@+id/checkbox_automode"
-        android:layout_toEndOf="@+id/chk_baseline"
-        android:text="ARENA" />
-    <!--android:layout_toEndOf="@+id/txt_Student"-->
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/checkbox_automode"
-        android:layout_alignBaseline="@+id/text_automode"
-        android:layout_alignBottom="@+id/text_automode"
-        android:layout_toEndOf="@+id/text_automode" />
-
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-    <TextView
-        android:id="@+id/lbl_GearPlaced"
-        android:layout_width="100dp"
-        android:layout_height="25dp"
-        android:textSize="14dp"
-        android:textColor="@color/white"
-        android:text="Gear(s) Placed"
-        android:layout_marginTop="24dp"
-        android:layout_below="@+id/checkbox_automode"
-        android:layout_alignParentStart="true" />
-
-    <SeekBar
-        style="@style/Widget.AppCompat.SeekBar.Discrete"
-        android:layout_width="200sp"
-        android:layout_height="wrap_content"
-        android:max="100"
-        android:progress="100"
-        android:id="@+id/seekBar_HighGoal"
-        android:clickable="false"
-        android:visibility="visible"
-        android:layout_alignTop="@+id/chk_highGoal"
-        android:layout_toEndOf="@+id/button_GearsMinus"
-        android:layout_alignBottom="@+id/text_HGSeekBarValue" />
-
-    <SeekBar
-        style="@style/Widget.AppCompat.SeekBar.Discrete"
-        android:layout_width="200sp"
-        android:layout_height="wrap_content"
-        android:max="100"
-        android:progress="100"
-        android:id="@+id/seekBar_LowGoal"
-        android:clickable="false"
-        android:visibility="visible"
-        android:layout_toEndOf="@+id/button_GearsMinus"
-        android:layout_alignBottom="@+id/text_LGSeekBarValue"
-        android:layout_alignTop="@+id/chk_LowGoal" />
-
-    <TextView
-        android:text="Gear(s) Attempted"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:layout_marginTop="11dp"
-        android:id="@+id/lbl_gearsAttempted"
-        android:layout_below="@+id/lbl_GearPlaced"
-        android:layout_toEndOf="@+id/lbl_space1" />
-
-    <CheckBox
-        android:id="@+id/chk_balls"
-        android:text="Fuel"
-        android:layout_weight="1"
-        android:layout_width="90dp"
-        android:layout_height="30dp"
-        android:layout_alignTop="@+id/text_startpos"
-        android:layout_toEndOf="@+id/spinner_gearposition" />
-
-    <CheckBox
-        android:id="@+id/chk_gears"
-        android:text="Gears"
-        android:layout_weight="1.38"
-        android:layout_width="90dp"
-        android:layout_height="30dp"
-        android:layout_alignBaseline="@+id/chk_balls"
-        android:layout_alignBottom="@+id/chk_balls"
-        android:layout_alignParentStart="true" />
-
-    <CheckBox
-        android:id="@+id/chk_rope"
-        android:text="Rope"
-        android:layout_weight="1"
-        android:layout_width="90dp"
-        android:layout_height="30dp"
-        android:layout_alignBaseline="@+id/chk_gears"
-        android:layout_alignBottom="@+id/chk_gears"
-        android:layout_toEndOf="@+id/chk_highGoal" />
-
-    <TextView
-        android:id="@+id/lbl_Dev"
-        android:layout_width="70dp"
-        android:layout_height="25dp"
-        android:textSize="14dp"
-        android:textColor="@color/white"
-        android:text="Device"
-        android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/chk_balls" />
-
-    <TextView
-        android:id="@+id/text_automode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_startpos"
-        android:layout_marginTop="33dp"
-        android:layout_toEndOf="@+id/lbl_space1"
-        android:text="No autonomous mode?"
-        android:textColor="@color/white" />
-
-    <Button
-        android:text="+"
-        android:layout_width="30dp"
-        android:layout_height="40dp"
-        android:id="@+id/button_GearsAttemptedPlus"
-        android:layout_below="@+id/button_GearsMinus"
-        android:layout_toStartOf="@+id/button_GearsAttemptedMinus" />
-
-    <EditText
-        android:id="@+id/editText_Fuel"
-        android:layout_width="50sp"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/chk_balls"
-        android:layout_alignBottom="@+id/chk_balls"
-        android:layout_toStartOf="@+id/chk_baseline"
-        android:ems="10"
-        android:hint="10"
-        android:inputType="number"
-        android:textColor="@color/orange" />
-
-    <TextView
-        android:layout_width="30dp"
-        android:layout_height="25dp"
-        android:text="0"
-        android:textColor="@color/red"
-        android:id="@+id/txt_GearsAttempted"
-        android:layout_alignBaseline="@+id/button_GearsAttemptedPlus"
-        android:layout_alignBottom="@+id/button_GearsAttemptedPlus"
-        android:layout_toEndOf="@+id/chk_baselineINVIS" />
-
-    <TextView
-        android:id="@+id/txt_GearsPlaced"
-        android:text="0"
-        android:layout_width="30dp"
-        android:layout_height="25dp"
-        android:textSize="14dp"
-        android:textColor="@color/red"
-        android:layout_above="@+id/lbl_gearsAttempted"
-        android:layout_alignStart="@+id/txt_GearsAttempted" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/text_HGSeekBarValue"
-        android:textColor="@color/magenta"
-        android:text="100"
-        android:layout_alignBaseline="@+id/chk_highGoal"
-        android:layout_alignBottom="@+id/chk_highGoal"
-        android:layout_alignStart="@+id/txt_GearsAttempted" />
-
-    <Button
-        android:text="-"
-        android:layout_width="30dp"
-        android:layout_height="40dp"
-        android:id="@+id/button_GearsAttemptedMinus"
-        android:layout_below="@+id/button_GearsPlus"
-        android:layout_alignStart="@+id/button_GearsMinus" />
-
-    <Button
-        android:id="@+id/button_GearsMinus"
-        android:text="-"
-        android:textSize="14dp"
-        android:layout_height="40dp"
-        android:layout_width="30dp"
-        android:layout_above="@+id/button_GearsAttemptedMinus"
-        android:layout_toStartOf="@+id/editTxt_Team" />
-
-    <Button
-        android:id="@+id/button_GearsPlus"
-        android:text="+"
-        android:layout_height="40dp"
-        android:layout_width="30dp"
-        android:layout_alignBottom="@+id/txt_GearsPlaced"
-        android:layout_toStartOf="@+id/button_GearsMinus" />
-
-    <Spinner
-        android:id="@+id/spinner_balls_collected"
-        android:layout_width="150sp"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/text_collected_balls"
-        android:layout_toEndOf="@+id/chk_balls" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/text_LGSeekBarValue"
-        android:textColor="@color/magenta"
-        android:text="100"
-        android:layout_alignBaseline="@+id/chk_LowGoal"
-        android:layout_alignBottom="@+id/chk_LowGoal"
-        android:layout_alignStart="@+id/txt_GearsAttempted" />
-
-    <CheckBox
-        android:text="High Goal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/chk_highGoal"
-        android:layout_below="@+id/chk_baselineINVIS"
-        android:layout_toEndOf="@+id/lbl_space1" />
-
-    <CheckBox
-        android:text="Low Goal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/chk_LowGoal"
-        android:layout_below="@+id/chk_highGoal"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:id="@+id/text_collected_balls"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/txt_Dev"
-        android:layout_below="@+id/chk_activate_hopper"
-        android:text="How many balls did they collect?"
-        android:textColor="@color/white" />
-
-    <Spinner
-        android:id="@+id/spinner_startPos"
-        android:layout_width="75sp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/lbl_PreMatch" />
-
-    <CheckBox
-        android:id="@+id/chk_baselineINVIS"
-        android:text="Crossed Baseline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="99dp"
-        android:layout_below="@+id/spinner_gearposition"
-        android:layout_alignParentStart="true" />
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner_gearposition"
-        android:layout_alignTop="@+id/textView4"
-        android:layout_alignEnd="@+id/chk_activate_hopper"
-        android:layout_toEndOf="@+id/lbl_gearsAttempted" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/button_GearsAttemptedPlus"
-        android:text="Gear Position"
-        android:textColor="@color/white" />
-
-    <CheckBox
-        android:id="@+id/chk_activate_hopper"
-        android:text="Activated Hopper"
-        android:layout_width="180dp"
-        android:layout_height="30dp"
-        android:layout_below="@+id/chk_LowGoal"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:id="@+id/text_startpos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/spinner_startPos"
-        android:layout_toStartOf="@+id/spinner_startPos"
-        android:text="Start Positon"
-        android:textColor="@color/white" />
-
-    <Spinner
-        android:id="@+id/spinner_stopPos"
-        android:layout_width="170sp"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/chk_baselineINVIS"
-        android:layout_toStartOf="@+id/text_startpos" />
-
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-    <TextView
-        android:text="Stop Position"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txt_stopPos"
-        android:textColor="@color/white"
-        android:layout_alignTop="@+id/spinner_stopPos"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/text_collected_balls"
-        android:layout_toStartOf="@+id/spinner_gearposition" />
 
     <ScrollView
         android:id="@+id/scrollv_comm"
         android:layout_width="500sp"
         android:layout_height="100sp"
+        android:layout_above="@+id/button_GoToTeleopActivity"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/spinner_gearposition"
         android:isScrollContainer="false">
 
         <EditText
@@ -524,13 +299,6 @@
 
     </ScrollView>
 
-    <CheckBox
-        android:id="@+id/chk_baseline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button_GearsAttemptedMinus"
-        android:layout_toEndOf="@+id/txt_stud"
-        android:text="Crossed Baseline" />
 
 </RelativeLayout>
 <!--This is for committing!-->

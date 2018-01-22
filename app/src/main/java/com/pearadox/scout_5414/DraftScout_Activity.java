@@ -265,11 +265,11 @@ public class DraftScout_Activity extends AppCompatActivity {
             if (match_inst.getTeam_num().matches(team)) {
 //                Log.e(TAG, i + "  " + match_inst.getMatch() + "  Team=" + team);
                 numMatches++;
-                autoGears = autoGears + match_inst.getAuto_gears_placed();
+//                autoGears = autoGears + match_inst.getAuto_gears_placed();
 //                Log.w(TAG, "Auto Gears = " + match_inst.getAuto_gears_placed());
-                teleGears = teleGears + match_inst.getTele_gears_placed();
+//                teleGears = teleGears + match_inst.getTele_gears_placed();
 //                Log.w(TAG, "Tele Gears Placed = " + match_inst.getTele_gears_placed());
-                teleAttempt = teleAttempt + match_inst.getTele_gears_attempt();
+//                teleAttempt = teleAttempt + match_inst.getTele_gears_attempt();
 //                Log.w(TAG, "Tele Gears Attempted = " + match_inst.getTele_gears_attempt());
                 if (match_inst.isTele_climb_attempt()) {
                     climbAttemps++;
@@ -279,10 +279,10 @@ public class DraftScout_Activity extends AppCompatActivity {
                     climbs++;
 //                    Log.w(TAG, "Tele Climb Success Number= " + climbs);
                 }
-                if (match_inst.isTele_gear_pickup()) {
-                    gear_pu = true;
-//                    Log.w(TAG, "Tele Climb Attempt Number= ");
-                }
+//                if (match_inst.isTele_gear_pickup()) {
+//                    gear_pu = true;
+////                    Log.w(TAG, "Tele Climb Attempt Number= ");
+//                }
 
             }
         } // End For

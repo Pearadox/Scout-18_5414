@@ -10,8 +10,6 @@ import android.os.Vibrator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -25,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -35,8 +32,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Iterator;
-
-import static android.view.View.VISIBLE;
 
 
 public class MatchScoutActivity extends AppCompatActivity {
@@ -51,7 +46,7 @@ public class MatchScoutActivity extends AppCompatActivity {
     EditText editTxt_Team, editTxt_Match;
     TextView txt_EventName, txt_dev, txt_stud, txt_Match, txt_MyTeam, txt_TeamName, text_HGSeekBarValue, text_LGSeekBarValue, text_collected_balls;
     TextView txt_GearsPlaced, txt_GearsAttempted;
-    CheckBox chk_baseline, chk_highGoal, chkBox_balls, chk_gears, chkBox_rope, chk_lowGoal, checkbox_automode, chk_activate_hopper, chk_baselineINVIS;
+    CheckBox chk_baseline, chk_highGoal, chkBox_balls, chk_gears, chk_lowGoal, checkbox_automode, chk_activate_hopper, chk_baselineINVIS;
     EditText editText_Fuel, editText_autoComment;
     Spinner spinner_balls_collected;
     SeekBar seekBar_HighGoal, seekBar_LowGoal;
@@ -69,33 +64,22 @@ public class MatchScoutActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter_autostoppos;
     ArrayAdapter<String> adapter_auto_gear_placement;
     ArrayAdapter<String> adapter_balls_collected;
-
     String load_team;
-
 
     // ===================  Autonomous Elements for Match Scout Data object ===================
     public String matchID = "T00";          // Type + #
     public String tn = "";                  // Team #
-    public boolean auto = false;
-    public boolean carry_fuel = false;
-    public boolean carry_gear = false;
-    public boolean brought_rope = false;
-    public boolean activate_hopper = false;
-    int gearNum = 0;
-    int gearAttemptNum = 0;
-    public boolean baseline = false;
-    public boolean hg = false;
-    int HGSvalue = 0;
-    public boolean lg = false;
-    int LGSvalue = 0;
-    int fuel = 10;
-    public String startPos = " ";
-    public String stopPos = " ";
-    public String gearPos = "0";        // initialie to Zero - Firebase tries to convert String-to-Int (ERROR)  GLF 4/10
-    public String ballsCollected = " ";
-    public boolean pu_Fuel = false;
-    public boolean pu_Gear = false;
-    public String autoComment = " ";
+    public boolean carry_cube;              // Do they carry a cube
+    public String  startPos = " ";          // Start Position
+    public boolean auto = false;            // Do they have Autonomous mode?
+    public boolean baseline;                // Did they cross Baseline
+    public boolean cube_switch;             // cube placed on Switch during Auto
+    public boolean switch_extra;            // extra cube placed on switch during Auto
+    public boolean cube_scale;              // cube placed on switch during Auto
+    public boolean xover_switch;            // crossed over field to Switch
+    public boolean xover_scale;             // crossed over field to Scale
+    public boolean wrong_switch;            // put cube in WRONG Switch
+    public String autoComment = " ";        // Comment
     /* */
     public static String studID = " ";
 
@@ -133,7 +117,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         Intent batteryStatus = this.registerReceiver(null, ifilter);
         int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
         int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-        float batteryPct = level / (float)scale;
+        float batteryPct = level / (float) scale;
         int pct = (int) (batteryPct * 100);
         String batpct = String.valueOf(pct);
         Log.w(TAG, "Battery=" + batteryPct + "  " + batpct);      // ** DEBUG **
@@ -157,7 +141,7 @@ public class MatchScoutActivity extends AppCompatActivity {
                 key = "6";
                 break;
             default:                //
-                Log.d(TAG, "DEV = NULL" );
+                Log.d(TAG, "DEV = NULL");
         }
         Log.w(TAG, "batt_stat=" + key + "  " + batpct);      // ** DEBUG **
         pfDevice_DBReference.child(key).child("batt_stat").setValue(batpct);
@@ -173,7 +157,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         txt_dev.setText(device);
         txt_stud.setText(studID);
         txt_Match.setText("");
-        if (Pearadox.is_Network  && Pearadox.numTeams > 0) {      // is Internet available and Teams there?
+        if (Pearadox.is_Network && Pearadox.numTeams > 0) {      // is Internet available and Teams there?
             txt_MyTeam.setText("");
             editTxt_Match.setVisibility(View.INVISIBLE);
             editTxt_Match.setEnabled(false);
@@ -203,7 +187,7 @@ public class MatchScoutActivity extends AppCompatActivity {
                             vibrate.vibrate(twice, -1);
                             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
                             tg.startTone(ToneGenerator.TONE_PROP_BEEP);
-                            Toast.makeText(getBaseContext(),"*** Match number must be at least 2 characters  *** ", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getBaseContext(), "*** Match number must be at least 2 characters  *** ", Toast.LENGTH_LONG).show();
                         } else {
                             matchID = "Q" + (String.valueOf(editTxt_Match.getText()));
                         }
@@ -222,7 +206,7 @@ public class MatchScoutActivity extends AppCompatActivity {
                             vibrate.vibrate(twice, -1);
                             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
                             tg.startTone(ToneGenerator.TONE_PROP_BEEP);
-                            Toast.makeText(getBaseContext(),"*** Team number must be at least 3 characters and no more than 4  *** ", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getBaseContext(), "*** Team number must be at least 3 characters and no more than 4  *** ", Toast.LENGTH_LONG).show();
                         } else {
                             tn = (String.valueOf(editTxt_Team.getText()));
                         }
@@ -234,7 +218,7 @@ public class MatchScoutActivity extends AppCompatActivity {
             });
         }
         txt_TeamName.setText("");
-        String devcol = device.substring(0,3);
+        String devcol = device.substring(0, 3);
         Log.d(TAG, "color=" + devcol);
         if (devcol.equals("Red")) {
             imgScoutLogo.setImageDrawable(getResources().getDrawable(R.drawable.red_scout));
@@ -242,57 +226,42 @@ public class MatchScoutActivity extends AppCompatActivity {
             imgScoutLogo.setImageDrawable(getResources().getDrawable(R.drawable.blue_scout));
         }
 
-        chk_baselineINVIS = (CheckBox) findViewById(R.id.chk_baselineINVIS);
-        chk_baselineINVIS.setVisibility(View.INVISIBLE);
+//        chk_baselineINVIS = (CheckBox) findViewById(R.id.chk_baselineINVIS);
+//        chk_baselineINVIS.setVisibility(View.INVISIBLE);
         txt_GearsPlaced = (TextView) findViewById(R.id.txt_GearsPlaced);
         text_collected_balls = (TextView) findViewById(R.id.text_collected_balls);
-        spinner_balls_collected = (Spinner) findViewById(R.id.spinner_balls_collected);
+//        spinner_balls_collected = (Spinner) findViewById(R.id.spinner_balls_collected);
         txt_GearsAttempted = (TextView) findViewById(R.id.txt_GearsAttempted);
         chk_baseline = (CheckBox) findViewById(R.id.chk_baseline);
-        chk_highGoal = (CheckBox) findViewById(R.id.chk_highGoal);
-        chk_lowGoal = (CheckBox) findViewById(R.id.chk_LowGoal);
-        seekBar_HighGoal = (SeekBar) findViewById(R.id.seekBar_HighGoal);
-        seekBar_LowGoal = (SeekBar) findViewById(R.id.seekBar_LowGoal);
+//        chk_highGoal = (CheckBox) findViewById(R.id.chk_highGoal);
+//        chk_lowGoal = (CheckBox) findViewById(R.id.chk_LowGoal);
+//        seekBar_HighGoal = (SeekBar) findViewById(R.id.seekBar_HighGoal);
+//        seekBar_LowGoal = (SeekBar) findViewById(R.id.seekBar_LowGoal);
         checkbox_automode = (CheckBox) findViewById(R.id.checkbox_automode);
         chkBox_balls = (CheckBox) findViewById(R.id.chk_balls);
-        editText_Fuel = (EditText) findViewById(R.id.editText_Fuel);
+//        editText_Fuel = (EditText) findViewById(R.id.editText_Fuel);
         editText_autoComment = (EditText) findViewById(R.id.editText_autoComment);
-        chk_gears = (CheckBox) findViewById(R.id.chk_gears);
-        chk_activate_hopper = (CheckBox) findViewById(R.id.chk_activate_hopper);
-        chkBox_rope = (CheckBox) findViewById(R.id.chk_rope);
-        button_GearsMinus = (Button) findViewById(R.id.button_GearsMinus);
-        button_GearsPlus = (Button) findViewById(R.id.button_GearsPlus);
-        button_GearsAttemptedMinus = (Button) findViewById(R.id.button_GearsAttemptedMinus);
-        button_GearsAttemptedPlus = (Button) findViewById(R.id.button_GearsAttemptedPlus);
+        chk_gears = (CheckBox) findViewById(R.id.chk_cube);
         button_GoToTeleopActivity = (Button) findViewById(R.id.button_GoToTeleopActivity);
         button_GoToArenaLayoutActivity = (Button) findViewById(R.id.button_GoToArenaLayoutActivity);
-        txt_GearsPlaced.setText(Integer.toString(gearNum));
-        txt_GearsAttempted.setText(Integer.toString(gearAttemptNum));
+//        txt_GearsPlaced.setText(Integer.toString(gearNum));
+//        txt_GearsAttempted.setText(Integer.toString(gearAttemptNum));
         seekBar_HighGoal.setEnabled(false);
         seekBar_HighGoal.setVisibility(View.GONE);
         chk_highGoal.setChecked(false);
         seekBar_LowGoal.setEnabled(false);
         seekBar_LowGoal.setVisibility(View.GONE);
         chk_lowGoal.setChecked(false);
-        text_HGSeekBarValue = (TextView) findViewById(R.id.text_HGSeekBarValue);
-        text_LGSeekBarValue = (TextView) findViewById(R.id.text_LGSeekBarValue);
+//        text_HGSeekBarValue = (TextView) findViewById(R.id.text_HGSeekBarValue);
+//        text_LGSeekBarValue = (TextView) findViewById(R.id.text_LGSeekBarValue);
         text_HGSeekBarValue.setVisibility(View.GONE);
         text_LGSeekBarValue.setVisibility(View.GONE);
         editText_Fuel.setVisibility(View.GONE);
         editText_Fuel.setEnabled(false);
         editText_Fuel.setText("");
-        fuel = 10;
         text_collected_balls.setVisibility(View.INVISIBLE);
         spinner_balls_collected.setVisibility(View.INVISIBLE);
 
-
-        final Spinner spinner_balls_collected = (Spinner) findViewById(R.id.spinner_balls_collected);
-        String[] balls_collected = getResources().getStringArray(R.array.spinner_balls_collected);
-        adapter_balls_collected = new ArrayAdapter<String>(this, R.layout.dev_list_layout, balls_collected);
-        adapter_balls_collected.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_balls_collected.setAdapter(adapter_balls_collected);
-        spinner_balls_collected.setSelection(0, false);
-        spinner_balls_collected.setOnItemSelectedListener(new MatchScoutActivity.ballsCollectedOnClickListener());
 
         Spinner spinner_startPos = (Spinner) findViewById(R.id.spinner_startPos);
         String[] autostartPos = getResources().getStringArray(R.array.auto_start_array);
@@ -302,317 +271,126 @@ public class MatchScoutActivity extends AppCompatActivity {
         spinner_startPos.setSelection(0, false);
         spinner_startPos.setOnItemSelectedListener(new startPosOnClickListener());
 
-        Spinner spinner_stopPos = (Spinner) findViewById(R.id.spinner_stopPos);
-        String[] autostopPos = getResources().getStringArray(R.array.auto_stop_array);
-        adapter_autostoppos = new ArrayAdapter<String>(this, R.layout.dev_list_layout, autostopPos);
-        adapter_autostoppos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_stopPos.setAdapter(adapter_autostoppos);
-        spinner_stopPos.setSelection(0, false);
-        spinner_stopPos.setOnItemSelectedListener(new stopPosOnClickListener());
-
-
-        final Spinner spinner_GearPlacement = (Spinner) findViewById(R.id.spinner_gearposition);
-        String[] auto_gear_placement = getResources().getStringArray(R.array.auto_gear_placement);
-        adapter_auto_gear_placement = new ArrayAdapter<String>(this, R.layout.dev_list_layout, auto_gear_placement);
-        adapter_auto_gear_placement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_GearPlacement.setAdapter(adapter_auto_gear_placement);
-        spinner_GearPlacement.setSelection(0, false);
-        spinner_GearPlacement.setOnItemSelectedListener(new gearPosOnClickListener());
-        
 
 // Start Listeners
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         checkbox_automode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                Log.i(TAG, "checkbox_automode Listener");
-                if (buttonView.isChecked()) {
-                    //checked
-                    Log.i(TAG,"TextBox is checked.");
-                    auto = true;
-                } else {
-                    //not checked
-                    Log.i(TAG,"TextBox is unchecked.");
-                    auto = false;
-                }
-            }
-        }
+                                                         @Override
+                                                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                             Log.i(TAG, "checkbox_automode Listener");
+                                                             if (buttonView.isChecked()) {
+                                                                 //checked
+                                                                 Log.i(TAG, "TextBox is checked.");
+                                                                 auto = true;
+                                                             } else {
+                                                                 //not checked
+                                                                 Log.i(TAG, "TextBox is unchecked.");
+                                                                 auto = false;
+                                                             }
+                                                         }
+                                                     }
         );
         chk_baseline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                Log.i(TAG, "chk_baseline Listener");
-                if (buttonView.isChecked()) {
-                    //checked
-                    baseline = true;
-                    Log.i(TAG,"Cross the baseline = " + baseline);
+                                                    @Override
+                                                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                        Log.i(TAG, "chk_baseline Listener");
+                                                        if (buttonView.isChecked()) {
+                                                            //checked
+                                                            baseline = true;
+                                                            Log.i(TAG, "Crossed the Baseline = " + baseline);
 
-                }
-                else
-                {
-                    //not checked
-                    baseline = false;
-                    Log.i(TAG,"Cross the baseline = " + baseline);
+                                                        } else {
+                                                            //not checked
+                                                            baseline = false;
+                                                            Log.i(TAG, "Crossed the Baseline = " + baseline);
 
-                }
-            }
-        }
+                                                        }
+                                                    }
+                                                }
         );
+
         chkBox_balls.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                Log.i(TAG, "chkBox_balls Listener");
-                if (buttonView.isChecked()) {
-                    //checked
-                    editText_Fuel.setVisibility(View.VISIBLE);
-                    editText_Fuel.setEnabled(true);
-                    carry_fuel = true;
-                    Log.d(TAG, "Fuel = " + fuel);
-                }
-                else
-                {
-                    //not checked
-                    Log.i(TAG,"TextBox is unchecked.");
-                    editText_Fuel.setVisibility(View.GONE);
-                    editText_Fuel.setEnabled(false);
-                    carry_fuel = false;                }
-            }
-        }
+                                                    @Override
+                                                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                        Log.i(TAG, "chkBox_balls Listener");
+                                                        if (buttonView.isChecked()) {
+                                                            //checked
+                                                            editText_Fuel.setVisibility(View.VISIBLE);
+                                                            editText_Fuel.setEnabled(true);
+//                    carry_fuel = true;
+//                    Log.d(TAG, "Fuel = " + fuel);
+                                                        } else {
+                                                            //not checked
+                                                            Log.i(TAG, "TextBox is unchecked.");
+                                                            editText_Fuel.setVisibility(View.GONE);
+                                                            editText_Fuel.setEnabled(false);
+//                    carry_fuel = false;
+                                                        }
+                                                    }
+                                                }
         );
 
-        editText_Fuel.setOnKeyListener(new View.OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                    (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                        Log.d(TAG, " editText_Fuel listener");
-                        Log.d(TAG, "Fuel = " + editText_Fuel.getText());
-                        fuel = Integer.valueOf(String.valueOf(editText_Fuel.getText()));
-                    return true;
-                }
-                return false;
-
-            }
-        });
-
-        editText_autoComment.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.i(TAG, "******  onTextChanged TextWatcher  ******" + s);
-                autoComment = String.valueOf(s);
-            }
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                Log.i(TAG, "******  beforeTextChanged TextWatcher  ******");
-                // TODO Auto-generated method stub
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                Log.i(TAG, "******  onTextChanged TextWatcher  ******" + s );
-                autoComment = String.valueOf(s);
-            }
-        });
-
-        chkBox_rope.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                Log.i(TAG, "chkBox_rope Listener");
-                if (buttonView.isChecked()) {
-                    //checked
-                    brought_rope = true;
-                    Log.i(TAG,"Brought their own rope = " + brought_rope);
-
-                }
-                else
-                {
-                    //not checked
-                    brought_rope = false;
-                    Log.i(TAG,"Brought their own rope = " + brought_rope);
-
-                }
-            }
-        }
-        );
-        chk_gears.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-           @Override
-           public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-               Log.i(TAG, "chk_gears Listener");
-               if (buttonView.isChecked()) {
-                   //checked
-                   carry_gear = true;
-                   Log.i(TAG,"Brought their own gear = " + carry_gear);
-
-               }
-               else
-               {
-                   //not checked
-                   carry_gear = false;
-                   Log.i(TAG,"Brought their own gear = " + carry_gear);
-
-               }
-           }
-       }
-        );
-        chk_highGoal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                Log.i(TAG, "chk_highGoal Listener");
-                if (buttonView.isChecked()) {
-                    //checked
-                    hg = true;
-                    Log.i(TAG,"Used the high goal = " + hg);
-
-                }
-                else
-                {
-                    //not checked
-                    hg = false;
-                    Log.i(TAG,"Used the high goal = " + hg);
-
-                }
-                if (buttonView.isChecked()) {
-                    //checked
-                    seekBar_HighGoal.setEnabled(true);
-                    seekBar_HighGoal.setVisibility(View.VISIBLE);
-                    text_HGSeekBarValue.setVisibility(View.VISIBLE);
-
-                }
-                else
-                {
-                    //not checked
-                    seekBar_HighGoal.setEnabled(false);
-                    seekBar_HighGoal.setVisibility(View.GONE);
-                    text_HGSeekBarValue.setVisibility(View.GONE);
-
-                }
-            }
-        }
-        );
-        chk_lowGoal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                Log.i(TAG, "chk_lowGoal Listener");
-                if (buttonView.isChecked()) {
-                    //checked
-                    Log.i(TAG,"TextBox is checked.");
-
-                } else {
-                    //not checked
-                    Log.i(TAG,"TextBox is unchecked.");
-                    lg = false;
-
-                }
-                if (buttonView.isChecked()) {
-                    //checked
-                    seekBar_LowGoal.setEnabled(true);
-                    seekBar_LowGoal.setVisibility(View.VISIBLE);
-                    text_LGSeekBarValue.setVisibility(View.VISIBLE);
-
-                }
-                else
-                {
-                    //not checked
-                    seekBar_LowGoal.setEnabled(false);
-                    seekBar_LowGoal.setVisibility(View.GONE);
-                    text_LGSeekBarValue.setVisibility(View.GONE);
-
-
-                }
-            }
-        }
-        );
-        chk_activate_hopper.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-             @Override
-             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                 Log.i(TAG, "chk_activate_hopper Listener");
-                 if (buttonView.isChecked()) {
-                     //checked
-                     activate_hopper = true;
-                     Log.i(TAG,"Activated hopper = " + activate_hopper);
-                     Log.i(TAG,"TextBox is checked.");
-                     spinner_balls_collected.setVisibility(View.VISIBLE);
-                     text_collected_balls.setVisibility(VISIBLE);
-
-                 }
-                 else
-                 {
-                     //not checked
-                     activate_hopper = false;
-                     Log.i(TAG,"Activate = " + activate_hopper);
-                     Log.i(TAG,"TextBox is unchecked.");
-                     spinner_balls_collected.setVisibility(View.INVISIBLE);
-                     text_collected_balls.setVisibility(View.INVISIBLE);
-
-                 }
-             }
-         }
-        );
-
-        button_GearsPlus.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (gearNum < 3) {
-                    gearNum++;
-                    gearAttemptNum++;
-                }
-                Log.d(TAG, "Gears = " + gearNum);      // ** DEBUG **
-                Log.d(TAG, "Gears Attempted = " + gearAttemptNum);
-                txt_GearsPlaced.setText(Integer.toString(gearNum));    // Perform action on click
-                txt_GearsAttempted.setText(Integer.toString(gearAttemptNum));
-            }
-        });
-        button_GearsMinus.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (gearNum >= 1 && gearAttemptNum >= gearNum) {
-                    gearNum--;
-                    gearAttemptNum--;
-                }
-                Log.d(TAG, "Gears = " + gearNum);      // ** DEBUG **
-                Log.d(TAG, "Gears Attempted = " + gearAttemptNum);
-                txt_GearsPlaced.setText(Integer.toString(gearNum));    // Perform action on click
-                txt_GearsAttempted.setText(Integer.toString(gearAttemptNum));
-            }
-        });
-
-        button_GearsAttemptedPlus.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (gearAttemptNum < 10) {
-                    gearAttemptNum++;
-                }
-                Log.d(TAG, "Gears Attempted = " + gearAttemptNum);      // ** DEBUG **
-                txt_GearsAttempted.setText(Integer.toString(gearAttemptNum));    // Perform action on click
-            }
-        });
-        button_GearsAttemptedMinus.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (gearAttemptNum >= 1 && gearAttemptNum > gearNum) {    // GLF - make sure note less than placed
-                    gearAttemptNum--;
-                }
-                Log.d(TAG, "Gears Attempted = " + gearAttemptNum);      // ** DEBUG **
-                txt_GearsAttempted.setText(Integer.toString(gearAttemptNum));    // Perform action on click
-            }
-        });
+//        button_GearsPlus.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                if (gearNum < 3) {
+//                    gearNum++;
+//                    gearAttemptNum++;
+//                }
+//                Log.d(TAG, "Gears = " + gearNum);      // ** DEBUG **
+//                Log.d(TAG, "Gears Attempted = " + gearAttemptNum);
+//                txt_GearsPlaced.setText(Integer.toString(gearNum));    // Perform action on click
+//                txt_GearsAttempted.setText(Integer.toString(gearAttemptNum));
+//            }
+//        });
+//        button_GearsMinus.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                if (gearNum >= 1 && gearAttemptNum >= gearNum) {
+//                    gearNum--;
+//                    gearAttemptNum--;
+//                }
+//                Log.d(TAG, "Gears = " + gearNum);      // ** DEBUG **
+//                Log.d(TAG, "Gears Attempted = " + gearAttemptNum);
+//                txt_GearsPlaced.setText(Integer.toString(gearNum));    // Perform action on click
+//                txt_GearsAttempted.setText(Integer.toString(gearAttemptNum));
+//            }
+//        });
+//
+//        button_GearsAttemptedPlus.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                if (gearAttemptNum < 10) {
+//                    gearAttemptNum++;
+//                }
+//                Log.d(TAG, "Gears Attempted = " + gearAttemptNum);      // ** DEBUG **
+//                txt_GearsAttempted.setText(Integer.toString(gearAttemptNum));    // Perform action on click
+//            }
+//        });
+//        button_GearsAttemptedMinus.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                if (gearAttemptNum >= 1 && gearAttemptNum > gearNum) {    // GLF - make sure note less than placed
+//                    gearAttemptNum--;
+//                }
+//                Log.d(TAG, "Gears Attempted = " + gearAttemptNum);      // ** DEBUG **
+//                txt_GearsAttempted.setText(Integer.toString(gearAttemptNum));    // Perform action on click
+//            }
+//        });
 
 
         button_GoToTeleopActivity.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.i(TAG, "Clicked 'NEXT/TeleOps' Button  match=" + matchID);
                 if (matchID.length() < 2) {     // Between matches??
-                    Toast.makeText(getBaseContext(),"*** Match has _NOT_ started; wait until you have a Team #  *** ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), "*** Match has _NOT_ started; wait until you have a Team #  *** ", Toast.LENGTH_LONG).show();
 
                 } else {        // It's OK - Match has started
 
-                    if (gearAttemptNum > 0 && spinner_GearPlacement.getSelectedItemPosition() == 0) {
+                    if (0 > 0) {            //**COMPILE **
+//                        if (gearAttemptNum > 0 && spinner_GearPlacement.getSelectedItemPosition() == 0) {  //Required field
 
-                        Toast.makeText(getBaseContext(),"*** Select Gear Position  *** ", Toast.LENGTH_LONG).show();
-                        spinner_GearPlacement.performClick();
+                        Toast.makeText(getBaseContext(), "*** Select Gear Position  *** ", Toast.LENGTH_LONG).show();
+//                        spinner_GearPlacement.performClick();
 
                     } else {
                         if (tn != null) {
@@ -628,7 +406,7 @@ public class MatchScoutActivity extends AppCompatActivity {
                         } else {
                             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
                             tg.startTone(ToneGenerator.TONE_PROP_BEEP);
-                            Toast.makeText(getBaseContext(),"*** Team # not entered  *** ", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getBaseContext(), "*** Team # not entered  *** ", Toast.LENGTH_LONG).show();
                         }
                     }
                 }
@@ -644,64 +422,11 @@ public class MatchScoutActivity extends AppCompatActivity {
                 smast_intent.putExtras(SMbundle);
                 startActivity(smast_intent);
             }
-        });
-
-
-        seekBar_HighGoal.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar_HighGoal) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar_HighGoal) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar_HighGoal, int progress,
-                                          boolean fromUser) {
-                // TODO Auto-generated method stub
-
-                HGSvalue=progress;	//we can use the progress value of pro as anywhere
-                text_HGSeekBarValue.setText(Integer.toString(HGSvalue));
-            }
-
-        });
-        seekBar_LowGoal.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar_LowGoal) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar_LowGoal) {
-                // TODO Auto-generated method stub
-            }
-            @Override
-            public void onProgressChanged(SeekBar seekBar_LowGoal, int progress,
-                                          boolean fromUser) {
-                // TODO Auto-generated method stub
-                LGSvalue=progress;	//we can use the progress value of pro as anywhere
-                text_LGSeekBarValue.setText(Integer.toString(LGSvalue));
-            }
-        });
-        String blank = "" + spinner_balls_collected.getItemAtPosition(0);
-        String first = "" + spinner_balls_collected.getItemAtPosition(1);
-        String second = "" + spinner_balls_collected.getItemAtPosition(2);
-        String third = "" + spinner_balls_collected.getItemAtPosition(3);
-        String fourth = "" + spinner_balls_collected.getItemAtPosition(4);
-        String fifth = "" + spinner_balls_collected.getItemAtPosition(5);
-
-    }
+            });
+        }
 
     private void launchTeleopScoutActivity(String team, String name) {
-        Log.i(TAG, ">>>>> launchVizMatch   <<<<<");
+        Log.i(TAG, ">>>>> launchTeleopScoutActivity   <<<<<");
 
         load_team = tn;
 
@@ -713,26 +438,17 @@ public class MatchScoutActivity extends AppCompatActivity {
         Log.w(TAG, studID + " is the student.");
         Pearadox.Match_Data.setMatch(matchID);
         Pearadox.Match_Data.setTeam_num(tn);
-        Pearadox.Match_Data.setAuto_mode(auto);
-        Pearadox.Match_Data.setAuto_carry_fuel(carry_fuel);
-        Pearadox.Match_Data.setAuto_gear(carry_gear);
-        Pearadox.Match_Data.setAuto_gears_placed(gearNum);
-        Pearadox.Match_Data.setAuto_gears_attempt(gearAttemptNum);
+        Pearadox.Match_Data.setPre_cube(carry_cube);
+        Pearadox.Match_Data.setPre_startPos(startPos);
         Pearadox.Match_Data.setAuto_baseline(baseline);
-        Pearadox.Match_Data.setAuto_hg(hg);
-        Pearadox.Match_Data.setAuto_hg_percent(HGSvalue);
-        Pearadox.Match_Data.setAuto_lg(lg);
-        Pearadox.Match_Data.setAuto_lg_percent(LGSvalue);
-        Pearadox.Match_Data.setAuto_start(startPos);
-        Pearadox.Match_Data.setAuto_stop(stopPos);
-//        Log.w(TAG, ">>>>>>>>>  gearPos = " + gearPos + "  \n  \n");
-        Pearadox.Match_Data.setAuto_gear_pos(gearPos);
-        Pearadox.Match_Data.setAuto_rope(brought_rope);
-        Pearadox.Match_Data.setAuto_act_hopper(activate_hopper);
-        Pearadox.Match_Data.setAuto_fuel_collected(ballsCollected);
+        Pearadox.Match_Data.setAuto_mode(auto);
+        Pearadox.Match_Data.setAuto_cube_switch(cube_switch);
+        Pearadox.Match_Data.setAuto_switch_extra(switch_extra);
+        Pearadox.Match_Data.setAuto_xover_switch(xover_switch);
+        Pearadox.Match_Data.setAuto_xover_scale(xover_scale);
+        Pearadox.Match_Data.setAuto_wrong_switch(wrong_switch);
+        // --------------
         Pearadox.Match_Data.setAuto_comment(autoComment);
-        Pearadox.Match_Data.setAuto_fuel_amount(fuel);
-
         Pearadox.Match_Data.setFinal_studID(studID);
         Log.w(TAG, "*******  All done with AUTO setters!!");
     }
@@ -859,29 +575,6 @@ public class MatchScoutActivity extends AppCompatActivity {
             // Do nothing.
         }
     }
-    private class stopPosOnClickListener implements android.widget.AdapterView.OnItemSelectedListener {
-        public void onItemSelected(AdapterView<?> parent,
-                                   View view, int pos, long id) {
-            stopPos = parent.getItemAtPosition(pos).toString();
-            Log.d(TAG, ">>>>>  '" + stopPos + "'");
-
-        }
-        public void onNothingSelected(AdapterView<?> parent) {
-            // Do nothing.
-        }
-    }
-
-    private class gearPosOnClickListener implements android.widget.AdapterView.OnItemSelectedListener {
-        public void onItemSelected(AdapterView<?> parent,
-                                   View view, int pos, long id) {
-            gearPos = parent.getItemAtPosition(pos).toString();
-            Log.d(TAG, ">>>>>  '" + gearPos + "'");
-
-        }
-        public void onNothingSelected(AdapterView<?> parent) {
-            // Do nothing.
-        }
-    }
 
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -919,17 +612,8 @@ public class MatchScoutActivity extends AppCompatActivity {
                 .show();
 
     }
-    private class ballsCollectedOnClickListener implements android.widget.AdapterView.OnItemSelectedListener {
-        public void onItemSelected(AdapterView<?> parent,
-                                   View view, int pos, long id) {
-            ballsCollected = parent.getItemAtPosition(pos).toString();
-            Log.d(TAG, ">>>>>  '" + ballsCollected + "'");
 
-        }
-        public void onNothingSelected(AdapterView<?> parent) {
-            // Do nothing.
-        }
-    }
+
 //    private TextWatcher tw = new TextWatcher() {
 //        public void afterTextChanged(Editable s){
 //
