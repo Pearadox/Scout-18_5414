@@ -74,11 +74,14 @@ public class MatchScoutActivity extends AppCompatActivity {
     public boolean auto = false;            // Do they have Autonomous mode?
     public boolean baseline;                // Did they cross Baseline
     public boolean cube_switch;             // cube placed on Switch during Auto
+    public boolean cube_switch_att;         // cube attemted on Switch during Auto
     public boolean switch_extra;            // extra cube placed on switch during Auto
     public boolean cube_scale;              // cube placed on switch during Auto
+    public boolean cube_scale_att;          // cube attemted on switch during Auto
     public boolean xover_switch;            // crossed over field to Switch
     public boolean xover_scale;             // crossed over field to Scale
     public boolean wrong_switch;            // put cube in WRONG Switch
+    public boolean wrong_scale;             // put cube in WRONG Scale
     public String autoComment = " ";        // Comment
     /* */
     public static String studID = " ";
@@ -434,8 +437,7 @@ public class MatchScoutActivity extends AppCompatActivity {
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void storeAutoData() {
-        Log.i(TAG, ">>>>  storeAutoData  <<<<");
-        Log.w(TAG, studID + " is the student.");
+        Log.i(TAG, ">>>>  storeAutoData  <<<< " + studID);
         Pearadox.Match_Data.setMatch(matchID);
         Pearadox.Match_Data.setTeam_num(tn);
         Pearadox.Match_Data.setPre_cube(carry_cube);
@@ -443,7 +445,10 @@ public class MatchScoutActivity extends AppCompatActivity {
         Pearadox.Match_Data.setAuto_baseline(baseline);
         Pearadox.Match_Data.setAuto_mode(auto);
         Pearadox.Match_Data.setAuto_cube_switch(cube_switch);
+        Pearadox.Match_Data.setAuto_cube_switch_att(cube_switch_att);
         Pearadox.Match_Data.setAuto_switch_extra(switch_extra);
+        Pearadox.Match_Data.setAuto_cube_scale(cube_scale);
+        Pearadox.Match_Data.setAuto_cube_scale_att(cube_scale_att);
         Pearadox.Match_Data.setAuto_xover_switch(xover_switch);
         Pearadox.Match_Data.setAuto_xover_scale(xover_scale);
         Pearadox.Match_Data.setAuto_wrong_switch(wrong_switch);
