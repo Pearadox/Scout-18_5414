@@ -14,11 +14,14 @@ public class matchData implements Serializable {
     private boolean auto_mode;              // Do they have Autonomous mode?
     private boolean auto_baseline;          // Did they cross Baseline
     private boolean auto_cube_switch;       // cube placed on Switch during Auto
+    private boolean auto_cube_switch_att;   // cube attempt on Switch during Auto
     private boolean auto_switch_extra;      // extra cube placed on switch during Auto
     private boolean auto_cube_scale;        // cube placed on switch during Auto
+    private boolean auto_cube_scale_att;    // cube attempt on switch during Auto
     private boolean auto_xover_switch;      // crossed over field to Switch
     private boolean auto_xover_scale;       // crossed over field to Scale
     private boolean auto_wrong_switch;      // put cube in WRONG Switch
+    private boolean auto_wrong_scale;       // put cube in WRONG Scale
     private String auto_comment;            // Auto comment
     // ============== TELE =================
     private int     tele_cube_switch;       // # cubes placed on Switch during Tele
@@ -60,7 +63,7 @@ public class matchData implements Serializable {
 // =================================================================================
 
 
-    public matchData(String match, String team_num, boolean pre_cube, String pre_startPos, boolean auto_mode, boolean auto_baseline, boolean auto_cube_switch, boolean auto_switch_extra, boolean auto_cube_scale, boolean auto_xover_switch, boolean auto_xover_scale, boolean auto_wrong_switch, String auto_comment, int tele_cube_switch, int tele_switch_attempt, int tele_cube_scale, int tele_scale_attempt, int tele_their_switch, int tele_cube_exchange, int tele_cube_portal, int tele_cube_pwrzone, int tele_cube_floor, int tele_their_floor, boolean tele_cube_pickup, boolean tele_placed_cube, boolean tele_launched_cube, boolean tele_on_platform, boolean tele_climb_attempt, boolean tele_climb_success, boolean tele_grab_rung, boolean tele_grab_side, boolean tele_lift_one, boolean tele_lift_two, boolean tele_got_lift, String tele_comment, boolean final_lostParts, boolean final_lostComms, boolean final_defense_good, boolean final_def_Lane, boolean final_def_Block, boolean final_def_OthrSwitch, int final_num_Penalties, String final_comment, String final_studID, String final_dateTime) {
+    public matchData(String match, String team_num, boolean pre_cube, String pre_startPos, boolean auto_mode, boolean auto_baseline, boolean auto_cube_switch, boolean auto_cube_switch_att, boolean auto_switch_extra, boolean auto_cube_scale, boolean auto_cube_scale_att, boolean auto_xover_switch, boolean auto_xover_scale, boolean auto_wrong_switch, boolean auto_wrong_scale, String auto_comment, int tele_cube_switch, int tele_switch_attempt, int tele_cube_scale, int tele_scale_attempt, int tele_their_switch, int tele_cube_exchange, int tele_cube_portal, int tele_cube_pwrzone, int tele_cube_floor, int tele_their_floor, boolean tele_cube_pickup, boolean tele_placed_cube, boolean tele_launched_cube, boolean tele_on_platform, boolean tele_climb_attempt, boolean tele_climb_success, boolean tele_grab_rung, boolean tele_grab_side, boolean tele_lift_one, boolean tele_lift_two, boolean tele_got_lift, String tele_comment, boolean final_lostParts, boolean final_lostComms, boolean final_defense_good, boolean final_def_Lane, boolean final_def_Block, boolean final_def_OthrSwitch, int final_num_Penalties, String final_comment, String final_studID, String final_dateTime) {
         this.match = match;
         this.team_num = team_num;
         this.pre_cube = pre_cube;
@@ -68,11 +71,14 @@ public class matchData implements Serializable {
         this.auto_mode = auto_mode;
         this.auto_baseline = auto_baseline;
         this.auto_cube_switch = auto_cube_switch;
+        this.auto_cube_switch_att = auto_cube_switch_att;
         this.auto_switch_extra = auto_switch_extra;
         this.auto_cube_scale = auto_cube_scale;
+        this.auto_cube_scale_att = auto_cube_scale_att;
         this.auto_xover_switch = auto_xover_switch;
         this.auto_xover_scale = auto_xover_scale;
         this.auto_wrong_switch = auto_wrong_switch;
+        this.auto_wrong_scale = auto_wrong_scale;
         this.auto_comment = auto_comment;
         this.tele_cube_switch = tele_cube_switch;
         this.tele_switch_attempt = tele_switch_attempt;
@@ -215,6 +221,30 @@ public matchData() {
 
     public void setAuto_wrong_switch(boolean auto_wrong_switch) {
         this.auto_wrong_switch = auto_wrong_switch;
+    }
+
+    public boolean isAuto_cube_switch_att() {
+        return auto_cube_switch_att;
+    }
+
+    public void setAuto_cube_switch_att(boolean auto_cube_switch_att) {
+        this.auto_cube_switch_att = auto_cube_switch_att;
+    }
+
+    public boolean isAuto_cube_scale_att() {
+        return auto_cube_scale_att;
+    }
+
+    public void setAuto_cube_scale_att(boolean auto_cube_scale_att) {
+        this.auto_cube_scale_att = auto_cube_scale_att;
+    }
+
+    public boolean isAuto_wrong_scale() {
+        return auto_wrong_scale;
+    }
+
+    public void setAuto_wrong_scale(boolean auto_wrong_scale) {
+        this.auto_wrong_scale = auto_wrong_scale;
     }
 
     public String getAuto_comment() {
