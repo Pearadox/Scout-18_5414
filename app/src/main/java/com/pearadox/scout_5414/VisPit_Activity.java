@@ -3,6 +3,7 @@ package com.pearadox.scout_5414;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,32 +21,43 @@ public class VisPit_Activity extends AppCompatActivity {
     String TAG = "VisPit_Activity";        // This CLASS name
     String tnum = "", tname = "", imgURL = "";
     TextView txt_team, txt_teamName;
-    TextView txt_Dim, txt_TotWheels, txt_NumTrac, txt_NumOmni, txt_NumMecanum, txt_FuelCap,txt_Scout, txt_Comments;
+    TextView txt_Ht, txt_TotWheels, txt_NumTrac, txt_NumOmni, txt_NumMecanum, txt_LiftCap, txt_Scout, txt_Comments;
     ImageView imgView_Robot;                // Robot image
-    CheckBox chkBox_Gear, chkBox_Fuel, chkBox_Shooter, chkBox_Vision, chkBox_Pneumatics, chkBox_FuelManip, chkBox_Climb;
+    CheckBox chkBox_Vision, chkBox_Pneumatics, chkBox_Climb, chkBox_Lift, chkBox_Hook, chkBox_Ramp;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfPitData_DBReference;
 
     // ===================  Data Elements for Pit Scout object ===================
     public String teamSelected = " ";           // Team #
-    public boolean dim_Tall = false;            // Dimension
+    public int tall = 0;                        // Height (inches)
     public int totalWheels = 0;                 // Total # of wheels
     public int numTraction = 0;                 // Num. of Traction wheels
     public int numOmnis = 0;                    // Num. of Omni wheels
     public int numMecanums = 0;                 // Num. of Mecanum wheels
-    public boolean gear_Collecter = false;      // presence of gear collector
-    public boolean fuel_Container = false;      // presence of Storage bin
-    public int storSize = 0;                    // estimate of # of balls
-    public boolean shooter = false;             // presence of Shooter
     public boolean vision = false;              // presence of Vision Camera
     public boolean pneumatics = false;          // presence of Pneumatics
-    public boolean fuelManip = false;           // presence of a way to pick up fuel from floor
+    public boolean cubeManip = false;           // presence of a way to pick up cube from floor
     public boolean climb = false;               // presence of a Climbing mechanism
+    public boolean canLift = false;             // Ability to lift other robots
+    public int numLifted = 0;                   // Num. of robots can lift (1-2)
+    public boolean liftRamp = false;            // lift type Ramp
+    public boolean liftHook = false;            // lift type Hook
+                                                //==== cube Mechanism
+    public boolean cubeArm = false;             // presence of a Cube arm
+    public boolean armIntake = false;           // ++ presence of a Cube intake device      \  Only if
+    public boolean armSqueeze = false;          // ++ presence of a Cube Squeeze mechanism  /   Arm
+    public boolean cubeBox = false;             // presence of a Cube box
+    public boolean cubeBelt = false;            // presence of a Cube Conveyer Belt
+    public boolean cubeOhtr = false;            // Other ?
+    //==== cube Delivery
+    public boolean delLaunch = false;           // Launch
+    public boolean delPlace = false;            // Placement
+    /* */
     /* */
     public String comments = "";                // Comment(s)
     public String scout = "";                   // Student who collected the data
     // ===========================================================================
-//    pitData Pit_Data = new pitData(teamSelected,dim_Tall,totalWheels,numTraction,numOmnis,numMecanums,gear_Collecter,fuel_Container,storSize,shooter,vision,pneumatics,fuelManip,climb,comments,scout);
+    pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, numOmnis, numMecanums, vision, pneumatics, cubeManip, climb, canLift, numLifted, liftRamp, liftHook, cubeArm, armIntake, armSqueeze, cubeBox, cubeBelt, cubeOhtr, delLaunch, delPlace, comments, scout);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +85,10 @@ public class VisPit_Activity extends AppCompatActivity {
             imgView_Robot.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
         }
 
-        txt_Dim = (TextView) findViewById(R.id.txt_Dim);
+        txt_Ht = (TextView) findViewById(R.id.txt_Ht);
         txt_Scout = (TextView) findViewById(R.id.txt_Scout);
         txt_Comments = (TextView) findViewById(R.id.txt_Comments);
-        txt_Dim.setText(" ");
+        txt_Ht.setText(" ");
         txt_Scout.setText(" ");
         txt_Comments.setText("***   No Pit data for this team   ***");
 
@@ -98,47 +110,45 @@ public class VisPit_Activity extends AppCompatActivity {
                     System.out.println("Team: " + Pit_Data.getPit_team());
                     System.out.println("Comment: " + Pit_Data.getPit_comment());
                     System.out.println("\n \n ");
-
-                txt_Dim = (TextView) findViewById(R.id.txt_Dim);
+                txt_Ht = (TextView) findViewById(R.id.txt_Ht);
                 txt_TotWheels = (TextView) findViewById(R.id.txt_TotWheels);
                 txt_NumTrac = (TextView) findViewById(R.id.txt_NumTrac);
                 txt_NumOmni = (TextView) findViewById(R.id.txt_NumOmni);
                 txt_NumMecanum = (TextView) findViewById(R.id.txt_NumMecanum);
-                chkBox_Gear = (CheckBox) findViewById(R.id.chkBox_Gear);
-                chkBox_Shooter = (CheckBox) findViewById(R.id.chkBox_Hook);
+                chkBox_Climb = (CheckBox) findViewById(R.id.chkBox_Climb);
                 chkBox_Vision = (CheckBox) findViewById(R.id.chkBox_Vision);
                 chkBox_Pneumatics = (CheckBox) findViewById(R.id.chkBox_Pneumatics);
-                chkBox_Fuel = (CheckBox) findViewById(R.id.chkBox_Fuel);
-                txt_FuelCap = (TextView) findViewById(R.id.txt_FuelCap);
-                chkBox_FuelManip = (CheckBox) findViewById(R.id.chkBox_FuelManip);
-                chkBox_Climb = (CheckBox) findViewById(R.id.chkBox_Climb);
+                chkBox_Lift = (CheckBox) findViewById(R.id.chkBox_Lift);
+                txt_LiftCap = (TextView) findViewById(R.id.txt_LiftCap);
+                chkBox_Ramp = (CheckBox) findViewById(R.id.chkBox_Ramp);
+                chkBox_Hook = (CheckBox) findViewById(R.id.chkBox_Hook);
+
                 txt_Scout = (TextView) findViewById(R.id.txt_Scout);
                 txt_Comments = (TextView) findViewById(R.id.txt_Comments);
 
-//                if (Pit_Data.ispit_tall()) {
-//                    txt_Dim.setText("Tall    [30 in. X 32 in. X 36 in. tall]");
-//                } else {
-//                    txt_Dim.setText("Short    [36 in. X 40 in. X 24 in. tall]");
-//                }
+                // ****  Start loading data  ****
+                txt_Ht.setText(String.valueOf(Pit_Data.getPit_tall()));
                 txt_TotWheels.setText(String.valueOf(Pit_Data.getPit_totWheels()));
                 txt_NumTrac.setText(String.valueOf(Pit_Data.getPit_numTrac()));
                 txt_NumOmni.setText(String.valueOf(Pit_Data.getPit_numOmni()));
                 txt_NumMecanum.setText(String.valueOf(Pit_Data.getPit_numMecanum()));
 
-//                chkBox_Fuel.setChecked(Pit_Data.isPit_fuel_Container());
-//                Log.w(TAG, ">>>>> Fuel Container = '" + Pit_Data.isPit_fuel_Container() + "'");
-//                if (Pit_Data.isPit_fuel_Container()) {
-//                    txt_FuelCap.setText(String.valueOf(Pit_Data.getPit_storSize()));
-//                } else {
-//                    txt_FuelCap.setText(" ");
-//                }
-//                chkBox_Gear.setChecked(Pit_Data.isPit_gear_Collect());
-//                chkBox_Shooter.setChecked(Pit_Data.isPit_shooter());
-//                chkBox_Vision.setChecked(Pit_Data.isPit_vision());
-//                chkBox_Pneumatics.setChecked(Pit_Data.isPit_pneumatics());
-//                chkBox_FuelManip.setChecked(Pit_Data.isPit_fuelManip());
                 chkBox_Climb.setChecked(Pit_Data.isPit_climb());
+                chkBox_Vision.setChecked(Pit_Data.isPit_vision());
+                chkBox_Pneumatics.setChecked(Pit_Data.isPit_pneumatics());
+                chkBox_Lift.setChecked(Pit_Data.isPit_canLift());
+                if (Pit_Data.isPit_canLift()) {
+                    txt_LiftCap.setVisibility(View.VISIBLE);
+                    txt_LiftCap.setText(String.valueOf(Pit_Data.getPit_numLifted()));
+                    chkBox_Hook.setVisibility(View.VISIBLE);
+                    chkBox_Ramp.setVisibility(View.VISIBLE);
+                } else {
+                    txt_LiftCap.setVisibility(View.INVISIBLE);
+                    chkBox_Ramp.setVisibility(View.INVISIBLE);
+                    chkBox_Hook.setVisibility(View.INVISIBLE);
+                }
 
+                // Finally ...
                 txt_Scout.setText(Pit_Data.getPit_scout());
                 txt_Comments.setText(Pit_Data.getPit_comment());
             }

@@ -845,8 +845,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                     tbl_teamB3.setText(team_inst.getTeam_num());
 
                     w(TAG, "***  Calling Async class  ***");  //** DEBUG
-                    new Load_BAdata_Task().execute();     // Load Blue Alliance data Asyncronously
-
+//                    new Load_BAdata_Task().execute();     // Load Blue Alliance data Asyncronously
                     loadTblData();      // Load the images (if any)
 
                 }
