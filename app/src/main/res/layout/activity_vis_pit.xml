@@ -118,9 +118,9 @@
         android:id="@+id/imgView_Omni"
         android:layout_width="75sp"
         android:layout_height="75sp"
-        app:srcCompat="@drawable/wheel_omni"
         android:layout_alignTop="@+id/txt_NumOmni"
-        android:layout_alignEnd="@+id/txt_teamName" />
+        android:layout_toEndOf="@+id/txt_NumTrac"
+        app:srcCompat="@drawable/wheel_omni" />
     <TextView
         android:id="@+id/txt_NumOmni"
         android:text="00"
@@ -136,21 +136,20 @@
         android:id="@+id/imgView_Mecanum"
         android:layout_width="75sp"
         android:layout_height="75sp"
-        app:srcCompat="@drawable/wheel_mecanum"
         android:layout_alignTop="@+id/txt_NumMecanum"
         android:layout_toEndOf="@+id/txt_NumOmni"
-        android:layout_marginStart="24dp" />
+        app:srcCompat="@drawable/wheel_mecanum" />
+
     <TextView
         android:id="@+id/txt_NumMecanum"
-        android:text="00"
         android:layout_width="40dp"
         android:layout_height="30sp"
-        android:textSize="16dp"
-        android:textColor="@color/green"
-        android:layout_marginStart="23dp"
         android:layout_alignBaseline="@+id/lbl_Wheels"
         android:layout_alignBottom="@+id/lbl_Wheels"
-        android:layout_toEndOf="@+id/imgView_Mecanum" />
+        android:layout_toEndOf="@+id/chkBox_Vision"
+        android:text="00"
+        android:textColor="@color/green"
+        android:textSize="16dp" />
 
     // ======================================================
 
@@ -203,7 +202,7 @@
         android:textSize="16dp" />
 
     <CheckBox
-        android:id="@+id/ckbx_Ramp"
+        android:id="@+id/chkBox_Ramp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/chkBox_Pneumatics"
@@ -212,11 +211,11 @@
         android:text="Ramp" />
 
     <CheckBox
-        android:id="@+id/ckbx_Hook"
+        android:id="@+id/chkBox_Hook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/ckbx_Ramp"
-        android:layout_toEndOf="@+id/ckbx_Ramp"
+        android:layout_alignTop="@+id/chkBox_Ramp"
+        android:layout_toEndOf="@+id/chkBox_Ramp"
         android:clickable="false"
         android:text="Hook" />
 
@@ -289,15 +288,6 @@
             android:clickable="false"
             android:textColor="@color/cyan" />
 
-        <CheckBox
-            android:id="@+id/chkBox_ArmPress"
-            android:layout_width="150sp"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:text="Pressure"
-            android:clickable="false"
-            android:textColor="@color/cyan" />
-
     </LinearLayout>
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -333,6 +323,7 @@
                 android:layout_toEndOf="@+id/lbl_Delivery"
                 android:text="Launch"
                 android:textColor="@color/green"
+                android:clickable="false"
                 tools:layout_marginLeft="0dp" />
 
             <RadioButton
@@ -341,6 +332,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/radgrp_Deliver"
                 android:text="Place"
+                android:clickable="false"
                 android:textColor="@color/green" />
         </RadioGroup>
     </LinearLayout>
@@ -383,6 +375,17 @@
         android:text="Comments"
         android:textColor="@color/green"
         android:textSize="14dp" />
+
+    <CheckBox
+        android:id="@+id/chkBox_ArmPress"
+        android:layout_width="150sp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cube_mech"
+        android:layout_centerHorizontal="true"
+        android:clickable="false"
+        android:text="Pressure"
+        android:textColor="@color/cyan"
+        android:visibility="invisible" />
 
 
 </RelativeLayout>

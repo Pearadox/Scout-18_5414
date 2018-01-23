@@ -185,6 +185,8 @@ public class Visualizer_Activity extends AppCompatActivity {
         txt_stud.setText(param2);
         txt_NextMatch.setText("");
         matchID = "";
+        txt_MatchID = (TextView) findViewById(R.id.txt_MatchID);
+        txt_MatchID.setText(" ");
         listView_Matches = (ListView) findViewById(R.id.listView_Matches);
         adaptMatch = new ArrayAdapter<String>(this, R.layout.match_list_layout, matchList);
         listView_Matches.setAdapter(adaptMatch);

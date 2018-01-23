@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -24,6 +26,8 @@ public class VisPit_Activity extends AppCompatActivity {
     TextView txt_Ht, txt_TotWheels, txt_NumTrac, txt_NumOmni, txt_NumMecanum, txt_LiftCap, txt_Scout, txt_Comments;
     ImageView imgView_Robot;                // Robot image
     CheckBox chkBox_Vision, chkBox_Pneumatics, chkBox_Climb, chkBox_Lift, chkBox_Hook, chkBox_Ramp;
+    CheckBox chkBox_Arms, chkBox_ArmIntake, chkBox_ArmPress, chkBox_Belt, chkBox_Box, chkBox_Other;
+    RadioGroup radgrp_Deliver;      RadioButton radio_Deliver;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfPitData_DBReference;
 
@@ -122,6 +126,12 @@ public class VisPit_Activity extends AppCompatActivity {
                 txt_LiftCap = (TextView) findViewById(R.id.txt_LiftCap);
                 chkBox_Ramp = (CheckBox) findViewById(R.id.chkBox_Ramp);
                 chkBox_Hook = (CheckBox) findViewById(R.id.chkBox_Hook);
+                chkBox_Arms = (CheckBox) findViewById(R.id.chkBox_Arms);
+                chkBox_ArmIntake = (CheckBox) findViewById(R.id.chkBox_ArmIntake);
+                chkBox_ArmPress = (CheckBox) findViewById(R.id.chkBox_ArmPress);
+                chkBox_Belt = (CheckBox) findViewById(R.id.chkBox_Belt);
+                chkBox_Box = (CheckBox) findViewById(R.id.chkBox_Box);
+                chkBox_Other = (CheckBox) findViewById(R.id.chkBox_Other);
 
                 txt_Scout = (TextView) findViewById(R.id.txt_Scout);
                 txt_Comments = (TextView) findViewById(R.id.txt_Comments);
@@ -141,12 +151,35 @@ public class VisPit_Activity extends AppCompatActivity {
                     txt_LiftCap.setVisibility(View.VISIBLE);
                     txt_LiftCap.setText(String.valueOf(Pit_Data.getPit_numLifted()));
                     chkBox_Hook.setVisibility(View.VISIBLE);
+                    chkBox_Hook.setChecked(Pit_Data.isPit_liftHook());
                     chkBox_Ramp.setVisibility(View.VISIBLE);
+                    chkBox_Ramp.setChecked(Pit_Data.isPit_liftRamp());
                 } else {
                     txt_LiftCap.setVisibility(View.INVISIBLE);
                     chkBox_Ramp.setVisibility(View.INVISIBLE);
                     chkBox_Hook.setVisibility(View.INVISIBLE);
                 }
+                chkBox_Arms.setChecked(Pit_Data.isPit_cubeArm());
+                if (Pit_Data.isPit_cubeArm()) {
+                    chkBox_ArmIntake.setVisibility(View.VISIBLE);
+                    chkBox_ArmIntake.setChecked(Pit_Data.isPit_armIntake());
+                    chkBox_ArmPress.setVisibility(View.VISIBLE);
+                    chkBox_ArmPress.setChecked(Pit_Data.isPit_armSqueeze());
+                } else {
+                    chkBox_ArmIntake.setVisibility(View.INVISIBLE);
+                    chkBox_ArmPress.setVisibility(View.INVISIBLE);
+                }
+                chkBox_Belt.setChecked(Pit_Data.isPit_cubeBelt());
+                chkBox_Box.setChecked(Pit_Data.isPit_cubeBox());
+                chkBox_Other.setChecked(Pit_Data.isPit_cubeOhtr());
+                Log.w(TAG, "Radio - Launch= " + Pit_Data.isPit_delLaunch());
+                int selectedId = 0;
+                if (Pit_Data.isPit_delLaunch()) {
+                    selectedId = R.id.radio_Launch;
+                } else {
+                    selectedId = R.id.radio_Place;;
+                }
+                radio_Deliver = (RadioButton) findViewById(selectedId);
 
                 // Finally ...
                 txt_Scout.setText(Pit_Data.getPit_scout());

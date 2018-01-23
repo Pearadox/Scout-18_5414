@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
     String Pearadox_Version = " ";      // initialize
     private String deviceId;            // Android Device ID
     TextView txt_messageLine;
+    Boolean is_resumed = false;         // indicator if 'Resumed'
     Spinner spinner_Device, spinner_Event;
     ImageView img_netStatus;            // Internet Status
     ArrayAdapter<String> adapter_dev, adapter_StudStr, adapter_Event;
@@ -933,9 +934,13 @@ private void preReqs() {
     }
 
     private void loadEvents() {
-        i(TAG, "###  loadEvents  ###");
+        Log.w(TAG, "###  loadEvents  ### " + is_resumed);
 
-        addEvents_VE_Listener(pfEvent_DBReference.orderByChild("comp-date"));
+        if (!is_resumed) {
+            addEvents_VE_Listener(pfEvent_DBReference.orderByChild("comp-date"));
+        } else {
+
+        }
     }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -995,8 +1000,10 @@ public void onStart() {
 public void onResume() {
     super.onResume();
     Log.v(TAG, "onResume");
+    is_resumed = true;
+
     txt_messageLine = (TextView) findViewById(R.id.txt_messageLine);
-    txt_messageLine.setText("Log ON and prepare/wait for next match ");
+    txt_messageLine.setText("Wait for next match ");
 
     if (toggleLogon.isChecked()) {              // See what state we are in
         logged_On = false;              // Logged OFF

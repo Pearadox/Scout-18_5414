@@ -708,6 +708,7 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
         Log.w(TAG, "@@ RadioClick_Del @@");
         radgrp_Deliver = (RadioGroup) findViewById(R.id.radgrp_Deliver);
         int selectedId = radgrp_Deliver.getCheckedRadioButtonId();
+//        Log.w(TAG, "*** Selected=" + selectedId);
         radio_Deliver = (RadioButton) findViewById(selectedId);
         String value = radio_Deliver.getText().toString();
         if (teamSelected.length() < 3) {        /// Make sure a Team is selected 1st
@@ -722,11 +723,11 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
                     Log.w(TAG, "Place");
                     delPlace = true;
                     delLaunch = false;
-            } else {                               // Launch
-                Log.w(TAG, "Launch");
-                delLaunch = true;
-                delPlace = false;
-            }
+                } else {                               // Launch
+                    Log.w(TAG, "Launch");
+                    delLaunch = true;
+                    delPlace = false;
+                }
             Log.w(TAG, "RadioDel - Launch = '" + delLaunch + "'  Place = '" + delPlace + "'");
         }
     }
