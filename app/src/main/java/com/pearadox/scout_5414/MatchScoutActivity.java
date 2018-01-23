@@ -51,6 +51,7 @@ public class MatchScoutActivity extends AppCompatActivity {
     Spinner spinner_balls_collected;
     SeekBar seekBar_HighGoal, seekBar_LowGoal;
     ImageView imgScoutLogo;
+    private Button button_GearsMinus, button_GearsPlus, button_GoToTeleopActivity, button_GoToArenaLayoutActivity, button_GearsAttemptedMinus, button_GearsAttemptedPlus;
     String team_num, team_name, team_loc;
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name, team_loc);
     private FirebaseDatabase pfDatabase;
@@ -58,13 +59,11 @@ public class MatchScoutActivity extends AppCompatActivity {
     private DatabaseReference pfMatch_DBReference;
     private DatabaseReference pfDevice_DBReference;
     private DatabaseReference pfCur_Match_DBReference;
-    private Button button_GearsMinus, button_GearsPlus, button_GoToTeleopActivity, button_GoToArenaLayoutActivity, button_GearsAttemptedMinus, button_GearsAttemptedPlus;
-    String key = null;      /// key for Devices Firebase
+    String key = null;      // key for Devices Firebase
     ArrayAdapter<String> adapter_autostartpos;
     ArrayAdapter<String> adapter_autostoppos;
     ArrayAdapter<String> adapter_auto_gear_placement;
     ArrayAdapter<String> adapter_balls_collected;
-    String load_team;
 
     // ===================  Autonomous Elements for Match Scout Data object ===================
     public String matchID = "T00";          // Type + #
@@ -277,63 +276,62 @@ public class MatchScoutActivity extends AppCompatActivity {
 
 // Start Listeners
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        checkbox_automode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-                                                         @Override
-                                                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                                             Log.i(TAG, "checkbox_automode Listener");
-                                                             if (buttonView.isChecked()) {
-                                                                 //checked
-                                                                 Log.i(TAG, "TextBox is checked.");
-                                                                 auto = true;
-                                                             } else {
-                                                                 //not checked
-                                                                 Log.i(TAG, "TextBox is unchecked.");
-                                                                 auto = false;
-                                                             }
-                                                         }
-                                                     }
+    checkbox_automode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+         @Override
+         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+         Log.i(TAG, "checkbox_automode Listener");
+             if (buttonView.isChecked()) {
+                 //checked
+                 Log.i(TAG, "TextBox is checked.");
+                 auto = true;
+             } else {
+                 //not checked
+                 Log.i(TAG, "TextBox is unchecked.");
+                 auto = false;
+             }
+         }
+         }
         );
+
         chk_baseline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                                                     @Override
                                                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                                        Log.i(TAG, "chk_baseline Listener");
-                                                        if (buttonView.isChecked()) {
-                                                            //checked
-                                                            baseline = true;
-                                                            Log.i(TAG, "Crossed the Baseline = " + baseline);
+                Log.i(TAG, "chk_baseline Listener");
+                if (buttonView.isChecked()) {
+                    //checked
+                    baseline = true;
+                    Log.i(TAG, "Crossed the Baseline = " + baseline);
 
-                                                        } else {
-                                                            //not checked
-                                                            baseline = false;
-                                                            Log.i(TAG, "Crossed the Baseline = " + baseline);
-
-                                                        }
-                                                    }
-                                                }
+                } else {
+                    //not checked
+                    baseline = false;
+                    Log.i(TAG, "Crossed the Baseline = " + baseline);
+                }
+            }
+        }
         );
 
         chkBox_balls.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                                                     @Override
                                                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                                        Log.i(TAG, "chkBox_balls Listener");
-                                                        if (buttonView.isChecked()) {
-                                                            //checked
-                                                            editText_Fuel.setVisibility(View.VISIBLE);
-                                                            editText_Fuel.setEnabled(true);
+                Log.i(TAG, "chkBox_balls Listener");
+                if (buttonView.isChecked()) {
+                    //checked
+                    editText_Fuel.setVisibility(View.VISIBLE);
+                    editText_Fuel.setEnabled(true);
 //                    carry_fuel = true;
 //                    Log.d(TAG, "Fuel = " + fuel);
-                                                        } else {
-                                                            //not checked
-                                                            Log.i(TAG, "TextBox is unchecked.");
-                                                            editText_Fuel.setVisibility(View.GONE);
-                                                            editText_Fuel.setEnabled(false);
+                } else {
+                    //not checked
+                    Log.i(TAG, "TextBox is unchecked.");
+                    editText_Fuel.setVisibility(View.GONE);
+                    editText_Fuel.setEnabled(false);
 //                    carry_fuel = false;
-                                                        }
-                                                    }
-                                                }
-        );
+                }
+            }
+        }
+);
 
 
 //        button_GearsPlus.setOnClickListener(new View.OnClickListener() {
@@ -389,7 +387,7 @@ public class MatchScoutActivity extends AppCompatActivity {
 
                 } else {        // It's OK - Match has started
 
-                    if (0 > 0) {            //**COMPILE **
+                    if (0 > 0) {            //**COMPILE -  GLF 1/21 **
 //                        if (gearAttemptNum > 0 && spinner_GearPlacement.getSelectedItemPosition() == 0) {  //Required field
 
                         Toast.makeText(getBaseContext(), "*** Select Gear Position  *** ", Toast.LENGTH_LONG).show();
@@ -428,12 +426,6 @@ public class MatchScoutActivity extends AppCompatActivity {
             });
         }
 
-    private void launchTeleopScoutActivity(String team, String name) {
-        Log.i(TAG, ">>>>> launchTeleopScoutActivity   <<<<<");
-
-        load_team = tn;
-
-    }
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void storeAutoData() {
@@ -594,28 +586,20 @@ public class MatchScoutActivity extends AppCompatActivity {
     }
 
     protected void exitByBackKey() {
-
         AlertDialog alertbox = new AlertDialog.Builder(this)
                 .setMessage("Do you want to exit without saving? All of your data will be lost!")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
                     // do something when the button is clicked
                     public void onClick(DialogInterface arg0, int arg1) {
-
                         finish();
-                        //close();
-
-
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
-
-                    // do something when the button is clicked
                     public void onClick(DialogInterface arg0, int arg1) {
                     }
                 })
                 .show();
-
     }
 
 
@@ -680,7 +664,7 @@ public void onStart() {
     public void onDestroy() {
         super.onDestroy();
         Log.v(TAG, "OnDestroy");
-        // ToDo - ??????
-    }
+
+     }
 
 }
