@@ -199,8 +199,9 @@
         android:id="@+id/lbl_startpos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/lbl_AfterStart"
-        android:layout_toEndOf="@+id/chk_cube"
+        android:layout_alignBaseline="@+id/chk_cube"
+        android:layout_alignBottom="@+id/chk_cube"
+        android:layout_toStartOf="@+id/txt_TeamName"
         android:text="Start Position"
         android:textColor="@color/grey"
         android:textSize="16sp" />
@@ -211,7 +212,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/chk_cube"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="8sp"
+        android:layout_marginLeft="4sp"
         android:layout_marginTop="12sp" />
 
     // ==============================================================================
@@ -259,7 +260,7 @@
         android:layout_width="match_parent"
         android:layout_height="50sp"
         android:layout_below="@+id/checkbox_automode"
-        android:layout_marginTop="8sp"
+        android:layout_marginTop="12sp"
         android:orientation="horizontal">
 
         <ImageView
@@ -299,15 +300,23 @@
 
     </LinearLayout>
 
+    <CheckBox
+        android:id="@+id/chk_ExtraSwitch"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_alignEnd="@+id/spinner_startPos"
+        android:layout_below="@+id/lin_cubePlacedSwitch"
+        android:layout_toEndOf="@+id/editTxt_Team"
+        android:text="Scored extra cube on switch" />
+
     // ==============================================================================
     // Scale
-
     <LinearLayout
         android:id="@+id/lin_cubePlacedScale"
         android:layout_width="match_parent"
         android:layout_height="50sp"
         android:layout_below="@+id/lin_cubePlacedSwitch"
-        android:layout_marginTop="5sp"
+        android:layout_marginTop="40sp"
         android:orientation="horizontal">
 
         <ImageView

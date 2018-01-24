@@ -416,11 +416,12 @@ public class MatchScoutActivity extends AppCompatActivity {
         Pearadox.Match_Data.setAuto_cube_switch(cube_switch);
         Pearadox.Match_Data.setAuto_cube_switch_att(cube_switch_att);
         Pearadox.Match_Data.setAuto_switch_extra(switch_extra);
+        Pearadox.Match_Data.setAuto_wrong_switch(wrong_switch);
         Pearadox.Match_Data.setAuto_cube_scale(cube_scale);
         Pearadox.Match_Data.setAuto_cube_scale_att(cube_scale_att);
         Pearadox.Match_Data.setAuto_xover_switch(xover_switch);
         Pearadox.Match_Data.setAuto_xover_scale(xover_scale);
-        Pearadox.Match_Data.setAuto_wrong_switch(wrong_switch);
+        Pearadox.Match_Data.setAuto_wrong_scale(wrong_scale);
         // --------------
         Pearadox.Match_Data.setAuto_comment(autoComment);
         Pearadox.Match_Data.setFinal_studID(studID);
