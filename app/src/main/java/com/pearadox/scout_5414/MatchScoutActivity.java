@@ -46,7 +46,7 @@ public class MatchScoutActivity extends AppCompatActivity {
     EditText editTxt_Team, editTxt_Match;
     TextView txt_EventName, txt_dev, txt_stud, txt_Match, txt_MyTeam, txt_TeamName, text_HGSeekBarValue, text_LGSeekBarValue, text_collected_balls;
     TextView txt_GearsPlaced, txt_GearsAttempted;
-    CheckBox chk_baseline, chk_highGoal, chkBox_balls, chk_gears, chk_lowGoal, checkbox_automode, chk_activate_hopper, chk_baselineINVIS;
+    CheckBox chk_baseline, chk_highGoal, chk_gears, chk_lowGoal, checkbox_automode, chk_activate_hopper, chk_baselineINVIS;
     EditText editText_Fuel, editText_autoComment;
     Spinner spinner_balls_collected;
     SeekBar seekBar_HighGoal, seekBar_LowGoal;
@@ -240,29 +240,27 @@ public class MatchScoutActivity extends AppCompatActivity {
 //        seekBar_HighGoal = (SeekBar) findViewById(R.id.seekBar_HighGoal);
 //        seekBar_LowGoal = (SeekBar) findViewById(R.id.seekBar_LowGoal);
         checkbox_automode = (CheckBox) findViewById(R.id.checkbox_automode);
-        chkBox_balls = (CheckBox) findViewById(R.id.chk_balls);
-//        editText_Fuel = (EditText) findViewById(R.id.editText_Fuel);
         editText_autoComment = (EditText) findViewById(R.id.editText_autoComment);
         chk_gears = (CheckBox) findViewById(R.id.chk_cube);
         button_GoToTeleopActivity = (Button) findViewById(R.id.button_GoToTeleopActivity);
         button_GoToArenaLayoutActivity = (Button) findViewById(R.id.button_GoToArenaLayoutActivity);
 //        txt_GearsPlaced.setText(Integer.toString(gearNum));
 //        txt_GearsAttempted.setText(Integer.toString(gearAttemptNum));
-        seekBar_HighGoal.setEnabled(false);
-        seekBar_HighGoal.setVisibility(View.GONE);
-        chk_highGoal.setChecked(false);
-        seekBar_LowGoal.setEnabled(false);
-        seekBar_LowGoal.setVisibility(View.GONE);
-        chk_lowGoal.setChecked(false);
+//        seekBar_HighGoal.setEnabled(false);
+//        seekBar_HighGoal.setVisibility(View.GONE);
+//        chk_highGoal.setChecked(false);
+//        seekBar_LowGoal.setEnabled(false);
+//        seekBar_LowGoal.setVisibility(View.GONE);
+//        chk_lowGoal.setChecked(false);
 //        text_HGSeekBarValue = (TextView) findViewById(R.id.text_HGSeekBarValue);
 //        text_LGSeekBarValue = (TextView) findViewById(R.id.text_LGSeekBarValue);
-        text_HGSeekBarValue.setVisibility(View.GONE);
-        text_LGSeekBarValue.setVisibility(View.GONE);
-        editText_Fuel.setVisibility(View.GONE);
-        editText_Fuel.setEnabled(false);
-        editText_Fuel.setText("");
-        text_collected_balls.setVisibility(View.INVISIBLE);
-        spinner_balls_collected.setVisibility(View.INVISIBLE);
+//        text_HGSeekBarValue.setVisibility(View.GONE);
+//        text_LGSeekBarValue.setVisibility(View.GONE);
+//        editText_Fuel.setVisibility(View.GONE);
+//        editText_Fuel.setEnabled(false);
+//        editText_Fuel.setText("");
+//        text_collected_balls.setVisibility(View.INVISIBLE);
+//        spinner_balls_collected.setVisibility(View.INVISIBLE);
 
 
         Spinner spinner_startPos = (Spinner) findViewById(R.id.spinner_startPos);
@@ -311,27 +309,6 @@ public class MatchScoutActivity extends AppCompatActivity {
             }
         }
         );
-
-        chkBox_balls.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                    @Override
-                                                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.i(TAG, "chkBox_balls Listener");
-                if (buttonView.isChecked()) {
-                    //checked
-                    editText_Fuel.setVisibility(View.VISIBLE);
-                    editText_Fuel.setEnabled(true);
-//                    carry_fuel = true;
-//                    Log.d(TAG, "Fuel = " + fuel);
-                } else {
-                    //not checked
-                    Log.i(TAG, "TextBox is unchecked.");
-                    editText_Fuel.setVisibility(View.GONE);
-                    editText_Fuel.setEnabled(false);
-//                    carry_fuel = false;
-                }
-            }
-        }
-);
 
 
 //        button_GearsPlus.setOnClickListener(new View.OnClickListener() {
