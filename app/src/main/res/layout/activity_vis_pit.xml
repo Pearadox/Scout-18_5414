@@ -288,6 +288,22 @@
             android:clickable="false"
             android:textColor="@color/cyan" />
 
+        <CheckBox
+            android:id="@+id/chkBox_ArmPress"
+            android:layout_width="150sp"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:text="Pressure"
+            android:textColor="@color/cyan" />
+
+        <CheckBox
+            android:id="@+id/chkBox_OffFloor"
+            android:layout_width="170sp"
+            android:layout_height="wrap_content"
+            android:text="Can pick up off floor"
+            android:textColor="@color/cyan"
+            android:visibility="invisible" />
+
     </LinearLayout>
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -376,16 +392,6 @@
         android:textColor="@color/green"
         android:textSize="14dp" />
 
-    <CheckBox
-        android:id="@+id/chkBox_ArmPress"
-        android:layout_width="150sp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/cube_mech"
-        android:layout_centerHorizontal="true"
-        android:clickable="false"
-        android:text="Pressure"
-        android:textColor="@color/cyan"
-        android:visibility="invisible" />
 
 
 </RelativeLayout>

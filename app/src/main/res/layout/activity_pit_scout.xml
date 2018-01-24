@@ -262,18 +262,19 @@
         android:text="Can Climb" />
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/lin_lift"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/chkBox_Pneumatics"
-        android:id="@+id/lin_lift">
+        android:layout_marginTop="10sp"
+        android:orientation="horizontal">
 
-    <CheckBox
-        android:id="@+id/chkBox_CanLift"
-        android:layout_width="160sp"
-        android:layout_height="wrap_content"
-        android:textColor="@color/red"
-        android:text="Can Lift robot(s)" />
+        <CheckBox
+            android:id="@+id/chkBox_CanLift"
+            android:layout_width="160sp"
+            android:layout_height="wrap_content"
+            android:text="Can Lift robot(s)"
+            android:textColor="@color/red" />
 
         <CheckBox
             android:id="@+id/chkBox_Ramp"
@@ -295,15 +296,17 @@
             android:text="Hook"
             android:textColor="@color/orange" />
 
-</LinearLayout>
+    </LinearLayout>
 
     //**********************************************************
+
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/cube_mech"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lin_lift"
-        android:id="@+id/cube_mech">
+        android:layout_marginTop="10sp"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/lbl_CubMech"
@@ -321,26 +324,26 @@
             android:text="Grabber Arm(s)"
             android:textColor="@color/blue" />
 
-    <CheckBox
-        android:id="@+id/chkBox_Belt"
-        android:layout_width="120sp"
-        android:layout_height="wrap_content"
-        android:text="Conveyer Belt"
-        android:textColor="@color/blue" />
+        <CheckBox
+            android:id="@+id/chkBox_Belt"
+            android:layout_width="120sp"
+            android:layout_height="wrap_content"
+            android:text="Conveyer Belt"
+            android:textColor="@color/blue" />
 
-    <CheckBox
-        android:id="@+id/chkBox_Box"
-        android:layout_width="120sp"
-        android:layout_height="wrap_content"
-        android:text="Box/Platform"
-        android:textColor="@color/blue" />
+        <CheckBox
+            android:id="@+id/chkBox_Box"
+            android:layout_width="120sp"
+            android:layout_height="wrap_content"
+            android:text="Box/Platform"
+            android:textColor="@color/blue" />
 
-    <CheckBox
-        android:id="@+id/chkBox_Other"
-        android:layout_width="90sp"
-        android:layout_height="wrap_content"
-        android:text="Other"
-        android:textColor="@color/blue" />
+        <CheckBox
+            android:id="@+id/chkBox_Other"
+            android:layout_width="90sp"
+            android:layout_height="wrap_content"
+            android:text="Other"
+            android:textColor="@color/blue" />
 
     </LinearLayout>
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -368,6 +371,14 @@
             android:visibility="invisible"
             android:text="Pressure"
             android:textColor="@color/cyan" />
+
+        <CheckBox
+            android:id="@+id/chkBox_OffFloor"
+            android:layout_width="170sp"
+            android:layout_height="wrap_content"
+            android:text="Can pick up off floor"
+            android:textColor="@color/cyan"
+            android:visibility="invisible" />
 
     </LinearLayout>
 

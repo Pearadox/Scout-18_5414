@@ -26,7 +26,7 @@ public class VisPit_Activity extends AppCompatActivity {
     TextView txt_Ht, txt_TotWheels, txt_NumTrac, txt_NumOmni, txt_NumMecanum, txt_LiftCap, txt_Scout, txt_Comments;
     ImageView imgView_Robot;                // Robot image
     CheckBox chkBox_Vision, chkBox_Pneumatics, chkBox_Climb, chkBox_Lift, chkBox_Hook, chkBox_Ramp;
-    CheckBox chkBox_Arms, chkBox_ArmIntake, chkBox_ArmPress, chkBox_Belt, chkBox_Box, chkBox_Other;
+    CheckBox chkBox_Arms, chkBox_ArmIntake, chkBox_ArmPress, chkBox_OffFloor, chkBox_Belt, chkBox_Box, chkBox_Other;
     RadioGroup radgrp_Deliver;      RadioButton radio_Launch, radio_Place;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfPitData_DBReference;
@@ -129,6 +129,7 @@ public class VisPit_Activity extends AppCompatActivity {
                 chkBox_Arms = (CheckBox) findViewById(R.id.chkBox_Arms);
                 chkBox_ArmIntake = (CheckBox) findViewById(R.id.chkBox_ArmIntake);
                 chkBox_ArmPress = (CheckBox) findViewById(R.id.chkBox_ArmPress);
+                chkBox_OffFloor = (CheckBox) findViewById(R.id.chkBox_OffFloor);
                 chkBox_Belt = (CheckBox) findViewById(R.id.chkBox_Belt);
                 chkBox_Box = (CheckBox) findViewById(R.id.chkBox_Box);
                 chkBox_Other = (CheckBox) findViewById(R.id.chkBox_Other);
@@ -168,9 +169,12 @@ public class VisPit_Activity extends AppCompatActivity {
                     chkBox_ArmIntake.setChecked(Pit_Data.isPit_armIntake());
                     chkBox_ArmPress.setVisibility(View.VISIBLE);
                     chkBox_ArmPress.setChecked(Pit_Data.isPit_armSqueeze());
+                    chkBox_OffFloor.setVisibility(View.VISIBLE);
+                    chkBox_OffFloor.setChecked(Pit_Data.isPit_cubeManip());
                 } else {
                     chkBox_ArmIntake.setVisibility(View.INVISIBLE);
                     chkBox_ArmPress.setVisibility(View.INVISIBLE);
+                    chkBox_OffFloor.setVisibility(View.INVISIBLE);
                 }
                 chkBox_Belt.setChecked(Pit_Data.isPit_cubeBelt());
                 chkBox_Box.setChecked(Pit_Data.isPit_cubeBox());

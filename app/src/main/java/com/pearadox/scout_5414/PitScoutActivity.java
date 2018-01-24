@@ -66,8 +66,8 @@ public class PitScoutActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     ArrayAdapter<String> adapter_Trac, adapter_Omni, adapter_Mac ;
     RadioGroup radgrp_Deliver;      RadioButton radio_Deliver;
-    CheckBox chkBox_Ramp, chkBox_CanLift, chkBox_Hook, chkBox_Vision, chkBox_Pneumatics, chkBox_Climb;
-    CheckBox chkBox_Arms, chkBox_ArmPress, chkBox_ArmIntake;
+    CheckBox chkBox_Ramp, chkBox_CanLift, chkBox_Hook, chkBox_Vision, chkBox_Pneumatics, chkBox_Climb, chkBox_Belt, chkBox_Box, chkBox_Other;
+    CheckBox chkBox_Arms, chkBox_ArmPress, chkBox_ArmIntake, chkBox_OffFloor;
     Button btn_Save;
     Uri currentImageUri;
     String currentImagePath;
@@ -77,7 +77,7 @@ public class PitScoutActivity extends AppCompatActivity {
     public static String[] wheels = new String[]
             {"0","1","2","3","4","5","6", "7", "8"};
     public static String[] carry = new String[]             // Num. of robots this robot can lift
-            {"1","2"};
+            {" ","1","2"};
 
     String team_num, team_name, team_loc;
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name, team_loc);
@@ -223,11 +223,15 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
         chkBox_Arms = (CheckBox) findViewById(R.id.chkBox_Arms);
         chkBox_ArmPress = (CheckBox) findViewById(R.id.chkBox_ArmPress);
         chkBox_ArmIntake = (CheckBox) findViewById(R.id.chkBox_ArmIntake);
+        chkBox_OffFloor = (CheckBox) findViewById(R.id.chkBox_OffFloor);
         chkBox_Climb = (CheckBox) findViewById(R.id.chkBox_Climb);
+        chkBox_Belt = (CheckBox) findViewById(R.id.chkBox_Belt);
+        chkBox_Box = (CheckBox) findViewById(R.id.chkBox_Box);
+        chkBox_Other = (CheckBox) findViewById(R.id.chkBox_Other);
         editText_Comments = (EditText) findViewById(R.id.editText_Comments);
         editText_Comments.setClickable(true);
         Toast toast = Toast.makeText(getBaseContext(), "*** Select a TEAM first before entering data ***", Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setGravity(Gravity.TOP, 0, 0);
         toast.show();
 
 //===============================================================================================================
@@ -250,13 +254,13 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
                Log.w(TAG, "chkBox_CanLift Listener");
                if (buttonView.isChecked()) {
                    Log.w(TAG,"Lift is checked.");
-//                   fuel_Container = true;
+                   canLift = true;
                    chkBox_Ramp.setVisibility(VISIBLE);
                    chkBox_Hook.setVisibility(VISIBLE);
                    spinner_numRobots.setVisibility(VISIBLE);
                } else {
                    Log.w(TAG,"Lift is unchecked.");
-//                   fuel_Container = false;
+                   canLift = false;
                    chkBox_Ramp.setVisibility(View.GONE);
                    chkBox_Hook.setVisibility(View.GONE);
                    spinner_numRobots.setVisibility(View.GONE);
@@ -311,11 +315,13 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
                     cubeArm = true;
                     chkBox_ArmIntake.setVisibility(VISIBLE);
                     chkBox_ArmPress.setVisibility(VISIBLE);
+                    chkBox_OffFloor.setVisibility(VISIBLE);
                 } else {
                     Log.w(TAG,"Arms is unchecked.");
                     cubeArm = false;
                     chkBox_ArmIntake.setVisibility(View.INVISIBLE);
                     chkBox_ArmPress.setVisibility(View.INVISIBLE);
+                    chkBox_OffFloor.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -348,6 +354,20 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
             }
         });
 
+        chkBox_OffFloor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.w(TAG, "chkBox_OffFloor Listener");
+                if (buttonView.isChecked()) {
+                    Log.w(TAG,"Off-floor is checked.");
+                    cubeManip = true;
+                } else {
+                    Log.w(TAG,"Off-floor is unchecked.");
+                    cubeManip = false;
+                }
+            }
+        });
+
         chkBox_Climb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
@@ -358,6 +378,48 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
                 } else {
                     Log.w(TAG,"Climb is unchecked.");
                     climb = false;
+                }
+            }
+        });
+
+        chkBox_Belt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.w(TAG, "chkBox_Belt Listener");
+                if (buttonView.isChecked()) {
+                    Log.w(TAG,"Belt is checked.");
+                    cubeBelt = true;
+                } else {
+                    Log.w(TAG,"Belt is unchecked.");
+                    cubeBelt = false;
+                }
+            }
+        });
+
+        chkBox_Box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.w(TAG, "chkBox_Box Listener");
+                if (buttonView.isChecked()) {
+                    Log.w(TAG,"Box is checked.");
+                    cubeBox = true;
+                } else {
+                    Log.w(TAG,"Box is unchecked.");
+                    cubeBox = false;
+                }
+            }
+        });
+
+        chkBox_Other.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.w(TAG, "chkBox_Other Listener");
+                if (buttonView.isChecked()) {
+                    Log.w(TAG,"Other is checked.");
+                    cubeOhtr = true;
+                } else {
+                    Log.w(TAG,"Other is unchecked.");
+                    cubeOhtr = false;
                 }
             }
         });
@@ -398,7 +460,7 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
         btn_Save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.w(TAG, "Save Button Listener");
-                if (txtEd_Height.length() > 0) {
+                if (txtEd_Height.length() > 0 && totalWheels >= 4) {        // required
 
                     Spinner spinner_Team = (Spinner) findViewById(R.id.spinner_Team);
                     storePitData();           // Put all the Pit data collected in Pit object
@@ -410,8 +472,8 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
                     finish();       // Exit  <<<<<<<<
                 } else {
                     final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                    tg.startTone(ToneGenerator.TONE_PROP_BEEP);
-                    Toast toast = Toast.makeText(getBaseContext(), "*** Enter _ALL_ data (Height) before saving ***", Toast.LENGTH_LONG);
+                    tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
+                    Toast toast = Toast.makeText(getBaseContext(), "*** Enter _ALL_ data (Height & Wheels) before saving ***", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
                 }
