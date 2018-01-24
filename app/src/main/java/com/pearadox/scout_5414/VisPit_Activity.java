@@ -27,7 +27,7 @@ public class VisPit_Activity extends AppCompatActivity {
     ImageView imgView_Robot;                // Robot image
     CheckBox chkBox_Vision, chkBox_Pneumatics, chkBox_Climb, chkBox_Lift, chkBox_Hook, chkBox_Ramp;
     CheckBox chkBox_Arms, chkBox_ArmIntake, chkBox_ArmPress, chkBox_Belt, chkBox_Box, chkBox_Other;
-    RadioGroup radgrp_Deliver;      RadioButton radio_Deliver;
+    RadioGroup radgrp_Deliver;      RadioButton radio_Launch, radio_Place;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfPitData_DBReference;
 
@@ -132,6 +132,9 @@ public class VisPit_Activity extends AppCompatActivity {
                 chkBox_Belt = (CheckBox) findViewById(R.id.chkBox_Belt);
                 chkBox_Box = (CheckBox) findViewById(R.id.chkBox_Box);
                 chkBox_Other = (CheckBox) findViewById(R.id.chkBox_Other);
+                radgrp_Deliver = (RadioGroup) findViewById(R.id.radgrp_Deliver);
+                radio_Place = (RadioButton) findViewById(R.id.radio_Place);
+                radio_Launch = (RadioButton) findViewById(R.id.radio_Launch);
 
                 txt_Scout = (TextView) findViewById(R.id.txt_Scout);
                 txt_Comments = (TextView) findViewById(R.id.txt_Comments);
@@ -173,13 +176,13 @@ public class VisPit_Activity extends AppCompatActivity {
                 chkBox_Box.setChecked(Pit_Data.isPit_cubeBox());
                 chkBox_Other.setChecked(Pit_Data.isPit_cubeOhtr());
                 Log.w(TAG, "Radio - Launch= " + Pit_Data.isPit_delLaunch());
-                int selectedId = 0;
                 if (Pit_Data.isPit_delLaunch()) {
-                    selectedId = R.id.radio_Launch;
+                    radio_Launch.setChecked(true);
+                    radio_Place.setChecked(false);      // ?
                 } else {
-                    selectedId = R.id.radio_Place;;
+                    radio_Place.setChecked(true);
+                    radio_Launch.setChecked(false);     // ?
                 }
-                radio_Deliver = (RadioButton) findViewById(selectedId);
 
                 // Finally ...
                 txt_Scout.setText(Pit_Data.getPit_scout());
