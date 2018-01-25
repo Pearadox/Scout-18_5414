@@ -208,12 +208,11 @@
 
     <Spinner
         android:id="@+id/spinner_startPos"
-        android:layout_width="75sp"
+        android:layout_width="120sp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/chk_cube"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="4sp"
-        android:layout_marginTop="12sp" />
+        android:layout_marginLeft="10sp"
+        android:layout_toEndOf="@+id/lbl_startpos" />
 
     // ==============================================================================
 
@@ -344,6 +343,7 @@
             android:id="@+id/chk_XoverScale"
             android:layout_width="80dp"
             android:layout_height="50dp"
+            android:layout_marginLeft="10sp"
             android:layout_weight="1.2"
             android:text="Crossed-Over to Scale" />
 

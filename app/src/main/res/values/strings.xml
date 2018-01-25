@@ -53,8 +53,9 @@
     <!-- ##### Start Position for Autononous ##### -->
     <string-array name="auto_start_array">
         <item> </item>
-        <item>Side</item>
+        <item>Side (out)</item>
         <item>Middle</item>
+        <item>Side (in)</item>
     </string-array>
 
     <!-- ##### Stop Position for Autononous ##### -->
