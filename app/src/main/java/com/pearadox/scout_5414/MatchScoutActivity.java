@@ -45,13 +45,12 @@ public class MatchScoutActivity extends AppCompatActivity {
     public static String device = " ";
     EditText editTxt_Team, editTxt_Match;
     TextView txt_EventName, txt_dev, txt_stud, txt_Match, txt_MyTeam, txt_TeamName, text_HGSeekBarValue, text_LGSeekBarValue, text_collected_balls;
-    TextView txt_GearsPlaced, txt_GearsAttempted;
-    CheckBox chk_baseline, chk_highGoal, chk_gears, chk_lowGoal, checkbox_automode, chk_activate_hopper, chk_baselineINVIS;
-    EditText editText_Fuel, editText_autoComment;
+    CheckBox chk_baseline, checkbox_automode, chk_cubeSwitch, chk_attemptSwitch, chk_XoverSwitch, chk_WrongSwitch, chk_cubeScale, chk_attemptScale, chk_XoverScale, chk_WrongScale, chk_highGoal, chk_gears, chk_lowGoal, chk_activate_hopper, chk_baselineINVIS;
+    EditText editText_autoComment, editText_Fuel;
     Spinner spinner_balls_collected;
     SeekBar seekBar_HighGoal, seekBar_LowGoal;
-    ImageView imgScoutLogo;
-    private Button button_GearsMinus, button_GearsPlus, button_GoToTeleopActivity, button_GoToArenaLayoutActivity, button_GearsAttemptedMinus, button_GearsAttemptedPlus;
+//    ImageView imgScoutLogo;
+    private Button button_GoToTeleopActivity, button_GoToArenaLayoutActivity, button_GearsMinus, button_GearsPlus, button_GearsAttemptedMinus, button_GearsAttemptedPlus;
     String team_num, team_name, team_loc;
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj(team_num, team_name, team_loc);
     private FirebaseDatabase pfDatabase;
@@ -61,9 +60,9 @@ public class MatchScoutActivity extends AppCompatActivity {
     private DatabaseReference pfCur_Match_DBReference;
     String key = null;      // key for Devices Firebase
     ArrayAdapter<String> adapter_autostartpos;
-    ArrayAdapter<String> adapter_autostoppos;
-    ArrayAdapter<String> adapter_auto_gear_placement;
-    ArrayAdapter<String> adapter_balls_collected;
+//    ArrayAdapter<String> adapter_autostoppos;
+//    ArrayAdapter<String> adapter_auto_gear_placement;
+//    ArrayAdapter<String> adapter_balls_collected;
 
     // ===================  Autonomous Elements for Match Scout Data object ===================
     public String matchID = "T00";          // Type + #
@@ -230,10 +229,10 @@ public class MatchScoutActivity extends AppCompatActivity {
 
 //        chk_baselineINVIS = (CheckBox) findViewById(R.id.chk_baselineINVIS);
 //        chk_baselineINVIS.setVisibility(View.INVISIBLE);
-        txt_GearsPlaced = (TextView) findViewById(R.id.txt_GearsPlaced);
-        text_collected_balls = (TextView) findViewById(R.id.text_collected_balls);
+//        txt_GearsPlaced = (TextView) findViewById(R.id.txt_GearsPlaced);
+//        text_collected_balls = (TextView) findViewById(R.id.text_collected_balls);
 //        spinner_balls_collected = (Spinner) findViewById(R.id.spinner_balls_collected);
-        txt_GearsAttempted = (TextView) findViewById(R.id.txt_GearsAttempted);
+//        txt_GearsAttempted = (TextView) findViewById(R.id.txt_GearsAttempted);
         chk_baseline = (CheckBox) findViewById(R.id.chk_baseline);
 //        chk_highGoal = (CheckBox) findViewById(R.id.chk_highGoal);
 //        chk_lowGoal = (CheckBox) findViewById(R.id.chk_LowGoal);
@@ -241,7 +240,7 @@ public class MatchScoutActivity extends AppCompatActivity {
 //        seekBar_LowGoal = (SeekBar) findViewById(R.id.seekBar_LowGoal);
         checkbox_automode = (CheckBox) findViewById(R.id.checkbox_automode);
         editText_autoComment = (EditText) findViewById(R.id.editText_autoComment);
-        chk_gears = (CheckBox) findViewById(R.id.chk_cube);
+//        chk_gears = (CheckBox) findViewById(R.id.chk_cube);
         button_GoToTeleopActivity = (Button) findViewById(R.id.button_GoToTeleopActivity);
         button_GoToArenaLayoutActivity = (Button) findViewById(R.id.button_GoToArenaLayoutActivity);
 //        txt_GearsPlaced.setText(Integer.toString(gearNum));
@@ -261,6 +260,18 @@ public class MatchScoutActivity extends AppCompatActivity {
 //        editText_Fuel.setText("");
 //        text_collected_balls.setVisibility(View.INVISIBLE);
 //        spinner_balls_collected.setVisibility(View.INVISIBLE);
+
+/* ========================Switch Ids======================== */
+        chk_cubeSwitch = (CheckBox) findViewById(R.id.chk_cubeSwitch);
+        chk_attemptSwitch = (CheckBox) findViewById(R.id.chk_attemptSwitch);
+        chk_XoverSwitch = (CheckBox) findViewById(R.id.chk_XoverSwitch);
+        chk_WrongSwitch = (CheckBox) findViewById(R.id.chk_WrongSwitch);
+
+/* ========================Scale Ids======================== */
+        chk_cubeScale = (CheckBox) findViewById(R.id.chk_cubeScale);
+        chk_attemptScale = (CheckBox) findViewById(R.id.chk_attemptScale);
+        chk_XoverScale = (CheckBox) findViewById(R.id.chk_XoverScale);
+        chk_WrongScale = (CheckBox) findViewById(R.id.chk_WrongScale);
 
 
         Spinner spinner_startPos = (Spinner) findViewById(R.id.spinner_startPos);
@@ -311,31 +322,150 @@ public class MatchScoutActivity extends AppCompatActivity {
         );
 
 
-//        button_GearsPlus.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                if (gearNum < 3) {
-//                    gearNum++;
-//                    gearAttemptNum++;
-//                }
-//                Log.d(TAG, "Gears = " + gearNum);      // ** DEBUG **
-//                Log.d(TAG, "Gears Attempted = " + gearAttemptNum);
-//                txt_GearsPlaced.setText(Integer.toString(gearNum));    // Perform action on click
-//                txt_GearsAttempted.setText(Integer.toString(gearAttemptNum));
-//            }
-//        });
-//        button_GearsMinus.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                if (gearNum >= 1 && gearAttemptNum >= gearNum) {
-//                    gearNum--;
-//                    gearAttemptNum--;
-//                }
-//                Log.d(TAG, "Gears = " + gearNum);      // ** DEBUG **
-//                Log.d(TAG, "Gears Attempted = " + gearAttemptNum);
-//                txt_GearsPlaced.setText(Integer.toString(gearNum));    // Perform action on click
-//                txt_GearsAttempted.setText(Integer.toString(gearAttemptNum));
-//            }
-//        });
-//
+        chk_cubeSwitch.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.w(TAG, "chk_cubeSwitch Listener");
+                if (chk_cubeSwitch.isChecked()) {
+                    //checked
+                    cube_switch = true;
+                    Log.w(TAG, "Cube in Switch = " + cube_switch);
+
+                } else {
+                    //not checked
+                    cube_switch = false;
+                    Log.w(TAG, "Cube in Switch = " + cube_switch);
+
+                }
+
+            }
+        });
+        chk_attemptSwitch.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.w(TAG, "chk_attemptSwitch Listener");
+                if (chk_attemptSwitch.isChecked()) {
+                    //checked
+                    cube_switch_att = true;
+                    Log.w(TAG, "Attempted to place Cube in Switch = " + cube_switch_att);
+
+                } else {
+                    //not checked
+                    cube_switch_att = false;
+                    Log.w(TAG, "Attempted to place Cube in Switch = " + cube_switch_att);
+
+                }
+
+            }
+        });
+
+        chk_XoverSwitch.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.w(TAG, "chk_attemptSwitch Listener");
+                if (chk_XoverSwitch.isChecked()) {
+                    //checked
+                    xover_switch = true;
+                    Log.w(TAG, "Attempted to place Cube in Switch = " + xover_switch);
+
+                } else {
+                    //not checked
+                    xover_switch = false;
+                    Log.w(TAG, "Attempted to place Cube in Switch = " + xover_switch);
+
+                }
+
+            }
+        });
+
+        chk_WrongSwitch.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.w(TAG, "chk_attemptSwitch Listener");
+                if (chk_WrongSwitch.isChecked()) {
+                    //checked
+                    wrong_switch = true;
+                    Log.w(TAG, "Attempted to place Cube in Switch = " + wrong_switch);
+
+                } else {
+                    //not checked
+                    wrong_switch = false;
+                    Log.w(TAG, "Attempted to place Cube in Switch = " + wrong_switch);
+
+                }
+
+            }
+        });
+
+
+        chk_cubeScale.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.w(TAG, "chk_cubeSwitch Listener");
+                if (chk_cubeSwitch.isChecked()) {
+                    //checked
+                    cube_switch = true;
+                    Log.w(TAG, "Cube in Switch = " + cube_switch);
+
+                } else {
+                    //not checked
+                    cube_switch = false;
+                    Log.w(TAG, "Cube in Switch = " + cube_switch);
+
+                }
+
+            }
+        });
+        chk_attemptScale.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.w(TAG, "chk_attemptSwitch Listener");
+                if (chk_attemptSwitch.isChecked()) {
+                    //checked
+                    cube_switch_att = true;
+                    Log.w(TAG, "Attempted to place Cube in Switch = " + cube_switch_att);
+
+                } else {
+                    //not checked
+                    cube_switch_att = false;
+                    Log.w(TAG, "Attempted to place Cube in Switch = " + cube_switch_att);
+
+                }
+
+            }
+        });
+
+        chk_XoverScale.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.w(TAG, "chk_attemptSwitch Listener");
+                if (chk_XoverSwitch.isChecked()) {
+                    //checked
+                    xover_switch = true;
+                    Log.w(TAG, "Attempted to place Cube in Switch = " + xover_switch);
+
+                } else {
+                    //not checked
+                    xover_switch = false;
+                    Log.w(TAG, "Attempted to place Cube in Switch = " + xover_switch);
+
+                }
+
+            }
+        });
+
+        chk_WrongScale.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.w(TAG, "chk_attemptSwitch Listener");
+                if (chk_WrongSwitch.isChecked()) {
+                    //checked
+                    wrong_switch = true;
+                    Log.w(TAG, "Attempted to place Cube in Switch = " + wrong_switch);
+
+                } else {
+                    //not checked
+                    wrong_switch = false;
+                    Log.w(TAG, "Attempted to place Cube in Switch = " + wrong_switch);
+
+                }
+
+            }
+        });
+
+
 //        button_GearsAttemptedPlus.setOnClickListener(new View.OnClickListener() {
 //            public void onClick(View v) {
 //                if (gearAttemptNum < 10) {
