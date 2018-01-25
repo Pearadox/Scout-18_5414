@@ -2,19 +2,25 @@ package com.pearadox.scout_5414;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.app.Activity;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -30,7 +36,8 @@ public class TeleopScoutActivity extends Activity {
     private Button button_GoToFinalActivity,btn_CubeSwitchM, btn_CubeSwitchP, btn_CubeSwitchAttP, btn_CubeSwitchAttM;
     CheckBox chk_climbsuccessful, chk_climbattempted, chkBox_PU_Cubes_floor;
     EditText editText_TeleComments;
-    
+    RadioGroup radgrp_Deliver;      RadioButton radio_Deliver;
+
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfTeam_DBReference;
     private DatabaseReference pfMatch_DBReference;
@@ -42,16 +49,12 @@ public class TeleopScoutActivity extends Activity {
     // ===================  TeleOps Elements for Match Scout Data object ===================
     public int cubeSwitch_placed = 0;                   // # Gears placed
     public int cubeSwitch_attempt = 0;                  // # Gears attempted
-    public boolean tele_hg = false;                             // Did they shoot at High Goal?
-    public int tele_hg_percent = 0;                     // What percentage HG made?
-    public boolean tele_lg = false;                             // Did they shoot at Low Goal?
-    public int tele_lg_percent = 0;                     // What percentage LG made?
-    public int tele_cycles = 0;                             // # cycles of shooting Upper Goal
-    public boolean tele_touch_act = false;                      // Did they activate Touchpad?
-//    public boolean tele_touch_pts = false;                      // Did they get Touchpad points?
-    public boolean tele_climb_attempt = false;                  // Did they ATTEMPT climb?
-    public boolean tele_climb_success = false;                  // Was climb successful?
-    public boolean tele_cube_pickup = false;                    //Did they pickup gears off the ground?
+//    public boolean tele_hg = false;                             // Did they shoot at High Goal?
+    public boolean delPlace = false;                    // Cube Delivery = Place
+    public boolean delLaunch = false;                   // Cube Delivery = Launch
+    public boolean tele_climb_attempt = false;          // Did they ATTEMPT climb?
+    public boolean tele_climb_success = false;          // Was climb successful?
+    public boolean tele_cube_pickup = false;            //Did they pickup gears off the ground?
     /* */
     public String teleComment = " ";    // Tele Comment
     // ===========================================================================
@@ -238,10 +241,29 @@ public class TeleopScoutActivity extends Activity {
                 teleComment = String.valueOf(s);
             }
         });
-
-
-
     }
+
+    /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+    public void RadioClick_Del(View view) {
+        Log.w(TAG, "@@ RadioClick_Del @@");
+        radgrp_Deliver = (RadioGroup) findViewById(R.id.radgrp_Deliver);
+        int selectedId = radgrp_Deliver.getCheckedRadioButtonId();
+//        Log.w(TAG, "*** Selected=" + selectedId);
+        radio_Deliver = (RadioButton) findViewById(selectedId);
+        String value = radio_Deliver.getText().toString();
+            radio_Deliver.setChecked(false);
+        if (value.equals("Place")) {           // Place?
+            Log.w(TAG, "Place");
+            delPlace = true;
+            delLaunch = false;
+        } else {                               // Launch
+            Log.w(TAG, "Launch");
+            delLaunch = true;
+            delPlace = false;
+        }
+        Log.w(TAG, "RadioDel - Launch = '" + delLaunch + "'  Place = '" + delPlace + "'");
+    }
+
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void storeTeleData() {
         Log.w(TAG, ">>>>  storeTeleData  <<<<");
@@ -317,20 +339,14 @@ public class TeleopScoutActivity extends Activity {
                     public void onClick(DialogInterface arg0, int arg1) {
 
                         finish();
-                        //close();
-
-
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
-
                     // do something when the button is clicked
                     public void onClick(DialogInterface arg0, int arg1) {
                     }
                 })
                 .show();
-
-
     }
 
 
