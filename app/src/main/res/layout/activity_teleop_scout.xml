@@ -7,16 +7,16 @@
 
     <TextView
         android:id="@+id/text_Teleop"
-        android:text="TeleOps period"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/yellow"
-        tools:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_toStartOf="@+id/button_GoToFinalActivity"
-        android:layout_alignParentEnd="true" />
+        android:text="TeleOps"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:textColor="@color/yellow"
+        tools:textAlignment="center" />
 
     <TextView
         android:id="@+id/lbl_robotnum"
@@ -32,46 +32,14 @@
         android:id="@+id/txt_tnum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/lbl_robotnum"
+        android:layout_alignBottom="@+id/lbl_robotnum"
+        android:layout_toEndOf="@+id/chk_climbsuccess"
+        android:text="0000"
         android:textColor="@color/yellow"
-        android:layout_alignTop="@+id/lbl_robotnum" />
+        android:textSize="24sp" />
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-
-    <CheckBox
-        android:id="@+id/chk_touchpadpts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_toEndOf="@+id/chk_touchpad"
-        android:text="Touchpad points Awarded"
-        android:visibility="invisible"
-        android:layout_alignBottom="@+id/chk_touchpad" />
-
-    <CheckBox
-        android:id="@+id/chk_climbattempt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/chkBox_PU_Gears_floor"
-        android:layout_marginStart="23dp"
-        android:layout_toEndOf="@+id/chk_climbsuccess"
-        android:text="Climb Attempted" />
-
-
-    <Button
-        android:text="Final"
-        android:layout_width="162dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/button_GoToFinalActivity"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
-
-    <CheckBox
-        android:id="@+id/chk_climbsuccess"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/chkBox_PU_Gears_floor"
-        android:text="Climb Successful" />
 
 
     // ==============================================================================
@@ -92,35 +60,15 @@
         android:src="@drawable/on_off_switch" />
 
 
-    <TextView
-        android:id="@+id/txt_GearPLACED"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cube(s) Placed"
-        android:textColor="@color/white" />
-
-        <Button
-            android:id="@+id/button_GearPlacedT"
-            android:text="-"
-            android:layout_height="40dp"
-            android:layout_width="30dp" />
-
-        <Button
-            android:id="@+id/button_GearPlacedTPlus"
-            android:layout_width="30dp"
-            android:layout_height="40dp"
-            android:text="+" />
-
         <TextView
-            android:id="@+id/txt_GearsAttempted"
+            android:id="@+id/lbl_CubeSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20sp"
-            android:text="Cube(s) Attempted"
+            android:text="Cube(s) Placed"
             android:textColor="@color/white" />
 
         <TextView
-            android:id="@+id/lbl_GearNUMT"
+            android:id="@+id/txt_CubeSwitchNUM"
             android:layout_width="30dp"
             android:layout_height="25dp"
             android:layout_marginLeft="5dp"
@@ -128,16 +76,47 @@
             android:textColor="@color/yellow" />
 
         <Button
-            android:id="@+id/button_GearAttemptedM"
-            android:text="-"
+            android:id="@+id/btn_CubeSwitchM"
             android:layout_width="30dp"
-            android:layout_height="40dp" />
+            android:layout_height="40dp"
+            android:text="-" />
 
         <Button
-            android:id="@+id/button_GearAttemptedP"
-            android:text="+"
+            android:id="@+id/btn_CubeSwitchP"
             android:layout_width="30dp"
-            android:layout_height="40dp" />
+            android:layout_height="40dp"
+            android:text="+" />
+
+        <TextView
+            android:id="@+id/lbl_CubeAttempted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:text="Cube(s) Attempted"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_CubeSwitchAttNUM"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:layout_alignStart="@+id/button_GoToFinalActivity"
+            android:layout_alignTop="@+id/lin_cubePlacedSwitch"
+            android:layout_marginLeft="5dp"
+            android:text="0"
+            android:textColor="@color/yellow" />
+
+        <Button
+            android:id="@+id/btn_CubeSwitchAttM"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:text="-" />
+
+        <Button
+            android:id="@+id/btn_CubeSwitchAttP"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:text="+" />
+
 
     </LinearLayout>
     // ==============================================================================
@@ -159,6 +138,42 @@
 
 
      </LinearLayout>
+
+    // ==============================================================================
+
+    <CheckBox
+        android:id="@+id/chkBox_PU_Cubes_floor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lin_cubePlacedScale"
+        android:text="Did they pickup cubes from the floor?" />
+
+    <CheckBox
+        android:id="@+id/chk_climbattempt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkBox_PU_Cubes_floor"
+        android:layout_marginStart="23dp"
+        android:layout_toEndOf="@+id/chk_climbsuccess"
+        android:text="Climb Attempted" />
+
+
+    <Button
+        android:text="Final"
+        android:layout_width="162dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_GoToFinalActivity"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+    <CheckBox
+        android:id="@+id/chk_climbsuccess"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkBox_PU_Cubes_floor"
+        android:text="Climb Successful" />
+
 
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -192,25 +207,5 @@
     </ScrollView>
 
 
-    <CheckBox
-        android:id="@+id/chkBox_PU_Gears_floor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/lin_cubePlacedScale"
-        android:layout_toEndOf="@+id/txt_tnum"
-        android:text="Did they pickup cubes from the floor?" />
-
-    <TextView
-        android:id="@+id/lbl_GearsAttempted"
-        android:layout_width="30dp"
-        android:layout_height="25dp"
-        android:layout_alignTop="@+id/lin_cubePlacedSwitch"
-        android:layout_toEndOf="@+id/chk_climbsuccess"
-        android:text="0"
-        android:textColor="@color/yellow" />
-
 
 </RelativeLayout>
-
-<!--This is for committing!-->
-<!--This is for committing!-->
