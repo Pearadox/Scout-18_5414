@@ -201,7 +201,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/chk_cube"
         android:layout_alignBottom="@+id/chk_cube"
-        android:layout_toStartOf="@+id/txt_TeamName"
+        android:layout_toEndOf="@+id/chk_cube"
         android:text="Start Position"
         android:textColor="@color/grey"
         android:textSize="16sp" />
@@ -244,12 +244,12 @@
 
     <CheckBox
         android:id="@+id/chk_cube"
-        android:layout_width="120dp"
+        android:layout_width="150dp"
         android:layout_height="30dp"
         android:layout_below="@+id/lbl_PreMatch"
         android:layout_toEndOf="@+id/lbl_space1"
         android:layout_weight="1.38"
-        android:text="Carry Cube?" />
+        android:text="Carrying Cube?" />
 
     // ==============================================================================
     // Switch
