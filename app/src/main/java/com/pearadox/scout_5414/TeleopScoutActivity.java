@@ -281,7 +281,7 @@ public class TeleopScoutActivity extends Activity {
     public void RadioClick_Boss(View view) {
         Log.w(TAG, "@@ RadioClick_Boss @@");
         radgrp_Boss = (RadioGroup) findViewById(R.id.radgrp_Boss);
-        int selectedId = radgrp_Deliver.getCheckedRadioButtonId();
+        int selectedId = radgrp_Boss.getCheckedRadioButtonId();
 //        Log.w(TAG, "*** Selected=" + selectedId);
         radio_Climb = (RadioButton) findViewById(selectedId);
         String value = radio_Climb.getText().toString();
@@ -301,7 +301,7 @@ public class TeleopScoutActivity extends Activity {
     public void RadioClick_Lifted(View view) {
         Log.w(TAG, "@@ RadioClick_Lifted @@");
         radgrp_Lifted = (RadioGroup) findViewById(R.id.radgrp_Lifted);
-        int selectedId = radgrp_Deliver.getCheckedRadioButtonId();
+        int selectedId = radgrp_Lifted.getCheckedRadioButtonId();
 //        Log.w(TAG, "*** Selected=" + selectedId);
         radio_Lift = (RadioButton) findViewById(selectedId);
         String value = radio_Lift.getText().toString();
