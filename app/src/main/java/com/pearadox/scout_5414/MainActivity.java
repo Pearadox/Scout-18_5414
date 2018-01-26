@@ -936,10 +936,9 @@ private void preReqs() {
     private void loadEvents() {
         Log.w(TAG, "###  loadEvents  ### " + is_resumed);
 
-        if (!is_resumed) {
+        if (!is_resumed) {      // Don't re-load if Resuming from scout
+            Log.e(TAG, "addEvents ");
             addEvents_VE_Listener(pfEvent_DBReference.orderByChild("comp-date"));
-        } else {
-
         }
     }
 
