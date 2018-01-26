@@ -47,9 +47,9 @@
         <activity android:name=".ArenaLayoutActivity" />
         <activity
             android:name=".TeleopScoutActivity"
-            android:configChanges="orientation"
-            android:windowSoftInputMode="adjustNothing" />
-        <activity
+            android:configChanges="orientation" />
+
+         <activity
             android:name=".VisPit_Activity"
             android:configChanges="orientation" />
         <activity

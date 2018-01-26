@@ -196,7 +196,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lin_cubePlacedScale"
-        android:layout_marginTop="12sp"
+        android:layout_marginTop="1sp"
         android:text="====  Opponent's Switch  ===="
         android:textColor="@color/red" />
 
@@ -322,12 +322,13 @@
 
     // ==============================================================================
     // Platform
+
     <LinearLayout
         android:id="@+id/lin_PlatformZone"
         android:layout_width="match_parent"
         android:layout_height="50sp"
         android:layout_below="@+id/del_type"
-        android:layout_marginTop="12sp"
+        android:layout_marginTop="8sp"
         android:orientation="horizontal">
 
         <ImageView
@@ -547,13 +548,48 @@
             android:text="+" />
     </LinearLayout>
     // ==============================================================================
+    // "Dummy" layout to PREVENT Comment field getting focus
+    <LinearLayout
+        android:orientation="horizontal"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:id="@+id/linearLayout" />
+
+
+    <ScrollView
+        android:id="@+id/scrollv_comm"
+        android:layout_width="500sp"
+        android:layout_height="80sp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lin_Exchange"
+        android:isScrollContainer="false">
+
+        <EditText
+            android:id="@+id/editText_teleComments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/scrollv_comm"
+            android:layout_alignStart="@+id/scrollv_comm"
+            android:layout_marginStart="4dp"
+            android:layout_toStartOf="@+id/button_GoToFinalActivity"
+            android:background="@drawable/border"
+            android:ems="12"
+            android:hint="Tap to add any additional comments."
+            android:inputType="textMultiLine"
+            android:lines="3"
+            android:scrollbars="vertical"
+            android:textColor="@color/yellow" />
+
+    </ScrollView>
 
     <CheckBox
         android:id="@+id/chkBox_PU_Cubes_floor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/lin_Exchange"
+        android:layout_below="@+id/scrollv_comm"
         android:text="Did they pickup cubes from the floor?" />
 
     <CheckBox
@@ -561,7 +597,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/lbl_GetOpponent"
-        android:layout_below="@+id/lin_Exchange"
+        android:layout_below="@+id/scrollv_comm"
         android:text="Ended on platform?" />
     // ==============================================================================
 
@@ -675,43 +711,6 @@
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    // "Dummy" layout to PREVENT Comment field getting focus
-    <LinearLayout
-        android:orientation="horizontal"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:layout_width="0px"
-        android:layout_height="0px"
-        android:id="@+id/linearLayout" />
-
-    <ScrollView
-        android:id="@+id/scrollv_comm"
-        android:layout_width="500sp"
-        android:layout_height="70sp"
-        android:layout_alignStart="@+id/radgrp_Boss"
-        android:layout_alignTop="@+id/lin_Lift"
-        android:layout_marginTop="70dp"
-        android:isScrollContainer="false">
-
-        <EditText
-            android:id="@+id/editText_teleComments"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/scrollv_comm"
-            android:layout_alignStart="@+id/scrollv_comm"
-            android:layout_marginStart="12dp"
-            android:layout_toStartOf="@+id/button_GoToFinalActivity"
-            android:background="@drawable/border"
-            android:ems="12"
-            android:hint="Tap to add any additional comments."
-            android:inputType="textMultiLine"
-            android:lines="2"
-            android:scrollbars="vertical"
-            android:textColor="@color/yellow" />
-
-
-    </ScrollView>
-
 
 
 </RelativeLayout>

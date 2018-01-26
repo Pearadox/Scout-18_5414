@@ -35,7 +35,8 @@ public class TeleopScoutActivity extends Activity {
     private Button button_GoToFinalActivity,btn_CubeSwitchM, btn_CubeSwitchP, btn_CubeSwitchAttP, btn_CubeSwitchAttM;
     CheckBox chk_climbsuccessful, chk_climbattempted, chkBox_PU_Cubes_floor;
     EditText editText_TeleComments;
-    RadioGroup radgrp_Deliver, radgrp_Boss, radgrp_Lifted;      RadioButton radio_Deliver, radio_Climb, radio_Lift;
+    RadioGroup radgrp_Deliver, radgrp_Boss, radgrp_Lifted;
+    RadioButton radio_Deliver, radio_Climb, radio_Lift, radio_One, radio_Two;
 
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfTeam_DBReference;
@@ -304,14 +305,18 @@ public class TeleopScoutActivity extends Activity {
         int selectedId = radgrp_Lifted.getCheckedRadioButtonId();
 //        Log.w(TAG, "*** Selected=" + selectedId);
         radio_Lift = (RadioButton) findViewById(selectedId);
+        radio_One = (RadioButton) findViewById(R.id.radio_One);
+        radio_Two = (RadioButton) findViewById(R.id.radio_Two);
         String value = radio_Lift.getText().toString();
         radio_Lift.setChecked(false);
         if (value.equals("One")) {           // One?
             Log.w(TAG, "One");
+            radio_One.setChecked(true);
             lift_one = true;
             lift_two = false;
         } else {                               // Two
             Log.w(TAG, "Two");
+            radio_Two.setChecked(true);
             lift_two = true;
             lift_one = false;
         }
