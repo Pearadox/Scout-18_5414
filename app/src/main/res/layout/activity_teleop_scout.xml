@@ -508,7 +508,7 @@
         android:layout_width="match_parent"
         android:layout_height="50sp"
         android:layout_below="@+id/lin_OthrSwtch_Portal"
-        android:layout_marginTop="12sp"
+        android:layout_marginTop="4sp"
         android:orientation="horizontal">
 
 
@@ -552,9 +552,17 @@
         android:id="@+id/chkBox_PU_Cubes_floor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/lin_Exchange"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/lin_Exchange"
         android:text="Did they pickup cubes from the floor?" />
+
+    <CheckBox
+        android:id="@+id/chkBox_Platform"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/lbl_GetOpponent"
+        android:layout_below="@+id/lin_Exchange"
+        android:text="Ended on platform?" />
 
     <CheckBox
         android:id="@+id/chk_climbattempt"
@@ -567,12 +575,12 @@
 
 
     <Button
-        android:text="Final"
+        android:id="@+id/button_GoToFinalActivity"
         android:layout_width="162dp"
         android:layout_height="wrap_content"
-        android:id="@+id/button_GoToFinalActivity"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:text="Final" />
 
     <CheckBox
         android:id="@+id/chk_climbsuccess"
@@ -581,12 +589,87 @@
         android:layout_below="@+id/chkBox_PU_Cubes_floor"
         android:text="Climb Successful" />
 
+    <RadioGroup
+        android:id="@+id/radgrp_Boss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/chkBox_PU_Cubes_floor"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radio_Rung"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="RadioClick_Boss"
+            android:text="Rung"
+            android:textColor="@color/magenta"
+            tools:layout_marginLeft="300sp" />
+
+        <RadioButton
+            android:id="@+id/radio_Side"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="RadioClick_Boss"
+            android:text="Side"
+            android:textColor="@color/magenta" />
+    </RadioGroup>
+    // ==============================================================================
+
+    <LinearLayout
+        android:id="@+id/lin_Lift"
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        android:layout_below="@+id/chk_climbsuccess"
+        android:layout_marginTop="4sp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/lbl_Lift"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lifted"
+            android:textSize="16sp"
+            android:textColor="@color/white" />
+        <RadioGroup
+            android:id="@+id/radgrp_Lifted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_One"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="RadioClick_Lifted"
+                android:text="One"
+                android:textColor="@color/cyan" />
+
+            <RadioButton
+                android:id="@+id/radio_Two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="RadioClick_Lifted"
+                android:text="Two"
+                android:textColor="@color/cyan" />
+        </RadioGroup>
+
+        <CheckBox
+            android:id="@+id/chk_LiftedBy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:text="Lifted by another Robot" />
+
+    </LinearLayout>
 
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // "Dummy" layout to PREVENT Comment field getting focus
     <LinearLayout
+        android:orientation="horizontal"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:layout_width="0px"
@@ -596,9 +679,10 @@
     <ScrollView
         android:id="@+id/scrollv_comm"
         android:layout_width="500sp"
-        android:layout_height="120sp"
-        android:layout_above="@+id/button_GoToFinalActivity"
-        android:layout_centerHorizontal="true"
+        android:layout_height="70sp"
+        android:layout_alignStart="@+id/radgrp_Boss"
+        android:layout_alignTop="@+id/lin_Lift"
+        android:layout_marginTop="30dp"
         android:isScrollContainer="false">
 
         <EditText
@@ -613,7 +697,7 @@
             android:ems="12"
             android:hint="Tap to add any additional comments."
             android:inputType="textMultiLine"
-            android:lines="4"
+            android:lines="2"
             android:scrollbars="vertical"
             android:textColor="@color/yellow" />
 
