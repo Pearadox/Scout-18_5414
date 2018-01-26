@@ -9,7 +9,6 @@ import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -47,14 +46,28 @@ public class TeleopScoutActivity extends Activity {
     String tn = " ";
 
     // ===================  TeleOps Elements for Match Scout Data object ===================
-    public int cubeSwitch_placed = 0;                   // # Gears placed
-    public int cubeSwitch_attempt = 0;                  // # Gears attempted
-//    public boolean tele_hg = false;                             // Did they shoot at High Goal?
-    public boolean delPlace = false;                    // Cube Delivery = Place
-    public boolean delLaunch = false;                   // Cube Delivery = Launch
-    public boolean tele_climb_attempt = false;          // Did they ATTEMPT climb?
-    public boolean tele_climb_success = false;          // Was climb successful?
-    public boolean tele_cube_pickup = false;            //Did they pickup gears off the ground?
+    public int     cubeSwitch_placed = 0;   // # Gears placed
+    public int     cubeSwitch_attempt = 0;  // # Gears attempted
+    public int     cube_scale = 0;          // # cubes placed on Switch during Tele
+    public int     scale_attempt = 0;       // # cubes attempted on Switch during Tele
+    public int     their_switch = 0;        // # cubes placed on _THEIR_Switch during Tele
+    public int     their_attempt = 0;       // # cubes attempted on _THEIR_Switch during Tele
+    public int     cube_exchange = 0;       // # cubes placed in Exchange during Tele
+    public int     cube_portal = 0;         // # cubes retrieved from Portal during Tele
+    public int     cube_pwrzone = 0;        // # cubes retrieved from Power Zone during Tele
+    public int     cube_floor = 0;          // # cubes retrieved from our Floor or Platform Zone during Tele
+    public int     their_floor = 0;         // # cubes retrieved from their Floor or Platform Zone during Tele
+    public boolean cube_pickup = false;     // Did they pickup gears off the ground?
+    public boolean on_platform = false;     // Finished on platform
+    public boolean delPlace = false;        // Cube Delivery = Place    \ Radio
+    public boolean delLaunch = false;       // Cube Delivery = Launch   /  Button
+    public boolean climb_attempt = false;   // Did they ATTEMPT climb?
+    public boolean climb_success = false;   // Was climb successful?
+    public boolean grab_rung = false;       // == Grabbed rung to climb     \ Radio
+    public boolean grab_side = false;       // == Grabbed side to climb     /  Button
+    public boolean lift_one = false;        // Lifted one other robot
+    public boolean lift_two = false;        // Lifted one other robot
+    public boolean got_lift = false;        // Got Lifted by another robot
     /* */
     public String teleComment = " ";    // Tele Comment
     // ===========================================================================
@@ -165,11 +178,11 @@ public class TeleopScoutActivity extends Activity {
             Log.i(TAG, "chkBox_PU_Cubes_floor Listener");
             if (buttonView.isChecked()) {
                 Log.w(TAG,"TextBox is checked.");
-                tele_cube_pickup = true;
+                cube_pickup = true;
 
             } else {  //not checked
                 Log.i(TAG,"TextBox is unchecked.");
-                tele_cube_pickup = false;
+                cube_pickup = false;
             }
             }
         }
@@ -184,14 +197,14 @@ public class TeleopScoutActivity extends Activity {
                 if (buttonView.isChecked()) {
                     //checked
                     Log.i(TAG,"TextBox is checked.");
-                    tele_climb_attempt = true;
+                    climb_attempt = true;
 
                 }
                 else
                 {
                     //not checked
                     Log.i(TAG,"TextBox is unchecked.");
-                    tele_climb_attempt = false;
+                    climb_attempt = false;
 
                 }
             }
@@ -205,7 +218,7 @@ public class TeleopScoutActivity extends Activity {
                 if (buttonView.isChecked()) {
                     //checked
                     Log.i(TAG,"TextBox is checked.");
-                    tele_climb_success = true;
+                    climb_success = true;
                     chk_climbattempted.setChecked(true);
 
 
@@ -214,7 +227,7 @@ public class TeleopScoutActivity extends Activity {
                 {
                     //not checked
                     Log.i(TAG,"TextBox is unchecked.");
-                    tele_climb_success = false;
+                    climb_success = false;
                     chk_climbattempted.setChecked(false);
 
 
@@ -267,20 +280,29 @@ public class TeleopScoutActivity extends Activity {
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void storeTeleData() {
         Log.w(TAG, ">>>>  storeTeleData  <<<<");
-//        Pearadox.Match_Data.setTele_gears_placed(cubeSwitch_placed);
-//        Pearadox.Match_Data.setTele_gears_attempt(cubeSwitch_attempt);
-//        Pearadox.Match_Data.setTele_hg(tele_hg);
-//        Pearadox.Match_Data.setTele_hg_percent(tele_hg_percent);
-//        Pearadox.Match_Data.setTele_lg(tele_lg);
-//        Pearadox.Match_Data.setTele_lg_percent(tele_lg_percent);
-//        Pearadox.Match_Data.setTele_cycles(tele_cycles);
-//        Pearadox.Match_Data.setTele_touch_act(tele_touch_act);
-//        Pearadox.Match_Data.settele_cube_pickup(tele_cube_pickup);
-
-        Pearadox.Match_Data.setTele_climb_attempt(tele_climb_attempt);
-        Pearadox.Match_Data.setTele_climb_success(tele_climb_success);
-        //ToDo - add remaining TeleOps elements
-
+        Pearadox.Match_Data.setTele_cube_switch(cubeSwitch_placed);
+        Pearadox.Match_Data.setTele_switch_attempt(cubeSwitch_attempt);
+        Pearadox.Match_Data.setTele_cube_scale(cube_scale);
+        Pearadox.Match_Data.setTele_scale_attempt(scale_attempt);
+        Pearadox.Match_Data.setTele_their_switch(their_switch);
+        Pearadox.Match_Data.setTele_their_attempt(their_attempt);
+        Pearadox.Match_Data.setTele_cube_exchange(cube_exchange);
+        Pearadox.Match_Data.setTele_cube_portal(cube_portal);
+        Pearadox.Match_Data.setTele_cube_pwrzone(cube_pwrzone);
+        Pearadox.Match_Data.setTele_cube_floor(cube_floor);
+        Pearadox.Match_Data.setTele_their_floor(their_floor);
+        Pearadox.Match_Data.setTele_cube_pickup(cube_pickup);
+        Pearadox.Match_Data.setTele_on_platform(on_platform);
+        Pearadox.Match_Data.setTele_placed_cube(delPlace);
+        Pearadox.Match_Data.setTele_launched_cube(delLaunch);
+        Pearadox.Match_Data.setTele_climb_attempt(climb_attempt);
+        Pearadox.Match_Data.setTele_climb_success(climb_success);
+        Pearadox.Match_Data.setTele_grab_rung(grab_rung);
+        Pearadox.Match_Data.setTele_grab_side(grab_side);
+        Pearadox.Match_Data.setTele_lift_one(lift_one);
+        Pearadox.Match_Data.setTele_lift_two(lift_two);
+        Pearadox.Match_Data.setTele_got_lift(got_lift);
+        // **
         Pearadox.Match_Data.setTele_comment(teleComment);
     }
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

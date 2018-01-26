@@ -321,9 +321,9 @@
     </LinearLayout>
 
     // ==============================================================================
-    // Portal
+    // Platform
     <LinearLayout
-        android:id="@+id/lin_PortalZone"
+        android:id="@+id/lin_PlatformZone"
         android:layout_width="match_parent"
         android:layout_height="50sp"
         android:layout_below="@+id/del_type"
@@ -369,7 +369,8 @@
             android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_alignEnd="@+id/chkBox_PU_Cubes_floor"
-            android:layout_alignTop="@+id/lin_PortalZone"
+            android:layout_alignTop="@+id/lin_PlatformZone"
+            android:layout_marginLeft="20sp"
             android:contentDescription="Switch"
             android:src="@drawable/platform_zone" />
 
@@ -403,27 +404,72 @@
     // ==============================================================================
 
     <TextView
+        android:id="@+id/lbl_FromPortal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lin_PlatformZone"
+        android:layout_toEndOf="@+id/linearLayout"
+        android:text="From Portal"
+        android:textColor="@color/wallet_holo_blue_light" />
+
+    <TextView
         android:id="@+id/lbl_GetOpponent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_below="@+id/lin_PortalZone"
+        android:layout_below="@+id/lin_PlatformZone"
+        android:layout_marginStart="10sp"
+        android:layout_toEndOf="@+id/chkBox_PU_Cubes_floor"
         android:text="====  Opponent's Switch  ===="
         android:textColor="@color/red" />
     // ==============================================================================
 
     <LinearLayout
-        android:id="@+id/lin_OthrSwtch"
+        android:id="@+id/lin_OthrSwtch_Portal"
         android:layout_width="match_parent"
         android:layout_height="50sp"
         android:layout_below="@+id/lbl_GetOpponent"
         android:orientation="horizontal">
 
+        <ImageView
+            android:id="@+id/imageView_Portal"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:contentDescription="Portal"
+            android:src="@drawable/portal" />
+
+        <TextView
+            android:id="@+id/lbl_Portal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cube(s) retrieved"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_PortalNUM"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="5dp"
+            android:text="0"
+            android:textColor="@color/yellow" />
+
+        <Button
+            android:id="@+id/btn_PortalM"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:text="-" />
+
+        <Button
+            android:id="@+id/btn_PortalP"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:text="+" />
 
         <ImageView
             android:id="@+id/imageView_OthrSwtch"
             android:layout_width="50dp"
             android:layout_height="40dp"
+            android:layout_marginLeft="20sp"
             android:contentDescription="Other Switch"
             android:src="@drawable/platform_zone" />
 
@@ -461,7 +507,8 @@
         android:id="@+id/lin_Exchange"
         android:layout_width="match_parent"
         android:layout_height="50sp"
-        android:layout_below="@+id/lin_OthrSwtch"
+        android:layout_below="@+id/lin_OthrSwtch_Portal"
+        android:layout_marginTop="12sp"
         android:orientation="horizontal">
 
 
@@ -543,7 +590,8 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:layout_width="0px"
-        android:layout_height="0px"/>
+        android:layout_height="0px"
+        android:id="@+id/linearLayout" />
 
     <ScrollView
         android:id="@+id/scrollv_comm"

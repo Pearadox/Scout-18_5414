@@ -29,11 +29,12 @@ public class matchData implements Serializable {
     private int     tele_cube_scale;        // # cubes placed on Switch during Tele
     private int     tele_scale_attempt;     // # cubes attempted on Switch during Tele
     private int     tele_their_switch;      // # cubes placed on _THEIR_Switch during Tele
+    private int     tele_their_attempt;     // # cubes attempted on _THEIR_Switch during Tele
     private int     tele_cube_exchange;     // # cubes placed in Exchange during Tele
     private int     tele_cube_portal;       // # cubes retrieved from Portal during Tele
     private int     tele_cube_pwrzone;      // # cubes retrieved from Power Zone during Tele
-    private int     tele_cube_floor;        // # cubes retrieved from our Floor or Platrform Zone during Tele
-    private int     tele_their_floor;       // # cubes retrieved from their Floor or Platrform Zone during Tele
+    private int     tele_cube_floor;        // # cubes retrieved from our Floor or Platform Zone during Tele
+    private int     tele_their_floor;       // # cubes retrieved from their Floor or Platform Zone during Tele
     private boolean tele_cube_pickup;       // Did they pick up cube(s)
     private boolean tele_placed_cube;       // Did they place cube(s)
     private boolean tele_launched_cube;     // Did they launch cube(s)
@@ -63,7 +64,7 @@ public class matchData implements Serializable {
 // =================================================================================
 
 
-    public matchData(String match, String team_num, boolean pre_cube, String pre_startPos, boolean auto_mode, boolean auto_baseline, boolean auto_cube_switch, boolean auto_cube_switch_att, boolean auto_switch_extra, boolean auto_cube_scale, boolean auto_cube_scale_att, boolean auto_xover_switch, boolean auto_xover_scale, boolean auto_wrong_switch, boolean auto_wrong_scale, String auto_comment, int tele_cube_switch, int tele_switch_attempt, int tele_cube_scale, int tele_scale_attempt, int tele_their_switch, int tele_cube_exchange, int tele_cube_portal, int tele_cube_pwrzone, int tele_cube_floor, int tele_their_floor, boolean tele_cube_pickup, boolean tele_placed_cube, boolean tele_launched_cube, boolean tele_on_platform, boolean tele_climb_attempt, boolean tele_climb_success, boolean tele_grab_rung, boolean tele_grab_side, boolean tele_lift_one, boolean tele_lift_two, boolean tele_got_lift, String tele_comment, boolean final_lostParts, boolean final_lostComms, boolean final_defense_good, boolean final_def_Lane, boolean final_def_Block, boolean final_def_OthrSwitch, int final_num_Penalties, String final_comment, String final_studID, String final_dateTime) {
+    public matchData(String match, String team_num, boolean pre_cube, String pre_startPos, boolean auto_mode, boolean auto_baseline, boolean auto_cube_switch, boolean auto_cube_switch_att, boolean auto_switch_extra, boolean auto_cube_scale, boolean auto_cube_scale_att, boolean auto_xover_switch, boolean auto_xover_scale, boolean auto_wrong_switch, boolean auto_wrong_scale, String auto_comment, int tele_cube_switch, int tele_switch_attempt, int tele_cube_scale, int tele_scale_attempt, int tele_their_switch, int tele_their_attempt, int tele_cube_exchange, int tele_cube_portal, int tele_cube_pwrzone, int tele_cube_floor, int tele_their_floor, boolean tele_cube_pickup, boolean tele_placed_cube, boolean tele_launched_cube, boolean tele_on_platform, boolean tele_climb_attempt, boolean tele_climb_success, boolean tele_grab_rung, boolean tele_grab_side, boolean tele_lift_one, boolean tele_lift_two, boolean tele_got_lift, String tele_comment, boolean final_lostParts, boolean final_lostComms, boolean final_defense_good, boolean final_def_Lane, boolean final_def_Block, boolean final_def_OthrSwitch, int final_num_Penalties, String final_comment, String final_studID, String final_dateTime) {
         this.match = match;
         this.team_num = team_num;
         this.pre_cube = pre_cube;
@@ -85,6 +86,7 @@ public class matchData implements Serializable {
         this.tele_cube_scale = tele_cube_scale;
         this.tele_scale_attempt = tele_scale_attempt;
         this.tele_their_switch = tele_their_switch;
+        this.tele_their_attempt = tele_their_attempt;
         this.tele_cube_exchange = tele_cube_exchange;
         this.tele_cube_portal = tele_cube_portal;
         this.tele_cube_pwrzone = tele_cube_pwrzone;
@@ -114,7 +116,7 @@ public class matchData implements Serializable {
         this.final_dateTime = final_dateTime;
     }
 
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // Default constructor required for calls to
 // DataSnapshot.getValue(matchData.class)
 public matchData() {
@@ -293,6 +295,14 @@ public matchData() {
 
     public void setTele_their_switch(int tele_their_switch) {
         this.tele_their_switch = tele_their_switch;
+    }
+
+    public int getTele_their_attempt() {
+        return tele_their_attempt;
+    }
+
+    public void setTele_their_attempt(int tele_their_attempt) {
+        this.tele_their_attempt = tele_their_attempt;
     }
 
     public int getTele_cube_exchange() {
