@@ -6,7 +6,7 @@
     android:weightSum="1">
 
     <TextView
-        android:id="@+id/TextView"
+        android:id="@+id/TeleOps"
         android:text="Final period"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
         android:text="Lost Parts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/TextView"
+        android:layout_below="@+id/TeleOps"
         android:layout_marginStart="16dp"
         android:layout_marginTop="58dp" />
 
@@ -68,15 +68,6 @@
         android:layout_marginTop="21dp" />
 
     <CheckBox
-        android:id="@+id/chk_dump"
-        android:text="Hopper Dump"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/chk_block"
-        android:layout_alignBottom="@+id/chk_block"
-        android:layout_alignStart="@+id/chk_whatever" />
-
-    <CheckBox
         android:id="@+id/chk_whatever"
         android:text=" XX"
         android:layout_width="wrap_content"
@@ -101,6 +92,14 @@
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // "Dummy" layout to PREVENT Comment field getting focus
+    <LinearLayout
+        android:orientation="horizontal"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:id="@+id/linearLayout" />
 
     <ScrollView
         android:id="@+id/scrollv_comm"
@@ -134,7 +133,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/chk_starve"
         android:layout_below="@+id/chk_starve"
-        android:text="Gear Blocking" />
+        android:text="Switch Blocking" />
 
     <RadioGroup
         android:id="@+id/radioGroup_defense"
@@ -211,7 +210,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/TextView"
+        android:layout_below="@+id/TeleOps"
         android:text="Robot Team Number"
         android:textColor="@color/white" />
 
@@ -219,8 +218,10 @@
         android:id="@+id/txt_robotnum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/green"
-        android:layout_below="@+id/TextView"
+        android:textColor="@color/red"
+        android:textSize="24sp"
+        android:text="0000"
+        android:layout_below="@+id/TeleOps"
         android:layout_alignStart="@+id/chk_lostComm" />
 
 
