@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/lbl_robotnum"
         android:layout_alignBottom="@+id/lbl_robotnum"
-        android:layout_toEndOf="@+id/chk_climbsuccess"
+        android:layout_alignEnd="@+id/lbl_Opponent"
         android:text="0000"
         android:textColor="@color/yellow"
         android:textSize="24sp" />
@@ -563,64 +563,64 @@
         android:layout_alignEnd="@+id/lbl_GetOpponent"
         android:layout_below="@+id/lin_Exchange"
         android:text="Ended on platform?" />
+    // ==============================================================================
 
-    <CheckBox
-        android:id="@+id/chk_climbattempt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/lin_Climb"
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
         android:layout_below="@+id/chkBox_PU_Cubes_floor"
-        android:layout_marginStart="23dp"
-        android:layout_toEndOf="@+id/chk_climbsuccess"
-        android:text="Climb Attempted" />
+        android:layout_marginTop="4sp"
+        android:orientation="horizontal">
 
 
-    <Button
-        android:id="@+id/button_GoToFinalActivity"
-        android:layout_width="162dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:text="Final" />
+        <CheckBox
+            android:id="@+id/chk_climbsuccess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="Climb Successful" />
 
-    <CheckBox
-        android:id="@+id/chk_climbsuccess"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/chkBox_PU_Cubes_floor"
-        android:text="Climb Successful" />
+        <CheckBox
+            android:id="@+id/chk_climbattempt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Climb Attempted" />
 
     <RadioGroup
         android:id="@+id/radgrp_Boss"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_below="@+id/chkBox_PU_Cubes_floor"
         android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/radio_Rung"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
             android:onClick="RadioClick_Boss"
             android:text="Rung"
-            android:textColor="@color/magenta"
-            tools:layout_marginLeft="300sp" />
+            android:textColor="@color/magenta" />
 
         <RadioButton
             android:id="@+id/radio_Side"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
             android:onClick="RadioClick_Boss"
             android:text="Side"
             android:textColor="@color/magenta" />
     </RadioGroup>
+</LinearLayout>
+
     // ==============================================================================
 
     <LinearLayout
         android:id="@+id/lin_Lift"
         android:layout_width="match_parent"
         android:layout_height="50sp"
-        android:layout_below="@+id/chk_climbsuccess"
+        android:layout_below="@+id/lin_Climb"
         android:layout_marginTop="4sp"
         android:orientation="horizontal">
 
@@ -665,6 +665,15 @@
     </LinearLayout>
 
 
+    <Button
+        android:id="@+id/button_GoToFinalActivity"
+        android:layout_width="162dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:text="Final" />
+
+
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // "Dummy" layout to PREVENT Comment field getting focus
@@ -682,7 +691,7 @@
         android:layout_height="70sp"
         android:layout_alignStart="@+id/radgrp_Boss"
         android:layout_alignTop="@+id/lin_Lift"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="70dp"
         android:isScrollContainer="false">
 
         <EditText
