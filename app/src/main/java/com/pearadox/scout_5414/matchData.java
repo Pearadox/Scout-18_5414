@@ -54,7 +54,7 @@ public class matchData implements Serializable {
     private boolean final_defense_good;      // Was their overall Defense Good (bad=false)
     private boolean final_def_Lane;          // Did they use Lane Defense
     private boolean final_def_Block;         // Did they use Blocking Defense
-    private boolean final_def_OthrSwitch;    // Did they Put cubes in Other Switch
+    private boolean final_def_BlockSwitch;   // Did they block the Switch
     private int     final_num_Penalties;     // How many penalties received?
 
     private String  final_comment;           // Final comment
@@ -64,7 +64,7 @@ public class matchData implements Serializable {
 // =================================================================================
 
 
-    public matchData(String match, String team_num, boolean pre_cube, String pre_startPos, boolean auto_mode, boolean auto_baseline, boolean auto_cube_switch, boolean auto_cube_switch_att, boolean auto_switch_extra, boolean auto_cube_scale, boolean auto_cube_scale_att, boolean auto_xover_switch, boolean auto_xover_scale, boolean auto_wrong_switch, boolean auto_wrong_scale, String auto_comment, int tele_cube_switch, int tele_switch_attempt, int tele_cube_scale, int tele_scale_attempt, int tele_their_switch, int tele_their_attempt, int tele_cube_exchange, int tele_cube_portal, int tele_cube_pwrzone, int tele_cube_floor, int tele_their_floor, boolean tele_cube_pickup, boolean tele_placed_cube, boolean tele_launched_cube, boolean tele_on_platform, boolean tele_climb_attempt, boolean tele_climb_success, boolean tele_grab_rung, boolean tele_grab_side, boolean tele_lift_one, boolean tele_lift_two, boolean tele_got_lift, String tele_comment, boolean final_lostParts, boolean final_lostComms, boolean final_defense_good, boolean final_def_Lane, boolean final_def_Block, boolean final_def_OthrSwitch, int final_num_Penalties, String final_comment, String final_studID, String final_dateTime) {
+    public matchData(String match, String team_num, boolean pre_cube, String pre_startPos, boolean auto_mode, boolean auto_baseline, boolean auto_cube_switch, boolean auto_cube_switch_att, boolean auto_switch_extra, boolean auto_cube_scale, boolean auto_cube_scale_att, boolean auto_xover_switch, boolean auto_xover_scale, boolean auto_wrong_switch, boolean auto_wrong_scale, String auto_comment, int tele_cube_switch, int tele_switch_attempt, int tele_cube_scale, int tele_scale_attempt, int tele_their_switch, int tele_their_attempt, int tele_cube_exchange, int tele_cube_portal, int tele_cube_pwrzone, int tele_cube_floor, int tele_their_floor, boolean tele_cube_pickup, boolean tele_placed_cube, boolean tele_launched_cube, boolean tele_on_platform, boolean tele_climb_attempt, boolean tele_climb_success, boolean tele_grab_rung, boolean tele_grab_side, boolean tele_lift_one, boolean tele_lift_two, boolean tele_got_lift, String tele_comment, boolean final_lostParts, boolean final_lostComms, boolean final_defense_good, boolean final_def_Lane, boolean final_def_Block, boolean final_def_BlockSwitch, int final_num_Penalties, String final_comment, String final_studID, String final_dateTime) {
         this.match = match;
         this.team_num = team_num;
         this.pre_cube = pre_cube;
@@ -109,7 +109,7 @@ public class matchData implements Serializable {
         this.final_defense_good = final_defense_good;
         this.final_def_Lane = final_def_Lane;
         this.final_def_Block = final_def_Block;
-        this.final_def_OthrSwitch = final_def_OthrSwitch;
+        this.final_def_BlockSwitch = final_def_BlockSwitch;
         this.final_num_Penalties = final_num_Penalties;
         this.final_comment = final_comment;
         this.final_studID = final_studID;
@@ -482,11 +482,11 @@ public matchData() {
     }
 
     public boolean isFinal_def_OthrSwitch() {
-        return final_def_OthrSwitch;
+        return final_def_BlockSwitch;
     }
 
-    public void setFinal_def_OthrSwitch(boolean final_def_OthrSwitch) {
-        this.final_def_OthrSwitch = final_def_OthrSwitch;
+    public void setFinal_def_OthrSwitch(boolean final_def_BlockSwitch) {
+        this.final_def_BlockSwitch = final_def_BlockSwitch;
     }
 
     public int getFinal_num_Penalties() {
