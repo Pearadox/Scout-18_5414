@@ -120,6 +120,7 @@ public class matchData implements Serializable {
 // Default constructor required for calls to
 // DataSnapshot.getValue(matchData.class)
 public matchData() {
+
 }
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
