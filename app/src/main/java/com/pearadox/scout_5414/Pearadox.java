@@ -76,8 +76,7 @@ public class Pearadox {
     private static boolean final_defense_good;      // Was their overall Defense Good (bad=false)
     private static boolean final_def_Lane;          // Did they use Lane Defense
     private static boolean final_def_Block;         // Did they use Blocking Defense
-    private static boolean final_def_Hopper;        // Did they use Dump Defense (unload hoppers)
-    private static boolean final_def_Gear;          // Did they use Block access to Gear placement
+    private static boolean final_def_BlockSwitch;   // Did they block the Switch
     private static int     final_num_Penalties;     // How many penalties received?
 
     private static String  final_comment;           // Final comment

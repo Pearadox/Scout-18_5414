@@ -481,11 +481,11 @@ public matchData() {
         this.final_def_Block = final_def_Block;
     }
 
-    public boolean isFinal_def_OthrSwitch() {
+    public boolean isFinal_def_BlockSwitch() {
         return final_def_BlockSwitch;
     }
 
-    public void setFinal_def_OthrSwitch(boolean final_def_BlockSwitch) {
+    public void setFinal_def_BlockSwitch(boolean final_def_BlockSwitch) {
         this.final_def_BlockSwitch = final_def_BlockSwitch;
     }
 
