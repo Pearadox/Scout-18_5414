@@ -51,12 +51,12 @@
 
     <CheckBox
         android:id="@+id/chk_block"
-        android:text="Blocking"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/chk_starve"
         android:layout_alignBottom="@+id/chk_starve"
-        android:layout_alignStart="@+id/chk_lostComm" />
+        android:layout_alignStart="@+id/chk_lostComm"
+        android:text="Blocking" />
 
     <CheckBox
         android:id="@+id/chk_starve"
