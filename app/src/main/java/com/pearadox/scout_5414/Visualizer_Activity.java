@@ -492,8 +492,10 @@ public class Visualizer_Activity extends AppCompatActivity {
 //                        System.out.println("  \n");
                         Pearadox.Matches_Data.add(mdobj);
                     }
-               }
+                }
                 Log.w(TAG, "***** Matches Loaded. # = "  + Pearadox.Matches_Data.size());
+                getMatchForTeams();     // Get Match Data for each team
+
                 if (launchViz) {
                     if (Pearadox.Matches_Data.size() > 0) {
                         Intent pit_intent = new Intent(Visualizer_Activity.this, VisMatch_Activity.class);
@@ -793,6 +795,9 @@ public class Visualizer_Activity extends AppCompatActivity {
                     Scout_teams.clear();          // empty the list
                     String tn = mobj.getR1();
                     findTeam(tn);
+                    launchViz = false;
+                    load_team = tn;
+                    addMD_VE_Listener(pfMatchData_DBReference.orderByChild("match"));        // Load Match data
                     tn = mobj.getR2();
                     findTeam(tn);
                     tn = mobj.getR3();
@@ -852,7 +857,6 @@ public class Visualizer_Activity extends AppCompatActivity {
                     txt_teamB3_Name.setText(team_inst.getTeam_name());
                     tbl_teamB3.setText(team_inst.getTeam_num());
                     Log.w(TAG, "+++++++++; size = " + Scout_teams.size());
-                    getMatchForTeams();     // Get Match Data for each team
 
 //                    w(TAG, "***  Calling Async class  ***");  //** DEBUG
 //                    new Load_BAdata_Task().execute();     // Load Blue Alliance data Asyncronously
@@ -884,48 +888,113 @@ public class Visualizer_Activity extends AppCompatActivity {
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void getMatchForTeams() {
-        Log.w(TAG, "$$$$$  getMatchForTeams " + Scout_teams.size());
-        if (Scout_teams.size() > 0) {
-            for (int x = 0; x < 6; x++) {
+        Log.w(TAG, "$$$$$  getMatchForTeams " + Pearadox.Matches_Data.size());
+        String team="";
+        int md = Pearadox.Matches_Data.size();
+        if (md > 0) {
+            int swNum = 0; int swAtt = 0; int scNum = 0; int scAtt = 0; int base = 0; int extra=0;
+            int tswNum = 0; int tswAtt = 0; int tscNum = 0; int tscAtt = 0; int exch=0;
+            int climb=0; int c_att=0; int lift1=0; int lift2=0; int was=0;
+            for (int i = 0; i < md; i++) {
+                match_inst = Pearadox.Matches_Data.get(i);      // Get instance of Match Data
+                team = match_inst.getTeam_num();
+                if (match_inst.isAuto_baseline()) {
+                    base++;
+                }
+                if (match_inst.isAuto_cube_switch()) {
+                    swNum++;
+                }
+                if (match_inst.isAuto_cube_switch_att()) {
+                    swAtt++;
+                }
+                if (match_inst.isAuto_cube_scale()) {
+                    scNum++;
+                }
+                if (match_inst.isAuto_cube_scale_att()) {
+                    scAtt++;
+                }
+                if (match_inst.isAuto_switch_extra()) {
+                    extra++;
+                }
+                // =================== TeleOps ============
+                tswNum = match_inst.getTele_cube_switch();
+                tswAtt = match_inst.getTele_switch_attempt();
+                tscNum = match_inst.getTele_cube_scale();
+                tscAtt = match_inst.getTele_scale_attempt();
+                exch = match_inst.getTele_cube_exchange();
+                if (match_inst.isTele_climb_success()) {
+                    climb++;
+                }
+                if (match_inst.isTele_climb_attempt()) {
+                    c_att++;
+                }
+                if (match_inst.isTele_lift_one()) {
+                    lift1++;
+                }
+                if (match_inst.isTele_lift_two()) {
+                    lift2++;
+                }
+                if (match_inst.isTele_got_lift()) {
+                    was++;
+                }
+
+            } // End for
+            Log.e(TAG, team + " ==== Match Data " +  base + "  " +  swNum + "/" +  swAtt + "  " +  scNum + "/" +  scAtt + " ");
+            tbl_event1R1 = (TextView) findViewById(R.id.tbl_event1R1);
+            tbl_event1R2 = (TextView) findViewById(R.id.tbl_event1R2);
+            tbl_event1R3 = (TextView) findViewById(R.id.tbl_event1R3);
+            tbl_event1B1 = (TextView) findViewById(R.id.tbl_event1B1);
+            tbl_event1B2 = (TextView) findViewById(R.id.tbl_event1B2);
+            tbl_event1B3 = (TextView) findViewById(R.id.tbl_event1B3);
+            tbl_rate1R1 = (TextView) findViewById(R.id.tbl_rate1R1);
+            tbl_rate1R2 = (TextView) findViewById(R.id.tbl_rate1R2);
+            tbl_rate1R3 = (TextView) findViewById(R.id.tbl_rate1R3);
+            tbl_rate1B1 = (TextView) findViewById(R.id.tbl_rate1B1);
+            tbl_rate1B2 = (TextView) findViewById(R.id.tbl_rate1B2);
+            tbl_rate1B3 = (TextView) findViewById(R.id.tbl_rate1B3);
+            tbl_event2R1 = (TextView) findViewById(R.id.tbl_event2R1);
+            tbl_event2R2 = (TextView) findViewById(R.id.tbl_event2R2);
+            tbl_event2R3 = (TextView) findViewById(R.id.tbl_event2R3);
+            tbl_event2B1 = (TextView) findViewById(R.id.tbl_event2B1);
+            tbl_event2B2 = (TextView) findViewById(R.id.tbl_event2B2);
+            tbl_event2B3 = (TextView) findViewById(R.id.tbl_event2B3);
+            tbl_rate2R1 = (TextView) findViewById(R.id.tbl_rate2R1);
+            tbl_rate2R2 = (TextView) findViewById(R.id.tbl_rate2R2);
+            tbl_rate2R3 = (TextView) findViewById(R.id.tbl_rate2R3);
+            tbl_rate2B1 = (TextView) findViewById(R.id.tbl_rate2B1);
+            tbl_rate2B2 = (TextView) findViewById(R.id.tbl_rate2B2);
+            tbl_rate2B3 = (TextView) findViewById(R.id.tbl_rate2B3);
+            int ndx=0;
+            for(int x = 0; x < 6; x++) {
                 team_inst = Scout_teams.get(x);       // Team#
-                tnum = team_inst.getTeam_num();
-                Log.w(TAG, "Team " + tnum);
-                load_team = tnum;
-                launchViz = false;
-                addMD_VE_Listener(pfMatchData_DBReference.orderByChild("match"));        // Load Matches
-                SystemClock.sleep(1000);        // wait for response from firebase
-                Log.w(TAG, tnum + " Matches " + Pearadox.Matches_Data.size());
-                int md = Pearadox.Matches_Data.size();
-                if (md > 0) {
-                    int swNum = 0;
-                    int swAtt = 0;
-                    int scNum = 0;
-                    int scAtt = 0;
-                    int base = 0;
-                    for (int i = 0; i < md; i++) {
-                        match_inst = Pearadox.Matches_Data.get(i);      // Get instance of Match Data
-                        if (match_inst.isAuto_baseline()) {
-                            base++;
-                        }
-                        if (match_inst.isAuto_cube_switch()) {
-                            swNum++;
-                        }
-                        if (match_inst.isAuto_cube_switch_att()) {
-                            swAtt++;
-                        }
-                        if (match_inst.isAuto_cube_scale()) {
-                            scNum++;
-                        }
-                        if (match_inst.isAuto_cube_scale_att()) {
-                            scAtt++;
-                        }
-                    } // End for
-                    Log.e(TAG, tnum + " ==== Match Data " +  base + "  " +  swNum + "/" +  swAtt + "  " +  scNum + "/" +  scAtt + " ");
+                if (team_inst.getTeam_num().matches(team)) {
+                    ndx = x;
+                }
+                switch (ndx) {
+                case 0:
+                    tbl_event1R1.setText("Auto" + " \n" + "Tele");
+                    tbl_rate1R1.setText( "⊕" + base + " Δ  " + swNum + "/" + swAtt + " ÷ " + scNum + "/" + scAtt + " +" + extra + " \n" + "Δ  " + tswNum + "/" + tswAtt + "  ÷ " + tscNum + "/" + tscAtt);
+                    tbl_event2R1.setText("Climb" + " \n" + "Exch");
+                    tbl_rate2R1.setText(climb + "/" + c_att + "  One↕" + lift1 + "  Two↕" + lift2 + " ↑ " + was+ " \n" + exch);
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                default:                // ????
+                    Log.e(TAG, "*** Error - bad NDX  ***");
 
                 }
-            } //End for
-        }
-    }
+            } // End for
+
+        } //end If
+     }
 
 //    private String chkOPR(String team) {
 //        i(TAG, "###  chkOPR ### " + team);
