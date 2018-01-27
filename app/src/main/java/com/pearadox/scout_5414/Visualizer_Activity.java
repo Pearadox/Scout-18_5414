@@ -66,6 +66,7 @@ public class Visualizer_Activity extends AppCompatActivity {
     public static int BA2numTeams = 0;
     public static ArrayList<String> BAteams_List = new ArrayList<String>();     // Teams (in RANK order)
     public boolean BA_avail = false;
+    public boolean launchViz = false;
     Team[] teamsTBA;
     // -----------------------
     ProgressBar progressBar1;
@@ -118,6 +119,7 @@ public class Visualizer_Activity extends AppCompatActivity {
     FirebaseStorage storage;
     StorageReference storageRef;
     ArrayList<BA_data> BA_Vis = new ArrayList<>();
+    matchData match_inst = new matchData();
 
 
     @Override
@@ -454,6 +456,7 @@ public class Visualizer_Activity extends AppCompatActivity {
     private void launchVizMatch(String team, String name) {
         i(TAG, ">>>>> launchVizMatch   <<<<<"  + team + " " + name);
 
+        launchViz = true;
         load_team = team;
         load_name = name;
         addMD_VE_Listener(pfMatchData_DBReference.orderByChild("match"));        // Load Matches
@@ -480,7 +483,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                 Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
                 Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
                 while (iterator.hasNext()) {
-                    w(TAG, " WHILE: "  + Pearadox.Matches_Data.size());
+//                    w(TAG, " WHILE: "  + Pearadox.Matches_Data.size());
 //                    System.out.println(dataSnapshot.getValue());
 //                    System.out.println("  \n  \n");
                     mdobj = iterator.next().getValue(matchData.class);
@@ -490,19 +493,21 @@ public class Visualizer_Activity extends AppCompatActivity {
                         Pearadox.Matches_Data.add(mdobj);
                     }
                }
-                w(TAG, "***** Matches Loaded. # = "  + Pearadox.Matches_Data.size());
-                if (Pearadox.Matches_Data.size() > 0) {
-                    Intent pit_intent = new Intent(Visualizer_Activity.this, VisMatch_Activity.class);
-                    Bundle VZbundle = new Bundle();
-                    VZbundle.putString("team", load_team);        // Pass data to activity
-                    VZbundle.putString("name", load_name);        // Pass data to activity
-                    pit_intent.putExtras(VZbundle);
-                    startActivity(pit_intent);               // Start Visualizer for Match Data
-                } else {
-                    Toast toast = Toast.makeText(getBaseContext(), "★★★★  There is _NO_ Match Data for Team " + load_team + "  ★★★★", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                    toast.show();
+                Log.w(TAG, "***** Matches Loaded. # = "  + Pearadox.Matches_Data.size());
+                if (launchViz) {
+                    if (Pearadox.Matches_Data.size() > 0) {
+                        Intent pit_intent = new Intent(Visualizer_Activity.this, VisMatch_Activity.class);
+                        Bundle VZbundle = new Bundle();
+                        VZbundle.putString("team", load_team);        // Pass data to activity
+                        VZbundle.putString("name", load_name);        // Pass data to activity
+                        pit_intent.putExtras(VZbundle);
+                        startActivity(pit_intent);               // Start Visualizer for Match Data
+                    } else {
+                        Toast toast = Toast.makeText(getBaseContext(), "★★★★  There is _NO_ Match Data for Team " + load_team + "  ★★★★", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
 
+                    }
                 }
             }
 //            @Override
@@ -578,11 +583,11 @@ public class Visualizer_Activity extends AppCompatActivity {
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public void buttonView_Click(View view) {
-        w(TAG, " Start Button Click  " + matchID);
-        progressBar1.setVisibility(View.VISIBLE);
+        Log.w(TAG, " View Click  " + matchID);
+//        progressBar1.setVisibility(View.VISIBLE);
 
         clearTeams();
-        getTeams();         // Get the teams for match selected
+        getTeams();             // Get the teams for match selected
     }
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -749,6 +754,7 @@ public class Visualizer_Activity extends AppCompatActivity {
         });
     }
 
+
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void getTeams() {
         i(TAG, "$$$$$  getTeams");
@@ -797,7 +803,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                     findTeam(tn);
                     tn = mobj.getB3();
                     findTeam(tn);
-                    w(TAG, ">>>> # team instances = " + Scout_teams.size());  //** DEBUG
+                    Log.w(TAG, ">>>> # team instances = " + Scout_teams.size());  //** DEBUG
 
                     txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
                     txt_teamR2 = (TextView) findViewById(R.id.txt_teamR2);
@@ -845,8 +851,10 @@ public class Visualizer_Activity extends AppCompatActivity {
                     txt_teamB3.setText(team_inst.getTeam_num());
                     txt_teamB3_Name.setText(team_inst.getTeam_name());
                     tbl_teamB3.setText(team_inst.getTeam_num());
+                    Log.w(TAG, "+++++++++; size = " + Scout_teams.size());
+                    getMatchForTeams();     // Get Match Data for each team
 
-                    w(TAG, "***  Calling Async class  ***");  //** DEBUG
+//                    w(TAG, "***  Calling Async class  ***");  //** DEBUG
 //                    new Load_BAdata_Task().execute();     // Load Blue Alliance data Asyncronously
                     loadTblData();      // Load the images (if any)
 
@@ -870,6 +878,52 @@ public class Visualizer_Activity extends AppCompatActivity {
         } else {
             Toast.makeText(getBaseContext(), "** Select both Match TYPE & NUMBER ** ", Toast.LENGTH_LONG).show();
             // ToDo - turn toggle back to logon
+        }
+        Log.e(TAG, "<<<<<< End of getteams; size = " + Scout_teams.size());
+    }
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private void getMatchForTeams() {
+        Log.w(TAG, "$$$$$  getMatchForTeams " + Scout_teams.size());
+        if (Scout_teams.size() > 0) {
+            for (int x = 0; x < 6; x++) {
+                team_inst = Scout_teams.get(x);       // Team#
+                tnum = team_inst.getTeam_num();
+                Log.w(TAG, "Team " + tnum);
+                load_team = tnum;
+                launchViz = false;
+                addMD_VE_Listener(pfMatchData_DBReference.orderByChild("match"));        // Load Matches
+                SystemClock.sleep(1000);        // wait for response from firebase
+                Log.w(TAG, tnum + " Matches " + Pearadox.Matches_Data.size());
+                int md = Pearadox.Matches_Data.size();
+                if (md > 0) {
+                    int swNum = 0;
+                    int swAtt = 0;
+                    int scNum = 0;
+                    int scAtt = 0;
+                    int base = 0;
+                    for (int i = 0; i < md; i++) {
+                        match_inst = Pearadox.Matches_Data.get(i);      // Get instance of Match Data
+                        if (match_inst.isAuto_baseline()) {
+                            base++;
+                        }
+                        if (match_inst.isAuto_cube_switch()) {
+                            swNum++;
+                        }
+                        if (match_inst.isAuto_cube_switch_att()) {
+                            swAtt++;
+                        }
+                        if (match_inst.isAuto_cube_scale()) {
+                            scNum++;
+                        }
+                        if (match_inst.isAuto_cube_scale_att()) {
+                            scAtt++;
+                        }
+                    } // End for
+                    Log.e(TAG, tnum + " ==== Match Data " +  base + "  " +  swNum + "/" +  swAtt + "  " +  scNum + "/" +  scAtt + " ");
+
+                }
+            } //End for
         }
     }
 
@@ -1395,7 +1449,7 @@ public class Visualizer_Activity extends AppCompatActivity {
 //    }
 
     private void findTeam(String tnum) {
-        i(TAG, "$$$$$  findTeam " + tnum);
+        Log.w(TAG, "$$$$$  findTeam " + tnum);
         boolean found = false;
         for (int i = 0; i < Pearadox.numTeams; i++) {        // check each team entry
             if (Pearadox.team_List.get(i).getTeam_num().equals(tnum)) {
@@ -1406,12 +1460,14 @@ public class Visualizer_Activity extends AppCompatActivity {
                 break;  // found it!
             }
         }  // end For
+        Log.w("TAG", ">>>>>>>  findTeam: " + Scout_teams.size());
         if (!found) {
             Toast.makeText(getBaseContext(),"** Team '" + tnum + "' from Matches table _NOT_ found in Team list  ** ", Toast.LENGTH_LONG).show();
             p_Firebase.teamsObj team_dummy = new p_Firebase.teamsObj("****", "team _NOT_ found in Team list - Check for TYPOs in Match Sched."," ");
             Scout_teams.add(team_dummy);
         }
     }
+
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void loadMatches() {

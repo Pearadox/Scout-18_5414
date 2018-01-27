@@ -186,6 +186,14 @@ public matchData() {
         this.auto_cube_switch = auto_cube_switch;
     }
 
+    public boolean isAuto_cube_switch_att() {
+        return auto_cube_switch_att;
+    }
+
+    public void setAuto_cube_switch_att(boolean auto_cube_switch_att) {
+        this.auto_cube_switch_att = auto_cube_switch_att;
+    }
+
     public boolean isAuto_switch_extra() {
         return auto_switch_extra;
     }
@@ -200,6 +208,14 @@ public matchData() {
 
     public void setAuto_cube_scale(boolean auto_cube_scale) {
         this.auto_cube_scale = auto_cube_scale;
+    }
+
+    public boolean isAuto_cube_scale_att() {
+        return auto_cube_scale_att;
+    }
+
+    public void setAuto_cube_scale_att(boolean auto_cube_scale_att) {
+        this.auto_cube_scale_att = auto_cube_scale_att;
     }
 
     public boolean isAuto_xover_switch() {
@@ -224,22 +240,6 @@ public matchData() {
 
     public void setAuto_wrong_switch(boolean auto_wrong_switch) {
         this.auto_wrong_switch = auto_wrong_switch;
-    }
-
-    public boolean isAuto_cube_switch_att() {
-        return auto_cube_switch_att;
-    }
-
-    public void setAuto_cube_switch_att(boolean auto_cube_switch_att) {
-        this.auto_cube_switch_att = auto_cube_switch_att;
-    }
-
-    public boolean isAuto_cube_scale_att() {
-        return auto_cube_scale_att;
-    }
-
-    public void setAuto_cube_scale_att(boolean auto_cube_scale_att) {
-        this.auto_cube_scale_att = auto_cube_scale_att;
     }
 
     public boolean isAuto_wrong_scale() {
