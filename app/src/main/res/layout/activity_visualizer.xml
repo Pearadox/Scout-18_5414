@@ -500,10 +500,19 @@
                     android:layout_width="12sp"
                     android:layout_height="40sp"
                     android:layout_weight="0.6"
-                    android:gravity="top|left|center_vertical|center_horizontal|center"
+                    android:gravity="center_vertical|center_horizontal|center"
                     android:onClick="btn_MatchR1_Click"
                     android:text="Match Data"
                     android:textSize="8sp" />
+
+                <TextView
+                    android:id="@+id/txt_MatchesR1"
+                    android:layout_width="8sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.12"
+                    android:padding="1dip"
+                    android:text="99"
+                    android:textColor="@color/white" />
 
             </LinearLayout>
             <LinearLayout
@@ -631,10 +640,17 @@
                     android:layout_width="12sp"
                     android:layout_height="40sp"
                     android:layout_weight="0.6"
-                    android:gravity="top|left"
                     android:onClick="btn_MatchR2_Click"
                     android:text="Match Data"
                     android:textSize="8sp" />
+                <TextView
+                    android:id="@+id/txt_MatchesR2"
+                    android:layout_width="8sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.12"
+                    android:padding="1dip"
+                    android:text="99"
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <LinearLayout
@@ -744,10 +760,17 @@
                     android:layout_width="12sp"
                     android:layout_height="40sp"
                     android:layout_weight="0.6"
-                    android:gravity="top|left"
                     android:onClick="btn_MatchR3_Click"
                     android:text="Match Data"
                     android:textSize="8sp" />
+                <TextView
+                    android:id="@+id/txt_MatchesR3"
+                    android:layout_width="8sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.12"
+                    android:padding="1dip"
+                    android:text="99"
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <LinearLayout
@@ -857,10 +880,17 @@
                     android:layout_width="12sp"
                     android:layout_height="40sp"
                     android:layout_weight="0.6"
-                    android:gravity="top|left"
                     android:onClick="btn_MatchB1_Click"
                     android:text="Match Data"
                     android:textSize="8sp" />
+                <TextView
+                    android:id="@+id/txt_MatchesB1"
+                    android:layout_width="8sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.12"
+                    android:padding="1dip"
+                    android:text="99"
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <LinearLayout
@@ -971,10 +1001,17 @@
                     android:layout_width="12sp"
                     android:layout_height="40sp"
                     android:layout_weight="0.6"
-                    android:gravity="top|left"
                     android:onClick="btn_MatchB2_Click"
                     android:text="Match Data"
                     android:textSize="8sp" />
+                <TextView
+                    android:id="@+id/txt_MatchesB2"
+                    android:layout_width="8sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.12"
+                    android:padding="1dip"
+                    android:text="99"
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <LinearLayout
@@ -1083,10 +1120,17 @@
                     android:layout_width="12sp"
                     android:layout_height="40sp"
                     android:layout_weight="0.6"
-                    android:gravity="top|left"
                     android:onClick="btn_MatchB3_Click"
                     android:text="Match Data"
                     android:textSize="8sp" />
+                <TextView
+                    android:id="@+id/txt_MatchesB3"
+                    android:layout_width="8sp"
+                    android:layout_height="40sp"
+                    android:layout_weight="0.12"
+                    android:padding="1dip"
+                    android:text="99"
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <LinearLayout
