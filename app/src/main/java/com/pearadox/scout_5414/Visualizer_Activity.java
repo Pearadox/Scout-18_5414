@@ -61,15 +61,8 @@ public class Visualizer_Activity extends AppCompatActivity {
 
     String TAG = "Visualizer_Activity";        // This CLASS name
     TextView txt_dev, txt_stud;
-    // @@@  Blue Alliance  @@@
-    public static int BA1numTeams = 0;                                      // # of teams from Blue Alliance
-    public static int BA2numTeams = 0;
-    public static ArrayList<String> BAteams_List = new ArrayList<String>();     // Teams (in RANK order)
-    public boolean BA_avail = false;
     public boolean launchViz = false;
-    Team[] teamsTBA;
-    // -----------------------
-    ProgressBar progressBar1;
+     // -----------------------
     ArrayAdapter<String> adapter_typ;
     public String typSelected = " ";
     Spinner spinner_MatchType;
@@ -80,11 +73,6 @@ public class Visualizer_Activity extends AppCompatActivity {
     ArrayList<String> matchList = new ArrayList<String>();
     ArrayAdapter<String> adaptMatch;
     public int matchSelected = 0;
-//    public String OPR = " ";                // Offensive Power Rating
-//    public static String[] OPR_Teams = new String[]       // Top 15 OPRs from TXLU
-//            {"2481", "1477", " 118", "3366", "5572", " 192", " 624", "2468", "2341", "2164", "4696", "1817", "2613", "2352", "3847"};
-//    public static String[] OPR_rating = new String[]       // Top 15 OPRs from TXLU
-//            {"128.5","118.2","109.4"," 99.3"," 96.3"," 87.7"," 87.5"," 84.9"," 84.2"," 79.5"," 79.4"," 78.7"," 74.8"," 72.4"," 68.7"};
     public String matchID = "T00";          // Type + #
     public String next_Match = " ";         // List of next Matches for 5414
     TextView txt_EventName, txt_MatchID, txt_NextMatch;
@@ -119,6 +107,7 @@ public class Visualizer_Activity extends AppCompatActivity {
     FirebaseStorage storage;
     StorageReference storageRef;
     ArrayList<BA_data> BA_Vis = new ArrayList<>();
+    ArrayList<matchData> Vis_MD = new ArrayList<>();
     matchData match_inst = new matchData();
 
 
@@ -132,54 +121,8 @@ public class Visualizer_Activity extends AppCompatActivity {
         String param2 = bundle.getString("stud");
         w(TAG, param1 + " " + param2);      // ** DEBUG **
 
-// ----------  Blue Alliance  -----------
-//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
-//        StrictMode.setThreadPolicy(policy);
-//        TBA.setID("Pearadox", "Scout-5414", "V1");
-//        final TBA tba = new TBA();
-//        Settings.FIND_TEAM_RANKINGS = true;
-//        Settings.GET_EVENT_TEAMS = true;
-//        Settings.GET_EVENT_MATCHES = true;
-//        Settings.GET_EVENT_ALLIANCES = true;
-//        Settings.GET_EVENT_AWARDS = true;
-//        Settings.GET_EVENT_STATS = true;
-
-//        TBA t = new TBA();
-//        Event e = t.getEvent("txlu", 2017);
-//        teamsTBA = e.teams.clone();
-//        Log.e(TAG, "BLUE1 " + teams1.length);
-//        BA1numTeams = e.teams.length;
-//        for(int i = 0; i < teams1.length; i++) {
-//            System.out.println("Team #: "+teams1[i].team_number+ "  " +teams1[i].rank+" OPR: "+teams1[i].opr+ "  " +teams1[i].touchpad);
-//            System.out.println("        "+teams1[i].record+" RankScore: "+teams1[i].rankingScore+ "  " +teams1[i].pressure + "\n ");
-//        }
-
-//        Event x = t.getEvent("txho", 2017);
-//        teams2 = x.teams.clone();
-////        Team[] teams2 = x.teams;
-//        Log.e(TAG, "BLUE2 " + teams2.length);
-//        BA2numTeams = x.teams.length;
-//        for(int i = 0; i < teams2.length; i++) {
-//            System.out.println("Team #: "+teams2[i].team_number+ "  " +teams2[i].rank+" OPR: "+teams2[i].opr+ "  " +teams2[i].touchpad);
-//            System.out.println("        "+teams2[i].record+" RankScore: "+teams2[i].rankingScore+ "  " +teams2[i].pressure + "\n ");
-//        }
-
-//        if (!e.name.isEmpty() && !x.name.isEmpty()) {
-//            BA_avail = true;
-//        } else {
-//            BA_avail = false;
-//            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-//            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
-//            Toast toast = Toast.makeText(getBaseContext(), "***  Data from the Blue Alliance is _NOT_ available this session  ***", Toast.LENGTH_LONG);
-//            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-//            toast.show();
-//        }
-
-
 //      -----------------------------------------
 
-        progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
-        progressBar1.setVisibility(View.INVISIBLE);
         txt_dev = (TextView) findViewById(R.id.txt_Dev);
         txt_stud = (TextView) findViewById(R.id.txt_TeamName);
         txt_NextMatch = (TextView) findViewById(R.id.txt_NextMatch);
@@ -468,10 +411,6 @@ public class Visualizer_Activity extends AppCompatActivity {
 //    private void childTeamMD_Listner() {
     private void addMD_VE_Listener(final Query pfMatchData_DBReference) {
         i(TAG, "<<<< getFB_Data >>>> Match Data for team " + load_team);
-//        String child = "team_num";
-//        String key = load_team;
-//        Query query = pfMatchData_DBReference.orderByChild(child).equalTo(key);
-//        query.addChildEventListener(new ChildEventListener() {
 
             pfMatchData_DBReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -479,6 +418,7 @@ public class Visualizer_Activity extends AppCompatActivity {
 //            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 //                Log.w(TAG, "@@@@ onChildAdded @@@@ Match Data for team " + load_team);
                 Pearadox.Matches_Data.clear();
+                Vis_MD.clear();
                 matchData mdobj = new matchData();
                 Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
                 Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
@@ -487,16 +427,17 @@ public class Visualizer_Activity extends AppCompatActivity {
 //                    System.out.println(dataSnapshot.getValue());
 //                    System.out.println("  \n  \n");
                     mdobj = iterator.next().getValue(matchData.class);
+                    Vis_MD.add(mdobj);      // add _ALL_ matches to this array
                     if (mdobj.getTeam_num().matches(load_team)) {
-                        w(TAG, " Match: " + mdobj.getMatch() + " # "  + Pearadox.Matches_Data.size());
+                        Log.w(TAG, " Match: " + mdobj.getMatch() + " # "  + Pearadox.Matches_Data.size());
 //                        System.out.println("  \n");
-                        Pearadox.Matches_Data.add(mdobj);
+                        Pearadox.Matches_Data.add(mdobj);   // load data for team specified
                     }
                 }
-                Log.w(TAG, "***** Matches Loaded. # = "  + Pearadox.Matches_Data.size());
+                Log.w(TAG, "***** Matches Loaded. # = " + Vis_MD.size() + "  Team# = " + Pearadox.Matches_Data.size());
                 getMatchForTeams();     // Get Match Data for each team
 
-                if (launchViz) {
+                if(launchViz) {
                     if (Pearadox.Matches_Data.size() > 0) {
                         Intent pit_intent = new Intent(Visualizer_Activity.this, VisMatch_Activity.class);
                         Bundle VZbundle = new Bundle();
@@ -586,7 +527,6 @@ public class Visualizer_Activity extends AppCompatActivity {
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public void buttonView_Click(View view) {
         Log.w(TAG, " View Click  " + matchID);
-//        progressBar1.setVisibility(View.VISIBLE);
 
         clearTeams();
         getTeams();             // Get the teams for match selected
@@ -795,9 +735,9 @@ public class Visualizer_Activity extends AppCompatActivity {
                     Scout_teams.clear();          // empty the list
                     String tn = mobj.getR1();
                     findTeam(tn);
-                    launchViz = false;
                     load_team = tn;
-                    addMD_VE_Listener(pfMatchData_DBReference.orderByChild("match"));        // Load Match data
+                    launchViz =false;   // Don't launch VisMatch
+                    addMD_VE_Listener(pfMatchData_DBReference.orderByChild("match"));        // Load ALL Match data into Vis_MD
                     tn = mobj.getR2();
                     findTeam(tn);
                     tn = mobj.getR3();
@@ -808,6 +748,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                     findTeam(tn);
                     tn = mobj.getB3();
                     findTeam(tn);
+                    load_team = tn;
                     Log.w(TAG, ">>>> # team instances = " + Scout_teams.size());  //** DEBUG
 
                     txt_teamR1 = (TextView) findViewById(R.id.txt_teamR1);
@@ -859,7 +800,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                     Log.w(TAG, "+++++++++; size = " + Scout_teams.size());
 
 //                    w(TAG, "***  Calling Async class  ***");  //** DEBUG
-//                    new Load_BAdata_Task().execute();     // Load Blue Alliance data Asyncronously
+//                    new Load_MatchData_Task().execute();     // Load match data Asyncronously
                     loadTblData();      // Load the images (if any)
 
                 }
@@ -887,58 +828,74 @@ public class Visualizer_Activity extends AppCompatActivity {
     }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void getMatchForTeams() {
         Log.w(TAG, "$$$$$  getMatchForTeams " + Pearadox.Matches_Data.size());
         String team="";
-        int md = Pearadox.Matches_Data.size();
+        int md = Vis_MD.size();
         if (md > 0) {
-            int swNum = 0; int swAtt = 0; int scNum = 0; int scAtt = 0; int base = 0; int extra=0;
-            int tswNum = 0; int tswAtt = 0; int tscNum = 0; int tscAtt = 0; int exch=0;
-            int climb=0; int c_att=0; int lift1=0; int lift2=0; int was=0;
-            for (int i = 0; i < md; i++) {
-                match_inst = Pearadox.Matches_Data.get(i);      // Get instance of Match Data
-                team = match_inst.getTeam_num();
-                if (match_inst.isAuto_baseline()) {
-                    base++;
-                }
-                if (match_inst.isAuto_cube_switch()) {
-                    swNum++;
-                }
-                if (match_inst.isAuto_cube_switch_att()) {
-                    swAtt++;
-                }
-                if (match_inst.isAuto_cube_scale()) {
-                    scNum++;
-                }
-                if (match_inst.isAuto_cube_scale_att()) {
-                    scAtt++;
-                }
-                if (match_inst.isAuto_switch_extra()) {
-                    extra++;
-                }
-                // =================== TeleOps ============
-                tswNum = match_inst.getTele_cube_switch();
-                tswAtt = match_inst.getTele_switch_attempt();
-                tscNum = match_inst.getTele_cube_scale();
-                tscAtt = match_inst.getTele_scale_attempt();
-                exch = match_inst.getTele_cube_exchange();
-                if (match_inst.isTele_climb_success()) {
-                    climb++;
-                }
-                if (match_inst.isTele_climb_attempt()) {
-                    c_att++;
-                }
-                if (match_inst.isTele_lift_one()) {
-                    lift1++;
-                }
-                if (match_inst.isTele_lift_two()) {
-                    lift2++;
-                }
-                if (match_inst.isTele_got_lift()) {
-                    was++;
-                }
-
-            } // End for
+            int ndx=0;
+            for(int x = 0; x < 6; x++) {
+                team_inst = Scout_teams.get(x);
+                team = team_inst.getTeam_num();        // Team#
+                Log.w(TAG, "TEAM  " + team);
+                ndx = x;
+                Log.w(TAG, "NDX  " + ndx);
+                int swNum = 0; int swAtt = 0; int scNum = 0; int scAtt = 0; int base = 0; int extra=0;
+                int tswNum = 0; int tswAtt = 0; int tscNum = 0; int tscAtt = 0; int othr=0; int o_att = 0;
+                int climb=0; int c_att=0; int lift1=0; int lift2=0; int was=0; int exch=0; int portal=0; int zone=0; int floor=0; int tfloor=0;
+                for (int i = 0; i < md; i++) {
+                match_inst = Vis_MD.get(i);      // Get instance of Match Data
+                String mdt = match_inst.getTeam_num();
+                if (mdt.matches(team)) {        // is this match data for the team we are working on?
+                Log.w(TAG, "GMFT TEAM  " + mdt);
+                    if (match_inst.isAuto_baseline()) {
+                        base++;
+                    }
+                    if (match_inst.isAuto_cube_switch()) {
+                        swNum++;
+                    }
+                    if (match_inst.isAuto_cube_switch_att()) {
+                        swAtt++;
+                    }
+                    if (match_inst.isAuto_cube_scale()) {
+                        scNum++;
+                    }
+                    if (match_inst.isAuto_cube_scale_att()) {
+                        scAtt++;
+                    }
+                    if (match_inst.isAuto_switch_extra()) {
+                        extra++;
+                    }
+                    // =================== TeleOps ============
+                    tswNum = match_inst.getTele_cube_switch();
+                    tswAtt = match_inst.getTele_switch_attempt();
+                    tscNum = match_inst.getTele_cube_scale();
+                    tscAtt = match_inst.getTele_scale_attempt();
+                    exch = match_inst.getTele_cube_exchange();
+                    othr = match_inst.getTele_their_switch();
+                    o_att = match_inst.getTele_their_attempt();
+                    portal = match_inst.getTele_cube_portal();
+                    zone = match_inst.getTele_cube_pwrzone();
+                    floor = match_inst.getTele_cube_floor();
+                    tfloor = match_inst.getTele_their_floor();
+                    if (match_inst.isTele_climb_success()) {
+                        climb++;
+                    }
+                    if (match_inst.isTele_climb_attempt()) {
+                        c_att++;
+                    }
+                    if (match_inst.isTele_lift_one()) {
+                        lift1++;
+                    }
+                    if (match_inst.isTele_lift_two()) {
+                        lift2++;
+                    }
+                    if (match_inst.isTele_got_lift()) {
+                        was++;
+                    }
+                } // EndIf teams match
+            } // End for #teams
             Log.e(TAG, team + " ==== Match Data " +  base + "  " +  swNum + "/" +  swAtt + "  " +  scNum + "/" +  scAtt + " ");
             tbl_event1R1 = (TextView) findViewById(R.id.tbl_event1R1);
             tbl_event1R2 = (TextView) findViewById(R.id.tbl_event1R2);
@@ -964,558 +921,52 @@ public class Visualizer_Activity extends AppCompatActivity {
             tbl_rate2B1 = (TextView) findViewById(R.id.tbl_rate2B1);
             tbl_rate2B2 = (TextView) findViewById(R.id.tbl_rate2B2);
             tbl_rate2B3 = (TextView) findViewById(R.id.tbl_rate2B3);
-            int ndx=0;
-            for(int x = 0; x < 6; x++) {
-                team_inst = Scout_teams.get(x);       // Team#
-                if (team_inst.getTeam_num().matches(team)) {
-                    ndx = x;
-                }
-                switch (ndx) {
-                case 0:
-                    tbl_event1R1.setText("Auto" + " \n" + "Tele");
-                    tbl_rate1R1.setText( "⊕" + base + " Δ  " + swNum + "/" + swAtt + " ÷ " + scNum + "/" + scAtt + " +" + extra + " \n" + "Δ  " + tswNum + "/" + tswAtt + "  ÷ " + tscNum + "/" + tscAtt);
-                    tbl_event2R1.setText("Climb" + " \n" + "Exch");
-                    tbl_rate2R1.setText(climb + "/" + c_att + "  One↕" + lift1 + "  Two↕" + lift2 + " ↑ " + was+ " \n" + exch);
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                default:                // ????
-                    Log.e(TAG, "*** Error - bad NDX  ***");
 
-                }
-            } // End for
+            switch (ndx) {
+            case 0:
+                tbl_event1R1.setText("Auto" + " \n" + "Tele");
+                tbl_rate1R1.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   OthΔ " + othr + "/" + o_att);
+                tbl_event2R1.setText("Climb" + " \n" + "▉");
+                tbl_rate2R1.setText(climb + "/" + c_att + "  One↕" + lift1 + "  Two↕" + lift2 + " ↑ " + was+ " \n Ex " + exch + "   Prt " + portal + "  Zn " + zone + "  FL  " + floor + " ➤ " +tfloor);
+                break;
+            case 1:
+                tbl_event1R2.setText("Auto" + " \n" + "Tele");
+                tbl_rate1R2.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   OthΔ " + othr + "/" + o_att);
+                tbl_event2R2.setText("Climb" + " \n" + "▉");
+                tbl_rate2R2.setText(climb + "/" + c_att + "  One↕" + lift1 + "  Two↕" + lift2 + " ↑ " + was+ " \n Ex " + exch + "   Prt " + portal + "  Zn " + zone + "  FL  " + floor + " ➤ " +tfloor);
+                break;
+            case 2:
+                tbl_event1R3.setText("Auto" + " \n" + "Tele");
+                tbl_rate1R3.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   OthΔ " + othr + "/" + o_att);
+                tbl_event2R3.setText("Climb" + " \n" + "▉");
+                tbl_rate2R3.setText(climb + "/" + c_att + "  One↕" + lift1 + "  Two↕" + lift2 + " ↑ " + was+ " \n Ex " + exch + "   Prt " + portal + "  Zn " + zone + "  FL  " + floor + " ➤ " +tfloor);
+                break;
+            case 3:
+                tbl_event1B1.setText("Auto" + " \n" + "Tele");
+                tbl_rate1B1.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   OthΔ " + othr + "/" + o_att);
+                tbl_event2B1.setText("Climb" + " \n" + "▉");
+                tbl_rate2B1.setText(climb + "/" + c_att + "  One↕" + lift1 + "  Two↕" + lift2 + " ↑ " + was+ " \n Ex " + exch + "   Prt " + portal + "  Zn " + zone + "  FL  " + floor + " ➤ " +tfloor);
+                break;
+            case 4:
+                tbl_event1B2.setText("Auto" + " \n" + "Tele");
+                tbl_rate1B2.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   OthΔ " + othr + "/" + o_att);
+                tbl_event2B2.setText("Climb" + " \n" + "▉");
+                tbl_rate2B2.setText(climb + "/" + c_att + "  One↕" + lift1 + "  Two↕" + lift2 + " ↑ " + was+ " \n Ex " + exch + "   Prt " + portal + "  Zn " + zone + "  FL  " + floor + " ➤ " +tfloor);
+                break;
+            case 5:
+                tbl_event1B3.setText("Auto" + " \n" + "Tele");
+                tbl_rate1B3.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   OthΔ " + othr + "/" + o_att);
+                tbl_event2B3.setText("Climb" + " \n" + "▉");
+                tbl_rate2B3.setText(climb + "/" + c_att + "  One↕" + lift1 + "  Two↕" + lift2 + " ↑ " + was+ " \n Ex " + exch + "   Prt " + portal + "  Zn " + zone + "  FL  " + floor + " ➤ " +tfloor);
+                break;
+            default:                // ????
+                Log.e(TAG, "*** Error - bad NDX  ***");
+            } // end Switch
 
-        } //end If
+        } //end If md>0
+        } // End for #teams
      }
 
-//    private String chkOPR(String team) {
-//        i(TAG, "###  chkOPR ### " + team);
-//        // ToDo - Get OPR data from Blue Alliance
-//        String opr = "000.0";
-//        for(int i = 0; i < OPR_Teams.length; i++) {   // Search Teams to find Rank
-//            Log.w(TAG, "opr Team " + OPR_Teams[i]);
-//            if (OPR_Teams[i].matches(team)) {
-//                opr = OPR_rating[i];
-//            }
-//        }
-//        return opr;
-//    }
-
-
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    private class Load_BAdata_Task extends AsyncTask<Void, Integer, String> {
-        int progress = 0;
-        int progIncrement = 100 / 12;       // ~8
-        ProgressDialog pd;
-        Team[] teams1; Team[] teams2; Event[] evt1;
-        String rank1 = ""; String rank2 = "";  String OPR1 = "";  String OPR2 = ""; String NTP1 = ""; String NTP2 = "";
-        String WLT1 = ""; String WLT2 = ""; String kPa1 = ""; String kPa2 = ""; String EVT1 = ""; String EVT2 = "";
-
-    @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Log.i("Viz_Async", "***  onPreExecute  ***");
-            progressBar1.setVisibility(ProgressBar.VISIBLE);
-
-            pd = new ProgressDialog(Visualizer_Activity.this);
-            pd.setTitle("Loading Blue Alliance data for ALL teams");
-            pd.setMessage("Please wait for Blue Alliance data");
-//            pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-//            pd.setMax(100);
-            pd.setCancelable(true);         // GLF 4/20 (for Andrew!)
-            pd.setButton(ProgressDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //Cancel download task
-                pd.cancel();
-                pd.dismiss();
-            }
-        });
-        pd.show();
-    }
-
-        @Override
-        protected String doInBackground(Void... params) {
-            Log.i("Viz_Async", "***  doInBackground  ***" + progIncrement);
-            progress += 3;
-//            tnum = " ";      // 1st show a blank team
-            tnum = Scout_teams.get(0).getTeam_num();   // 1st team
-            Log.w("Viz_Async", "Scout Team #1 = " + tnum);
-            publishProgress(progress);
-            int done = 0;
-            BA_Vis.clear();
-            p_Firebase.teamsObj BAteam_inst = new p_Firebase.teamsObj(team_num, team_name,  team_loc);
-
-            for(int x = 0; x < 6; x++) {
-                BA_data BA_inst = new BA_data();
-                BAteam_inst = Scout_teams.get(x);       // Team#
-                tnum = BAteam_inst.getTeam_num();
-                Log.w("Viz_Async", x + "  %%%%%%%%  Team: " + tnum);
-
-                done = get_BA1data(BAteam_inst.getTeam_num().trim());
-                BA_inst.BA_team = tnum;
-                BA_inst.BA_evt1 = EVT1;
-                BA_inst.BA_wlt1 = WLT1;
-                BA_inst.BA_opr1 = OPR1;
-                BA_inst.BA_rank1 = rank1;
-                BA_inst.BA_kPa1 = kPa1;
-                BA_inst.BA_tPts1 = NTP1;
-                progress = progress + progIncrement;
-                publishProgress(progress);
-
-                SystemClock.sleep(500);
-                BA_inst.BA_evt2 = EVT2;
-                BA_inst.BA_wlt2 = WLT2;
-                BA_inst.BA_opr2 = OPR2;
-                BA_inst.BA_rank2 = rank2;
-                BA_inst.BA_kPa2 = kPa2;
-                BA_inst.BA_tPts2 = NTP2;
-                BA_Vis.add(BA_inst);
-//                Log.w("Viz_Async", "Team:" + BA_inst.BA_team);
-//                System.out.println("BA_Vis: " + BA_Vis.size() + " \n ");
-
-                progress = progress + progIncrement;
-                publishProgress(progress);
-            }
-//            Log.w("Viz_Async", "BA_Vis # Objs = " + BA_Vis.size());
-
-            return null; 		// end of Asynch Task
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            Log.i("Viz_Async", "***  onProgressUpdate  ***  " + progress + "  '" + tnum + "'");
-            progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
-            progressBar1.setProgress(values[0]);
-            pd.setMessage("Please wait for Blue Alliance data - Team: " + tnum);
-        }
-
-    protected void onPostExecute(String result) {
-        super.onPostExecute(result);
-        Log.i("Viz_Async", "***  onPostExecute  ***  " + result);
-
-        progressBar1.setProgress(100);
-        SystemClock.sleep(1000);
-        if (pd != null) {
-            if (pd.isShowing()) {
-                pd.dismiss();
-            }
-        } else {
-            Log.e("Viz_Async", "***  pd = NULL  ***  ");
-        }
-
-//        for(int i = 0; i < 6; i++) {
-//            BA_data BA_inst = new BA_data();
-//            Log.e("Viz_Async", "*POST* " + i);
-//            BA_inst = BA_Vis.get(i);    // Team R1
-//            load_team = BA_inst.getBA_team();
-//            String e1 = BA_inst.getBA_evt1();
-//            String o1 = BA_inst.getBA_opr1();
-//            String r1 = BA_inst.getBA_rank1();
-//            String w1 = BA_inst.getBA_wlt1();
-//            String e2 = BA_inst.getBA_evt2();
-//            String o2 = BA_inst.getBA_opr2();
-//            String r2 = BA_inst.getBA_rank2();
-//            String w2 = BA_inst.getBA_wlt2();
-//            System.out.println("*POST* " + load_team + e1 +o1 +r1 +w1 + e2 +o2 +r2 +w2 + " \n ");
-//        }
-
-        tbl_event1R1 = (TextView) findViewById(R.id.tbl_event1R1);
-        tbl_event1R2 = (TextView) findViewById(R.id.tbl_event1R2);
-        tbl_event1R3 = (TextView) findViewById(R.id.tbl_event1R3);
-        tbl_event1B1 = (TextView) findViewById(R.id.tbl_event1B1);
-        tbl_event1B2 = (TextView) findViewById(R.id.tbl_event1B2);
-        tbl_event1B3 = (TextView) findViewById(R.id.tbl_event1B3);
-        tbl_rate1R1 = (TextView) findViewById(R.id.tbl_rate1R1);
-        tbl_rate1R2 = (TextView) findViewById(R.id.tbl_rate1R2);
-        tbl_rate1R3 = (TextView) findViewById(R.id.tbl_rate1R3);
-        tbl_rate1B1 = (TextView) findViewById(R.id.tbl_rate1B1);
-        tbl_rate1B2 = (TextView) findViewById(R.id.tbl_rate1B2);
-        tbl_rate1B3 = (TextView) findViewById(R.id.tbl_rate1B3);
-        tbl_event2R1 = (TextView) findViewById(R.id.tbl_event2R1);
-        tbl_event2R2 = (TextView) findViewById(R.id.tbl_event2R2);
-        tbl_event2R3 = (TextView) findViewById(R.id.tbl_event2R3);
-        tbl_event2B1 = (TextView) findViewById(R.id.tbl_event2B1);
-        tbl_event2B2 = (TextView) findViewById(R.id.tbl_event2B2);
-        tbl_event2B3 = (TextView) findViewById(R.id.tbl_event2B3);
-        tbl_rate2R1 = (TextView) findViewById(R.id.tbl_rate2R1);
-        tbl_rate2R2 = (TextView) findViewById(R.id.tbl_rate2R2);
-        tbl_rate2R3 = (TextView) findViewById(R.id.tbl_rate2R3);
-        tbl_rate2B1 = (TextView) findViewById(R.id.tbl_rate2B1);
-        tbl_rate2B2 = (TextView) findViewById(R.id.tbl_rate2B2);
-        tbl_rate2B3 = (TextView) findViewById(R.id.tbl_rate2B3);
-
-        BA_data BA_inst = new BA_data();
-        BA_inst = BA_Vis.get(0);    // Team R1
-//        Log.e("Viz_Async", ">>>  Team: " + BA_inst.getBA_team());
-        EVT1 = BA_inst.getBA_evt1();
-        rank1 = BA_inst.getBA_rank1();
-        WLT1 = BA_inst.getBA_wlt1();
-        OPR1 = BA_inst.getBA_opr1();
-        NTP1 = BA_inst.getBA_tPts1();
-        kPa1 = BA_inst.getBA_kPa1();
-        tbl_event1R1.setText(EVT1 + " \n" + WLT1);
-        tbl_rate1R1.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
-        EVT2 = BA_inst.getBA_evt2();
-        rank2 = BA_inst.getBA_rank2();
-        WLT2 = BA_inst.getBA_wlt2();
-        OPR2 = BA_inst.getBA_opr2();
-        NTP2 = BA_inst.getBA_tPts2();
-        kPa2 = BA_inst.getBA_kPa2();
-        if (!EVT2.matches("    ")) {
-            tbl_event2R1.setText(EVT2 + " \n" + WLT2);
-            tbl_rate2R1.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
-        } else {
-            tbl_event2R1.setText("");
-            tbl_rate2R1.setText("");
-        }
-
-        BA_inst = BA_Vis.get(1);    // Team R2
-//        Log.e("Viz_Async", ">>>  Team: " + BA_inst.getBA_team());
-        EVT1 = BA_inst.getBA_evt1();
-        rank1 = BA_inst.getBA_rank1();
-        WLT1 = BA_inst.getBA_wlt1();
-        OPR1 = BA_inst.getBA_opr1();
-        NTP1 = BA_inst.getBA_tPts1();
-        kPa1 = BA_inst.getBA_kPa1();
-        tbl_event1R2.setText(EVT1 + " \n" + WLT1);
-        tbl_rate1R2.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
-        EVT2 = BA_inst.getBA_evt2();
-        rank2 = BA_inst.getBA_rank2();
-        WLT2 = BA_inst.getBA_wlt2();
-        OPR2 = BA_inst.getBA_opr2();
-        NTP2 = BA_inst.getBA_tPts2();
-        kPa2 = BA_inst.getBA_kPa2();
-        if (!EVT2.matches("    ")) {
-            tbl_event2R2.setText(EVT2 + " \n" + WLT2);
-            tbl_rate2R2.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
-        } else {
-            tbl_event2R2.setText("");
-            tbl_rate2R2.setText("");
-        }
-
-        BA_inst = BA_Vis.get(2);    // Team R3
-//        Log.e("Viz_Async", ">>>  Team: " + BA_inst.getBA_team());
-        EVT1 = BA_inst.getBA_evt1();
-        rank1 = BA_inst.getBA_rank1();
-        WLT1 = BA_inst.getBA_wlt1();
-        OPR1 = BA_inst.getBA_opr1();
-        NTP1 = BA_inst.getBA_tPts1();
-        kPa1 = BA_inst.getBA_kPa1();
-        tbl_event1R3.setText(EVT1 + " \n" + WLT1);
-        tbl_rate1R3.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
-        EVT2 = BA_inst.getBA_evt2();
-        rank2 = BA_inst.getBA_rank2();
-        WLT2 = BA_inst.getBA_wlt2();
-        OPR2 = BA_inst.getBA_opr2();
-        NTP2 = BA_inst.getBA_tPts2();
-        kPa2 = BA_inst.getBA_kPa2();
-        if (!EVT2.matches("    ")) {
-            tbl_event2R3.setText(EVT2 + " \n" + WLT2);
-            tbl_rate2R3.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
-        } else {
-            tbl_event2R3.setText("");
-            tbl_rate2R3.setText("");
-        }
-
-        BA_inst = BA_Vis.get(3);    // Team B1
-//        Log.e("Viz_Async", ">>>  Team: " + BA_inst.getBA_team());
-        EVT1 = BA_inst.getBA_evt1();
-        rank1 = BA_inst.getBA_rank1();
-        WLT1 = BA_inst.getBA_wlt1();
-        OPR1 = BA_inst.getBA_opr1();
-        NTP1 = BA_inst.getBA_tPts1();
-        kPa1 = BA_inst.getBA_kPa1();
-        tbl_event1B1.setText(EVT1 + " \n" + WLT1);
-        tbl_rate1B1.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
-        EVT2 = BA_inst.getBA_evt2();
-        rank2 = BA_inst.getBA_rank2();
-        WLT2 = BA_inst.getBA_wlt2();
-        OPR2 = BA_inst.getBA_opr2();
-        NTP2 = BA_inst.getBA_tPts2();
-        kPa2 = BA_inst.getBA_kPa2();
-        if (!EVT2.matches("    ")) {
-            tbl_event2B1.setText(EVT2 + " \n" + WLT2);
-            tbl_rate2B1.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
-        } else {
-            tbl_event2B1.setText("");
-            tbl_rate2B1.setText("");
-        }
-
-        BA_inst = BA_Vis.get(4);    // Team B2
-//        Log.e("Viz_Async", ">>>  Team: " + BA_inst.getBA_team());
-        EVT1 = BA_inst.getBA_evt1();
-        rank1 = BA_inst.getBA_rank1();
-        WLT1 = BA_inst.getBA_wlt1();
-        OPR1 = BA_inst.getBA_opr1();
-        NTP1 = BA_inst.getBA_tPts1();
-        kPa1 = BA_inst.getBA_kPa1();
-        tbl_event1B2.setText(EVT1 + " \n" + WLT1);
-        tbl_rate1B2.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
-        EVT2 = BA_inst.getBA_evt2();
-        rank2 = BA_inst.getBA_rank2();
-        WLT2 = BA_inst.getBA_wlt2();
-        OPR2 = BA_inst.getBA_opr2();
-        NTP2 = BA_inst.getBA_tPts2();
-        kPa2 = BA_inst.getBA_kPa2();
-        if (!EVT2.matches("    ")) {
-            tbl_event2B2.setText(EVT2 + " \n" + WLT2);
-            tbl_rate2B2.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
-        } else {
-            tbl_event2B2.setText("");
-            tbl_rate2B2.setText("");
-        }
-
-        BA_inst = BA_Vis.get(5);    // Team B3
-//        Log.e("Viz_Async", ">>>  Team: " + BA_inst.getBA_team());
-        EVT1 = BA_inst.getBA_evt1();
-        rank1 = BA_inst.getBA_rank1();
-        WLT1 = BA_inst.getBA_wlt1();
-        OPR1 = BA_inst.getBA_opr1();
-        NTP1 = BA_inst.getBA_tPts1();
-        kPa1 = BA_inst.getBA_kPa1();
-        tbl_event1B3.setText(EVT1 + " \n" + WLT1);
-        tbl_rate1B3.setText("OPR " + OPR1 + "   ↑ " + NTP1 + "  \n" + "Rank=" + rank1 + "  kPa=" + kPa1);
-        EVT2 = BA_inst.getBA_evt2();
-        rank2 = BA_inst.getBA_rank2();
-        WLT2 = BA_inst.getBA_wlt2();
-        OPR2 = BA_inst.getBA_opr2();
-        NTP2 = BA_inst.getBA_tPts2();
-        kPa2 = BA_inst.getBA_kPa2();
-        if (!EVT2.matches("    ")) {
-            tbl_event2B3.setText(EVT2 + " \n" + WLT2);
-            tbl_rate2B3.setText("OPR " + OPR2 + "   ↑ " + NTP2 + "  \n" + "Rank=" + rank2 + "  kPa=" + kPa2);
-        } else {
-            tbl_event2B3.setText("");
-            tbl_rate2B3.setText("");
-        }
-        progressBar1.setVisibility(View.INVISIBLE);
-
-    }
-
-    private int get_BA1data(String team) {
-        Log.i("Viz_Async", "%%%  get_BA1data %%% " + team);
-        int done = 0; int numEvts = 0; int bad1 = 99;
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
-        StrictMode.setThreadPolicy(policy);
-        TBA.setID("Pearadox", "Scout-5414", "V1");
-        Settings.defaults();
-//        Settings.FIND_TEAM_RANKINGS = true;
-//        Settings.GET_EVENT_TEAMS = true;
-//        Settings.GET_EVENT_MATCHES = true;
-//        Settings.GET_EVENT_ALLIANCES = true;
-//        Settings.GET_EVENT_AWARDS = true;
-//        Settings.GET_EVENT_STATS = true;
-
-        final TBA BA1 = new TBA();
-        Team t = BA1.getTeam(Integer.parseInt(team));
-        Log.w("Viz_Async", ">>>>>>>  Team: " + team);
-        Event main = BA1.getEvent("2017" + Pearadox.FRC_ChampDiv);
-        Settings.disableAll(); // we only want a list of events
-        Event[] teamEvents = BA1.getTeamEvents((int)t.team_number, 2017, true); // Get a list of all the events this team was in
-        System.out.println(teamEvents.length);
-        if (teamEvents.length > 1) {
-            Log.w("Viz_Async", "EVTS: " + teamEvents[teamEvents.length - 3].event_code + "  " + teamEvents[teamEvents.length - 3].event_code);
-        } else {
-            Log.w("Viz_Async", "**** ONLY 1 event!!  ****: " + teamEvents[0].event_code);
-        }
-        System.out.println("  \n   ");
-        Event previous1 = teamEvents[teamEvents.length - 3];
-        Event previous2 = teamEvents[teamEvents.length - 2];
-        previous1 = new TBA().getEvent("2017" + previous1.event_code);
-        System.out.println("PREV1 " + previous1.name );
-        Settings.defaults();
-        Team withEvent1Data = previous1.fillTeamStats(t); // This team now has all it's stats filled in (from event previous1)
-        // Since TBA.com doesn't include OPR in event data, we have to pull them seperately
-        withEvent1Data = BA1.fillOPR(previous1, withEvent1Data);
-        System.out.println("EVENT-1 " + withEvent1Data.team_number + withEvent1Data.nickname + " " + withEvent1Data.rank + " " + withEvent1Data.pressure + " " + withEvent1Data.record + " " +  withEvent1Data.opr);
-
-        previous2 = new TBA().getEvent("2017" + previous2.event_code);
-        Team withEvent2Data = previous2.fillTeamStats(t); // This team now has all it's stats filled in (from event previous2)
-        withEvent2Data = BA1.fillOPR(previous2, withEvent2Data);
-        System.out.println("EVENT-2 " + withEvent2Data.team_number + withEvent2Data.nickname + " " + withEvent2Data.rank + " " + withEvent2Data.pressure + " " + withEvent2Data.record + " " +  withEvent2Data.opr);
-
-        EVT1 = previous1.event_code.toUpperCase();
-        rank1 = String.valueOf(withEvent1Data.rank);              // Rank
-        OPR1 = String.format("%3.1f",(withEvent1Data.opr));       // OPR
-        NTP1 = String.format("%3.1f",(withEvent1Data.touchpad));  // Touchpad
-        kPa1 = String.format("%3.1f",(withEvent1Data.pressure));  // kPa - Pressure
-        WLT1 = withEvent1Data.record;                             // W-L-T Record
-        EVT2 = previous2.event_code.toUpperCase();
-        rank2 = String.valueOf(withEvent2Data.rank);              // Rank
-        OPR2 = String.format("%3.1f", (withEvent2Data.opr));       // OPR
-        NTP2 = String.format("%3.1f", (withEvent2Data.touchpad));  // Touchpad
-        kPa2 = String.format("%3.1f", (withEvent2Data.pressure));  // kPa - Pressure
-        WLT2 = withEvent2Data.record;                              // W-L-T Record
-
-        Log.w("Viz_Async", EVT1+ rank1 + OPR1+ NTP1+ kPa1+ WLT1+ EVT2+ rank2+ OPR2+ NTP2+ kPa2+ WLT2);
-        System.out.println("  \n   \n ");
-
-
-//        final TBA BA1 = new TBA();
-//        Event[] events = new TBA().getTeamEvents(Integer.parseInt(team), 2017);
-//        evt1 = events.clone();
-//        System.out.println("events: "+ events.length + "  Team:" + team);
-//        for(int i = 0; i < evt1.length; i++) {   // Search Teams to find Rank
-//            Log.w("Viz_Async", "%%% Event %%% " + evt1[i].name + "  " + evt1[i].event_code + " " + evt1[i].name.substring(0,7));
-////            if (evt1[i].name.substring(0,7).matches("Galileo") || evt1[i].name.substring(0,6).matches("Hopper") || evt1[i].name.substring(0,6).matches("Turing") ||
-////                    evt1[i].name.substring(0,6).matches("Carver") || evt1[i].name.substring(0,6).matches("Newton") || evt1[i].name.substring(0,8).matches("Roebling")
-////                    || evt1[i].name.substring(0,5).matches("FIRST")) {
-//            if (evt1[i].event_code.toUpperCase().matches("TXSC")) {
-//                bad1 = i;
-//            } else {
-//                numEvts++;
-//            }
-//        }
-//        Log.w("Viz_Async", "BA1  #=" + events.length + " numEvts=" + numEvts + "  " + bad1 + " \n ");
-//        switch (evt1.length) {
-//            case 1:
-//                EVT1 = evt1[0].event_code.toUpperCase();
-//                EVT2 = "    ";
-//                break;
-//            case 2:
-//                if (bad1 == 99) {
-//                    EVT1 = evt1[0].event_code.toUpperCase();
-//                    EVT2 = evt1[1].event_code.toUpperCase();
-//                } else {
-//                    if (bad1 == 0) {
-//                        EVT1 = evt1[1].event_code.toUpperCase();
-//                        EVT2 = "    ";
-//                    } else {
-//                        EVT1 = evt1[0].event_code.toUpperCase();
-//                        EVT2 = "    ";
-//                    }
-//                }
-//                break;
-//            case 3:
-////                Log.w("Viz_Async", " CASE #3  numEvts=" + numEvts + "  " + bad1);
-//                if (bad1 == 99) {       // Use last 2
-//                    EVT1 = evt1[1].event_code.toUpperCase();
-//                    EVT2 = evt1[2].event_code.toUpperCase();
-//                } else {
-//                    if (bad1 == 0) {
-////                        Log.w("Viz_Async", " CASE #3 " + evt1[1].event_code + "  " + evt1[2].event_code);
-//                        EVT1 = evt1[1].event_code.toUpperCase();
-//                        EVT2 = evt1[2].event_code.toUpperCase();
-//                    } else {
-//                        if (bad1 == 1) {
-//                            EVT1 = evt1[0].event_code.toUpperCase();
-//                            EVT2 = evt1[2].event_code.toUpperCase();
-//                        } else {
-//                            EVT1 = evt1[0].event_code.toUpperCase();
-//                            EVT2 = evt1[1].event_code.toUpperCase();
-//                        }
-//                    }
-//                }
-//                break;
-//            case 4:
-////                Log.w("Viz_Async", " WOW!! #4  numEvts=" + numEvts + "  " + bad1);
-//                if (bad1 == 99) {
-//                    EVT1 = evt1[2].event_code.toUpperCase();
-//                    EVT2 = evt1[3].event_code.toUpperCase();
-//                } else {
-//                    if (bad1 == 0) {
-//                        EVT1 = evt1[2].event_code.toUpperCase();
-//                        EVT2 = evt1[3].event_code.toUpperCase();
-//                    } else {
-//                        if (bad1 == 1) {
-//                            EVT1 = evt1[2].event_code.toUpperCase();
-//                            EVT2 = evt1[3].event_code.toUpperCase();
-//                        } else {
-//                            if (bad1 == 2) {
-//                                EVT1 = evt1[1].event_code.toUpperCase();
-//                                EVT2 = evt1[3].event_code.toUpperCase();
-//                            } else {
-//                            }
-//                        }
-//                    }
-//                }
-//                break;
-//            default:                // ????
-//                Log.e("Viz_Async", "*** Error - numEvts??  ***  " + numEvts);
-//        }
-//
-//        Log.w("Viz_Async", "Evt1=" + EVT1 + "  Evt2=" + EVT2);
-//        done = 1;
-//
-//        TBA t = new TBA();
-//        Event e = t.getEvent(EVT1.toLowerCase(), 2017);
-//        teams1 = e.teams.clone();
-////        Log.e("Viz_Async", "BLUE1 " + teams1.length);
-//        BA1numTeams = e.teams.length;
-//
-////        Team t = BA1.getTeam(Integer.parseInt(team));
-////        System.out.println("Team #: "+t.team_number + "  " +t.rank +" OPR: "+t.opr+ "  " +t.touchpad );
-////        System.out.println("  Record: " +t.record + "  " +t.pressure +" pts "+t.matchPoints+ "  score" +t.rankingScore + " \n \n");
-
-//        String team_num = "";  rank1=""; WLT1=""; OPR1="";NTP1="";kPa1="";
-//        for(int i = 0; i < BA1numTeams; i++) {   // Search Teams to find Rank
-//            team_num = String.valueOf(teams1[i].team_number);
-////            Log.w("Viz_Async", "LOOP " + i + " " + team_num);
-//            if (team_num.matches(team)) {
-////                Log.w(TAG, ">>>>>>>>>>>>>>>>  Found Team # " + team);
-//                rank1 = String.valueOf(i + 1);                                       // Rank
-//                OPR1 = String.format("%3.1f",(teams1[i].opr));       // OPR
-//                NTP1 = String.format("%3.1f",(teams1[i].touchpad));  // Touchpad
-//                kPa1 = String.format("%3.1f",(teams1[i].pressure));  // kPa - Pressure
-//                WLT1 = teams1[i].record;                             // W-L-T Record
-//            }
-//        }
-//
-//        if (!EVT2.matches("    ")) {
-//            Event x = t.getEvent(EVT2.toLowerCase(), 2017);
-//            teams2 = x.teams.clone();
-////            Log.e("Viz_Async", "BLUE2 " + teams2.length);
-//            BA2numTeams = x.teams.length;
-//
-//            team_num = ""; rank2 = ""; WLT2 = ""; OPR2 = ""; NTP2 = ""; kPa2 = "";
-//            for (int i = 0; i < BA2numTeams; i++) {      // Search Teams to find Rank
-//                team_num = String.valueOf(teams2[i].team_number);
-////            Log.w("Viz_Async", "LOOP " + i + " " + team_num);
-//                if (team_num.matches(team)) {
-////                    Log.w("Viz_Async", ">>>>>>>>>>>>>>>>  Found Team # " + team);
-//                    rank2 = String.valueOf(i + 1);                        // Rank
-//                    OPR2 = String.format("%3.1f", (teams2[i].opr));       // OPR
-//                    NTP2 = String.format("%3.1f", (teams2[i].touchpad));  // Touchpad
-//                    kPa2 = String.format("%3.1f", (teams2[i].pressure));  // kPa - Pressure
-//                    WLT2 = teams2[i].record;                              // W-L-T Record
-//                }
-//            }
-//        }
-        return done;
-    }
-
-}
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-//    private int get_BA2data(String team) {
-//        Log.i(TAG, "@@@  get_BA2data @@@ " + team);
-//        int rank = 0;
-//        String team_num = "";  WLT1 =""; WLT2 ="";
-//        for(int i = 0; i < BA2numTeams; i++) {      // Search Teams to find Rank
-//            team_num = String.valueOf(teams2[i].team_number);
-////            Log.w(TAG, "LOOP " + i + " " + team_num);
-//            if (team_num.matches(team)) {
-//                Log.w(TAG, ">>>>>>>>>>>>>>>>  Found Team # " + team);
-//                rank = i + 1;                                       // Rank
-//                EVT = "TXHO";
-//                OPR = String.format("%3.1f",(teams2[i].opr));       // OPR
-//                NTP = String.format("%3.1f",(teams2[i].touchpad));  // Touchpad
-//                kPa = String.format("%3.1f",(teams2[i].pressure));  // kPa - Pressure
-//                WLT = teams2[i].record;                             // W-L-T Record
-//            }
-//        }
-//        return rank;
-//    }
 
     private void findTeam(String tnum) {
         Log.w(TAG, "$$$$$  findTeam " + tnum);
