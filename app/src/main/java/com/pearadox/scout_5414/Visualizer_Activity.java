@@ -83,6 +83,7 @@ public class Visualizer_Activity extends AppCompatActivity {
     TextView tbl_rate1R1,tbl_rate1R2,tbl_rate1R3, tbl_rate1B1, tbl_rate1B2, tbl_rate1B3;
     TextView tbl_event2R1, tbl_event2R2, tbl_event2R3, tbl_event2B1, tbl_event2B2, tbl_event2B3;
     TextView tbl_rate2R1,tbl_rate2R2,tbl_rate2R3, tbl_rate2B1, tbl_rate2B2, tbl_rate2B3;
+    TextView txt_MatchesR1, txt_MatchesR2, txt_MatchesR3, txt_MatchesB1, txt_MatchesB2, txt_MatchesB3;
 
     Button button_View;
     String team_num, team_name, team_loc;
@@ -106,7 +107,6 @@ public class Visualizer_Activity extends AppCompatActivity {
     int FB_num;
     FirebaseStorage storage;
     StorageReference storageRef;
-    ArrayList<BA_data> BA_Vis = new ArrayList<>();
     ArrayList<matchData> Vis_MD = new ArrayList<>();
     matchData match_inst = new matchData();
 
@@ -138,28 +138,22 @@ public class Visualizer_Activity extends AppCompatActivity {
         adaptMatch.notifyDataSetChanged();
 
         pfDatabase = FirebaseDatabase.getInstance();
-//        pfTeam_DBReference = pfDatabase.getReference("teams/" + Pearadox.FRC_Event);  // Tteam data from Firebase D/B
-//        pfStudent_DBReference = pfDatabase.getReference("students");        // List of Students
-//        pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Devicess
         pfMatch_DBReference = pfDatabase.getReference("matches/" + Pearadox.FRC_Event); // List of Matches
         pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
-//        pfCur_Match_DBReference = pfDatabase.getReference("current-match"); // _THE_ current Match
-//        FirebaseStorage storage = FirebaseStorage.getInstance();
-//        StorageReference storageRef = storage.getReference();
 
-        Spinner spinner_MatchType = (Spinner) findViewById(R.id.spinner_MatchType);
-        String[] devices = getResources().getStringArray(R.array.mtchtyp_array);
-        adapter_typ = new ArrayAdapter<String>(this, R.layout.dev_list_layout, devices);
-        adapter_typ.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_MatchType.setAdapter(adapter_typ);
-        spinner_MatchType.setSelection(0, false);
-        spinner_MatchType.setOnItemSelectedListener(new Visualizer_Activity.type_OnItemSelectedListener());
-        Spinner spinner_MatchNum = (Spinner) findViewById(R.id.spinner_MatchNum);
-        ArrayAdapter adapter_Num = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Pearadox.matches);
-        adapter_Num.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_MatchNum.setAdapter(adapter_Num);
-        spinner_MatchNum.setSelection(0, false);
-        spinner_MatchNum.setOnItemSelectedListener(new Visualizer_Activity.mNum_OnItemSelectedListener());
+//        Spinner spinner_MatchType = (Spinner) findViewById(R.id.spinner_MatchType);
+//        String[] devices = getResources().getStringArray(R.array.mtchtyp_array);
+//        adapter_typ = new ArrayAdapter<String>(this, R.layout.dev_list_layout, devices);
+//        adapter_typ.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinner_MatchType.setAdapter(adapter_typ);
+//        spinner_MatchType.setSelection(0, false);
+//        spinner_MatchType.setOnItemSelectedListener(new Visualizer_Activity.type_OnItemSelectedListener());
+//        Spinner spinner_MatchNum = (Spinner) findViewById(R.id.spinner_MatchNum);
+//        ArrayAdapter adapter_Num = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Pearadox.matches);
+//        adapter_Num.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinner_MatchNum.setAdapter(adapter_Num);
+//        spinner_MatchNum.setSelection(0, false);
+//        spinner_MatchNum.setOnItemSelectedListener(new Visualizer_Activity.mNum_OnItemSelectedListener());
         clearTeams();
         Button button_View = (Button) findViewById(R.id.button_View);   // Listner defined in Layout XML
 //        button_View.setOnClickListener(buttonView_Click);
@@ -230,6 +224,13 @@ public class Visualizer_Activity extends AppCompatActivity {
         tbl_rate2B1 = (TextView) findViewById(R.id.tbl_rate2B1);
         tbl_rate2B2 = (TextView) findViewById(R.id.tbl_rate2B2);
         tbl_rate2B3 = (TextView) findViewById(R.id.tbl_rate2B3);
+        txt_MatchesR1 = (TextView) findViewById(R.id.txt_MatchesR1);
+        txt_MatchesR2 = (TextView) findViewById(R.id.txt_MatchesR2);
+        txt_MatchesR3 = (TextView) findViewById(R.id.txt_MatchesR3);
+        txt_MatchesB1 = (TextView) findViewById(R.id.txt_MatchesB1);
+        txt_MatchesB2 = (TextView) findViewById(R.id.txt_MatchesB2);
+        txt_MatchesB3 = (TextView) findViewById(R.id.txt_MatchesB3);
+
 
         txt_teamR1.setText("");
         txt_teamR2.setText("");
@@ -277,8 +278,14 @@ public class Visualizer_Activity extends AppCompatActivity {
         tbl_rate2B1.setText("");
         tbl_rate2B2.setText("");
         tbl_rate2B3.setText("");
+        txt_MatchesR1.setText("");
+        txt_MatchesR2.setText("");
+        txt_MatchesR3.setText("");
+        txt_MatchesB1.setText("");
+        txt_MatchesB2.setText("");
+        txt_MatchesB3.setText("");
 
-        ImageView tbl_robotR1 = (ImageView) findViewById(R.id.tbl_robotR1);
+                ImageView tbl_robotR1 = (ImageView) findViewById(R.id.tbl_robotR1);
         ImageView tbl_robotR2 = (ImageView) findViewById(R.id.tbl_robotR2);
         ImageView tbl_robotR3 = (ImageView) findViewById(R.id.tbl_robotR3);
         ImageView tbl_robotB1 = (ImageView) findViewById(R.id.tbl_robotB1);
@@ -841,7 +848,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                 Log.w(TAG, "TEAM  " + team);
                 ndx = x;
                 Log.w(TAG, "NDX  " + ndx);
-                int swNum = 0; int swAtt = 0; int scNum = 0; int scAtt = 0; int base = 0; int extra=0;
+                int numMDs = 0; int swNum = 0; int swAtt = 0; int scNum = 0; int scAtt = 0; int base = 0; int extra=0;
                 int tswNum = 0; int tswAtt = 0; int tscNum = 0; int tscAtt = 0; int othr=0; int o_att = 0;
                 int climb=0; int c_att=0; int lift1=0; int lift2=0; int was=0; int exch=0; int portal=0; int zone=0; int floor=0; int tfloor=0;
                 for (int i = 0; i < md; i++) {
@@ -849,6 +856,7 @@ public class Visualizer_Activity extends AppCompatActivity {
                 String mdt = match_inst.getTeam_num();
                 if (mdt.matches(team)) {        // is this match data for the team we are working on?
                 Log.w(TAG, "GMFT TEAM  " + mdt);
+                    numMDs++;       // increment # of MDs
                     if (match_inst.isAuto_baseline()) {
                         base++;
                     }
@@ -921,39 +929,51 @@ public class Visualizer_Activity extends AppCompatActivity {
             tbl_rate2B1 = (TextView) findViewById(R.id.tbl_rate2B1);
             tbl_rate2B2 = (TextView) findViewById(R.id.tbl_rate2B2);
             tbl_rate2B3 = (TextView) findViewById(R.id.tbl_rate2B3);
+            txt_MatchesR1 = (TextView) findViewById(R.id.txt_MatchesR1);
+            txt_MatchesR2 = (TextView) findViewById(R.id.txt_MatchesR2);
+            txt_MatchesR3 = (TextView) findViewById(R.id.txt_MatchesR3);
+            txt_MatchesB1 = (TextView) findViewById(R.id.txt_MatchesB1);
+            txt_MatchesB2 = (TextView) findViewById(R.id.txt_MatchesB2);
+            txt_MatchesB3 = (TextView) findViewById(R.id.txt_MatchesB3);
 
             switch (ndx) {
             case 0:
+                txt_MatchesR1.setText(String.valueOf(numMDs));
                 tbl_event1R1.setText("Auto" + " \n" + "Tele");
                 tbl_rate1R1.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   OthΔ " + othr + "/" + o_att);
                 tbl_event2R1.setText("Climb" + " \n" + "▉");
                 tbl_rate2R1.setText(climb + "/" + c_att + "  One↕" + lift1 + "  Two↕" + lift2 + " ↑ " + was+ " \n Ex " + exch + "   Prt " + portal + "  Zn " + zone + "  FL  " + floor + " ➤ " +tfloor);
                 break;
             case 1:
+                txt_MatchesR2.setText(String.valueOf(numMDs));
                 tbl_event1R2.setText("Auto" + " \n" + "Tele");
                 tbl_rate1R2.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   OthΔ " + othr + "/" + o_att);
                 tbl_event2R2.setText("Climb" + " \n" + "▉");
                 tbl_rate2R2.setText(climb + "/" + c_att + "  One↕" + lift1 + "  Two↕" + lift2 + " ↑ " + was+ " \n Ex " + exch + "   Prt " + portal + "  Zn " + zone + "  FL  " + floor + " ➤ " +tfloor);
                 break;
             case 2:
+                txt_MatchesR3.setText(String.valueOf(numMDs));
                 tbl_event1R3.setText("Auto" + " \n" + "Tele");
                 tbl_rate1R3.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   OthΔ " + othr + "/" + o_att);
                 tbl_event2R3.setText("Climb" + " \n" + "▉");
                 tbl_rate2R3.setText(climb + "/" + c_att + "  One↕" + lift1 + "  Two↕" + lift2 + " ↑ " + was+ " \n Ex " + exch + "   Prt " + portal + "  Zn " + zone + "  FL  " + floor + " ➤ " +tfloor);
                 break;
             case 3:
+                txt_MatchesB1.setText(String.valueOf(numMDs));
                 tbl_event1B1.setText("Auto" + " \n" + "Tele");
                 tbl_rate1B1.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   OthΔ " + othr + "/" + o_att);
                 tbl_event2B1.setText("Climb" + " \n" + "▉");
                 tbl_rate2B1.setText(climb + "/" + c_att + "  One↕" + lift1 + "  Two↕" + lift2 + " ↑ " + was+ " \n Ex " + exch + "   Prt " + portal + "  Zn " + zone + "  FL  " + floor + " ➤ " +tfloor);
                 break;
             case 4:
+                txt_MatchesB2.setText(String.valueOf(numMDs));
                 tbl_event1B2.setText("Auto" + " \n" + "Tele");
                 tbl_rate1B2.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   OthΔ " + othr + "/" + o_att);
                 tbl_event2B2.setText("Climb" + " \n" + "▉");
                 tbl_rate2B2.setText(climb + "/" + c_att + "  One↕" + lift1 + "  Two↕" + lift2 + " ↑ " + was+ " \n Ex " + exch + "   Prt " + portal + "  Zn " + zone + "  FL  " + floor + " ➤ " +tfloor);
                 break;
             case 5:
+                txt_MatchesB3.setText(String.valueOf(numMDs));
                 tbl_event1B3.setText("Auto" + " \n" + "Tele");
                 tbl_rate1B3.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   OthΔ " + othr + "/" + o_att);
                 tbl_event2B3.setText("Climb" + " \n" + "▉");
