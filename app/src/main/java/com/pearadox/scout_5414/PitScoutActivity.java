@@ -147,11 +147,16 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
         txt_dev.setText(param1);
         txt_stud.setText(param2);
         txt_TeamName.setText(" ");
+        txtEd_Height = (EditText) findViewById(R.id.txtEd_Height);
         Spinner spinner_Team = (Spinner) findViewById(R.id.spinner_Team);
         editTxt_Team = (EditText) findViewById(R.id.editTxt_Team);
         if (Pearadox.is_Network && Pearadox.numTeams > 0) {      // is Internet available & Teams present?
             loadTeams();
+            txtEd_Height.setEnabled(false);
             spinner_Team.setVisibility(View.VISIBLE);
+            spinner_Team.setFocusable(true);
+            spinner_Team.requestFocus();
+            spinner_Team.requestFocusFromTouch();       // make team selection focus
             editTxt_Team.setVisibility(View.GONE);
             adapter = new ArrayAdapter<String>(this, R.layout.team_list_layout, teams);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -162,9 +167,9 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
             editTxt_Team.setText("");
             editTxt_Team.setVisibility(View.VISIBLE);
             editTxt_Team.setEnabled(true);
-            editTxt_Team.requestFocus();        // Don't let EditText mess up layout!!
-            editTxt_Team.setFocusable(true);
-            editTxt_Team.setFocusableInTouchMode(true);
+//            editTxt_Team.requestFocus();        // Don't let EditText mess up layout!!
+//            editTxt_Team.setFocusable(true);
+//            editTxt_Team.setFocusableInTouchMode(true);
             spinner_Team.setVisibility(View.GONE);
             editTxt_Team.setOnKeyListener(new View.OnKeyListener() {
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -219,7 +224,6 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
         chkBox_Pneumatics = (CheckBox) findViewById(R.id.chkBox_Pneumatics);
         chkBox_CanLift = (CheckBox) findViewById(R.id.chkBox_CanLift);
         lbl_FuelEst = (TextView) findViewById(R.id.lbl_RoboHeight);
-        txtEd_Height = (EditText) findViewById(R.id.txtEd_Height);
         chkBox_Arms = (CheckBox) findViewById(R.id.chkBox_Arms);
         chkBox_ArmPress = (CheckBox) findViewById(R.id.chkBox_ArmPress);
         chkBox_ArmIntake = (CheckBox) findViewById(R.id.chkBox_ArmIntake);
@@ -230,8 +234,10 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
         chkBox_Other = (CheckBox) findViewById(R.id.chkBox_Other);
         editText_Comments = (EditText) findViewById(R.id.editText_Comments);
         editText_Comments.setClickable(true);
+//        final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 200);
+//        tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD);
         Toast toast = Toast.makeText(getBaseContext(), "*** Select a TEAM first before entering data ***", Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.TOP, 0, 0);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
 
 //===============================================================================================================
@@ -615,6 +621,7 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
             txt_TeamName = (TextView) findViewById(R.id.txt_TeamName);
             findTeam(teamSelected);
             txt_TeamName.setText(team_inst.getTeam_name());
+            txtEd_Height.setEnabled(true);
 
             chkForPhoto(teamSelected);
         }

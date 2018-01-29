@@ -113,7 +113,9 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/txt_stud"
         android:layout_below="@+id/txt_stud"
-        android:visibility="visible" />
+        android:visibility="visible"
+        tools:focusable="true"
+        tools:focusableInTouchMode="true" />
 
     <EditText
         android:id="@+id/editTxt_Team"
@@ -234,6 +236,7 @@
         android:layout_alignStart="@+id/spinner_Traction"
         android:ems="12"
         android:inputType="number"
+        tools:focusable="false"
         android:textColor="@color/limegreen"
         android:visibility="visible" />
 
@@ -275,6 +278,15 @@
             android:layout_height="wrap_content"
             android:text="Can Lift robot(s)"
             android:textColor="@color/red" />
+
+        <Spinner
+            android:id="@+id/spinner_numRobots"
+            android:layout_width="60sp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/chkBox_Vision"
+            android:layout_below="@+id/chkBox_Vision"
+            android:layout_gravity="top"
+            android:textColor="@color/orange" />
 
         <CheckBox
             android:id="@+id/chkBox_Ramp"
@@ -433,45 +445,49 @@
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
+    <Button
+        android:id="@+id/btn_Save"
+        android:text="Save"
+        android:icon="@android:drawable/ic_menu_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/spinner_Mecanum"
+        android:layout_marginBottom="25sp" />
+
+
+    // "Dummy" layout to PREVENT Comment field getting focus
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:id="@+id/linearLayout" />
+
+    <ScrollView
+        android:id="@+id/scrollv_comm"
+        android:layout_width="500sp"
+        android:layout_height="100sp"
         android:layout_below="@+id/del_type"
-        android:id="@+id/lin_comment">
+        android:layout_marginTop="15dp"
+        android:layout_toEndOf="@+id/linearLayout"
+        android:isScrollContainer="false">
 
-        // "Dummy" layout to PREVENT Comment field getting focus
-        <LinearLayout
-            android:orientation="horizontal"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:layout_width="0px"
-            android:layout_height="0px"
-            android:id="@+id/linearLayout" />
+        <EditText
+            android:id="@+id/editText_Comments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/scrollv_comm"
+            android:background="@drawable/border"
+            android:ems="12"
+            android:hint="Tap to add any comments about robot"
+            android:inputType="textMultiLine"
+            android:lines="2"
+            android:scrollbars="vertical"
+            android:textColor="@color/white" />
 
-        <ScrollView
-            android:id="@+id/scrollv_comm"
-            android:layout_width="500sp"
-            android:layout_height="100sp"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/lbl_Delivery"
-            android:isScrollContainer="false">
-
-            <EditText
-                android:id="@+id/editText_Comments"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/scrollv_comm"
-                android:background="@drawable/border"
-                android:ems="12"
-                android:hint="Tap to add any comments about robot"
-                android:inputType="textMultiLine"
-                android:lines="2"
-                android:scrollbars="vertical"
-                android:textColor="@color/white" />
-
-        </ScrollView>
-    </LinearLayout>
+    </ScrollView>
 
 
 
@@ -487,25 +503,6 @@
         app:srcCompat="@drawable/photo_missing"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
-
-    <Button
-        android:id="@+id/btn_Save"
-        android:text="Save"
-        android:icon="@android:drawable/ic_menu_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/spinner_Mecanum"
-        android:layout_marginBottom="25sp" />
-
-    <Spinner
-        android:id="@+id/spinner_numRobots"
-        android:layout_width="60sp"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/chkBox_Vision"
-        android:layout_below="@+id/chkBox_Vision"
-        android:layout_gravity="top"
-        android:textColor="@color/orange" />
 
 
 </RelativeLayout>
