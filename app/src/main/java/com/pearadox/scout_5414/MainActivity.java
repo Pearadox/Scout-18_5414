@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
     private String deviceId;            // Android Device ID
     TextView txt_messageLine;
     Boolean is_resumed = false;         // indicator if 'Resumed'
+    Boolean FB_logon = false;         // indicator for Firebas logon success
     Spinner spinner_Device, spinner_Event;
     ImageView img_netStatus;            // Internet Status
     ArrayAdapter<String> adapter_dev, adapter_StudStr, adapter_Event;
@@ -991,7 +992,8 @@ private void preReqs() {
 //______________________________________
     private void Fb_Auth() {
         Log.w(TAG, "===Fb_Auth===");
-        String pw = ""; String eMail="scout.5414@gmail.com";
+        FB_logon = false;
+        String pw = " "; String eMail="scout.5414@gmail.com";
         try {
             File directFRC = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/Pearadox");
             FileReader fileReader = new FileReader(directFRC);
@@ -1007,6 +1009,11 @@ private void preReqs() {
             pw = pw.substring(0,11);    //Remove CR/LF
             Log.e(TAG, "Peardox = '" + pw + "'");
         } catch (IOException e) {
+            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+            tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD);
+            Toast toast = Toast.makeText(getBaseContext(), "Firebase authentication - Password required", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
             e.printStackTrace();
         }
         Log.e(TAG, eMail + "  '" + pw + "'");
@@ -1016,16 +1023,18 @@ private void preReqs() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
+                            // Sign in success
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-//                            updateUI(user);
+                            FB_logon = true;    // show success
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-//                            updateUI(null);
+                            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                            tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
+                            Toast toast = Toast.makeText(getBaseContext(), "Firebase authentication failed.", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                            toast.show();
                         }
 
                         // ...
@@ -1042,7 +1051,9 @@ public void onStart() {
     super.onStart();
     Log.i(TAG, "onStart");
     mAuth = FirebaseAuth.getInstance();
-    Fb_Auth();      // Authenticate with Firebase
+    if (FB_logon) {
+        Fb_Auth();      // Authenticate with Firebase
+    }
     loadEvents();
 }
 @Override

@@ -175,7 +175,6 @@
         android:id="@+id/chkBox_Climb"
         android:layout_width="150sp"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/chkBox_FuelManip"
         android:layout_below="@+id/imgView_Traction"
         android:clickable="false"
         android:text="Can Climb" />
