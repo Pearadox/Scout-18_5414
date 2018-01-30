@@ -26,7 +26,7 @@
         android:layout_width="70sp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/lbl_StartPos"
+        android:layout_toEndOf="@+id/txt_final_LostComm"
         android:layout_weight="1"
         android:text="# Matches"
         android:textColor="@color/white"
@@ -123,8 +123,6 @@
             android:id="@+id/lbl_CubeSwRatio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/txt_auto_cubeScRatio"
-            android:layout_toEndOf="@+id/img_AutoSwitch"
             android:text=" Cubes"
             android:textColor="@color/white" />
 
@@ -132,8 +130,6 @@
             android:id="@+id/txt_auto_cubeSwRatio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/txt_auto_baselineRatio"
-            android:layout_below="@+id/lbl_baselineRatio"
             android:layout_marginStart="5dp"
             android:textColor="@color/red"
             tools:text="77/99" />
@@ -203,9 +199,6 @@
             android:id="@+id/txt_auto_cubeScRatio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/txt_spSi"
-            android:layout_alignBottom="@+id/txt_spSi"
-            android:layout_alignEnd="@+id/txt_final_LostParts"
             android:layout_marginStart="5dp"
             android:textColor="@color/red"
             tools:text="66/88" />
@@ -251,7 +244,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lbl_Autonomous"
-        android:layout_toEndOf="@+id/txt_spSi"
+        android:layout_alignStart="@+id/lbl_Matches"
         android:text="Start Position"
         android:textColor="@color/white" />
 
@@ -268,65 +261,38 @@
         android:id="@+id/txt_spSi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/txt_final_LostComm"
         android:layout_below="@+id/lbl_Si_So_M"
-        android:text="00"
+        android:layout_alignStart="@+id/lbl_StartPos"
+        android:text="11"
         android:textColor="@color/red" />
 
     <TextView
         android:id="@+id/txt_spSo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/txt_spSi"
-        android:layout_alignBottom="@+id/txt_spSi"
-        android:layout_marginEnd="18dp"
-        android:layout_toStartOf="@+id/txt_spM"
-        android:text="00"
+        android:layout_alignEnd="@+id/lbl_StartPos"
+        android:layout_below="@+id/lbl_Si_So_M"
+        android:layout_marginRight="35dp"
+        android:text="22"
         android:textColor="@color/red" />
 
     <TextView
         android:id="@+id/txt_spM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/txt_spSo"
-        android:layout_alignBottom="@+id/txt_spSo"
         android:layout_alignEnd="@+id/lbl_StartPos"
-        android:text="00"
+        android:layout_below="@+id/lbl_Si_So_M"
+        android:text="33"
         android:textColor="@color/red" />
 
-    <!--<TextView-->
-        <!--android:id="@+id/txt_sB4"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="00"-->
-        <!--android:textColor="@color/red"-->
-        <!--android:layout_below="@+id/lbl_Si_So_M"-->
-        <!--android:layout_toEndOf="@+id/lbl_Matches" />-->
-
-    <!--<TextView-->
-        <!--android:id="@+id/txt_sB5"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="00"-->
-        <!--android:textColor="@color/red"-->
-        <!--android:layout_below="@+id/lbl_Si_So_M"-->
-        <!--android:layout_alignEnd="@+id/txt_NumMatches" />-->
-
-    <!--<TextView-->
-        <!--android:id="@+id/lbl_P1_P3"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="  Gear Pos.\n     1 \\_/ 3 \n          2"-->
-        <!--android:textColor="@color/white"-->
-        <!--android:layout_below="@+id/txt_sB1"-->
-        <!--android:layout_alignEnd="@+id/txt_sB3" />-->
 
     <TextView
         android:id="@+id/txt_AutoComments"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/lin_AutoScale"
-        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
         android:background="@drawable/border"
         android:ems="12"
         android:lines="4"

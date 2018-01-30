@@ -13,23 +13,19 @@ public class VisMatch_Activity extends AppCompatActivity {
     String underScore = new String(new char[60]).replace("\0", "_");  // string of 'x' underscores
     String matches = "";
     TextView txt_team, txt_teamName, txt_NumMatches, txt_Matches;
-    TextView txt_auto_HGpercent, txt_auto_LGpercent, txt_auto_gearRatio, txt_auto_baselineRatio, txt_tele_gearRatio, txt_climbAttempts, txt_successfulClimbs;
+    TextView txt_auto_baselineRatio, txt_noAuto, txt_auto_cubeSwRatio;
+    TextView txt_tele_gearRatio, txt_climbAttempts, txt_successfulClimbs;
     /* Comment Boxes */     TextView txt_AutoComments, txt_TeleComments, txt_FinalComments;
     TextView txt_spSi, txt_spSo, txt_spM;
     TextView txt_final_LostComm, txt_final_LostParts, txt_final_DefGood, txt_final_DefBlock,txt_final_DefDump, txt_final_DefStarve, txt_final_NumPen;
-    /* Labels */    TextView lbl_Autonomous, lbl_autoHGshootingPercent, lbl_autoLGshootingPercent, lbl_tele_gearRatio, lbl_climbAttempts, lbl_successfulClimbs;
-    //----------------------------------
+     //----------------------------------
     int auto_HGtotalShooting = 0;
     int auto_LGtotalShooting = 0;
     int auto_totalgearsAttempted = 0;
     int auto_totalgearsPlaced = 0;
-    int auto_B1 = 0; int auto_B2 = 0; int auto_B3 = 0; int auto_B4 = 0; int auto_B5 = 0;
-    int auto_gP1 = 0; int auto_gP2 = 0; int auto_gP3 = 0;
-    String auto_collectedBalls = "";
+    int auto_B1 = 0; int auto_B2 = 0; int auto_B3 = 0; 
     String auto_Comments = "";
     //----------------------------------
-    int tele_HGtotalShooting = 0;
-    int tele_LGtotalShooting = 0;
     int tele_totalGearsAttempted = 0;
     int tele_totalGearsPlaced = 0;
     String tele_Comments = "";
@@ -60,18 +56,22 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_team = (TextView) findViewById(R.id.txt_team);
         txt_teamName = (TextView) findViewById(R.id.txt_teamName);
         txt_NumMatches = (TextView) findViewById(R.id.txt_NumMatches);
-        txt_auto_gearRatio = (TextView) findViewById(R.id.txt_auto_cubeSwRatio);
+        /*  Auto  */
+        txt_auto_baselineRatio = (TextView) findViewById(R.id.txt_auto_baselineRatio);
+        txt_noAuto = (TextView) findViewById(R.id.txt_noAuto);
+        txt_auto_cubeSwRatio = (TextView) findViewById(R.id.txt_auto_cubeSwRatio);
         txt_spSi = (TextView) findViewById(R.id.txt_spSi);
         txt_spSo = (TextView) findViewById(R.id.txt_spSo);
         txt_spM = (TextView) findViewById(R.id.txt_spM);
         txt_AutoComments = (TextView) findViewById(R.id.txt_AutoComments);
-        txt_TeleComments = (TextView) findViewById(R.id.txt_TeleComments);
-        txt_FinalComments = (TextView) findViewById(R.id.txt_FinalComments);
         txt_AutoComments.setMovementMethod(new ScrollingMovementMethod());
-        txt_TeleComments.setMovementMethod(new ScrollingMovementMethod());
-        txt_FinalComments.setMovementMethod(new ScrollingMovementMethod());
-        txt_auto_baselineRatio = (TextView) findViewById(R.id.txt_auto_baselineRatio);
+        /*  Tele  */
         txt_tele_gearRatio = (TextView) findViewById(R.id.txt_tele_gearRatio);
+        txt_TeleComments = (TextView) findViewById(R.id.txt_TeleComments);
+        txt_TeleComments.setMovementMethod(new ScrollingMovementMethod());
+        /*  Final  */
+        txt_FinalComments = (TextView) findViewById(R.id.txt_FinalComments);
+        txt_FinalComments.setMovementMethod(new ScrollingMovementMethod());
         txt_climbAttempts = (TextView) findViewById(R.id.txt_climbAttempts);
         txt_successfulClimbs = (TextView) findViewById(R.id.txt_successfulClimbs);
 
@@ -207,14 +207,12 @@ public class VisMatch_Activity extends AppCompatActivity {
 // ================================================================
 // ======  Now start displaying all the data we collected  ========
 // ================================================================
-
         txt_Matches.setText(matches);
 
-//        Log.w(TAG, "Ratio of Placed to Attempted Gears in Auto = " + auto_totalgearsPlaced + "/" + auto_totalgearsAttempted);
-        txt_auto_gearRatio.setText(auto_totalgearsPlaced + "/" + auto_totalgearsAttempted);
-
-//        Log.w(TAG, "Ratio of Crossing Baseline to Number of Matches = " + numAutoBaseline + "/" + numObjects);
         txt_auto_baselineRatio.setText(numAutoBaseline +  "/" + numObjects);
+        txt_noAuto.setText(noAuto +  "/" + numObjects);
+//        Log.w(TAG, "Ratio of Placed to Attempted Gears in Auto = " + auto_totalgearsPlaced + "/" + auto_totalgearsAttempted);
+        txt_auto_cubeSwRatio.setText(auto_totalgearsPlaced + "/" + auto_totalgearsAttempted);
 
 //        Log.w(TAG, "Auto Gears Attempted = " + auto_gearsAttempted);
 //        Log.w(TAG, "Auto Gears Placed = " + auto_gearsPlaced);
