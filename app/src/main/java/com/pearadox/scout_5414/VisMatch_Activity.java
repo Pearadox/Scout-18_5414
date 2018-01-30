@@ -60,7 +60,7 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_team = (TextView) findViewById(R.id.txt_team);
         txt_teamName = (TextView) findViewById(R.id.txt_teamName);
         txt_NumMatches = (TextView) findViewById(R.id.txt_NumMatches);
-        txt_auto_gearRatio = (TextView) findViewById(R.id.txt_auto_gearRatio);
+        txt_auto_gearRatio = (TextView) findViewById(R.id.txt_auto_cubeSwRatio);
         txt_spSi = (TextView) findViewById(R.id.txt_spSi);
         txt_spSo = (TextView) findViewById(R.id.txt_spSo);
         txt_spM = (TextView) findViewById(R.id.txt_spM);
@@ -89,7 +89,7 @@ public class VisMatch_Activity extends AppCompatActivity {
         int numObjects = Pearadox.Matches_Data.size();
         Log.w(TAG, "Objects = " + numObjects);
         txt_NumMatches.setText(String.valueOf(numObjects));
-        int numAutoBaseline = 0;
+        int numAutoBaseline = 0; int noAuto = 0;
         int numTeleClimbAttempt = 0;
         int numTeleClimbSuccess = 0;
 
@@ -105,6 +105,9 @@ public class VisMatch_Activity extends AppCompatActivity {
             match_inst = Pearadox.Matches_Data.get(i);      // Get instance of Match Data
             matches = matches + match_inst.getMatch() + "  ";
 
+            if (match_inst.isAuto_mode()) {
+                noAuto++;
+            }
             if (match_inst.isAuto_baseline()) {
                 numAutoBaseline++;
 //                Log.w(TAG, "Auto Baseline = " + match_inst.isAuto_baseline());
@@ -118,13 +121,13 @@ public class VisMatch_Activity extends AppCompatActivity {
             String pos = match_inst.getPre_startPos().trim();
             Log.w(TAG, "Start Pos. " + pos);
             switch (pos) {
-                case "Si":
+                case "Side (in)":
                     auto_B1++;
                     break;
-                case ("So"):
+                case ("Side (out)"):
                     auto_B2++;
                     break;
-                case "M":
+                case "Middle":
                     auto_B3++;
                     break;
                 default:                //
