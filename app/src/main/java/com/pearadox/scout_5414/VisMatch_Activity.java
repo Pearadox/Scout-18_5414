@@ -15,8 +15,7 @@ public class VisMatch_Activity extends AppCompatActivity {
     TextView txt_team, txt_teamName, txt_NumMatches, txt_Matches;
     TextView txt_auto_HGpercent, txt_auto_LGpercent, txt_auto_gearRatio, txt_auto_baselineRatio, txt_tele_gearRatio, txt_climbAttempts, txt_successfulClimbs;
     /* Comment Boxes */     TextView txt_AutoComments, txt_TeleComments, txt_FinalComments;
-    TextView txt_spSi, txt_spSo, txt_spM, txt_sB4, txt_sB5;
-    TextView txt_gP1, txt_gP2, txt_gP3;
+    TextView txt_spSi, txt_spSo, txt_spM;
     TextView txt_final_LostComm, txt_final_LostParts, txt_final_DefGood, txt_final_DefBlock,txt_final_DefDump, txt_final_DefStarve, txt_final_NumPen;
     /* Labels */    TextView lbl_Autonomous, lbl_autoHGshootingPercent, lbl_autoLGshootingPercent, lbl_tele_gearRatio, lbl_climbAttempts, lbl_successfulClimbs;
     //----------------------------------
@@ -90,16 +89,12 @@ public class VisMatch_Activity extends AppCompatActivity {
         int numObjects = Pearadox.Matches_Data.size();
         Log.w(TAG, "Objects = " + numObjects);
         txt_NumMatches.setText(String.valueOf(numObjects));
-        int numAutoHG = 0;
-        int numAutoLG = 0;
         int numAutoBaseline = 0;
         int numTeleClimbAttempt = 0;
         int numTeleClimbSuccess = 0;
-        int numTeleHG = 0;
-        int numTeleLG = 0;
 
-        auto_HGtotalShooting = 0; auto_LGtotalShooting = 0; tele_HGtotalShooting = 0; tele_LGtotalShooting = 0; auto_totalgearsAttempted = 0; auto_totalgearsPlaced = 0; tele_totalGearsAttempted = 0; tele_totalGearsPlaced = 0; numAutoBaseline = 0;
-        auto_B1 = 0; auto_B2 = 0; auto_B3 = 0; auto_B4 = 0; auto_B1 = 0;
+        auto_totalgearsAttempted = 0; auto_totalgearsPlaced = 0; tele_totalGearsAttempted = 0; tele_totalGearsPlaced = 0; numAutoBaseline = 0;
+        auto_B1 = 0; auto_B2 = 0; auto_B3 = 0;
         auto_Comments = ""; tele_Comments = ""; final_Comments=""; matches = "";
         final_LostComm = 0; final_LostParts = 0; final_DefGood = 0; final_DefBlock = 0;  final_DefDump = 0; final_DefStarve = 0; final_NumPen = 0;
 
@@ -115,29 +110,6 @@ public class VisMatch_Activity extends AppCompatActivity {
 //                Log.w(TAG, "Auto Baseline = " + match_inst.isAuto_baseline());
 //                Log.w(TAG, "Auto Baseline Number= " + numAutoBaseline);
             }
-
-//            Log.w(TAG, "Auto HG Boolean = " + match_inst.isAuto_hg());
-//            if (match_inst.isAuto_hg()) {
-//                auto_HGtotalShooting = auto_HGtotalShooting + match_inst.getAuto_hg_percent();
-//                numAutoHG++;
-////                Log.w(TAG, "numAutoHG = " + numAutoHG);
-//            }
-//            Log.w(TAG, "Auto HG = " + match_inst.getAuto_hg_percent());
-
-//            if (match_inst.isAuto_lg()) {       /* Matthew - <<<<<<<<<<<<<<<<  match_inst _NOT_ Match_Data */
-//                auto_LGtotalShooting = auto_LGtotalShooting + match_inst.getAuto_lg_percent();
-//                numAutoLG++;
-////                Log.w(TAG, "numAutoLG = " + numAutoLG);
-//            }
-//            Log.w(TAG, "Auto LG = " + match_inst.getAuto_lg_percent());
-//            Log.w(TAG, "Auto LG Boolean = " + match_inst.isAuto_lg());
-
-
-//            auto_totalgearsPlaced = auto_totalgearsPlaced + match_inst.getAuto_gears_placed();
-//            Log.w(TAG, "Auto Gears Placed = " + match_inst.getAuto_gears_placed());
-
-//            auto_totalgearsAttempted = auto_totalgearsAttempted + match_inst.getAuto_gears_attempt();
-//            Log.w(TAG, "Auto Gears Attempted = " + match_inst.getAuto_gears_attempt());
 
 //            Log.w(TAG, "Auto Comment = " + match_inst.getAuto_comment() + "  " + match_inst.getAuto_comment().length());
             if (match_inst.getAuto_comment().length() > 1) {
@@ -235,24 +207,6 @@ public class VisMatch_Activity extends AppCompatActivity {
 
         txt_Matches.setText(matches);
 
-//        Log.w(TAG, "Auto HG Shooting = " + auto_HGtotalShooting + "   " + numAutoHG);
-        if (numAutoHG > 0) {      // Don't divide by zero!!
-            float auto_HGPer = ((float)auto_HGtotalShooting) / numAutoHG;
-//            Log.w(TAG, "Percentage of HG Shooting in Auto = " + ((float)auto_HGtotalShooting) / numAutoHG);
-            txt_auto_HGpercent.setText(String.format("%3.2f", (auto_HGPer)) + "%");
-        } else {
-            txt_auto_HGpercent.setText(" ");
-        }
-
-//        Log.w(TAG, "Auto LG Shooting = " + auto_LGtotalShooting + "   " + numAutoLG);
-        if (numAutoLG > 0) {      // Don't divide by zero!!
-            float auto_LGPer = ((float)auto_LGtotalShooting) / numAutoLG;
-//            Log.w(TAG, "Percentage of LG Shooting in Auto = " + ((float)auto_LGtotalShooting) / numAutoLG);
-            txt_auto_LGpercent.setText(String.format("%3.2f",(auto_LGPer)) + "%");
-        } else {
-            txt_auto_LGpercent.setText("");
-        }
-
 //        Log.w(TAG, "Ratio of Placed to Attempted Gears in Auto = " + auto_totalgearsPlaced + "/" + auto_totalgearsAttempted);
         txt_auto_gearRatio.setText(auto_totalgearsPlaced + "/" + auto_totalgearsAttempted);
 
@@ -264,12 +218,7 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_spSi.setText(String.valueOf(auto_B1));
         txt_spSo.setText(String.valueOf(auto_B2));
         txt_spM.setText(String.valueOf(auto_B3));
-        txt_sB4.setText(String.valueOf(auto_B4));
-        txt_sB5.setText(String.valueOf(auto_B5));
 
-        txt_gP1.setText(String.valueOf(auto_gP1));
-        txt_gP2.setText(String.valueOf(auto_gP2));
-        txt_gP3.setText(String.valueOf(auto_gP3));
 
         txt_AutoComments.setText(auto_Comments);
 
