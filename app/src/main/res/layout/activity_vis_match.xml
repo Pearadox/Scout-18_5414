@@ -104,7 +104,7 @@
 
     <LinearLayout
         android:id="@+id/lin_AutoSwitch"
-        android:layout_width="360dp"
+        android:layout_width="400dp"
         android:layout_height="30sp"
         android:layout_below="@+id/lbl_baselineRatio"
         android:layout_marginTop="12sp"
@@ -166,6 +166,22 @@
             android:textColor="@color/red"
             tools:text="2/2" />
 
+        <TextView
+            android:id="@+id/lbl_SwExtra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="Extra"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_SwExtra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/red"
+            tools:text="2/2" />
+
     </LinearLayout>
 
     // ==============================================================================
@@ -173,7 +189,7 @@
 
     <LinearLayout
         android:id="@+id/lin_AutoScale"
-        android:layout_width="360dp"
+        android:layout_width="400dp"
         android:layout_height="30sp"
         android:layout_below="@+id/lin_AutoSwitch"
         android:layout_marginTop="2sp"
@@ -261,8 +277,9 @@
         android:id="@+id/txt_spSi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/lbl_Si_So_M"
         android:layout_alignStart="@+id/lbl_StartPos"
+        android:layout_below="@+id/lbl_Si_So_M"
+        android:layout_marginStart="8dp"
         android:text="11"
         android:textColor="@color/red" />
 
@@ -272,7 +289,7 @@
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/lbl_StartPos"
         android:layout_below="@+id/lbl_Si_So_M"
-        android:layout_marginRight="35dp"
+        android:layout_marginRight="40dp"
         android:text="22"
         android:textColor="@color/red" />
 
@@ -282,6 +299,7 @@
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/lbl_StartPos"
         android:layout_below="@+id/lbl_Si_So_M"
+        android:layout_marginRight="10dp"
         android:text="33"
         android:textColor="@color/red" />
 

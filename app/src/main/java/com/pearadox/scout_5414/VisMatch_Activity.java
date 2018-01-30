@@ -13,21 +13,22 @@ public class VisMatch_Activity extends AppCompatActivity {
     String underScore = new String(new char[60]).replace("\0", "_");  // string of 'x' underscores
     String matches = "";
     TextView txt_team, txt_teamName, txt_NumMatches, txt_Matches;
-    TextView txt_auto_baselineRatio, txt_noAuto, txt_auto_cubeSwRatio;
+    TextView txt_auto_baselineRatio, txt_noAuto, txt_auto_cubeSwRatio, txt_SwXover, txt_SwWrong, txt_SwExtra, txt_auto_cubeScRatio, txt_ScXover,txt_ScWrong;
     TextView txt_tele_gearRatio, txt_climbAttempts, txt_successfulClimbs;
     /* Comment Boxes */     TextView txt_AutoComments, txt_TeleComments, txt_FinalComments;
     TextView txt_spSi, txt_spSo, txt_spM;
     TextView txt_final_LostComm, txt_final_LostParts, txt_final_DefGood, txt_final_DefBlock,txt_final_DefDump, txt_final_DefStarve, txt_final_NumPen;
-     //----------------------------------
-    int auto_HGtotalShooting = 0;
-    int auto_LGtotalShooting = 0;
-    int auto_totalgearsAttempted = 0;
-    int auto_totalgearsPlaced = 0;
-    int auto_B1 = 0; int auto_B2 = 0; int auto_B3 = 0; 
+    //----------------------------------
+    int numAutoBaseline = 0; int noAuto = 0; int numExtra = 0;
+    int auto_SwCubesAttempted = 0; int auto_SwCubesPlaced = 0; int auto_SwCrossOver = 0; int Auto_SwWrong = 0;
+    int auto_ScCubesAttempted = 0; int auto_ScCubesPlaced = 0; int auto_ScCrossOver = 0; int Auto_ScWrong = 0;
+    int auto_B1 = 0; int auto_B2 = 0; int auto_B3 = 0;
     String auto_Comments = "";
     //----------------------------------
     int tele_totalGearsAttempted = 0;
     int tele_totalGearsPlaced = 0;
+    int numTeleClimbSuccess = 0;
+    int numTeleClimbAttempt = 0;
     String tele_Comments = "";
     //----------------------------------
     int final_LostComm = 0; int final_LostParts = 0; int final_DefGood = 0; int final_DefBlock = 0;  int final_DefDump = 0; int final_DefStarve = 0; int final_NumPen = 0;
@@ -60,6 +61,12 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_auto_baselineRatio = (TextView) findViewById(R.id.txt_auto_baselineRatio);
         txt_noAuto = (TextView) findViewById(R.id.txt_noAuto);
         txt_auto_cubeSwRatio = (TextView) findViewById(R.id.txt_auto_cubeSwRatio);
+        txt_SwXover = (TextView) findViewById(R.id.txt_SwXover);
+        txt_SwWrong = (TextView) findViewById(R.id.txt_SwWrong);
+        txt_SwExtra = (TextView) findViewById(R.id.txt_SwExtra);
+        txt_auto_cubeScRatio = (TextView) findViewById(R.id.txt_auto_cubeScRatio);
+        txt_ScXover = (TextView) findViewById(R.id.txt_ScXover);
+        txt_ScWrong = (TextView) findViewById(R.id.txt_ScWrong);
         txt_spSi = (TextView) findViewById(R.id.txt_spSi);
         txt_spSo = (TextView) findViewById(R.id.txt_spSo);
         txt_spM = (TextView) findViewById(R.id.txt_spM);
@@ -89,11 +96,9 @@ public class VisMatch_Activity extends AppCompatActivity {
         int numObjects = Pearadox.Matches_Data.size();
         Log.w(TAG, "Objects = " + numObjects);
         txt_NumMatches.setText(String.valueOf(numObjects));
-        int numAutoBaseline = 0; int noAuto = 0;
-        int numTeleClimbAttempt = 0;
-        int numTeleClimbSuccess = 0;
 
-        auto_totalgearsAttempted = 0; auto_totalgearsPlaced = 0; tele_totalGearsAttempted = 0; tele_totalGearsPlaced = 0; numAutoBaseline = 0;
+        numAutoBaseline = 0; auto_SwCubesAttempted = 0; auto_SwCubesPlaced = 0; tele_totalGearsAttempted = 0; numExtra = 0;
+        tele_totalGearsPlaced = 0;
         auto_B1 = 0; auto_B2 = 0; auto_B3 = 0;
         auto_Comments = ""; tele_Comments = ""; final_Comments=""; matches = "";
         final_LostComm = 0; final_LostParts = 0; final_DefGood = 0; final_DefBlock = 0;  final_DefDump = 0; final_DefStarve = 0; final_NumPen = 0;
@@ -110,8 +115,21 @@ public class VisMatch_Activity extends AppCompatActivity {
             }
             if (match_inst.isAuto_baseline()) {
                 numAutoBaseline++;
-//                Log.w(TAG, "Auto Baseline = " + match_inst.isAuto_baseline());
-//                Log.w(TAG, "Auto Baseline Number= " + numAutoBaseline);
+            }
+            if (match_inst.isAuto_cube_switch()) {
+                auto_SwCubesPlaced++;
+            }
+            if (match_inst.isAuto_cube_switch_att()) {
+                auto_SwCubesAttempted++;
+            }
+            if (match_inst.isAuto_xover_switch()) {
+                auto_SwCrossOver++;
+            }
+            if (match_inst.isAuto_wrong_switch()) {
+                Auto_SwWrong++;
+            }
+            if (match_inst.isAuto_switch_extra()) {
+                numExtra++;
             }
 
 //            Log.w(TAG, "Auto Comment = " + match_inst.getAuto_comment() + "  " + match_inst.getAuto_comment().length());
@@ -134,32 +152,9 @@ public class VisMatch_Activity extends AppCompatActivity {
                     Log.e(TAG, "***  Invalid Start Position!!!  ***" );
             }
 
-            //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-//            tele_HGtotalShooting = tele_HGtotalShooting + match_inst.getTele_hg_percent();
-//            tele_LGtotalShooting = tele_LGtotalShooting + match_inst.getTele_lg_percent();
 
-//            tele_totalGearsPlaced = tele_totalGearsPlaced + match_inst.getTele_gears_placed();
-//            Log.w(TAG, "Tele Gears Placed = " + match_inst.getTele_gears_placed());
-//            tele_totalGearsAttempted = tele_totalGearsAttempted + match_inst.getTele_gears_attempt();
-//            Log.w(TAG, "Tele Gears Attempted = " + match_inst.getTele_gears_attempt());
-
-
-//            Log.w(TAG, "Tele HG Boolean = " + match_inst.isTele_hg());
-//            if (match_inst.isTele_hg()) {
-//                tele_HGtotalShooting = tele_HGtotalShooting + match_inst.getTele_hg_percent();
-//                numTeleHG++;
-////                Log.w(TAG, "numTeleHG = " + numTeleHG);
-//            }
-//            Log.w(TAG, "Tele HG = " + match_inst.getTele_hg_percent());
-//            if (match_inst.isTele_lg()) {       /* Matthew - <<<<<<<<<<<<<<<<  match_inst _NOT_ Match_Data */
-//                tele_LGtotalShooting = tele_LGtotalShooting + match_inst.getTele_lg_percent();
-//                numTeleLG++;
-////                Log.w(TAG, "numTeleLG = " + numTeleLG);
-//
-//            }
-//            Log.w(TAG, "Tele LG = " + match_inst.getAuto_lg_percent());
-
-
+            //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
+            // Tele elements
             if (match_inst.isTele_climb_attempt()) {
                 numTeleClimbAttempt++;
 //                Log.w(TAG, "Tele Climb Attempt = " + match_inst.isTele_climb_attempt());
@@ -177,7 +172,7 @@ public class VisMatch_Activity extends AppCompatActivity {
             }
 
             //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
-            // ToDo - collect Final elements
+            // Final elements
             if (match_inst.isFinal_lostComms()) {
                 final_LostComm++;
             }
@@ -211,9 +206,14 @@ public class VisMatch_Activity extends AppCompatActivity {
 
         txt_auto_baselineRatio.setText(numAutoBaseline +  "/" + numObjects);
         txt_noAuto.setText(noAuto +  "/" + numObjects);
-//        Log.w(TAG, "Ratio of Placed to Attempted Gears in Auto = " + auto_totalgearsPlaced + "/" + auto_totalgearsAttempted);
-        txt_auto_cubeSwRatio.setText(auto_totalgearsPlaced + "/" + auto_totalgearsAttempted);
-
+//        Log.w(TAG, "Ratio of Placed to Attempted Gears in Auto = " + auto_SwCubesPlaced + "/" + auto_SwCubesAttempted);
+        txt_auto_cubeSwRatio.setText(auto_SwCubesPlaced + "/" + auto_SwCubesAttempted);
+        txt_SwExtra.setText(String.valueOf(numExtra));
+        txt_SwXover.setText(String.valueOf(auto_SwCrossOver));
+        txt_SwWrong.setText(String.valueOf(Auto_SwWrong));
+        txt_auto_cubeScRatio.setText(auto_ScCubesPlaced + "/" + auto_ScCubesAttempted);
+        txt_ScXover.setText(String.valueOf(auto_ScCrossOver));
+        txt_ScWrong.setText(String.valueOf(Auto_ScWrong));
 //        Log.w(TAG, "Auto Gears Attempted = " + auto_gearsAttempted);
 //        Log.w(TAG, "Auto Gears Placed = " + auto_gearsPlaced);
         txt_spSi.setText(String.valueOf(auto_B1));
