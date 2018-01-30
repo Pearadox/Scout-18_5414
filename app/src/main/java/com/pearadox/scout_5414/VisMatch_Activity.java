@@ -1,16 +1,10 @@
 package com.pearadox.scout_5414;
 
-import android.icu.text.DecimalFormat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.widget.CheckBox;
 import android.widget.TextView;
-
-import com.google.android.gms.actions.ItemListIntents;
-
-import org.w3c.dom.Text;
 
 public class VisMatch_Activity extends AppCompatActivity {
     String TAG = "VisMatch_Activity";        // This CLASS name
@@ -19,9 +13,9 @@ public class VisMatch_Activity extends AppCompatActivity {
     String underScore = new String(new char[60]).replace("\0", "_");  // string of 'x' underscores
     String matches = "";
     TextView txt_team, txt_teamName, txt_NumMatches, txt_Matches;
-    TextView txt_auto_HGpercent, txt_auto_LGpercent, txt_auto_gearRatio, txt_auto_baselineRatio, txt_tele_gearRatio, txt_climbAttempts, txt_successfulClimbs, txt_tele_HGpercent, txt_tele_LGpercent;
+    TextView txt_auto_HGpercent, txt_auto_LGpercent, txt_auto_gearRatio, txt_auto_baselineRatio, txt_tele_gearRatio, txt_climbAttempts, txt_successfulClimbs;
     /* Comment Boxes */     TextView txt_AutoComments, txt_TeleComments, txt_FinalComments;
-    TextView txt_sB1, txt_sB2, txt_sB3, txt_sB4, txt_sB5;
+    TextView txt_spSi, txt_spSo, txt_spM, txt_sB4, txt_sB5;
     TextView txt_gP1, txt_gP2, txt_gP3;
     TextView txt_final_LostComm, txt_final_LostParts, txt_final_DefGood, txt_final_DefBlock,txt_final_DefDump, txt_final_DefStarve, txt_final_NumPen;
     /* Labels */    TextView lbl_Autonomous, lbl_autoHGshootingPercent, lbl_autoLGshootingPercent, lbl_tele_gearRatio, lbl_climbAttempts, lbl_successfulClimbs;
@@ -67,17 +61,10 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_team = (TextView) findViewById(R.id.txt_team);
         txt_teamName = (TextView) findViewById(R.id.txt_teamName);
         txt_NumMatches = (TextView) findViewById(R.id.txt_NumMatches);
-        txt_auto_HGpercent = (TextView) findViewById(R.id.txt_auto_HGpercent);
-        txt_auto_LGpercent = (TextView) findViewById(R.id.txt_auto_LGpercent);
         txt_auto_gearRatio = (TextView) findViewById(R.id.txt_auto_gearRatio);
-        txt_sB1 = (TextView) findViewById(R.id.txt_sB1);
-        txt_sB2 = (TextView) findViewById(R.id.txt_sB2);
-        txt_sB3 = (TextView) findViewById(R.id.txt_sB3);
-        txt_sB4 = (TextView) findViewById(R.id.txt_sB4);
-        txt_sB5 = (TextView) findViewById(R.id.txt_sB5);
-        txt_gP1 = (TextView) findViewById(R.id.txt_gP1);
-        txt_gP2 = (TextView) findViewById(R.id.txt_gP2);
-        txt_gP3 = (TextView) findViewById(R.id.txt_gP3);
+        txt_spSi = (TextView) findViewById(R.id.txt_spSi);
+        txt_spSo = (TextView) findViewById(R.id.txt_spSo);
+        txt_spM = (TextView) findViewById(R.id.txt_spM);
         txt_AutoComments = (TextView) findViewById(R.id.txt_AutoComments);
         txt_TeleComments = (TextView) findViewById(R.id.txt_TeleComments);
         txt_FinalComments = (TextView) findViewById(R.id.txt_FinalComments);
@@ -88,8 +75,6 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_tele_gearRatio = (TextView) findViewById(R.id.txt_tele_gearRatio);
         txt_climbAttempts = (TextView) findViewById(R.id.txt_climbAttempts);
         txt_successfulClimbs = (TextView) findViewById(R.id.txt_successfulClimbs);
-        txt_tele_HGpercent = (TextView) findViewById(R.id.txt_tele_HGpercent);
-        txt_tele_LGpercent = (TextView) findViewById(R.id.txt_tele_LGpercent);
 
         txt_final_LostComm = (TextView) findViewById(R.id.txt_final_LostComm);
         txt_final_LostParts = (TextView) findViewById(R.id.txt_final_LostParts);
@@ -159,22 +144,16 @@ public class VisMatch_Activity extends AppCompatActivity {
                 auto_Comments = auto_Comments + match_inst.getMatch() + "-" + match_inst.getAuto_comment() + "\n" + underScore  + "\n" ;
             }
             String pos = match_inst.getPre_startPos().trim();
-//            Log.w(TAG, "Start Pos. " + pos);
+            Log.w(TAG, "Start Pos. " + pos);
             switch (pos) {
-                case "B1":
+                case "Si":
                     auto_B1++;
                     break;
-                case ("B2"):
+                case ("So"):
                     auto_B2++;
                     break;
-                case "B3":
+                case "M":
                     auto_B3++;
-                    break;
-                case ("B4"):
-                    auto_B4++;
-                    break;
-                case ("B5"):
-                    auto_B5++;
                     break;
                 default:                //
                     Log.e(TAG, "***  Invalid Start Position!!!  ***" );
@@ -282,9 +261,9 @@ public class VisMatch_Activity extends AppCompatActivity {
 
 //        Log.w(TAG, "Auto Gears Attempted = " + auto_gearsAttempted);
 //        Log.w(TAG, "Auto Gears Placed = " + auto_gearsPlaced);
-        txt_sB1.setText(String.valueOf(auto_B1));
-        txt_sB2.setText(String.valueOf(auto_B2));
-        txt_sB3.setText(String.valueOf(auto_B3));
+        txt_spSi.setText(String.valueOf(auto_B1));
+        txt_spSo.setText(String.valueOf(auto_B2));
+        txt_spM.setText(String.valueOf(auto_B3));
         txt_sB4.setText(String.valueOf(auto_B4));
         txt_sB5.setText(String.valueOf(auto_B5));
 
@@ -300,22 +279,6 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_tele_gearRatio.setText(tele_totalGearsPlaced + "/" + tele_totalGearsAttempted);
         txt_climbAttempts.setText(numTeleClimbAttempt + "/" + numObjects);
         txt_successfulClimbs.setText(numTeleClimbSuccess + "/" + numObjects);
-//        Log.w(TAG, "NUM-TELE-HG = " + numTeleHG);
-        if (numTeleHG > 0) {      // Don't divide by zero!!
-            float tele_HGPer = ((float)tele_HGtotalShooting) / numTeleHG;
-//            Log.w(TAG, "Percentage of HG Shooting in Tele = " + ((float)tele_HGtotalShooting) / numTeleHG);
-            txt_tele_HGpercent.setText(String.format("%3.2f", (tele_HGPer)) + "%");
-        } else {
-            txt_tele_HGpercent.setText(" ");
-        }
-
-        if (numTeleLG > 0) {      // Don't divide by zero!!
-            float tele_LGPer = ((float)tele_LGtotalShooting) / numTeleLG;
-//            Log.w(TAG, "Percentage of LG Shooting in Tele = " + ((float)tele_LGtotalShooting) / numTeleLG);
-            txt_tele_LGpercent.setText(String.format("%3.2f",(tele_LGPer)) + "%");
-        } else {
-            txt_tele_LGpercent.setText(" ");
-        }
 
         txt_TeleComments.setText(tele_Comments);
 

@@ -25,12 +25,12 @@
         android:id="@+id/lbl_Matches"
         android:layout_width="70sp"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/lbl_StartPos"
         android:layout_weight="1"
         android:text="# Matches"
         android:textColor="@color/white"
-        android:textSize="14sp"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/lbl_StartPos" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/txt_team"
@@ -56,73 +56,69 @@
         android:id="@+id/lbl_Autonomous"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/red"
-        android:text="______________________________Autonomous_____________________________"
-        android:layout_marginTop="25dp"
-        android:layout_below="@+id/lbl_team"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:id="@+id/txt_auto_HGpercent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/red"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/lbl_Autonomous"
-        android:layout_alignStart="@+id/txt_auto_LGpercent" />
-
-    <TextView
-        android:id="@+id/lbl_HGshootingPercent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="HG Shooting %"
-        android:layout_alignBaseline="@+id/txt_auto_HGpercent"
-        android:layout_alignBottom="@+id/txt_auto_HGpercent"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:id="@+id/txt_auto_LGpercent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/red"
-        android:layout_below="@+id/txt_auto_HGpercent"
-        android:layout_alignStart="@+id/txt_auto_gearRatio" />
-
-    <TextView
-        android:id="@+id/txt_auto_gearRatio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/red"
-        android:layout_below="@+id/txt_auto_LGpercent"
-        android:layout_toEndOf="@+id/lbl_baselineRatio"
-        android:layout_marginStart="33dp" />
-
-    <TextView
-        android:id="@+id/lbl_autoLGshootingPercent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="LG Shooting %"
-        android:layout_below="@+id/lbl_HGshootingPercent"
         android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/lbl_HGshootingPercent" />
+        android:layout_below="@+id/lbl_team"
+        android:layout_marginTop="25dp"
+        android:text="______________________________Autonomous_____________________________"
+        android:textColor="@color/red" />
+
+    <!--<TextView-->
+        <!--android:id="@+id/txt_auto_HGpercent"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textColor="@color/red"-->
+        <!--android:layout_marginTop="15dp" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/lbl_HGshootingPercent"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignBaseline="@+id/txt_auto_HGpercent"-->
+        <!--android:layout_alignBottom="@+id/txt_auto_HGpercent"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:text="HG Shooting %"-->
+        <!--android:textColor="@color/white" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/txt_auto_LGpercent"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textColor="@color/red"-->
+        <!--android:layout_below="@+id/txt_auto_HGpercent"-->
+        <!--android:layout_alignStart="@+id/txt_auto_gearRatio" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/lbl_autoLGshootingPercent"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:text="LG Shooting %"-->
+        <!--android:layout_below="@+id/lbl_HGshootingPercent"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_alignEnd="@+id/lbl_HGshootingPercent" />-->
 
     <TextView
         android:id="@+id/lbl_GearRatio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="Ratio of Gears"
-        android:layout_below="@+id/lbl_autoLGshootingPercent"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/lbl_autoLGshootingPercent" />
+        android:layout_below="@+id/lbl_StartPos"
+        android:text="Ratio of Cubes"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/txt_auto_gearRatio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_StartPos"
+        android:layout_toEndOf="@+id/lbl_baselineRatio"
+        tools:text="99"
+        android:textColor="@color/red"
+        android:layout_marginStart="5dp" />
 
     <TextView
         android:id="@+id/lbl_baselineRatio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/lbl_GearRatio"
         android:text="Crossed Baseline Ratio"
         android:textColor="@color/white" />
@@ -131,113 +127,116 @@
         android:id="@+id/txt_auto_baselineRatio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/red"
         android:layout_below="@+id/txt_auto_gearRatio"
-        android:layout_alignStart="@+id/txt_auto_gearRatio" />
-
-    <TextView
-        android:id="@+id/lbl_B1_B5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/txt_auto_HGpercent"
-        android:layout_alignBottom="@+id/txt_auto_HGpercent"
-        android:layout_toEndOf="@+id/txt_teamName"
-        android:text=" _B1_B2__B3_B4_B5_"
-        android:textColor="@color/white" />
+        android:layout_alignBaseline="@+id/lbl_baselineRatio"
+        android:layout_toEndOf="@+id/lbl_baselineRatio"
+        android:layout_marginStart="5dp"
+        android:textColor="@color/red"
+        tools:text="00" />
 
     <TextView
         android:id="@+id/lbl_StartPos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start Position"
-        android:textColor="@color/white"
+        android:layout_alignStart="@+id/txt_spSi"
         android:layout_below="@+id/lbl_Autonomous"
-        android:layout_toEndOf="@+id/txt_sB1" />
+        android:text="Start Position"
+        android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/txt_sB1"
+        android:id="@+id/lbl_B1_B5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/lbl_B1_B5"
-        android:layout_marginStart="10dp"
-        android:layout_toEndOf="@+id/txt_teamName"
+        android:layout_above="@+id/txt_spSi"
+        android:layout_alignStart="@+id/txt_spSi"
+        android:text=" _Si__So__M_"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/txt_spSi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txt_auto_baselineRatio"
+        android:layout_alignBottom="@+id/txt_auto_baselineRatio"
+        android:layout_alignStart="@+id/txt_final_LostComm"
+        android:text="00"
+        android:textColor="@color/red" />
+
+    <!--<TextView-->
+        <!--android:id="@+id/txt_gP1"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="00"-->
+        <!--android:textColor="@color/red"-->
+        <!--android:layout_alignBaseline="@+id/txt_gP3"-->
+        <!--android:layout_alignBottom="@+id/txt_gP3"-->
+        <!--android:layout_alignStart="@+id/txt_sB1" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/txt_gP2"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="00"-->
+        <!--android:textColor="@color/red"-->
+        <!--android:layout_above="@+id/txt_AutoComments"-->
+        <!--android:layout_alignStart="@+id/txt_sB2" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/txt_gP3"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="00"-->
+        <!--android:textColor="@color/red"-->
+        <!--android:layout_marginTop="1dp"-->
+        <!--android:layout_below="@+id/lbl_Autonomous" />-->
+
+    <TextView
+        android:id="@+id/txt_spSo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txt_spSi"
+        android:layout_alignBottom="@+id/txt_spSi"
+        android:layout_marginEnd="14dp"
+        android:layout_toStartOf="@+id/txt_spM"
         android:text="00"
         android:textColor="@color/red" />
 
     <TextView
-        android:id="@+id/txt_gP1"
+        android:id="@+id/txt_spM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="00"
-        android:textColor="@color/red"
-        android:layout_alignBaseline="@+id/txt_gP3"
-        android:layout_alignBottom="@+id/txt_gP3"
-        android:layout_alignStart="@+id/txt_sB1" />
-
-    <TextView
-        android:id="@+id/txt_gP2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="00"
-        android:textColor="@color/red"
-        android:layout_above="@+id/txt_AutoComments"
-        android:layout_alignStart="@+id/txt_sB2" />
-
-    <TextView
-        android:id="@+id/txt_gP3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="00"
-        android:textColor="@color/red"
-        android:layout_marginTop="1dp"
-        android:layout_below="@+id/lbl_P1_P3"
-        android:layout_alignEnd="@+id/lbl_P1_P3" />
-
-    <TextView
-        android:id="@+id/txt_sB2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/lbl_B1_B5"
-        android:layout_toEndOf="@+id/txt_final_LostComm"
+        android:layout_alignBaseline="@+id/txt_spSo"
+        android:layout_alignBottom="@+id/txt_spSo"
+        android:layout_alignEnd="@+id/lbl_StartPos"
         android:text="00"
         android:textColor="@color/red" />
 
-    <TextView
-        android:id="@+id/txt_sB3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="00"
-        android:textColor="@color/red"
-        android:layout_below="@+id/lbl_B1_B5"
-        android:layout_toStartOf="@+id/txt_sB4"
-        android:layout_marginEnd="13dp" />
+    <!--<TextView-->
+        <!--android:id="@+id/txt_sB4"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="00"-->
+        <!--android:textColor="@color/red"-->
+        <!--android:layout_below="@+id/lbl_B1_B5"-->
+        <!--android:layout_toEndOf="@+id/lbl_Matches" />-->
 
-    <TextView
-        android:id="@+id/txt_sB4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="00"
-        android:textColor="@color/red"
-        android:layout_below="@+id/lbl_B1_B5"
-        android:layout_toEndOf="@+id/lbl_Matches" />
+    <!--<TextView-->
+        <!--android:id="@+id/txt_sB5"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="00"-->
+        <!--android:textColor="@color/red"-->
+        <!--android:layout_below="@+id/lbl_B1_B5"-->
+        <!--android:layout_alignEnd="@+id/txt_NumMatches" />-->
 
-    <TextView
-        android:id="@+id/txt_sB5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="00"
-        android:textColor="@color/red"
-        android:layout_below="@+id/lbl_B1_B5"
-        android:layout_alignEnd="@+id/txt_NumMatches" />
-
-    <TextView
-        android:id="@+id/lbl_P1_P3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="  Gear Pos.\n     1 \\_/ 3 \n          2"
-        android:textColor="@color/white"
-        android:layout_below="@+id/txt_sB1"
-        android:layout_alignEnd="@+id/txt_sB3" />
+    <!--<TextView-->
+        <!--android:id="@+id/lbl_P1_P3"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="  Gear Pos.\n     1 \\_/ 3 \n          2"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:layout_below="@+id/txt_sB1"-->
+        <!--android:layout_alignEnd="@+id/txt_sB3" />-->
 
     <TextView
         android:id="@+id/txt_AutoComments"
@@ -251,7 +250,7 @@
         android:text="Comments"
         android:textColor="@color/red"
         android:textSize="14dp"
-        android:layout_below="@+id/txt_gP1"
+        android:layout_below="@+id/lbl_baselineRatio"
         android:layout_alignParentStart="true" />
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
