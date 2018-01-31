@@ -615,7 +615,6 @@ public class MainActivity extends AppCompatActivity {
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void addStud_VE_Listener(final DatabaseReference pfStudent_DBReference) {
-        if (FB_logon) {
             pfStudent_DBReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -654,7 +653,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-    }
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void loadStudentString() {
         Log.w(TAG, "++++++ loadStudentString ++++++ " + Pearadox.is_Network);
@@ -943,7 +941,7 @@ private void preReqs() {
     private void loadEvents() {
         Log.w(TAG, "###  loadEvents  ### " + is_resumed + " Logon " + FB_logon);
 
-        if (!is_resumed &&  FB_logon) {      // Don't re-load if Resuming from scout or Not logged on
+        if (!is_resumed) {      // Don't re-load if Resuming from scout
             Log.w(TAG, "@@ addEvents @@");
             addEvents_VE_Listener(pfEvent_DBReference.orderByChild("comp-date"));
         } else {
@@ -1011,7 +1009,7 @@ private void preReqs() {
             fileReader.close();
             pw = (stringBuffer.toString());
             pw = pw.substring(0,11);    //Remove CR/LF
-//            Log.e(TAG, "Peardox = '" + pw + "'");
+            Log.e(TAG, "Peardox = '" + pw + "'");
         } catch (IOException e) {
             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
             tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD);
@@ -1020,30 +1018,29 @@ private void preReqs() {
             toast.show();
             e.printStackTrace();
         }
-//        Log.e(TAG, eMail + "  '" + pw + "'");
+        Log.e(TAG, "Sign-In " + eMail + "  '" + pw + "'");
 
         mAuth.signInWithEmailAndPassword(eMail, pw)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success
-                            Log.d(TAG, "signInWithEmail:success  \n \n ");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            FB_logon = true;    // show success
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                            tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
-                            Toast toast = Toast.makeText(getBaseContext(), "Firebase authentication failed.", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                            toast.show();
-                        }
-
-                        // ...
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        // Sign in success
+                        Log.d(TAG, "signInWithEmail:success ");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        FB_logon = true;    // show success
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithEmail:failure", task.getException());
+                        final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                        tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
+                        Toast toast = Toast.makeText(getBaseContext(), "Firebase authentication failed.", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
                     }
-                });
+                }
+            });
+        loadEvents();
     }
 
 
@@ -1058,7 +1055,6 @@ public void onStart() {
 //    if (FB_logon) {
         Fb_Auth();      // Authenticate with Firebase
 //    }
-    loadEvents();
 }
 @Override
 public void onResume() {
