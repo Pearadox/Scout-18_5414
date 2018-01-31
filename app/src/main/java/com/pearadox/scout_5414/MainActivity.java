@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     private String deviceId;            // Android Device ID
     TextView txt_messageLine;
     Boolean is_resumed = false;         // indicator if 'Resumed'
-    Boolean FB_logon = false;         // indicator for Firebas logon success
+    Boolean FB_logon = false;           // indicator for Firebas logon success
     Spinner spinner_Device, spinner_Event;
     ImageView img_netStatus;            // Internet Status
     ArrayAdapter<String> adapter_dev, adapter_StudStr, adapter_Event;
@@ -615,43 +615,45 @@ public class MainActivity extends AppCompatActivity {
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void addStud_VE_Listener(final DatabaseReference pfStudent_DBReference) {
-        pfStudent_DBReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.w(TAG, "******* Firebase retrieveStudents  *******");
-                Pearadox.stud_Lst.clear();
-                p_Firebase.students student_Obj = new p_Firebase.students();
-                Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
-                Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
-                while (iterator.hasNext()) {
-                    student_Obj = iterator.next().getValue(p_Firebase.students.class);
-                    Pearadox.stud_Lst.add(student_Obj);
+        if (FB_logon) {
+            pfStudent_DBReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.w(TAG, "******* Firebase retrieveStudents  *******");
+                    Pearadox.stud_Lst.clear();
+                    p_Firebase.students student_Obj = new p_Firebase.students();
+                    Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
+                    Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
+                    while (iterator.hasNext()) {
+                        student_Obj = iterator.next().getValue(p_Firebase.students.class);
+                        Pearadox.stud_Lst.add(student_Obj);
+                    }
+                    Log.w(TAG, "*****  # of students = " + Pearadox.stud_Lst.size());
+                    Pearadox.numStudents = Pearadox.stud_Lst.size() + 1;
+                    Log.w(TAG, "@@@ array size = " + Pearadox.numStudents);
+                    Pearadox.student_List = new String[Pearadox.numStudents];  // Re-size for spinner
+                    Arrays.fill(Pearadox.student_List, null);
+                    Pearadox.student_List[0] = " ";       // make it so 1st Drop-Down entry is blank
+                    for (int i = 0; i < Pearadox.stud_Lst.size(); i++) {
+                        student_Obj = Pearadox.stud_Lst.get(i);
+        //                    Log.w(TAG, "***** student = " + student_Obj.getName() + " " + i);
+                        Pearadox.student_List[i + 1] = student_Obj.getName();
+                    }
+                    Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
+                    ArrayAdapter adapter_Stud = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, Pearadox.student_List);
+                    adapter_Stud.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner_Student.setAdapter(adapter_Stud);
+                    spinner_Student.setSelection(0, false);
+                    spinner_Student.setOnItemSelectedListener(new student_OnItemSelectedListener());
                 }
-                Log.w(TAG, "*****  # of students = " + Pearadox.stud_Lst.size());
-                Pearadox.numStudents = Pearadox.stud_Lst.size() +1;
-                Log.w(TAG, "@@@ array size = " + Pearadox.numStudents);
-                Pearadox.student_List = new String[Pearadox.numStudents];  // Re-size for spinner
-                Arrays.fill(Pearadox.student_List, null );
-                Pearadox.student_List[0] = " ";       // make it so 1st Drop-Down entry is blank
-                for(int i=0 ; i < Pearadox.stud_Lst.size() ; i++)
-                {
-                    student_Obj = Pearadox.stud_Lst.get(i);
-//                    Log.w(TAG, "***** student = " + student_Obj.getName() + " " + i);
-                    Pearadox.student_List[i + 1] = student_Obj.getName();
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                        /*listener failed or was removed for security reasons*/
+                    throw databaseError.toException();
                 }
-                Spinner spinner_Student = (Spinner) findViewById(R.id.spinner_Student);
-                ArrayAdapter adapter_Stud = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, Pearadox.student_List);
-                adapter_Stud.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinner_Student.setAdapter(adapter_Stud);
-                spinner_Student.setSelection(0, false);
-                spinner_Student.setOnItemSelectedListener(new student_OnItemSelectedListener());
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                /*listener failed or was removed for security reasons*/
-                throw databaseError.toException();
-            }
-        });
+            });
+        }
     }
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void loadStudentString() {
@@ -939,11 +941,13 @@ private void preReqs() {
     }
 
     private void loadEvents() {
-        Log.w(TAG, "###  loadEvents  ### " + is_resumed);
+        Log.w(TAG, "###  loadEvents  ### " + is_resumed + " Logon " + FB_logon);
 
-        if (!is_resumed) {      // Don't re-load if Resuming from scout
-            Log.e(TAG, "addEvents ");
+        if (!is_resumed &&  FB_logon) {      // Don't re-load if Resuming from scout or Not logged on
+            Log.w(TAG, "@@ addEvents @@");
             addEvents_VE_Listener(pfEvent_DBReference.orderByChild("comp-date"));
+        } else {
+            Log.e(TAG, "Don't add");
         }
     }
 
@@ -1007,7 +1011,7 @@ private void preReqs() {
             fileReader.close();
             pw = (stringBuffer.toString());
             pw = pw.substring(0,11);    //Remove CR/LF
-            Log.e(TAG, "Peardox = '" + pw + "'");
+//            Log.e(TAG, "Peardox = '" + pw + "'");
         } catch (IOException e) {
             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
             tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD);
@@ -1016,7 +1020,7 @@ private void preReqs() {
             toast.show();
             e.printStackTrace();
         }
-        Log.e(TAG, eMail + "  '" + pw + "'");
+//        Log.e(TAG, eMail + "  '" + pw + "'");
 
         mAuth.signInWithEmailAndPassword(eMail, pw)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -1024,7 +1028,7 @@ private void preReqs() {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success
-                            Log.d(TAG, "signInWithEmail:success");
+                            Log.d(TAG, "signInWithEmail:success  \n \n ");
                             FirebaseUser user = mAuth.getCurrentUser();
                             FB_logon = true;    // show success
                         } else {
@@ -1049,17 +1053,17 @@ private void preReqs() {
 @Override
 public void onStart() {
     super.onStart();
-    Log.i(TAG, "onStart");
+    Log.i(TAG, "<<<<<  onStart  >>>>>");
     mAuth = FirebaseAuth.getInstance();
-    if (FB_logon) {
+//    if (FB_logon) {
         Fb_Auth();      // Authenticate with Firebase
-    }
+//    }
     loadEvents();
 }
 @Override
 public void onResume() {
     super.onResume();
-    Log.i(TAG, "onResume");
+    Log.i(TAG, "** onResume **");
     is_resumed = true;
 
     txt_messageLine = (TextView) findViewById(R.id.txt_messageLine);
