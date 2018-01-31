@@ -36,11 +36,11 @@
         android:id="@+id/txt_team"
         android:layout_width="40sp"
         android:layout_height="wrap_content"
-        android:textColor="@color/orange"
-        android:layout_marginStart="12dp"
-        android:text="1234"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/lbl_team" />
+        android:layout_marginStart="3dp"
+        android:layout_toEndOf="@+id/lbl_team"
+        android:text="1234"
+        android:textColor="@color/orange" />
 
     <TextView
         android:id="@+id/txt_teamName"
@@ -331,110 +331,407 @@
         android:layout_below="@+id/txt_AutoComments"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true" />
+    // ==============================================================================
+    // Switch
+
+    <LinearLayout
+        android:id="@+id/lin_TeleSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="30sp"
+        android:layout_below="@+id/lbl_Tele"
+        android:layout_marginTop="12sp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img_TeleSwitch"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/lbl_CubeSwRatio"
+            android:contentDescription="Tele Switch"
+            android:src="@drawable/on_off_switch" />
+
+        <TextView
+            android:id="@+id/lbl_Tele_CubeSwRatio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Ours"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_tele_cubeSwRatio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/yellow"
+            tools:text="44/55" />
+
+        <TextView
+            android:id="@+id/lbl_TheirSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text=" Theirs"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_TheirSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/yellow"
+            tools:text="11/22" />
+
+        <ImageView
+            android:id="@+id/img_TeleScale"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="15dp"
+            android:contentDescription="Tele Scale"
+            android:src="@drawable/scale" />
+
+        <TextView
+            android:id="@+id/lbl_TeleCubeScRatio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/img_AutoScale"
+            android:text=" Cubes"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_tele_cubeScRatio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/yellow"
+            tools:text="33/77" />
+    </LinearLayout>
+
+    // ==============================================================================
+    // Scale
+
+    <LinearLayout
+        android:id="@+id/lin_TelePlatform"
+        android:layout_width="match_parent"
+        android:layout_height="30sp"
+        android:layout_below="@+id/lin_TeleSwitch"
+        android:layout_marginTop="2sp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView_CZ"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:contentDescription="Cube Zone"
+            android:src="@drawable/cube_zone" />
+
+        <TextView
+            android:id="@+id/lbl_CubeZone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Retrieved"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_CubeZoneNUM"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginLeft="5dp"
+            android:text="0"
+            android:textColor="@color/yellow" />
+
+        <ImageView
+            android:id="@+id/imageView_Platform"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10sp"
+            android:contentDescription="Platform"
+            android:src="@drawable/platform_zone" />
+
+        <TextView
+            android:id="@+id/lbl_CubePlatform"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ours"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_CubePlatformNUM"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginLeft="5dp"
+            android:text="0"
+            android:textColor="@color/yellow" />
+
+        <TextView
+            android:id="@+id/lbl_CubeTheirs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="Theirs"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_CubeTheirsNUM"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginLeft="5dp"
+            android:text="0"
+            android:textColor="@color/yellow" />
+
+        <TextView
+            android:id="@+id/lbl_CubeFloor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Floor"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_CubeFloorNUM"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginLeft="5dp"
+            android:text="0"
+            android:textColor="@color/yellow" />
+
+        <ImageView
+            android:id="@+id/imageView_Portal"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:contentDescription="Portal"
+            android:src="@drawable/portal" />
+
+        <TextView
+            android:id="@+id/lbl_Portal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Portal"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_PortalNUM"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginLeft="5dp"
+            android:text="0"
+            android:textColor="@color/yellow" />
+    </LinearLayout>
+
+    // ==============================================================================
 
     <TextView
         android:id="@+id/txt_TeleComments"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lin_Cubes"
+        android:layout_marginTop="22dp"
         android:background="@drawable/border"
         android:ems="12"
         android:lines="5"
         android:scrollbars="vertical"
         android:text="Comments"
         android:textColor="@color/yellow"
-        android:textSize="14dp"
-        android:layout_marginBottom="16dp"
-        android:layout_above="@+id/lbl_Final"
-        android:layout_alignParentStart="true" />
+        android:textSize="14dp" />
 
-    <TextView
-        android:id="@+id/lbl_tele_gearRatio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:layout_marginTop="45dp"
-        android:text="Ratio of Gears"
-        android:layout_below="@+id/lbl_Tele"
-        android:layout_alignParentStart="true" />
+//________________________________________________________
 
-    <TextView
-        android:id="@+id/txt_tele_gearRatio"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/lin_Climb"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/yellow"
-        android:layout_alignBottom="@+id/lbl_tele_gearRatio"
-        android:layout_alignStart="@+id/txt_auto_baselineRatio" />
+        android:layout_below="@+id/lin_TelePlatform"
+        android:layout_marginTop="2sp"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/lbl_climbAttempts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:layout_alignEnd="@+id/lbl_baselineRatio"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/lbl_tele_gearRatio"
-        android:layout_toStartOf="@+id/txt_teamName"
-        android:text="Climb Attempts" />
+        <TextView
+            android:id="@+id/lbl_climbAttempts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Climbs"
+            android:textColor="@color/white" />
 
-    <TextView
-        android:id="@+id/lbl_successfulClimbs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:layout_alignParentStart="true"
-        android:text="Successful Climbs"
-        android:layout_below="@+id/lbl_climbAttempts" />
+        <TextView
+            android:id="@+id/txt_climbs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="00/00"
+            android:textColor="@color/yellow" />
 
-    <TextView
-        android:id="@+id/txt_climbAttempts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/yellow"
-        android:layout_below="@+id/txt_tele_gearRatio"
-        android:layout_alignStart="@+id/txt_auto_baselineRatio" />
+        <TextView
+            android:id="@+id/lbl_Lift1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Lift 1"
+            android:textColor="@color/white" />
 
-    <TextView
-        android:id="@+id/txt_successfulClimbs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/yellow"
-        android:layout_below="@+id/txt_climbAttempts"
-        android:layout_alignStart="@+id/txt_auto_baselineRatio" />
+        <TextView
+            android:id="@+id/txt_CubeLift1NUM"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginLeft="5dp"
+            android:text="1"
+            android:textColor="@color/yellow" />
 
-    <TextView
-        android:id="@+id/lbl_tele_LGpercent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:layout_above="@+id/txt_tele_gearRatio"
-        android:layout_alignParentStart="true"
-        android:text="LG Shooting %"
-        android:layout_alignEnd="@+id/lbl_tele_gearRatio" />
+        <TextView
+            android:id="@+id/lbl_Lift2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="   2"
+            android:textColor="@color/white" />
 
-    <TextView
-        android:id="@+id/txt_tele_LGpercent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/yellow"
-        android:layout_above="@+id/txt_tele_gearRatio"
-        android:layout_alignStart="@+id/txt_auto_baselineRatio" />
+        <TextView
+            android:id="@+id/txt_CubeLift2NUM"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="2"
+            android:textColor="@color/yellow" />
 
-    <TextView
-        android:id="@+id/lbl_tele_HGpercent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/lbl_tele_LGpercent"
-        android:layout_toStartOf="@+id/txt_teamName"
-        android:text="HG Shooting %"
-        android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/lbl_WasLifted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="Lifted"
+            android:textColor="@color/white" />
 
-    <TextView
-        android:id="@+id/txt_tele_HGpercent"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/txt_WasLiftedNUM"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginLeft="15dp"
+            android:text="0"
+            android:textColor="@color/yellow" />
+
+        <TextView
+            android:id="@+id/lbl_OnPlat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Platform"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_OnPlatNUM"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginLeft="5dp"
+            android:text="0"
+            android:textColor="@color/yellow" />
+
+        <TextView
+            android:id="@+id/lbl_Rung"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Rung"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_RungNUM"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginLeft="5dp"
+            android:text="0"
+            android:textColor="@color/yellow" />
+
+        <TextView
+            android:id="@+id/lbl_Side"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Side"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_SideNUM"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginLeft="5dp"
+            android:text="0"
+            android:textColor="@color/yellow" />
+
+    </LinearLayout>
+    //________________________________________________________
+
+    <LinearLayout
+        android:id="@+id/lin_Cubes"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/yellow"
-        android:layout_above="@+id/txt_tele_LGpercent"
-        android:layout_alignStart="@+id/txt_auto_baselineRatio" />
+        android:layout_below="@+id/lin_Climb"
+        android:layout_marginTop="2sp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView_Exchange"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="Exchange"
+            android:src="@drawable/exchange" />
+
+        <TextView
+            android:id="@+id/lbl_Exchange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Into Exchange"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_ExchangeNUM"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginLeft="5dp"
+            android:text="0"
+            android:textColor="@color/yellow" />
+
+        <TextView
+            android:id="@+id/lbl_Delivery"
+            android:layout_width="wrap_content"
+            android:layout_height="30sp"
+            android:layout_marginStart="20dp"
+            android:text=" Cube Delivery Type"
+            android:textColor="@color/limegreen" />
+
+        <TextView
+            android:id="@+id/lbl_Launch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Launch"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_LaunchNUM"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginLeft="5dp"
+            android:text="0"
+            android:textColor="@color/yellow" />
+
+        <TextView
+            android:id="@+id/lbl_Place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Place"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_PlaceNUM"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginLeft="5dp"
+            android:text="0"
+            android:textColor="@color/yellow" />
+
+
+    </LinearLayout>
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     <TextView
@@ -493,7 +790,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:text="# 'Good' Defense(s)"
+        android:text="#'Good' Defenses"
         android:layout_below="@+id/lbl_final_LostParts"
         android:layout_alignParentStart="true"
         android:layout_marginTop="12dp" />
@@ -502,11 +799,12 @@
         android:id="@+id/txt_final_DefGood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
-        android:textColor="@color/green"
         android:layout_alignBaseline="@+id/lbl_final_DefGood"
         android:layout_alignBottom="@+id/lbl_final_DefGood"
-        android:layout_alignStart="@+id/txt_successfulClimbs" />
+        android:layout_alignEnd="@+id/lbl_final_DefGood"
+        android:layout_marginStart="5dp"
+        android:text="0"
+        android:textColor="@color/green" />
 
     <TextView
         android:id="@+id/lbl_final_DefBlock"
@@ -586,20 +884,20 @@
         android:layout_alignStart="@+id/txt_final_DefStarve" />
 
 //=============================================================
+
     <TextView
         android:id="@+id/txt_FinalComments"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lbl_final_NumPen"
         android:background="@drawable/border"
         android:ems="12"
         android:lines="5"
         android:scrollbars="vertical"
         android:text="Comments"
         android:textColor="@color/green"
-        android:textSize="14dp"
-        android:layout_marginBottom="21dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:textSize="14dp" />
 
     <TextView
         android:id="@+id/txt_NumMatches"

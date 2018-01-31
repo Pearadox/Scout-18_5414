@@ -14,7 +14,7 @@ public class VisMatch_Activity extends AppCompatActivity {
     String matches = "";
     TextView txt_team, txt_teamName, txt_NumMatches, txt_Matches;
     TextView txt_auto_baselineRatio, txt_noAuto, txt_auto_cubeSwRatio, txt_SwXover, txt_SwWrong, txt_SwExtra, txt_auto_cubeScRatio, txt_ScXover,txt_ScWrong;
-    TextView txt_tele_gearRatio, txt_climbAttempts, txt_successfulClimbs;
+    TextView txt_tele_cubeSwRatio, txt_climbs;
     /* Comment Boxes */     TextView txt_AutoComments, txt_TeleComments, txt_FinalComments;
     TextView txt_spSi, txt_spSo, txt_spM;
     TextView txt_final_LostComm, txt_final_LostParts, txt_final_DefGood, txt_final_DefBlock,txt_final_DefDump, txt_final_DefStarve, txt_final_NumPen;
@@ -73,14 +73,13 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_AutoComments = (TextView) findViewById(R.id.txt_AutoComments);
         txt_AutoComments.setMovementMethod(new ScrollingMovementMethod());
         /*  Tele  */
-        txt_tele_gearRatio = (TextView) findViewById(R.id.txt_tele_gearRatio);
+        txt_tele_cubeSwRatio = (TextView) findViewById(R.id.txt_tele_cubeSwRatio);
         txt_TeleComments = (TextView) findViewById(R.id.txt_TeleComments);
         txt_TeleComments.setMovementMethod(new ScrollingMovementMethod());
         /*  Final  */
         txt_FinalComments = (TextView) findViewById(R.id.txt_FinalComments);
         txt_FinalComments.setMovementMethod(new ScrollingMovementMethod());
-        txt_climbAttempts = (TextView) findViewById(R.id.txt_climbAttempts);
-        txt_successfulClimbs = (TextView) findViewById(R.id.txt_successfulClimbs);
+        txt_climbs = (TextView) findViewById(R.id.txt_climbs);
 
         txt_final_LostComm = (TextView) findViewById(R.id.txt_final_LostComm);
         txt_final_LostParts = (TextView) findViewById(R.id.txt_final_LostParts);
@@ -226,9 +225,8 @@ public class VisMatch_Activity extends AppCompatActivity {
         // ==============================================
         // Display Tele elements
         Log.w(TAG, "Ratio of Placed to Attempted Gears in Tele = " + tele_totalGearsPlaced + "/" + tele_totalGearsAttempted);
-        txt_tele_gearRatio.setText(tele_totalGearsPlaced + "/" + tele_totalGearsAttempted);
-        txt_climbAttempts.setText(numTeleClimbAttempt + "/" + numObjects);
-        txt_successfulClimbs.setText(numTeleClimbSuccess + "/" + numObjects);
+        txt_tele_cubeSwRatio.setText(tele_totalGearsPlaced + "/" + tele_totalGearsAttempted);
+        txt_climbs.setText(numTeleClimbSuccess + "/" + numTeleClimbAttempt);
 
         txt_TeleComments.setText(tele_Comments);
 

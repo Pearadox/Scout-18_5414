@@ -940,42 +940,42 @@ public class Visualizer_Activity extends AppCompatActivity {
             case 0:
                 txt_MatchesR1.setText(String.valueOf(numMDs));
                 tbl_event1R1.setText("Auto" + " \n" + "Tele");
-                tbl_rate1R1.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   OthΔ " + othr + "/" + o_att);
+                tbl_rate1R1.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   Oth⚻ " + othr + "/" + o_att);
                 tbl_event2R1.setText("Climb" + " \n" + "▉");
                 tbl_rate2R1.setText(climb + "/" + c_att + "  One↕" + lift1 + "  Two↕" + lift2 + " ↑ " + was+ " \n Ex " + exch + "   Prt " + portal + "  Zn " + zone + "  FL  " + floor + " ➤ " +tfloor);
                 break;
             case 1:
                 txt_MatchesR2.setText(String.valueOf(numMDs));
                 tbl_event1R2.setText("Auto" + " \n" + "Tele");
-                tbl_rate1R2.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   OthΔ " + othr + "/" + o_att);
+                tbl_rate1R2.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   Oth⚻ " + othr + "/" + o_att);
                 tbl_event2R2.setText("Climb" + " \n" + "▉");
                 tbl_rate2R2.setText(climb + "/" + c_att + "  One↕" + lift1 + "  Two↕" + lift2 + " ↑ " + was+ " \n Ex " + exch + "   Prt " + portal + "  Zn " + zone + "  FL  " + floor + " ➤ " +tfloor);
                 break;
             case 2:
                 txt_MatchesR3.setText(String.valueOf(numMDs));
                 tbl_event1R3.setText("Auto" + " \n" + "Tele");
-                tbl_rate1R3.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   OthΔ " + othr + "/" + o_att);
+                tbl_rate1R3.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   Oth⚻ " + othr + "/" + o_att);
                 tbl_event2R3.setText("Climb" + " \n" + "▉");
                 tbl_rate2R3.setText(climb + "/" + c_att + "  One↕" + lift1 + "  Two↕" + lift2 + " ↑ " + was+ " \n Ex " + exch + "   Prt " + portal + "  Zn " + zone + "  FL  " + floor + " ➤ " +tfloor);
                 break;
             case 3:
                 txt_MatchesB1.setText(String.valueOf(numMDs));
                 tbl_event1B1.setText("Auto" + " \n" + "Tele");
-                tbl_rate1B1.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   OthΔ " + othr + "/" + o_att);
+                tbl_rate1B1.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   Oth⚻ " + othr + "/" + o_att);
                 tbl_event2B1.setText("Climb" + " \n" + "▉");
                 tbl_rate2B1.setText(climb + "/" + c_att + "  One↕" + lift1 + "  Two↕" + lift2 + " ↑ " + was+ " \n Ex " + exch + "   Prt " + portal + "  Zn " + zone + "  FL  " + floor + " ➤ " +tfloor);
                 break;
             case 4:
                 txt_MatchesB2.setText(String.valueOf(numMDs));
                 tbl_event1B2.setText("Auto" + " \n" + "Tele");
-                tbl_rate1B2.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   OthΔ " + othr + "/" + o_att);
+                tbl_rate1B2.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   Oth⚻ " + othr + "/" + o_att);
                 tbl_event2B2.setText("Climb" + " \n" + "▉");
                 tbl_rate2B2.setText(climb + "/" + c_att + "  One↕" + lift1 + "  Two↕" + lift2 + " ↑ " + was+ " \n Ex " + exch + "   Prt " + portal + "  Zn " + zone + "  FL  " + floor + " ➤ " +tfloor);
                 break;
             case 5:
                 txt_MatchesB3.setText(String.valueOf(numMDs));
                 tbl_event1B3.setText("Auto" + " \n" + "Tele");
-                tbl_rate1B3.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   OthΔ " + othr + "/" + o_att);
+                tbl_rate1B3.setText( "⊕" + base + "  ⚻  " + swNum + "/" + swAtt + "  ⚖ " + scNum + "/" + scAtt + "   +" + extra + " \n" + "⚻  " + tswNum + "/" + tswAtt + "   ⚖ " + tscNum + "/" + tscAtt + "   Oth⚻ " + othr + "/" + o_att);
                 tbl_event2B3.setText("Climb" + " \n" + "▉");
                 tbl_rate2B3.setText(climb + "/" + c_att + "  One↕" + lift1 + "  Two↕" + lift2 + " ↑ " + was+ " \n Ex " + exch + "   Prt " + portal + "  Zn " + zone + "  FL  " + floor + " ➤ " +tfloor);
                 break;
