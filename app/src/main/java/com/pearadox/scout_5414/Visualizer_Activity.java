@@ -876,17 +876,17 @@ public class Visualizer_Activity extends AppCompatActivity {
                         extra++;
                     }
                     // =================== TeleOps ============
-                    tswNum = match_inst.getTele_cube_switch();
-                    tswAtt = match_inst.getTele_switch_attempt();
-                    tscNum = match_inst.getTele_cube_scale();
-                    tscAtt = match_inst.getTele_scale_attempt();
-                    exch = match_inst.getTele_cube_exchange();
-                    othr = match_inst.getTele_their_switch();
-                    o_att = match_inst.getTele_their_attempt();
-                    portal = match_inst.getTele_cube_portal();
-                    zone = match_inst.getTele_cube_pwrzone();
-                    floor = match_inst.getTele_cube_floor();
-                    tfloor = match_inst.getTele_their_floor();
+                    tswNum = tswNum + match_inst.getTele_cube_switch();
+                    tswAtt = tswAtt + match_inst.getTele_switch_attempt();
+                    tscNum = tscNum + match_inst.getTele_cube_scale();
+                    tscAtt = tscAtt + match_inst.getTele_scale_attempt();
+                    exch = exch + match_inst.getTele_cube_exchange();
+                    othr = othr + match_inst.getTele_their_switch();
+                    o_att = o_att + match_inst.getTele_their_attempt();
+                    portal = portal + match_inst.getTele_cube_portal();
+                    zone = zone + match_inst.getTele_cube_pwrzone();
+                    floor = floor + match_inst.getTele_cube_floor();
+                    tfloor = tfloor + match_inst.getTele_their_floor();
                     if (match_inst.isTele_climb_success()) {
                         climb++;
                     }

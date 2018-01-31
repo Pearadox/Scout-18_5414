@@ -1009,7 +1009,7 @@ private void preReqs() {
             fileReader.close();
             pw = (stringBuffer.toString());
             pw = pw.substring(0,11);    //Remove CR/LF
-            Log.e(TAG, "Peardox = '" + pw + "'");
+//            Log.e(TAG, "Peardox = '" + pw + "'");
         } catch (IOException e) {
             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
             tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD);
@@ -1018,7 +1018,7 @@ private void preReqs() {
             toast.show();
             e.printStackTrace();
         }
-        Log.e(TAG, "Sign-In " + eMail + "  '" + pw + "'");
+//        Log.e(TAG, "Sign-In " + eMail + "  '" + pw + "'");
 
         mAuth.signInWithEmailAndPassword(eMail, pw)
             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -1027,8 +1027,8 @@ private void preReqs() {
                     if (task.isSuccessful()) {
                         // Sign in success
                         Log.d(TAG, "signInWithEmail:success ");
-                        FirebaseUser user = mAuth.getCurrentUser();
                         FB_logon = true;    // show success
+//                        FirebaseUser user = mAuth.getCurrentUser();
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -1040,7 +1040,6 @@ private void preReqs() {
                     }
                 }
             });
-        loadEvents();
     }
 
 
@@ -1055,6 +1054,7 @@ public void onStart() {
 //    if (FB_logon) {
         Fb_Auth();      // Authenticate with Firebase
 //    }
+    loadEvents();
 }
 @Override
 public void onResume() {

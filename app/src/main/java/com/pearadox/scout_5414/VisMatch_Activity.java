@@ -13,11 +13,11 @@ public class VisMatch_Activity extends AppCompatActivity {
     String underScore = new String(new char[60]).replace("\0", "_");  // string of 'x' underscores
     String matches = "";
     TextView txt_team, txt_teamName, txt_NumMatches, txt_Matches;
-    TextView txt_auto_baselineRatio, txt_noAuto, txt_auto_cubeSwRatio, txt_SwXover, txt_SwWrong, txt_SwExtra, txt_auto_cubeScRatio, txt_ScXover,txt_ScWrong;
-    TextView txt_tele_cubeSwRatio, txt_climbs;
+    TextView txt_auto_baselineRatio, txt_noAuto, txt_auto_cubeSwRatio, txt_SwXover, txt_SwWrong, txt_SwExtra, txt_auto_cubeScRatio, txt_ScXover, txt_ScWrong;
+    TextView txt_tele_cubeSwRatio, txt_TheirSwitch, txt_tele_cubeScRatio;
+    TextView txt_climbs, txt_ExchangeNUM, txt_LaunchNUM, txt_PlaceNUM;
     /* Comment Boxes */     TextView txt_AutoComments, txt_TeleComments, txt_FinalComments;
     TextView txt_spSi, txt_spSo, txt_spM;
-    TextView txt_final_LostComm, txt_final_LostParts, txt_final_DefGood, txt_final_DefBlock,txt_final_DefDump, txt_final_DefStarve, txt_final_NumPen;
     //----------------------------------
     int numAutoBaseline = 0; int noAuto = 0; int numExtra = 0;
     int auto_SwCubesAttempted = 0; int auto_SwCubesPlaced = 0; int auto_SwCrossOver = 0; int Auto_SwWrong = 0;
@@ -25,14 +25,13 @@ public class VisMatch_Activity extends AppCompatActivity {
     int auto_B1 = 0; int auto_B2 = 0; int auto_B3 = 0;
     String auto_Comments = "";
     //----------------------------------
-    int tele_totalGearsAttempted = 0;
-    int tele_totalGearsPlaced = 0;
-    int numTeleClimbSuccess = 0;
-    int numTeleClimbAttempt = 0;
+    int tele_totalCubeSwAttempted = 0; int tele_totalCubeSwPlaced = 0; int tele_totalCubeScAttempted = 0; int tele_totalCubeScPlaced = 0; int tele_SwTheirs = 0; int tele_SwTheirAtt;
+    int numTeleExch = 0; int numTeleLaunch = 0; int numTelePlace = 0;
+    int numTeleClimbSuccess = 0; int numTeleClimbAttempt = 0;
     String tele_Comments = "";
     //----------------------------------
     int final_LostComm = 0; int final_LostParts = 0; int final_DefGood = 0; int final_DefBlock = 0;  int final_DefDump = 0; int final_DefStarve = 0; int final_NumPen = 0;
-    //        TextView txt_final_LostComm, txt_final_LostParts, txt_final_DefGood, txt_final_DefBlock,txt_final_DefDump, txt_final_DefStarve, txt_final_NumPen;
+    TextView txt_final_LostComm, txt_final_LostParts, txt_final_DefGood, txt_final_DefBlock, txt_final_BlkSwtch, txt_final_NumPen;
     String final_Comments = "";
     //----------------------------------
 
@@ -74,8 +73,14 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_AutoComments.setMovementMethod(new ScrollingMovementMethod());
         /*  Tele  */
         txt_tele_cubeSwRatio = (TextView) findViewById(R.id.txt_tele_cubeSwRatio);
+        txt_TheirSwitch = (TextView) findViewById(R.id.txt_TheirSwitch);
+        txt_tele_cubeScRatio = (TextView) findViewById(R.id.txt_tele_cubeScRatio);
+        txt_ExchangeNUM = (TextView) findViewById(R.id.txt_ExchangeNUM);
+        txt_LaunchNUM = (TextView) findViewById(R.id.txt_LaunchNUM);
+        txt_PlaceNUM = (TextView) findViewById(R.id.txt_PlaceNUM);
         txt_TeleComments = (TextView) findViewById(R.id.txt_TeleComments);
         txt_TeleComments.setMovementMethod(new ScrollingMovementMethod());
+
         /*  Final  */
         txt_FinalComments = (TextView) findViewById(R.id.txt_FinalComments);
         txt_FinalComments.setMovementMethod(new ScrollingMovementMethod());
@@ -85,8 +90,7 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_final_LostParts = (TextView) findViewById(R.id.txt_final_LostParts);
         txt_final_DefGood = (TextView) findViewById(R.id.txt_final_DefGood);
         txt_final_DefBlock = (TextView) findViewById(R.id.txt_final_DefBlock);
-        txt_final_DefDump = (TextView) findViewById(R.id.txt_final_DefDump);
-        txt_final_DefStarve = (TextView) findViewById(R.id.txt_final_DefStarve);
+        txt_final_BlkSwtch = (TextView) findViewById(R.id.txt_final_BlkSwtch);
         txt_final_NumPen = (TextView) findViewById(R.id.txt_final_NumPen);
 
         txt_team.setText(tnum);
@@ -96,8 +100,7 @@ public class VisMatch_Activity extends AppCompatActivity {
         Log.w(TAG, "Objects = " + numObjects);
         txt_NumMatches.setText(String.valueOf(numObjects));
 
-        numAutoBaseline = 0; auto_SwCubesAttempted = 0; auto_SwCubesPlaced = 0; tele_totalGearsAttempted = 0; numExtra = 0;
-        tele_totalGearsPlaced = 0;
+        numAutoBaseline = 0; auto_SwCubesAttempted = 0; auto_SwCubesPlaced = 0; tele_totalCubeSwAttempted = 0; numExtra = 0;
         auto_B1 = 0; auto_B2 = 0; auto_B3 = 0;
         auto_Comments = ""; tele_Comments = ""; final_Comments=""; matches = "";
         final_LostComm = 0; final_LostParts = 0; final_DefGood = 0; final_DefBlock = 0;  final_DefDump = 0; final_DefStarve = 0; final_NumPen = 0;
@@ -154,18 +157,23 @@ public class VisMatch_Activity extends AppCompatActivity {
 
             //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
             // Tele elements
+            tele_totalCubeSwAttempted = tele_totalCubeSwAttempted + match_inst.getTele_switch_attempt();
+            tele_totalCubeSwPlaced = tele_totalCubeSwPlaced + match_inst.getTele_cube_switch();
+            tele_SwTheirs = tele_SwTheirs + match_inst.getTele_their_switch();
+            tele_SwTheirAtt = tele_SwTheirAtt + match_inst.getTele_their_attempt();
+            numTeleExch = numTeleExch + match_inst.getTele_cube_exchange();
+            if (match_inst.isTele_launched_cube()) {
+                numTeleLaunch++;
+            }
+            if (match_inst.isTele_placed_cube()) {
+                numTelePlace++;
+            }
             if (match_inst.isTele_climb_attempt()) {
                 numTeleClimbAttempt++;
-//                Log.w(TAG, "Tele Climb Attempt = " + match_inst.isTele_climb_attempt());
-//                Log.w(TAG, "Tele Climb Attempt Number= " + numTeleClimbAttempt);
             }
             if (match_inst.isTele_climb_success()) {
                 numTeleClimbSuccess++;
-//                Log.w(TAG, "Tele Climb Success = " + match_inst.isTele_climb_success());
-//                Log.w(TAG, "Tele Climb Success Number= " + numTeleClimbSuccess);
             }
-
-//            Log.w(TAG, "Tele Comment = " + match_inst.getTele_comment() + "  " + match_inst.getTele_comment().length());
             if (match_inst.getTele_comment().length() > 1) {
                 tele_Comments = tele_Comments + match_inst.getMatch() + "-" + match_inst.getTele_comment() + "\n" + underScore  + "\n" ;
             }
@@ -224,20 +232,26 @@ public class VisMatch_Activity extends AppCompatActivity {
 
         // ==============================================
         // Display Tele elements
-        Log.w(TAG, "Ratio of Placed to Attempted Gears in Tele = " + tele_totalGearsPlaced + "/" + tele_totalGearsAttempted);
-        txt_tele_cubeSwRatio.setText(tele_totalGearsPlaced + "/" + tele_totalGearsAttempted);
+        Log.w(TAG, "Ratio of Placed to Attempted Gears in Tele = " + tele_totalCubeSwPlaced + "/" + tele_totalCubeSwAttempted);
+        txt_tele_cubeSwRatio.setText(tele_totalCubeSwPlaced + "/" + tele_totalCubeSwAttempted);
+        txt_TheirSwitch.setText(tele_SwTheirs + "/" + tele_SwTheirAtt);
+        txt_tele_cubeScRatio.setText(tele_totalCubeScPlaced + "/" + tele_totalCubeScAttempted);
+        txt_TheirSwitch.setText(String.valueOf(tele_SwTheirs));
+        txt_ExchangeNUM.setText(String.valueOf(numTeleExch));
+        txt_LaunchNUM.setText(String.valueOf(numTeleLaunch));
+        txt_PlaceNUM.setText(String.valueOf(numTelePlace));
         txt_climbs.setText(numTeleClimbSuccess + "/" + numTeleClimbAttempt);
 
         txt_TeleComments.setText(tele_Comments);
 
         // ==============================================
-        // ToDo - display Final elements
+        // Display Final elements
         txt_final_LostComm.setText(String.valueOf(final_LostComm));
         txt_final_LostParts.setText(String.valueOf(final_LostParts));
         txt_final_DefGood.setText(String.valueOf(final_DefGood));
-        txt_final_DefDump.setText(String.valueOf(final_DefDump));
+        txt_final_BlkSwtch.setText(String.valueOf(final_DefDump));
         txt_final_DefBlock.setText(String.valueOf(final_DefBlock));
-        txt_final_DefStarve.setText(String.valueOf(final_DefStarve));
+        txt_final_BlkSwtch.setText(String.valueOf(final_DefStarve));
         txt_final_NumPen.setText(String.valueOf(final_NumPen));
 
         txt_FinalComments.setText(final_Comments);

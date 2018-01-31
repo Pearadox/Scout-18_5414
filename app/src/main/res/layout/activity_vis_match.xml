@@ -355,7 +355,7 @@
             android:id="@+id/lbl_Tele_CubeSwRatio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Ours"
+            android:text=" Their"
             android:textColor="@color/white" />
 
         <TextView
@@ -371,7 +371,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:text=" Theirs"
+            android:text=" Other"
             android:textColor="@color/white" />
 
         <TextView
@@ -416,12 +416,12 @@
         android:layout_width="match_parent"
         android:layout_height="30sp"
         android:layout_below="@+id/lin_TeleSwitch"
-        android:layout_marginTop="2sp"
+        android:layout_marginTop="4sp"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/imageView_CZ"
-            android:layout_width="50dp"
+            android:layout_width="40dp"
             android:layout_height="30dp"
             android:contentDescription="Cube Zone"
             android:src="@drawable/cube_zone" />
@@ -453,7 +453,7 @@
             android:id="@+id/lbl_CubePlatform"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ours"
+            android:text="Their"
             android:textColor="@color/white" />
 
         <TextView
@@ -469,7 +469,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:text="Theirs"
+            android:text="Other"
             android:textColor="@color/white" />
 
         <TextView
@@ -544,7 +544,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lin_TelePlatform"
-        android:layout_marginTop="2sp"
+        android:layout_marginTop="4sp"
         android:orientation="horizontal">
 
         <TextView
@@ -665,13 +665,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lin_Climb"
-        android:layout_marginTop="2sp"
+        android:layout_marginTop="4sp"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/imageView_Exchange"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:contentDescription="Exchange"
             android:src="@drawable/exchange" />
 
@@ -734,46 +734,47 @@
     </LinearLayout>
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
     <TextView
         android:id="@+id/lbl_Final"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/green"
-        android:text="_________________________________Final________________________________"
-        android:layout_marginBottom="99dp"
         android:layout_above="@+id/txt_FinalComments"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="75dp"
+        android:text="_________________________________Final________________________________"
+        android:textColor="@color/green" />
 
     <TextView
         android:id="@+id/lbl_final_LostComm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="Lost Comms"
         android:layout_above="@+id/lbl_final_DefGood"
         android:layout_alignEnd="@+id/txt_teamName"
-        android:layout_marginEnd="12dp" />
+        android:layout_marginEnd="12dp"
+        android:text="Lost Comms"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/txt_final_LostComm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
-        android:textColor="@color/green"
         android:layout_alignBaseline="@+id/lbl_final_LostComm"
         android:layout_alignBottom="@+id/lbl_final_LostComm"
+        android:layout_marginStart="22dp"
         android:layout_toEndOf="@+id/lbl_final_LostComm"
-        android:layout_marginStart="29dp" />
+        android:text="0"
+        android:textColor="@color/green" />
 
     <TextView
         android:id="@+id/lbl_final_LostParts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Lost Parts"
-        android:textColor="@color/white"
-        android:layout_below="@+id/txt_TeleComments"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="12dp" />
+        android:layout_below="@+id/txt_TeleComments"
+        android:layout_marginTop="70dp"
+        android:text="Lost Parts"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/txt_final_LostParts"
@@ -789,20 +790,18 @@
         android:id="@+id/lbl_final_DefGood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="#'Good' Defenses"
-        android:layout_below="@+id/lbl_final_LostParts"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="12dp" />
+        android:layout_below="@+id/lbl_final_LostParts"
+        android:layout_marginTop="2dp"
+        android:text="#'Good' Defenses"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/txt_final_DefGood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/lbl_final_DefGood"
-        android:layout_alignBottom="@+id/lbl_final_DefGood"
-        android:layout_alignEnd="@+id/lbl_final_DefGood"
-        android:layout_marginStart="5dp"
+        android:layout_below="@+id/lbl_final_LostParts"
+        android:layout_marginStart="120dp"
         android:text="0"
         android:textColor="@color/green" />
 
@@ -810,17 +809,17 @@
         android:id="@+id/lbl_final_DefBlock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="Blocked Gears"
         android:layout_alignBaseline="@+id/txt_final_DefStarve"
         android:layout_alignBottom="@+id/txt_final_DefStarve"
-        android:layout_alignStart="@+id/lbl_final_DefDump" />
+        android:layout_alignStart="@+id/lbl_final_DefDump"
+        android:text="Blocked Switch"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/txt_final_DefBlock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
+        android:text="2"
         android:textColor="@color/green"
         android:layout_alignBaseline="@+id/lbl_final_DefBlock"
         android:layout_alignBottom="@+id/lbl_final_DefBlock"
@@ -831,17 +830,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:text="Hopper Dump"
+        android:text="Block/Jam"
         android:layout_above="@+id/lbl_final_DefBlock"
         android:layout_alignStart="@+id/lbl_final_LostComm" />
 
     <TextView
-        android:id="@+id/txt_final_DefDump"
+        android:id="@+id/txt_final_BlkSwtch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/txt_final_DefBlock"
         android:layout_alignStart="@+id/txt_final_DefBlock"
-        android:text="0"
+        android:text="3"
         android:textColor="@color/green" />
 
     <TextView
@@ -857,7 +856,7 @@
         android:id="@+id/txt_final_DefStarve"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
+        android:text="4"
         android:textColor="@color/green"
         android:layout_alignBaseline="@+id/lbl_final_DefStarve"
         android:layout_alignBottom="@+id/lbl_final_DefStarve"
@@ -867,17 +866,17 @@
         android:id="@+id/lbl_final_NumPen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="# Penalties"
-        android:layout_below="@+id/lbl_final_DefStarve"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp" />
+        android:layout_below="@+id/lbl_final_DefStarve"
+        android:layout_marginTop="2dp"
+        android:text="# Penalties"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/txt_final_NumPen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
+        android:text="9"
         android:textColor="@color/green"
         android:layout_alignBaseline="@+id/lbl_final_NumPen"
         android:layout_alignBottom="@+id/lbl_final_NumPen"
@@ -891,6 +890,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/lbl_final_NumPen"
+        android:layout_marginTop="5dp"
         android:background="@drawable/border"
         android:ems="12"
         android:lines="5"
