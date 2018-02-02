@@ -127,6 +127,7 @@
         android:layout_toStartOf="@+id/lbl_NumTeamsView"
         android:onClick="buttonMatch_Click"
         android:text="MATCH DATA"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        tools:enabled="false" />
 
 </RelativeLayout>

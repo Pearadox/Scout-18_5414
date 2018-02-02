@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,22 +38,74 @@ public class DraftScout_Activity extends AppCompatActivity {
     TextView txt_EventName, txt_NumTeams;
     ListView lstView_Teams;
     TextView TeamData, BA, Stats;
+    Button btn_Match;
 //    Button btn_Up, btn_Down, btn_Delete;
     ArrayAdapter<String> adaptTeams;
 //    ArrayList<String> draftList = new ArrayList<String>();
     static final ArrayList<HashMap<String,String>> draftList = new ArrayList<HashMap<String,String>>();
     public int teamSelected = 0;
     String tnum = "";
-    Team[] teams;
+    String tn = "";
+    p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj();
+//    Team[] teams;
     public static int BAnumTeams = 0;                                      // # of teams from Blue Alliance
-    String gearChk=""; String climbChk=""; String climbRatio=""; String autoRatio=""; String teleRatio="";
+    String gearChk=""; String climbChk=""; String climbRatio=""; String autoSwRatio=""; String autoScRatio="-/-"; String teleSwRatio="-/-"; String teleScRatio="-/-";
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfMatchData_DBReference;
     matchData match_inst = new matchData();
     // -----  Array of Match Data Objects for Draft Scout
     public static ArrayList<matchData> All_Matches = new ArrayList<matchData>();
     String load_team, load_name;
+    //===========================
+    public class Scores implements Comparable<Scores> {
+        private String teamNum;
+        private int switchCubes;
+        private int scaleCubes;
+        private int climbs;
+        public Scores() {
+        }
+        public Scores(String teamNum, int switchCubes, int scaleCubes, int climbs) {
+            this.teamNum = teamNum;
+            this.switchCubes = switchCubes;
+            this.scaleCubes = scaleCubes;
+            this.climbs = climbs;
+        }
 
+        public String getteamNum() {
+            return teamNum;
+        }
+        public void setteamNum(String teamNum) {
+            this.teamNum = teamNum;
+        }
+        public int getSwitchCubes() {
+            return switchCubes;
+        }
+        public void setSwitchCubes(int switchCubes) {
+            this.switchCubes = switchCubes;
+        }
+        public int getScaleCubes() {
+            return scaleCubes;
+        }
+        public void setScaleCubes(int scaleCubes) {
+            this.scaleCubes = scaleCubes;
+        }
+        public int getClimbs() {
+            return climbs;
+        }
+        public void setClimbs(int climbs) {
+            this.climbs = climbs;
+        }
+
+        public int compareTo(Scores compareScores) {
+            int compareScaleCubes = ((Scores) compareScores).getScaleCubes();
+            //ascending order
+            return this.scaleCubes - compareScaleCubes;
+            //descending order
+            //return compareQuantity - this.quantity;
+        }
+    }
+    //==========================
+    ArrayList<Scores> team_Scores = new ArrayList<Scores>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +124,8 @@ public class DraftScout_Activity extends AppCompatActivity {
 //        btn_Down.setOnClickListener(buttonDown_Click);
 //        Button btn_Delete = (Button) findViewById(R.id.btn_Delete); // Listner defined in Layout XML
 //        btn_Delete.setOnClickListener(buttonDelete_Click);
-        Log.w(TAG, "***** Matches Loaded. # = "  + All_Matches.size());
 
+        Log.w(TAG, "***** event= "  + Pearadox.FRC_Event);
         pfDatabase = FirebaseDatabase.getInstance();
         pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
 
@@ -204,68 +257,86 @@ public class DraftScout_Activity extends AppCompatActivity {
         });
     }
 
-
     private void loadTeams() {
         Log.i(TAG, "@@@@  loadTeams started  @@@@");
-// ----------  Blue Alliance  -----------
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
-        StrictMode.setThreadPolicy(policy);
-        TBA.setID("Pearadox", "Scout-5414", "V1");
-        final TBA tba = new TBA();
-        Settings.FIND_TEAM_RANKINGS = true;
-        Settings.GET_EVENT_TEAMS = true;
-        Settings.GET_EVENT_MATCHES = true;
-        Settings.GET_EVENT_ALLIANCES = true;
-        Settings.GET_EVENT_AWARDS = true;
-        Settings.GET_EVENT_STATS = true;
-        String tn = "";
 
-        TBA t = new TBA();
-        Event e = t.getEvent(Pearadox.FRC_ChampDiv, 2017);
-        teams = e.teams.clone();
-//        Team[] teams1 = e.teams;
-        Log.e(TAG, Pearadox.FRC_ChampDiv + "Teams= " + teams.length);
-        draftList.clear();
-        BAnumTeams = e.teams.length;
-        if (BAnumTeams > 0) {
-            for (int i = 0; i < teams.length; i++) {
-                HashMap<String, String> temp = new HashMap<String, String>();
-                if (String.valueOf(teams[i].team_number).length() < 4) {
-                    tn = " " + String.valueOf(teams[i].team_number);    // Add leading blank
-                } else {
-                    tn = String.valueOf(teams[i].team_number);
-                }
+        for (int i = 0; i < Pearadox.numTeams; i++) {
+            team_inst = Pearadox.team_List.get(i);
+            HashMap<String, String> temp = new HashMap<String, String>();
+            tn = team_inst.getTeam_num();
 
-                teamData(tn);   // Get Team's Match Data
+            teamData(tn);   // Get Team's Match Data
 
-                temp.put("team", tn + " - " + teams[i].nickname);
-                temp.put("BA", "Rank=" + teams[i].rank + "  " + teams[i].record + "   OPR=" + String.format("%3.1f", (teams[i].opr)) + "    ↑ " + String.format("%3.1f", (teams[i].touchpad)) + "   kPa=" + String.format("%3.1f", (teams[i].pressure)));
-                temp.put("Stats", "Auto Gears=" + autoRatio + "  Tele Gears=" + teleRatio + "   Pick up Gears " + gearChk + "   Climb " + climbChk + "  " + climbRatio);
-                draftList.add(temp);
-                                                      } // End For
-                Log.w(TAG, "### Teams ###  : " + draftList.size());
-
-        } else {
-            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
-            Toast toast = Toast.makeText(getBaseContext(), "***  Data from the Blue Alliance is _NOT_ available this session  ***", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-            toast.show();
-        }
-
+            temp.put("team", tn + " - " + team_inst.getTeam_name());
+//            temp.put("BA", "Rank=" + teams[i].rank + "  " + teams[i].record + "   OPR=" + String.format("%3.1f", (teams[i].opr)) + "    ↑ " + String.format("%3.1f", (teams[i].touchpad)) + "   kPa=" + String.format("%3.1f", (teams[i].pressure)));
+            temp.put("BA", "Rank=" + "00" + "  " + "0-0-0" + "   OPR=" + "000" );
+            temp.put("Stats", "Auto ⚻=" + autoSwRatio + " ⚖=" + autoScRatio + "  Tele ⚻=" + teleSwRatio + " ⚖=" + teleScRatio + "   ▉P/U  " + gearChk + "   Climb " + climbChk + "  " + climbRatio);
+            draftList.add(temp);
+        } // End For
+        Log.w(TAG, "### Teams ###  : " + draftList.size());
     }
+
+//    private void loadTeams() {
+//        Log.i(TAG, "@@@@  loadTeams started  @@@@");
+//// ----------  Blue Alliance  -----------
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
+//        StrictMode.setThreadPolicy(policy);
+//        TBA.setID("Pearadox", "Scout-5414", "V1");
+//        final TBA tba = new TBA();
+//        Settings.FIND_TEAM_RANKINGS = true;
+//        Settings.GET_EVENT_TEAMS = true;
+//        Settings.GET_EVENT_MATCHES = true;
+//        Settings.GET_EVENT_ALLIANCES = true;
+//        Settings.GET_EVENT_AWARDS = true;
+//        Settings.GET_EVENT_STATS = true;
+//        String tn = "";
+//
+//        TBA t = new TBA();
+//        Event e = t.getEvent(Pearadox.FRC_ChampDiv, 2017);
+//        teams = e.teams.clone();
+////        Team[] teams1 = e.teams;
+//        Log.e(TAG, Pearadox.FRC_ChampDiv + "Teams= " + teams.length);
+//        draftList.clear();
+//        BAnumTeams = e.teams.length;
+//        if (BAnumTeams > 0) {
+//            for (int i = 0; i < teams.length; i++) {
+//                HashMap<String, String> temp = new HashMap<String, String>();
+//                if (String.valueOf(teams[i].team_number).length() < 4) {
+//                    tn = " " + String.valueOf(teams[i].team_number);    // Add leading blank
+//                } else {
+//                    tn = String.valueOf(teams[i].team_number);
+//                }
+//
+//                teamData(tn);   // Get Team's Match Data
+//
+//                temp.put("team", tn + " - " + teams[i].nickname);
+//                temp.put("BA", "Rank=" + teams[i].rank + "  " + teams[i].record + "   OPR=" + String.format("%3.1f", (teams[i].opr)) + "    ↑ " + String.format("%3.1f", (teams[i].touchpad)) + "   kPa=" + String.format("%3.1f", (teams[i].pressure)));
+//                temp.put("Stats", "Auto Gears=" + autoSwRatio + "  Tele Gears=" + teleSwRatio + "   Pick up Gears " + gearChk + "   Climb " + climbChk + "  " + climbRatio);
+//                draftList.add(temp);
+//                                                      } // End For
+//                Log.w(TAG, "### Teams ###  : " + draftList.size());
+//
+//        } else {
+//            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+//            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+//            Toast toast = Toast.makeText(getBaseContext(), "***  Data from the Blue Alliance is _NOT_ available this session  ***", Toast.LENGTH_LONG);
+//            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+//            toast.show();
+//        }
+//
+//    }
 
     private void teamData(String team) {
         Log.i(TAG, "$$$$  teamData  $$$$ " + team);
-        int autoGears = 0; int teleGears = 0;int teleAttempt = 0; int climbs = 0; int climbAttemps = 0; int numMatches = 0;
-        boolean gear_pu =false;
+        int autoCubeSw = 0; int teleGears = 0;int teleAttempt = 0; int climbs = 0; int climbAttemps = 0; int numMatches = 0;
+        boolean cube_pu =false;
 
         for (int i = 0; i < All_Matches.size(); i++) {
             match_inst = All_Matches.get(i);      // Get instance of Match Data
             if (match_inst.getTeam_num().matches(team)) {
-//                Log.e(TAG, i + "  " + match_inst.getMatch() + "  Team=" + team);
+                Log.e(TAG, i + "  " + match_inst.getMatch() + "  Team=" + team);
                 numMatches++;
-//                autoGears = autoGears + match_inst.getAuto_gears_placed();
+//                autoCubeSw = autoCubeSw + match_inst.getAuto_gears_placed();
 //                Log.w(TAG, "Auto Gears = " + match_inst.getAuto_gears_placed());
 //                teleGears = teleGears + match_inst.getTele_gears_placed();
 //                Log.w(TAG, "Tele Gears Placed = " + match_inst.getTele_gears_placed());
@@ -279,16 +350,12 @@ public class DraftScout_Activity extends AppCompatActivity {
                     climbs++;
 //                    Log.w(TAG, "Tele Climb Success Number= " + climbs);
                 }
-//                if (match_inst.isTele_gear_pickup()) {
-//                    gear_pu = true;
-////                    Log.w(TAG, "Tele Climb Attempt Number= ");
-//                }
-
+                Log.w(TAG, "matches= " + numMatches);
             }
         } // End For
 
         if (numMatches > 0) {
-            if (gear_pu) {
+            if (cube_pu) {
                 gearChk = "❎";
             } else {
                 gearChk = "⎕";
@@ -298,14 +365,14 @@ public class DraftScout_Activity extends AppCompatActivity {
             } else {
                 climbChk = "⎕";
             }
-            autoRatio = autoGears + "/" + numMatches;
-            teleRatio = teleGears + "/" + teleAttempt;
+            autoSwRatio = autoCubeSw + "/" + numMatches;
+            teleSwRatio = teleGears + "/" + teleAttempt;
             climbRatio = climbs + "/" + climbAttemps;
         } else {
             gearChk = "⎕";
             climbChk = "⎕";
-            autoRatio = "0/0";
-            teleRatio = "0/0";
+            autoSwRatio = "0/0";
+            teleSwRatio = "0/0";
             climbRatio = "0/0";
         }
     }
@@ -324,13 +391,30 @@ public class DraftScout_Activity extends AppCompatActivity {
                     mdobj = iterator.next().getValue(matchData.class);
                     All_Matches.add(mdobj);
                 }
-                Log.w(TAG, "***** Matches Loaded. # = "  + All_Matches.size());
+                Log.w(TAG, "addMD_VE *****  Matches Loaded. # = "  + All_Matches.size());
+                Button btn_Match = (Button) findViewById(R.id.btn_Match);   // Listner defined in Layout XML
+                btn_Match.setEnabled(true);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 /*listener failed or was removed for security reasons*/
             }
         });
+    }
+
+    private void initScores() {
+        Log.w(TAG, " ## initScores ##");
+        team_Scores.clear();
+        Scores curTeam = new Scores();
+        for (int i = 0; i < Pearadox.numTeams; i++) {
+            team_inst = Pearadox.team_List.get(i);
+            curTeam.setteamNum(team_inst.getTeam_num());
+            curTeam.setSwitchCubes(0);
+            curTeam.setScaleCubes(i);
+            curTeam.setClimbs(0);
+            team_Scores.add(i,curTeam);
+        }
+        Log.w(TAG, " Scores = " + team_Scores.size());
     }
 
 //###################################################################
@@ -340,7 +424,7 @@ public class DraftScout_Activity extends AppCompatActivity {
 public void onStart() {
         super.onStart();
         Log.v(TAG, "onStart");
-
+        initScores();
         addMD_VE_Listener(pfMatchData_DBReference);        // Load _ALL_ Matches
 
 }
@@ -360,6 +444,5 @@ public void onDestroy() {
         super.onDestroy();
         Log.v(TAG, "OnDestroy");
         }
-
 }
 
