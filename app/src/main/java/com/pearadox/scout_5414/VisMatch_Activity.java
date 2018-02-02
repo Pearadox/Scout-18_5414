@@ -14,7 +14,7 @@ public class VisMatch_Activity extends AppCompatActivity {
     String matches = "";
     TextView txt_team, txt_teamName, txt_NumMatches, txt_Matches;
     TextView txt_auto_baselineRatio, txt_noAuto, txt_auto_cubeSwRatio, txt_SwXover, txt_SwWrong, txt_SwExtra, txt_auto_cubeScRatio, txt_ScXover, txt_ScWrong;
-    TextView txt_tele_cubeSwRatio, txt_TheirSwitch, txt_tele_cubeScRatio;
+    TextView txt_tele_cubeSwRatio, txt_TheirSwitch, txt_tele_cubeScRatio, txt_PortalNUM;
     TextView txt_CubeZoneNUM, txt_CubePlatformNUM, txt_CubeFloorNUM;
     TextView txt_climbs, txt_Lift1NUM, txt_Lift2NUM, txt_WasLiftedNUM, txt_OnPlatNUM, txt_RungNUM, txt_SideNUM, txt_ExchangeNUM, txt_LaunchNUM, txt_PlaceNUM;
     /* Comment Boxes */     TextView txt_AutoComments, txt_TeleComments, txt_FinalComments;
@@ -27,7 +27,7 @@ public class VisMatch_Activity extends AppCompatActivity {
     String auto_Comments = "";
     //----------------------------------
     int tele_totalCubeSwAttempted = 0; int tele_totalCubeSwPlaced = 0; int tele_totalCubeScAttempted = 0; int tele_totalCubeScPlaced = 0; int tele_SwTheirs = 0; int tele_SwTheirAtt = 0;
-    int cubznNUM = 0; int cubplatNUM = 0; int cubPlatOthrNUM = 0; int offFloorNUM = 0;
+    int cubznNUM = 0; int cubplatNUM = 0; int cubPlatOthrNUM = 0; int offFloorNUM = 0; int portalNUM = 0;
     int numTeleExch = 0; int numTeleLaunch = 0; int numTelePlace = 0;
     int numTeleClimbSuccess = 0; int numTeleClimbAttempt = 0; int Lift1num = 0; int Lift2num = 0;  int WasLifted = 0; int rungNum = 0; int sideNum = 0; int onPlatform = 0;
     String tele_Comments = "";
@@ -62,6 +62,7 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_auto_baselineRatio = (TextView) findViewById(R.id.txt_auto_baselineRatio);
         txt_noAuto = (TextView) findViewById(R.id.txt_noAuto);
         txt_auto_cubeSwRatio = (TextView) findViewById(R.id.txt_auto_cubeSwRatio);
+        txt_auto_cubeScRatio = (TextView) findViewById(R.id.txt_auto_cubeScRatio);
         txt_SwXover = (TextView) findViewById(R.id.txt_SwXover);
         txt_SwWrong = (TextView) findViewById(R.id.txt_SwWrong);
         txt_SwExtra = (TextView) findViewById(R.id.txt_SwExtra);
@@ -77,6 +78,7 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_tele_cubeSwRatio = (TextView) findViewById(R.id.txt_tele_cubeSwRatio);
         txt_TheirSwitch = (TextView) findViewById(R.id.txt_TheirSwitch);
         txt_tele_cubeScRatio = (TextView) findViewById(R.id.txt_tele_cubeScRatio);
+        txt_PortalNUM = (TextView) findViewById(R.id.txt_PortalNUM);
         txt_CubeZoneNUM = (TextView) findViewById(R.id.txt_CubeZoneNUM);
         txt_CubePlatformNUM = (TextView) findViewById(R.id.txt_CubePlatformNUM);
         txt_CubeFloorNUM = (TextView) findViewById(R.id.txt_CubeFloorNUM);
@@ -145,6 +147,18 @@ public class VisMatch_Activity extends AppCompatActivity {
             if (match_inst.isAuto_switch_extra()) {
                 numExtra++;
             }
+            if (match_inst.isAuto_cube_scale()) {
+                auto_ScCubesPlaced++;
+            }
+            if (match_inst.isAuto_cube_scale_att()) {
+                auto_ScCubesAttempted++;
+            }
+            if (match_inst.isAuto_xover_scale()) {
+                auto_ScCrossOver++;
+            }
+            if (match_inst.isAuto_wrong_scale()) {
+                Auto_ScWrong++;
+            }
 
 //            Log.w(TAG, "Auto Comment = " + match_inst.getAuto_comment() + "  " + match_inst.getAuto_comment().length());
             if (match_inst.getAuto_comment().length() > 1) {
@@ -169,8 +183,11 @@ public class VisMatch_Activity extends AppCompatActivity {
 
             //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
             // Tele elements
-            tele_totalCubeSwAttempted = tele_totalCubeSwAttempted + match_inst.getTele_switch_attempt();
             tele_totalCubeSwPlaced = tele_totalCubeSwPlaced + match_inst.getTele_cube_switch();
+            tele_totalCubeSwAttempted = tele_totalCubeSwAttempted + match_inst.getTele_switch_attempt();
+            tele_totalCubeScPlaced = tele_totalCubeScPlaced + match_inst.getTele_cube_scale();
+            tele_totalCubeScAttempted = tele_totalCubeScAttempted + match_inst.getTele_scale_attempt();
+            portalNUM = portalNUM + match_inst.getTele_cube_portal();
             tele_SwTheirs = tele_SwTheirs + match_inst.getTele_their_switch();
             tele_SwTheirAtt = tele_SwTheirAtt + match_inst.getTele_their_attempt();
 
@@ -252,14 +269,13 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_noAuto.setText(noAuto +  "/" + numObjects);
 //        Log.w(TAG, "Ratio of Placed to Attempted Gears in Auto = " + auto_SwCubesPlaced + "/" + auto_SwCubesAttempted);
         txt_auto_cubeSwRatio.setText(auto_SwCubesPlaced + "/" + auto_SwCubesAttempted);
+        txt_auto_cubeScRatio.setText(auto_ScCubesPlaced + "/" + auto_ScCubesAttempted);
         txt_SwExtra.setText(String.valueOf(numExtra));
         txt_SwXover.setText(String.valueOf(auto_SwCrossOver));
         txt_SwWrong.setText(String.valueOf(Auto_SwWrong));
         txt_auto_cubeScRatio.setText(auto_ScCubesPlaced + "/" + auto_ScCubesAttempted);
         txt_ScXover.setText(String.valueOf(auto_ScCrossOver));
         txt_ScWrong.setText(String.valueOf(Auto_ScWrong));
-//        Log.w(TAG, "Auto Gears Attempted = " + auto_gearsAttempted);
-//        Log.w(TAG, "Auto Gears Placed = " + auto_gearsPlaced);
         txt_spSi.setText(String.valueOf(auto_B1));
         txt_spSo.setText(String.valueOf(auto_B2));
         txt_spM.setText(String.valueOf(auto_B3));
@@ -273,8 +289,7 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_tele_cubeSwRatio.setText(tele_totalCubeSwPlaced + "/" + tele_totalCubeSwAttempted);
         txt_TheirSwitch.setText(tele_SwTheirs + "/" + tele_SwTheirAtt);
         txt_tele_cubeScRatio.setText(tele_totalCubeScPlaced + "/" + tele_totalCubeScAttempted);
-        txt_TheirSwitch.setText(String.valueOf(tele_SwTheirs));
-
+        txt_PortalNUM.setText(String.valueOf(portalNUM));
         txt_CubeZoneNUM.setText(String.valueOf(cubznNUM));
         txt_CubePlatformNUM.setText(String.valueOf(cubplatNUM));
         txt_CubeFloorNUM.setText(String.valueOf(offFloorNUM));
