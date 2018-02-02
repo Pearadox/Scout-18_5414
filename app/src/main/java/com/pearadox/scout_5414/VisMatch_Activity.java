@@ -15,7 +15,8 @@ public class VisMatch_Activity extends AppCompatActivity {
     TextView txt_team, txt_teamName, txt_NumMatches, txt_Matches;
     TextView txt_auto_baselineRatio, txt_noAuto, txt_auto_cubeSwRatio, txt_SwXover, txt_SwWrong, txt_SwExtra, txt_auto_cubeScRatio, txt_ScXover, txt_ScWrong;
     TextView txt_tele_cubeSwRatio, txt_TheirSwitch, txt_tele_cubeScRatio;
-    TextView txt_climbs, txt_ExchangeNUM, txt_LaunchNUM, txt_PlaceNUM;
+    TextView txt_CubeZoneNUM, txt_CubePlatformNUM, txt_CubeFloorNUM;
+    TextView txt_climbs, txt_Lift1NUM, txt_Lift2NUM, txt_WasLiftedNUM, txt_OnPlatNUM, txt_RungNUM, txt_SideNUM, txt_ExchangeNUM, txt_LaunchNUM, txt_PlaceNUM;
     /* Comment Boxes */     TextView txt_AutoComments, txt_TeleComments, txt_FinalComments;
     TextView txt_spSi, txt_spSo, txt_spM;
     //----------------------------------
@@ -25,9 +26,10 @@ public class VisMatch_Activity extends AppCompatActivity {
     int auto_B1 = 0; int auto_B2 = 0; int auto_B3 = 0;
     String auto_Comments = "";
     //----------------------------------
-    int tele_totalCubeSwAttempted = 0; int tele_totalCubeSwPlaced = 0; int tele_totalCubeScAttempted = 0; int tele_totalCubeScPlaced = 0; int tele_SwTheirs = 0; int tele_SwTheirAtt;
+    int tele_totalCubeSwAttempted = 0; int tele_totalCubeSwPlaced = 0; int tele_totalCubeScAttempted = 0; int tele_totalCubeScPlaced = 0; int tele_SwTheirs = 0; int tele_SwTheirAtt = 0;
+    int cubznNUM = 0; int cubplatNUM = 0; int cubPlatOthrNUM = 0; int offFloorNUM = 0;
     int numTeleExch = 0; int numTeleLaunch = 0; int numTelePlace = 0;
-    int numTeleClimbSuccess = 0; int numTeleClimbAttempt = 0;
+    int numTeleClimbSuccess = 0; int numTeleClimbAttempt = 0; int Lift1num = 0; int Lift2num = 0;  int WasLifted = 0; int rungNum = 0; int sideNum = 0; int onPlatform = 0;
     String tele_Comments = "";
     //----------------------------------
     int final_LostComm = 0; int final_LostParts = 0; int final_DefGood = 0; int final_DefBlock = 0;  int final_DefDump = 0; int final_DefStarve = 0; int final_NumPen = 0;
@@ -75,6 +77,16 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_tele_cubeSwRatio = (TextView) findViewById(R.id.txt_tele_cubeSwRatio);
         txt_TheirSwitch = (TextView) findViewById(R.id.txt_TheirSwitch);
         txt_tele_cubeScRatio = (TextView) findViewById(R.id.txt_tele_cubeScRatio);
+        txt_CubeZoneNUM = (TextView) findViewById(R.id.txt_CubeZoneNUM);
+        txt_CubePlatformNUM = (TextView) findViewById(R.id.txt_CubePlatformNUM);
+        txt_CubeFloorNUM = (TextView) findViewById(R.id.txt_CubeFloorNUM);
+        txt_Lift1NUM = (TextView) findViewById(R.id.txt_Lift1NUM);
+        txt_Lift2NUM = (TextView) findViewById(R.id.txt_Lift2NUM);
+        txt_WasLiftedNUM = (TextView) findViewById(R.id.txt_WasLiftedNUM);
+        txt_OnPlatNUM = (TextView) findViewById(R.id.txt_OnPlatNUM);
+        txt_RungNUM = (TextView) findViewById(R.id.txt_RungNUM);
+        txt_SideNUM = (TextView) findViewById(R.id.txt_SideNUM);
+
         txt_ExchangeNUM = (TextView) findViewById(R.id.txt_ExchangeNUM);
         txt_LaunchNUM = (TextView) findViewById(R.id.txt_LaunchNUM);
         txt_PlaceNUM = (TextView) findViewById(R.id.txt_PlaceNUM);
@@ -161,7 +173,32 @@ public class VisMatch_Activity extends AppCompatActivity {
             tele_totalCubeSwPlaced = tele_totalCubeSwPlaced + match_inst.getTele_cube_switch();
             tele_SwTheirs = tele_SwTheirs + match_inst.getTele_their_switch();
             tele_SwTheirAtt = tele_SwTheirAtt + match_inst.getTele_their_attempt();
+
+            cubznNUM = cubznNUM + match_inst.getTele_cube_pwrzone();
+            cubplatNUM = cubplatNUM + match_inst.getTele_cube_floor();
+            cubPlatOthrNUM = cubPlatOthrNUM + match_inst.getTele_their_floor();
+            if (match_inst.isTele_cube_pickup()) {
+                offFloorNUM++;
+            }
             numTeleExch = numTeleExch + match_inst.getTele_cube_exchange();
+            if (match_inst.isTele_lift_one()) {
+                Lift1num++;
+            }
+            if (match_inst.isTele_lift_two()) {
+                Lift2num++;
+            }
+            if (match_inst.isTele_got_lift()) {
+                WasLifted++;
+            }
+            if (match_inst.isTele_on_platform()) {
+                onPlatform++;
+            }
+            if (match_inst.isTele_grab_rung()) {
+                rungNum++;
+            }
+            if (match_inst.isTele_grab_side()) {
+                sideNum++;
+            }
             if (match_inst.isTele_launched_cube()) {
                 numTeleLaunch++;
             }
@@ -237,6 +274,16 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_TheirSwitch.setText(tele_SwTheirs + "/" + tele_SwTheirAtt);
         txt_tele_cubeScRatio.setText(tele_totalCubeScPlaced + "/" + tele_totalCubeScAttempted);
         txt_TheirSwitch.setText(String.valueOf(tele_SwTheirs));
+
+        txt_CubeZoneNUM.setText(String.valueOf(cubznNUM));
+        txt_CubePlatformNUM.setText(String.valueOf(cubplatNUM));
+        txt_CubeFloorNUM.setText(String.valueOf(offFloorNUM));
+        txt_Lift1NUM.setText(String.valueOf(Lift1num));
+        txt_Lift2NUM.setText(String.valueOf(Lift2num));
+        txt_WasLiftedNUM.setText(String.valueOf(WasLifted));
+        txt_OnPlatNUM.setText(String.valueOf(onPlatform));
+        txt_RungNUM.setText(String.valueOf(rungNum));
+        txt_SideNUM.setText(String.valueOf(sideNum));
         txt_ExchangeNUM.setText(String.valueOf(numTeleExch));
         txt_LaunchNUM.setText(String.valueOf(numTeleLaunch));
         txt_PlaceNUM.setText(String.valueOf(numTelePlace));

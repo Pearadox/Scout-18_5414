@@ -485,7 +485,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="Floor"
+            android:text="P/U off Floor"
             android:textColor="@color/white" />
 
         <TextView
@@ -571,7 +571,7 @@
             android:textColor="@color/white" />
 
         <TextView
-            android:id="@+id/txt_CubeLift1NUM"
+            android:id="@+id/txt_Lift1NUM"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginLeft="5dp"
@@ -586,8 +586,8 @@
             android:textColor="@color/white" />
 
         <TextView
-            android:id="@+id/txt_CubeLift2NUM"
-            android:layout_width="20dp"
+            android:id="@+id/txt_Lift2NUM"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:text="2"
@@ -597,15 +597,15 @@
             android:id="@+id/lbl_WasLifted"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:text="Lifted"
+            android:layout_marginStart="18dp"
+            android:text="Was Lifted"
             android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/txt_WasLiftedNUM"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="5dp"
             android:text="0"
             android:textColor="@color/yellow" />
 
@@ -613,8 +613,8 @@
             android:id="@+id/lbl_OnPlat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="Platform"
+            android:layout_marginStart="18dp"
+            android:text="On Platform"
             android:textColor="@color/white" />
 
         <TextView
@@ -696,7 +696,7 @@
             android:layout_height="30sp"
             android:layout_marginStart="20dp"
             android:text=" Cube Delivery Type"
-            android:textColor="@color/limegreen" />
+            android:textColor="@color/orange" />
 
         <TextView
             android:id="@+id/lbl_Launch"
