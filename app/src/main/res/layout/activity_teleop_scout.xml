@@ -315,7 +315,8 @@
                 android:id="@+id/radio_Place"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-               android:text="Place"
+                android:onClick="RadioClick_Del"
+                android:text="Place"
                 android:textColor="@color/green" />
         </RadioGroup>
     </LinearLayout>
