@@ -24,6 +24,8 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.w3c.dom.Text;
+
 /**
  * Created by mlm.02000 on 2/5/2017.
  */
@@ -31,46 +33,49 @@ import com.google.firebase.database.FirebaseDatabase;
 public class TeleopScoutActivity extends Activity {
 
     String TAG = "TeleopScoutActivity";      // This CLASS name
-    TextView txt_dev, txt_stud, txt_match, txt_CubeSwitchNUM, txt_CubeSwitchAttNUM, txt_tnum;
-    private Button button_GoToFinalActivity,btn_CubeSwitchM, btn_CubeSwitchP, btn_CubeSwitchAttP, btn_CubeSwitchAttM;
-    CheckBox chk_climbsuccessful, chk_climbattempted, chkBox_PU_Cubes_floor;
-    EditText editText_TeleComments;
-    RadioGroup radgrp_Deliver, radgrp_Boss, radgrp_Lifted;
-    RadioButton radio_Deliver, radio_Climb, radio_Lift, radio_One, radio_Two;
+    TextView txt_dev, txt_stud, txt_match, txt_CubeSwitchNUM, txt_CubeSwitchAttNUM, txt_tnum, txt_CubeScaleNUM, txt_CubeScaleAttNUM, txt_OtherSwitchNUM, txt_OtherSwitchAttNUM, txt_CubeZoneNUM, txt_OtherSwitchM, txt_OtherSwitchP, txt_OtherSwitchAttP, txt_OtherSwitchAttM;
+    /* Final */       private Button button_GoToFinalActivity;
+    /* Switch */      private Button btn_CubeSwitchM, btn_CubeSwitchP, btn_CubeSwitchAttP, btn_CubeSwitchAttM;
+    /* Scale */       private Button btn_CubeScaleP,  btn_CubeScaleM,  btn_CubeScaleAttP,  btn_CubeScaleAttM;
+    /* Opp Switch */  private Button btn_OtherSwitchM, btn_OtherSwitchP, btn_OtherSwitchAttP, btn_OtherSwitchAttM;
+    /*Retrieved Cbs*/ private Button btn_CubeZoneM, btn_CubeZoneP, btn_CubePlatformAttP, btn_CubePlatformAttM;
+    CheckBox   chk_climbsuccessful, chk_climbattempted, chkBox_PU_Cubes_floor, chkBox_Platform, chk_LiftedBy;
+    EditText   editText_TeleComments;
+    RadioGroup radgrp_Deliver, radgrp_Boss, radgrp_Lifted;      RadioButton radio_Deliver, radio_Climb, radio_Lift;
 
-    private FirebaseDatabase pfDatabase;
+    private FirebaseDatabase  pfDatabase;
     private DatabaseReference pfTeam_DBReference;
     private DatabaseReference pfMatch_DBReference;
     private DatabaseReference pfDevice_DBReference;
     private DatabaseReference pfCur_Match_DBReference;
     String key = null;
-    String tn = " ";
+    String tn  = " ";
 
     // ===================  TeleOps Elements for Match Scout Data object ===================
-    public int     cubeSwitch_placed = 0;   // # Gears placed
-    public int     cubeSwitch_attempt = 0;  // # Gears attempted
-    public int     cube_scale = 0;          // # cubes placed on Switch during Tele
-    public int     scale_attempt = 0;       // # cubes attempted on Switch during Tele
-    public int     their_switch = 0;        // # cubes placed on _THEIR_Switch during Tele
-    public int     their_attempt = 0;       // # cubes attempted on _THEIR_Switch during Tele
-    public int     cube_exchange = 0;       // # cubes placed in Exchange during Tele
-    public int     cube_portal = 0;         // # cubes retrieved from Portal during Tele
-    public int     cube_pwrzone = 0;        // # cubes retrieved from Power Zone during Tele
-    public int     cube_floor = 0;          // # cubes retrieved from our Floor or Platform Zone during Tele
-    public int     their_floor = 0;         // # cubes retrieved from their Floor or Platform Zone during Tele
-    public boolean cube_pickup = false;     // Did they pickup gears off the ground?
-    public boolean on_platform = false;     // Finished on platform
-    public boolean delPlace = false;        // Cube Delivery = Place    \ Radio
-    public boolean delLaunch = false;       // Cube Delivery = Launch   /  Button
-    public boolean climb_attempt = false;   // Did they ATTEMPT climb?
-    public boolean climb_success = false;   // Was climb successful?
-    public boolean grab_rung = false;       // == Grabbed rung to climb     \ Radio
-    public boolean grab_side = false;       // == Grabbed side to climb     /  Button
-    public boolean lift_one = false;        // Lifted one other robot
-    public boolean lift_two = false;        // Lifted one other robot
-    public boolean got_lift = false;        // Got Lifted by another robot
+    public int     cubeSwitch_placed  = 0;     // # Gears placed
+    public int     cubeSwitch_attempt = 0;     // # Gears attempted
+    public int     cube_scale         = 0;     // # cubes placed on Switch during Tele
+    public int     scale_attempt      = 0;     // # cubes attempted on Switch during Tele
+    public int     their_switch       = 0;     // # cubes placed on _THEIR_Switch during Tele
+    public int     their_attempt      = 0;     // # cubes attempted on _THEIR_Switch during Tele
+    public int     cube_exchange      = 0;     // # cubes placed in Exchange during Tele
+    public int     cube_portal        = 0;     // # cubes retrieved from Portal during Tele
+    public int     cube_pwrzone       = 0;     // # cubes retrieved from Power Zone during Tele
+    public int     cube_floor         = 0;     // # cubes retrieved from our Floor or Platform Zone during Tele
+    public int     their_floor        = 0;     // # cubes retrieved from their Floor or Platform Zone during Tele
+    public boolean cube_pickup        = false; // Did they pickup gears off the ground?
+    public boolean on_platform        = false; // Finished on platform
+    public boolean delPlace           = false; // Cube Delivery = Place    \ Radio
+    public boolean delLaunch          = false; // Cube Delivery = Launch   /  Button
+    public boolean climb_attempt      = false; // Did they ATTEMPT climb?
+    public boolean climb_success      = false; // Was climb successful?
+    public boolean grab_rung          = false; // == Grabbed rung to climb     \ Radio
+    public boolean grab_side          = false; // == Grabbed side to climb     /  Button
+    public boolean lift_one           = false; // Lifted one other robot
+    public boolean lift_two           = false; // Lifted one other robot
+    public boolean got_lift           = false; // Got Lifted by another robot
     /* */
-    public String teleComment = " ";    // Tele Comment
+    public String  teleComment        = " ";   // Tele Comment
     // ===========================================================================
     matchData match_cycle = new matchData();
 
@@ -86,38 +91,56 @@ public class TeleopScoutActivity extends Activity {
         txt_tnum = (TextView) findViewById(R.id.txt_tnum);
         txt_tnum.setText(tn);
 
-   
 
 
-        chkBox_PU_Cubes_floor = (CheckBox) findViewById(R.id.chkBox_PU_Cubes_floor);
-        editText_TeleComments = (EditText) findViewById(R.id.editText_teleComments);
-        button_GoToFinalActivity = (Button) findViewById(R.id.button_GoToFinalActivity);
-        btn_CubeSwitchM= (Button) findViewById(R.id.btn_CubeSwitchM);
-        btn_CubeSwitchP = (Button) findViewById(R.id.btn_CubeSwitchP);
-        txt_CubeSwitchNUM = (TextView) findViewById(R.id.txt_CubeSwitchNUM);
-        txt_CubeSwitchNUM.setText(Integer.toString(cubeSwitch_placed));
-        pfDatabase = FirebaseDatabase.getInstance();
-//        pfTeam_DBReference = pfDatabase.getReference("teams");              // Tteam data from Firebase D/B
-//        pfStudent_DBReference = pfDatabase.getReference("students");        // List of Students
-//        pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Students
-//        pfMatch_DBReference = pfDatabase.getReference("matches");           // List of Students
-//        pfCur_Match_DBReference = pfDatabase.getReference("current-match"); // _THE_ current Match
-        pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Students
-        txt_CubeSwitchAttNUM = (TextView) findViewById(R.id.txt_CubeSwitchAttNUM);
-        btn_CubeSwitchAttP = (Button) findViewById(R.id.btn_CubeSwitchAttP);
-        btn_CubeSwitchAttM = (Button) findViewById(R.id.btn_CubeSwitchAttM);
-        chk_climbsuccessful = (CheckBox) findViewById(R.id.chk_climbsuccess);
-        chk_climbattempted = (CheckBox) findViewById(R.id.chk_climbattempt);
-
+        btn_CubeZoneP             = (Button) findViewById(R.id.btn_CubeZoneP);
+        btn_CubeZoneM             = (Button) findViewById(R.id.btn_CubeZoneM);
+        txt_CubeZoneNUM           = (TextView) findViewById(R.id.txt_CubeZoneNUM);
+        txt_CubeSwitchAttNUM      = (TextView) findViewById(R.id.txt_CubeSwitchAttNUM);
+        btn_CubeSwitchAttP        = (Button)   findViewById(R.id.btn_CubeSwitchAttP);
+        btn_CubeSwitchAttM        = (Button)   findViewById(R.id.btn_CubeSwitchAttM);
+        btn_CubeScaleAttP         = (Button)   findViewById(R.id.btn_CubeScaleAttP);
+        btn_CubeScaleAttM         = (Button)   findViewById(R.id.btn_CubeScaleAttM);
+        btn_OtherSwitchM          = (Button)   findViewById(R.id.btn_OtherSwitchM);
+        btn_OtherSwitchP          = (Button)   findViewById(R.id.btn_OtherSwitchP);
+        btn_OtherSwitchAttM       = (Button)   findViewById(R.id.btn_OtherSwitchAttM);
+        btn_OtherSwitchAttP       = (Button)   findViewById(R.id.btn_OtherSwitchAttP);
+        txt_OtherSwitchNUM        = (TextView) findViewById(R.id.txt_OtherSwitchNUM);
+        txt_OtherSwitchAttNUM     = (TextView) findViewById(R.id.txt_OtherSwitchAttNUM);
+        chk_climbsuccessful       = (CheckBox) findViewById(R.id.chk_climbsuccess);
+        chk_climbattempted        = (CheckBox) findViewById(R.id.chk_climbattempt);
+        chk_LiftedBy              = (CheckBox) findViewById(R.id.chk_LiftedBy);
+        chkBox_Platform           = (CheckBox) findViewById(R.id.chk_LiftedBy);
+        chkBox_PU_Cubes_floor     = (CheckBox) findViewById(R.id.chkBox_PU_Cubes_floor);
+        editText_TeleComments     = (EditText) findViewById(R.id.editText_teleComments);
+        button_GoToFinalActivity  = (Button)   findViewById(R.id.button_GoToFinalActivity);
+        btn_CubeSwitchM           = (Button)   findViewById(R.id.btn_CubeSwitchM);
+        btn_CubeSwitchP           = (Button)   findViewById(R.id.btn_CubeSwitchP);
+        btn_CubeScaleP            = (Button)   findViewById(R.id.btn_CubeScaleP);
+        btn_CubeScaleM            = (Button)   findViewById(R.id.btn_CubeScaleM);
+        txt_CubeScaleAttNUM       = (TextView) findViewById(R.id.txt_CubeScaleAttNUM);
+        txt_CubeScaleNUM          = (TextView) findViewById(R.id.txt_CubeScaleNUM);
+        txt_CubeSwitchNUM         = (TextView) findViewById(R.id.txt_CubeSwitchNUM);
         txt_CubeSwitchAttNUM.setText(Integer.toString(cubeSwitch_attempt));
+        txt_CubeSwitchNUM   .setText(Integer.toString(cubeSwitch_placed));
+        txt_CubeScaleAttNUM .setText(Integer.toString(scale_attempt));
+        txt_CubeScaleNUM    .setText(Integer.toString(cube_scale));
+        pfDatabase                = FirebaseDatabase.getInstance();
+//        pfTeam_DBReference        = pfDatabase      .getReference("teams");         // Tteam data from Firebase D/B
+//        pfStudent_DBReference     = pfDatabase      .getReference("students");      // List of Students
+//        pfDevice_DBReference      = pfDatabase      .getReference("devices");       // List of Students
+//        pfMatch_DBReference       = pfDatabase      .getReference("matches");       // List of Students
+//        pfCur_Match_DBReference   = pfDatabase      .getReference("current-match"); // _THE_ current Match
+        pfDevice_DBReference      = pfDatabase      .getReference("devices");    // List of Students
+
 
 
         btn_CubeSwitchAttP.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (cubeSwitch_attempt < 50) {
+                if (cubeSwitch_attempt < 66) {
                     cubeSwitch_attempt++;
                 }
-                Log.w(TAG, "Gears = " + cubeSwitch_attempt);      // ** DEBUG **
+                Log.w(TAG, "Cubes = " + cubeSwitch_attempt);      // ** DEBUG **
                 txt_CubeSwitchAttNUM.setText(Integer.toString(cubeSwitch_attempt));    // Perform action on click
             }
         });
@@ -126,19 +149,19 @@ public class TeleopScoutActivity extends Activity {
                 if (cubeSwitch_attempt >= 1 && cubeSwitch_attempt > cubeSwitch_placed) {
                     cubeSwitch_attempt--;
                 }
-                Log.w(TAG, "Gears = " + cubeSwitch_attempt);      // ** DEBUG **
+                Log.w(TAG, "Cubes = " + cubeSwitch_attempt);      // ** DEBUG **
                 txt_CubeSwitchAttNUM.setText(Integer.toString(cubeSwitch_attempt));    // Perform action on click
             }
         });
 
         btn_CubeSwitchP.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (cubeSwitch_placed < 12) {
+                if (cubeSwitch_placed < 66) {
                     cubeSwitch_placed++;
                     cubeSwitch_attempt++;
                 }
-                Log.w(TAG, "Gears Placed = " + cubeSwitch_placed);      // ** DEBUG **
-                Log.w(TAG, "Gears Attempted = " + cubeSwitch_attempt);
+                Log.w(TAG, "Cubes = " + cubeSwitch_placed);      // ** DEBUG **
+                Log.w(TAG, "Cubes Attempted = " + cubeSwitch_attempt);
                 txt_CubeSwitchNUM.setText(Integer.toString(cubeSwitch_placed));    // Perform action on click
                 txt_CubeSwitchAttNUM.setText(Integer.toString(cubeSwitch_attempt));
             }
@@ -149,12 +172,141 @@ public class TeleopScoutActivity extends Activity {
                     cubeSwitch_placed--;
                     cubeSwitch_attempt--;
                 }
-                Log.w(TAG, "Gears Placed = " + cubeSwitch_placed);      // ** DEBUG **
-                Log.w(TAG, "Gears Attempted = " + cubeSwitch_attempt);
+                Log.w(TAG, "Cubes = " + cubeSwitch_placed);      // ** DEBUG **
+                Log.w(TAG, "Cubes Attempted = " + cubeSwitch_attempt);
                 txt_CubeSwitchNUM.setText(Integer.toString(cubeSwitch_placed));    // Perform action on click
                 txt_CubeSwitchAttNUM.setText(Integer.toString(cubeSwitch_attempt));
             }
         });
+
+        btn_CubeScaleAttP.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (scale_attempt < 66) {
+                    scale_attempt++;
+                }
+                Log.w(TAG, "Cubes = " + scale_attempt);      // ** DEBUG **
+                txt_CubeScaleAttNUM.setText(Integer.toString(scale_attempt));    // Perform action on click
+            }
+        });
+        btn_CubeScaleAttM.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (scale_attempt >= 1 && scale_attempt > cube_scale) {
+                    scale_attempt--;
+                }
+                Log.w(TAG, "Cubes = " + scale_attempt);      // ** DEBUG **
+                txt_CubeScaleAttNUM.setText(Integer.toString(scale_attempt));    // Perform action on click
+            }
+        });
+
+        btn_CubeScaleP.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (cube_scale < 66) {
+                    cube_scale++;
+                    scale_attempt++;
+                }
+                Log.w(TAG, "Cubes = " + cube_scale);      // ** DEBUG **
+                Log.w(TAG, "Cubes Attempted = " + cube_scale);
+                txt_CubeScaleNUM.setText(Integer.toString(cube_scale));    // Perform action on click
+                txt_CubeScaleAttNUM.setText(Integer.toString(scale_attempt));
+            }
+        });
+        btn_CubeScaleM.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (cube_scale >= 1 && scale_attempt >= cube_scale) {
+                    cube_scale--;
+                    scale_attempt--;
+                }
+                Log.w(TAG, "Cubes = " + cube_scale);      // ** DEBUG **
+                Log.w(TAG, "Cubes Attempted = " + cube_scale);
+                txt_CubeScaleNUM.setText(Integer.toString(cube_scale));    // Perform action on click
+                txt_CubeScaleAttNUM.setText(Integer.toString(scale_attempt));
+            }
+        });
+
+
+        btn_OtherSwitchAttP.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (their_attempt < 66) {
+                    their_attempt++;
+                }
+                Log.w(TAG, "Cubes = " + their_attempt);      // ** DEBUG **
+                txt_OtherSwitchAttNUM.setText(Integer.toString(their_attempt));    // Perform action on click
+            }
+        });
+        btn_OtherSwitchAttM.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (their_attempt >= 1 && their_attempt > their_switch) {
+                    their_attempt--;
+                }
+                Log.w(TAG, "Cubes = " + their_attempt);      // ** DEBUG **
+                txt_OtherSwitchAttNUM.setText(Integer.toString(their_attempt));    // Perform action on click
+            }
+        });
+
+        btn_OtherSwitchP.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (their_switch < 66) {
+                    their_switch++;
+                    their_attempt++;
+                }
+                Log.w(TAG, "Cubes = " + their_switch);      // ** DEBUG **
+                Log.w(TAG, "Cubes Attempted = " + their_switch);
+                txt_OtherSwitchNUM.setText(Integer.toString(their_switch));    // Perform action on click
+                txt_OtherSwitchAttNUM.setText(Integer.toString(their_attempt));
+            }
+        });
+        btn_OtherSwitchM.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (their_switch >= 1 && their_attempt >= their_switch) {
+                    their_switch--;
+                    their_attempt--;
+                }
+                Log.w(TAG, "Cubes = " + their_switch);      // ** DEBUG **
+                Log.w(TAG, "Cubes Attempted = " + their_switch);
+                txt_OtherSwitchNUM.setText(Integer.toString(their_switch));    // Perform action on click
+                txt_OtherSwitchAttNUM.setText(Integer.toString(their_attempt));
+            }
+        });
+
+
+//        btn_CubePlatformAttP.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                if (their_attempt < 66) {
+//                    their_attempt++;
+//                }
+//                Log.w(TAG, "Cubes = " + their_attempt);      // ** DEBUG **
+//                txt_OtherSwitchAttNUM.setText(Integer.toString(their_attempt));    // Perform action on click
+//            }
+//        });
+//        btn_CubePlatformAttM.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                if (their_attempt >= 1 && their_attempt > their_switch) {
+//                    their_attempt--;
+//                }
+//                Log.w(TAG, "Cubes = " + their_attempt);      // ** DEBUG **
+//                txt_OtherSwitchAttNUM.setText(Integer.toString(their_attempt));    // Perform action on click
+//            }
+//        });
+
+        btn_CubeZoneP.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (cube_pwrzone < 66) {
+                    cube_pwrzone++;
+                }
+                Log.w(TAG, "Cubes = " + cube_pwrzone);      // ** DEBUG **
+                txt_CubeZoneNUM.setText(Integer.toString(cube_pwrzone));    // Perform action on click
+            }
+        });
+        btn_CubeZoneM.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (cube_pwrzone >= 1) {
+                    cube_pwrzone--;
+                }
+                Log.w(TAG, "Cubes = " + cube_pwrzone);      // ** DEBUG **
+                txt_CubeZoneNUM.setText(Integer.toString(cube_pwrzone));    // Perform action on click
+            }
+        });
+
 
         button_GoToFinalActivity.setOnClickListener(new View.OnClickListener() {
 
@@ -172,6 +324,8 @@ public class TeleopScoutActivity extends Activity {
             }
         });
 
+
+
         chkBox_PU_Cubes_floor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
@@ -186,8 +340,7 @@ public class TeleopScoutActivity extends Activity {
                 cube_pickup = false;
             }
             }
-        }
-        );
+        });
 
 
         chk_climbattempted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -200,8 +353,7 @@ public class TeleopScoutActivity extends Activity {
                     Log.i(TAG,"TextBox is checked.");
                     climb_attempt = true;
 
-                }
-                else
+                } else
                 {
                     //not checked
                     Log.i(TAG,"TextBox is unchecked.");
@@ -209,8 +361,7 @@ public class TeleopScoutActivity extends Activity {
 
                 }
             }
-        }
-        );
+        });
         chk_climbsuccessful.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
@@ -222,21 +373,57 @@ public class TeleopScoutActivity extends Activity {
                     climb_success = true;
                     chk_climbattempted.setChecked(true);
 
-
                 }
-                else
-                {
+                else {
                     //not checked
                     Log.i(TAG,"TextBox is unchecked.");
                     climb_success = false;
                     chk_climbattempted.setChecked(false);
 
-
                 }
             }
 
-        }
-        );
+        });
+
+        chk_LiftedBy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.i(TAG, "chk_LiftedBy Listener");
+                if (chk_LiftedBy.isChecked()) {
+                    //checked
+                    Log.i(TAG,"TextBox is checked.");
+                    got_lift = true;
+
+                }
+                else {
+                    //not checked
+                    Log.i(TAG,"TextBox is unchecked.");
+                    got_lift = false;
+
+                }
+            }
+        });
+
+        chkBox_Platform.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.i(TAG, "chkBox_Platform Listener");
+                if (chkBox_Platform.isChecked()) {
+                    //checked
+                    Log.i(TAG,"TextBox is checked.");
+                    on_platform = true;
+
+                }
+                else {
+                    //not checked
+                    Log.i(TAG,"TextBox is unchecked.");
+                    on_platform = false;
+
+                }
+            }
+        });
 
         editText_TeleComments.addTextChangedListener(new TextWatcher() {
             @Override
@@ -265,7 +452,7 @@ public class TeleopScoutActivity extends Activity {
 //        Log.w(TAG, "*** Selected=" + selectedId);
         radio_Deliver = (RadioButton) findViewById(selectedId);
         String value = radio_Deliver.getText().toString();
-            radio_Deliver.setChecked(false);
+//        radio_Deliver.setChecked(false);
         if (value.equals("Place")) {           // Place?
             Log.w(TAG, "Place");
             delPlace = true;
@@ -286,7 +473,7 @@ public class TeleopScoutActivity extends Activity {
 //        Log.w(TAG, "*** Selected=" + selectedId);
         radio_Climb = (RadioButton) findViewById(selectedId);
         String value = radio_Climb.getText().toString();
-        radio_Climb.setChecked(false);
+//        radio_Climb.setChecked(false);
         if (value.equals("Rung")) {           // Rung?
             Log.w(TAG, "Rung");
             grab_rung = true;
@@ -305,18 +492,14 @@ public class TeleopScoutActivity extends Activity {
         int selectedId = radgrp_Lifted.getCheckedRadioButtonId();
 //        Log.w(TAG, "*** Selected=" + selectedId);
         radio_Lift = (RadioButton) findViewById(selectedId);
-        radio_One = (RadioButton) findViewById(R.id.radio_One);
-        radio_Two = (RadioButton) findViewById(R.id.radio_Two);
         String value = radio_Lift.getText().toString();
-        radio_Lift.setChecked(false);
+//        radio_Lift.setChecked(false);
         if (value.equals("One")) {           // One?
             Log.w(TAG, "One");
-            radio_One.setChecked(true);
             lift_one = true;
             lift_two = false;
         } else {                               // Two
             Log.w(TAG, "Two");
-            radio_Two.setChecked(true);
             lift_two = true;
             lift_one = false;
         }
