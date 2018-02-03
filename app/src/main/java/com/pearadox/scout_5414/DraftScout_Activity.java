@@ -31,6 +31,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -44,7 +46,7 @@ public class DraftScout_Activity extends AppCompatActivity {
     RadioGroup radgrp_Sort;
     RadioButton radio_Climb, radio_Cubes, radio_Weight, radio_Team;
 //    Button btn_Up, btn_Down, btn_Delete;
-    ArrayAdapter<String> adaptTeams;
+    public ArrayAdapter<String> adaptTeams;
 //    ArrayList<String> draftList = new ArrayList<String>();
     static final ArrayList<HashMap<String,String>> draftList = new ArrayList<HashMap<String,String>>();
     public int teamSelected = 0;
@@ -63,53 +65,74 @@ public class DraftScout_Activity extends AppCompatActivity {
     //===========================
     public class Scores implements Comparable<Scores> {
         private String teamNum;
-        private int switchCubes;
-        private int scaleCubes;
-        private int climbs;
+        private String teamName;
+        private int cubeScore;
+        private int climbScore;
+        private int weightedScore;
+
         public Scores() {
         }
-        public Scores(String teamNum, int switchCubes, int scaleCubes, int climbs) {
+
+        public Scores(String teamNum, String teamName, int cubeScore, int climbScore, int weightedScore) {
             this.teamNum = teamNum;
-            this.switchCubes = switchCubes;
-            this.scaleCubes = scaleCubes;
-            this.climbs = climbs;
+            this.teamName = teamName;
+            this.cubeScore = cubeScore;
+            this.climbScore = climbScore;
+            this.weightedScore = weightedScore;
         }
 
-        public String getteamNum() {
+        public String getTeamNum() {
             return teamNum;
         }
-        public void setteamNum(String teamNum) {
+        public void setTeamNum(String teamNum) {
             this.teamNum = teamNum;
         }
-        public int getSwitchCubes() {
-            return switchCubes;
+        public String getTeamName() {
+            return teamName;
         }
-        public void setSwitchCubes(int switchCubes) {
-            this.switchCubes = switchCubes;
+        public void setTeamName(String teamName) {
+            this.teamName = teamName;
         }
-        public int getScaleCubes() {
-            return scaleCubes;
+        public int getCubeScore() {
+            return cubeScore;
         }
-        public void setScaleCubes(int scaleCubes) {
-            this.scaleCubes = scaleCubes;
+        public void setCubeScore(int cubeScore) {
+            this.cubeScore = cubeScore;
         }
-        public int getClimbs() {
-            return climbs;
+        public int getClimbScore() {
+            return climbScore;
         }
-        public void setClimbs(int climbs) {
-            this.climbs = climbs;
+        public void setClimbScore(int climbScore) {
+            this.climbScore = climbScore;
+        }
+        public int getWeightedScore() {
+            return weightedScore;
+        }
+        public void setWeightedScore(int weightedScore) {
+            this.weightedScore = weightedScore;
         }
 
         public int compareTo(Scores compareScores) {
-            int compareScaleCubes = ((Scores) compareScores).getScaleCubes();
+            int compareCubes = ((Scores) compareScores).getCubeScore();
             //ascending order
-            return this.scaleCubes - compareScaleCubes;
+            //return this.cubeScore - compareCubes;
             //descending order
-            //return compareQuantity - this.quantity;
+            return compareCubes - this.cubeScore;
         }
+        public Comparator<Scores> climb = new Comparator<Scores>() {
+            public int compare(Scores s1, Scores s2) {
+                int climbNum1 = s1.getClimbScore();
+                int climbNum2 = s2.getClimbScore();
+	            /*For ascending order*/
+                //return climbNum1-climbNum2;
+	            /*For descending order*/
+                return climbNum2-climbNum1;
+            }};
     }
     //==========================
-    ArrayList<Scores> team_Scores = new ArrayList<Scores>();
+    public ArrayList<Scores> team_Scores = new ArrayList<Scores>();
+    Scores score_inst = new Scores();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,14 +145,7 @@ public class DraftScout_Activity extends AppCompatActivity {
         lstView_Teams = (ListView) findViewById(R.id.lstView_Teams);
         txt_EventName.setText(Pearadox.FRC_EventName);              // Event Name
         txt_NumTeams.setText(String.valueOf(Pearadox.numTeams));    // # of Teams
-//        Button btn_Up = (Button) findViewById(R.id.btn_Up);         // Listner defined in Layout XML
-//        btn_Up.setOnClickListener(buttonUp_Click);
-//        Button btn_Down = (Button) findViewById(R.id.btn_Down);     // Listner defined in Layout XML
-//        btn_Down.setOnClickListener(buttonDown_Click);
-//        Button btn_Delete = (Button) findViewById(R.id.btn_Delete); // Listner defined in Layout XML
-//        btn_Delete.setOnClickListener(buttonDelete_Click);
 
-        Log.w(TAG, "***** event= "  + Pearadox.FRC_Event);
         pfDatabase = FirebaseDatabase.getInstance();
         pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
 
@@ -169,13 +185,19 @@ public class DraftScout_Activity extends AppCompatActivity {
         int selectedId = radgrp_Sort.getCheckedRadioButtonId();
         radio_Team = (RadioButton) findViewById(selectedId);
         String value = radio_Team.getText().toString();
+        lstView_Teams = (ListView) findViewById(R.id.lstView_Teams);
         Log.w(TAG, "RadioSort -  '" + value + "'");
         switch (value) {
             case "Climb":
-
+//                Collections.sort(team_Scores, Scores.);
                  break;
             case "Cubes":
-
+                Log.w(TAG, "Cube sort");
+                Collections.sort(team_Scores);
+                Log.w(TAG, "1st entry " + team_Scores.get(0).getTeamNum());
+                loadTeams();
+//                lstView_Teams.setAdapter(adaptTeams);
+//                adaptTeams.notifyDataSetChanged();
                 break;
             case "Weighted":
 
@@ -253,16 +275,18 @@ public class DraftScout_Activity extends AppCompatActivity {
     }
 
     private void loadTeams() {
-        Log.i(TAG, "@@@@  loadTeams started  @@@@");
+        Log.w(TAG, "@@@@  loadTeams started  @@@@  " + team_Scores.size());
 
-        for (int i = 0; i < Pearadox.numTeams; i++) {
-            team_inst = Pearadox.team_List.get(i);
+        draftList.clear();
+        for (int i = 0; i < team_Scores.size(); i++) {    // load by sorted scores
+            score_inst = team_Scores.get(i);
+            Log.w(TAG, i +" team=" + score_inst.getTeamNum());
             HashMap<String, String> temp = new HashMap<String, String>();
-            tn = team_inst.getTeam_num();
+            tn = score_inst.getTeamNum();
 
             teamData(tn);   // Get Team's Match Data
 
-            temp.put("team", tn + " - " + team_inst.getTeam_name());
+            temp.put("team", tn + " - " + score_inst.getTeamName());
 //            temp.put("BA", "Rank=" + teams[i].rank + "  " + teams[i].record + "   OPR=" + String.format("%3.1f", (teams[i].opr)) + "    ↑ " + String.format("%3.1f", (teams[i].touchpad)) + "   kPa=" + String.format("%3.1f", (teams[i].pressure)));
             temp.put("BA", "Rank=" + "00" + "  " + "0-0-0" + "   OPR=" + "000" );
             temp.put("Stats", "Auto ⚻=" + autoSwRatio + " ⚖=" + autoScRatio + "  Tele ⚻=" + teleSwRatio + " ⚖=" + teleScRatio + "   ▉P/U  " + cubeChk + "   Climb " + climbChk + "  " + climbRatio);
@@ -400,16 +424,24 @@ public class DraftScout_Activity extends AppCompatActivity {
     private void initScores() {
         Log.w(TAG, " ## initScores ##");
         team_Scores.clear();
-        Scores curTeam = new Scores();
+        Scores curScrTeam = new Scores();       // instance of Scores object
         for (int i = 0; i < Pearadox.numTeams; i++) {
             team_inst = Pearadox.team_List.get(i);
-            curTeam.setteamNum(team_inst.getTeam_num());
-            curTeam.setSwitchCubes(0);
-            curTeam.setScaleCubes(i);
-            curTeam.setClimbs(0);
-            team_Scores.add(i,curTeam);
+            curScrTeam.setTeamNum(team_inst.getTeam_num());
+            curScrTeam.setTeamName(team_inst.getTeam_name());
+            Log.w(TAG, curScrTeam.getTeamNum() + "  " + curScrTeam.getTeamName());
+            curScrTeam.setClimbScore(0);
+            curScrTeam.setCubeScore(0);
+            curScrTeam.setWeightedScore(0);
+            team_Scores.add(i, curScrTeam);
+            Log.w(TAG, "team=" + team_Scores.get(i).getTeamNum());
         }
-        Log.w(TAG, " Scores = " + team_Scores.size());
+        Log.w(TAG, "#Scores = " + team_Scores.size());
+        for (int n = 0; n < Pearadox.numTeams; n++) {
+            score_inst = team_Scores.get(n);
+            System.out.println(n + " " + score_inst.getTeamNum() + score_inst.getTeamName() + " " + score_inst.getCubeScore());
+        }
+        loadTeams();
     }
 
 //###################################################################
@@ -421,7 +453,6 @@ public void onStart() {
         Log.v(TAG, "onStart");
         initScores();
         addMD_VE_Listener(pfMatchData_DBReference);        // Load _ALL_ Matches
-
 }
 @Override
 public void onResume() {
