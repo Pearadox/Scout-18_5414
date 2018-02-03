@@ -14,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -39,6 +41,8 @@ public class DraftScout_Activity extends AppCompatActivity {
     ListView lstView_Teams;
     TextView TeamData, BA, Stats;
     Button btn_Match;
+    RadioGroup radgrp_Sort;
+    RadioButton radio_Climb, radio_Cubes, radio_Weight, radio_Team;
 //    Button btn_Up, btn_Down, btn_Delete;
     ArrayAdapter<String> adaptTeams;
 //    ArrayList<String> draftList = new ArrayList<String>();
@@ -49,7 +53,7 @@ public class DraftScout_Activity extends AppCompatActivity {
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj();
 //    Team[] teams;
     public static int BAnumTeams = 0;                                      // # of teams from Blue Alliance
-    String gearChk=""; String climbChk=""; String climbRatio=""; String autoSwRatio=""; String autoScRatio="-/-"; String teleSwRatio="-/-"; String teleScRatio="-/-";
+    String cubeChk=""; String climbChk=""; String climbRatio=""; String autoSwRatio=""; String autoScRatio="-/-"; String teleSwRatio="-/-"; String teleScRatio="-/-";
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfMatchData_DBReference;
     matchData match_inst = new matchData();
@@ -159,25 +163,28 @@ public class DraftScout_Activity extends AppCompatActivity {
         });
     }
 
+    public void RadioClick_Sort(View view) {
+        Log.w(TAG, "@@ RadioClick_Sort @@");
+        radgrp_Sort = (RadioGroup) findViewById(R.id.radgrp_Sort);
+        int selectedId = radgrp_Sort.getCheckedRadioButtonId();
+        radio_Team = (RadioButton) findViewById(selectedId);
+        String value = radio_Team.getText().toString();
+        Log.w(TAG, "RadioSort -  '" + value + "'");
+        switch (value) {
+            case "Climb":
 
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    public void buttonUp_Click(View view) {
-        Log.i(TAG, " buttonUp_Click   " + teamSelected);
-        HashMap<String, String> temp = new HashMap<String, String>();
+                 break;
+            case "Cubes":
 
-        // only if the first item isn't the current one
-        if(teamSelected > 0)
-        {
-            // add a duplicate item up in the listbox
-            temp.get("team");
-            temp.get("BA");
-            temp.get("Stats");
-            draftList.set(teamSelected - 1, temp);
-//            draftList.AddItem(draftList.Text, teamSelected - 1);
-            // make it the current item
-            draftList.contains(teamSelected - 2);
-            // delete the old occurrence of this item
-            draftList.remove(teamSelected + 2);
+                break;
+            case "Weighted":
+
+                break;
+            case "Team":
+
+                break;
+            default:                //
+                Log.e(TAG, "Invalid Sort" );
         }
 
     }
@@ -189,18 +196,6 @@ public class DraftScout_Activity extends AppCompatActivity {
 
     }
 
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    public void buttonDelete_Click(View view) {
-        Log.i(TAG, ">>>>> buttonDelete_Click  "  + teamSelected);
-
-        Log.w(TAG, "@@@ Teams B4 : " + draftList.size());
-        lstView_Teams = (ListView) findViewById(R.id.lstView_Teams);
-        draftList.remove(teamSelected);
-        Log.w(TAG, "@@@ Teams After : " + draftList.size());
-        lstView_Teams.setAdapter(adaptTeams);
-//        adaptTeams.notifyDataSetChanged();
-
-    }
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public void buttonMatch_Click(View view) {
@@ -270,7 +265,7 @@ public class DraftScout_Activity extends AppCompatActivity {
             temp.put("team", tn + " - " + team_inst.getTeam_name());
 //            temp.put("BA", "Rank=" + teams[i].rank + "  " + teams[i].record + "   OPR=" + String.format("%3.1f", (teams[i].opr)) + "    ↑ " + String.format("%3.1f", (teams[i].touchpad)) + "   kPa=" + String.format("%3.1f", (teams[i].pressure)));
             temp.put("BA", "Rank=" + "00" + "  " + "0-0-0" + "   OPR=" + "000" );
-            temp.put("Stats", "Auto ⚻=" + autoSwRatio + " ⚖=" + autoScRatio + "  Tele ⚻=" + teleSwRatio + " ⚖=" + teleScRatio + "   ▉P/U  " + gearChk + "   Climb " + climbChk + "  " + climbRatio);
+            temp.put("Stats", "Auto ⚻=" + autoSwRatio + " ⚖=" + autoScRatio + "  Tele ⚻=" + teleSwRatio + " ⚖=" + teleScRatio + "   ▉P/U  " + cubeChk + "   Climb " + climbChk + "  " + climbRatio);
             draftList.add(temp);
         } // End For
         Log.w(TAG, "### Teams ###  : " + draftList.size());
@@ -311,7 +306,7 @@ public class DraftScout_Activity extends AppCompatActivity {
 //
 //                temp.put("team", tn + " - " + teams[i].nickname);
 //                temp.put("BA", "Rank=" + teams[i].rank + "  " + teams[i].record + "   OPR=" + String.format("%3.1f", (teams[i].opr)) + "    ↑ " + String.format("%3.1f", (teams[i].touchpad)) + "   kPa=" + String.format("%3.1f", (teams[i].pressure)));
-//                temp.put("Stats", "Auto Gears=" + autoSwRatio + "  Tele Gears=" + teleSwRatio + "   Pick up Gears " + gearChk + "   Climb " + climbChk + "  " + climbRatio);
+//                temp.put("Stats", "Auto Gears=" + autoSwRatio + "  Tele Gears=" + teleSwRatio + "   Pick up Gears " + cubeChk + "   Climb " + climbChk + "  " + climbRatio);
 //                draftList.add(temp);
 //                                                      } // End For
 //                Log.w(TAG, "### Teams ###  : " + draftList.size());
@@ -356,9 +351,9 @@ public class DraftScout_Activity extends AppCompatActivity {
 
         if (numMatches > 0) {
             if (cube_pu) {
-                gearChk = "❎";
+                cubeChk = "❎";
             } else {
-                gearChk = "⎕";
+                cubeChk = "⎕";
             }
             if (teleAttempt > 0) {
                 climbChk = "❎";
@@ -369,7 +364,7 @@ public class DraftScout_Activity extends AppCompatActivity {
             teleSwRatio = teleGears + "/" + teleAttempt;
             climbRatio = climbs + "/" + climbAttemps;
         } else {
-            gearChk = "⎕";
+            cubeChk = "⎕";
             climbChk = "⎕";
             autoSwRatio = "0/0";
             teleSwRatio = "0/0";
