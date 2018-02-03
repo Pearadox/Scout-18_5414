@@ -55,7 +55,8 @@ public class DraftScout_Activity extends AppCompatActivity {
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj();
 //    Team[] teams;
     public static int BAnumTeams = 0;                                      // # of teams from Blue Alliance
-    String cubeChk=""; String climbChk=""; String climbRatio=""; String autoSwRatio=""; String autoScRatio="-/-"; String teleSwRatio="-/-"; String teleScRatio="-/-";
+    String cubeChk=""; String climbChk=""; String climbRatio=""; String autoSwRatio=""; String autoScRatio="-/-"; String teleSwRatio="-/-"; String teleScRatio="-/-"; String mdNumMatches="";
+    String liftOne = ""; String liftTwo = ""; String gotLifted = "";
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfMatchData_DBReference;
     matchData match_inst = new matchData();
@@ -63,7 +64,7 @@ public class DraftScout_Activity extends AppCompatActivity {
     public static ArrayList<matchData> All_Matches = new ArrayList<matchData>();
     String load_team, load_name;
     //===========================
-    public class Scores implements Comparable<Scores> {
+    public static class Scores implements Comparable<Scores> {
         private String teamNum;
         private String teamName;
         private int cubeScore;
@@ -119,7 +120,7 @@ public class DraftScout_Activity extends AppCompatActivity {
             //descending order
             return compareCubes - this.cubeScore;
         }
-        public Comparator<Scores> climb = new Comparator<Scores>() {
+        public static Comparator<Scores> climbComp = new Comparator<Scores>() {
             public int compare(Scores s1, Scores s2) {
                 int climbNum1 = s1.getClimbScore();
                 int climbNum2 = s2.getClimbScore();
@@ -149,18 +150,18 @@ public class DraftScout_Activity extends AppCompatActivity {
         pfDatabase = FirebaseDatabase.getInstance();
         pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
 
-        SimpleAdapter adaptTeams = new SimpleAdapter(
-                this,
-                draftList,
-                R.layout.draft_list_layout,
-                new String[] {"team","BA","Stats"},
-                new int[] {R.id.TeamData,R.id.BA, R.id.Stats}
-        );
-
-        loadTeams();
-
-        lstView_Teams.setAdapter(adaptTeams);
-        adaptTeams.notifyDataSetChanged();
+//        SimpleAdapter adaptTeams = new SimpleAdapter(
+//                this,
+//                draftList,
+//                R.layout.draft_list_layout,
+//                new String[] {"team","BA","Stats"},
+//                new int[] {R.id.TeamData,R.id.BA, R.id.Stats}
+//        );
+//
+//        loadTeams();
+//
+//        lstView_Teams.setAdapter(adaptTeams);
+//        adaptTeams.notifyDataSetChanged();
 
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -189,15 +190,14 @@ public class DraftScout_Activity extends AppCompatActivity {
         Log.w(TAG, "RadioSort -  '" + value + "'");
         switch (value) {
             case "Climb":
-//                Collections.sort(team_Scores, Scores.);
-                 break;
+                Collections.sort(team_Scores, Scores.climbComp);
+                loadTeams();
+                break;
             case "Cubes":
                 Log.w(TAG, "Cube sort");
                 Collections.sort(team_Scores);
                 Log.w(TAG, "1st entry " + team_Scores.get(0).getTeamNum());
                 loadTeams();
-//                lstView_Teams.setAdapter(adaptTeams);
-//                adaptTeams.notifyDataSetChanged();
                 break;
             case "Weighted":
 
@@ -277,6 +277,14 @@ public class DraftScout_Activity extends AppCompatActivity {
     private void loadTeams() {
         Log.w(TAG, "@@@@  loadTeams started  @@@@  " + team_Scores.size());
 
+        SimpleAdapter adaptTeams = new SimpleAdapter(
+                this,
+                draftList,
+                R.layout.draft_list_layout,
+                new String[] {"team","BA","Stats"},
+                new int[] {R.id.TeamData,R.id.BA, R.id.Stats}
+        );
+
         draftList.clear();
         for (int i = 0; i < team_Scores.size(); i++) {    // load by sorted scores
             score_inst = team_Scores.get(i);
@@ -286,13 +294,16 @@ public class DraftScout_Activity extends AppCompatActivity {
 
             teamData(tn);   // Get Team's Match Data
 
-            temp.put("team", tn + " - " + score_inst.getTeamName());
+            temp.put("team", tn + " - " + score_inst.getTeamName() + "   (" + mdNumMatches + ")" );
 //            temp.put("BA", "Rank=" + teams[i].rank + "  " + teams[i].record + "   OPR=" + String.format("%3.1f", (teams[i].opr)) + "    ↑ " + String.format("%3.1f", (teams[i].touchpad)) + "   kPa=" + String.format("%3.1f", (teams[i].pressure)));
-            temp.put("BA", "Rank=" + "00" + "  " + "0-0-0" + "   OPR=" + "000" );
-            temp.put("Stats", "Auto ⚻=" + autoSwRatio + " ⚖=" + autoScRatio + "  Tele ⚻=" + teleSwRatio + " ⚖=" + teleScRatio + "   ▉P/U  " + cubeChk + "   Climb " + climbChk + "  " + climbRatio);
+            temp.put("Stats", "Auto ⚻=" + autoSwRatio + " ⚖=" + autoScRatio + "  Tele ⚻=" + teleSwRatio + " ⚖=" + teleScRatio + "   ▉P/U  " + cubeChk);
+            temp.put("BA",  "Climb " + "  " + climbRatio + "  ↕One " + liftOne + "  ↕Two " + liftTwo);
             draftList.add(temp);
         } // End For
         Log.w(TAG, "### Teams ###  : " + draftList.size());
+        lstView_Teams.setAdapter(adaptTeams);
+        adaptTeams.notifyDataSetChanged();
+
     }
 
 //    private void loadTeams() {
@@ -347,56 +358,92 @@ public class DraftScout_Activity extends AppCompatActivity {
 
     private void teamData(String team) {
         Log.i(TAG, "$$$$  teamData  $$$$ " + team);
-        int autoCubeSw = 0; int teleGears = 0;int teleAttempt = 0; int climbs = 0; int climbAttemps = 0; int numMatches = 0;
+        int autoCubeSw = 0; int autoCubeSwAtt = 0;int autoCubeSc = 0;int autoCubeScAtt = 0; int teleCubeSw = 0;int teleCubeSwAtt = 0; int teleCubeSc = 0;int teleCubeScAtt = 0;
+        int climbs = 0; int climbAttemps = 0; int platNum = 0; int lift1Num = 0; int lift2Num = 0; int liftedNum = 0;
+        int numMatches = 0;
         boolean cube_pu =false;
 
         for (int i = 0; i < All_Matches.size(); i++) {
             match_inst = All_Matches.get(i);      // Get instance of Match Data
             if (match_inst.getTeam_num().matches(team)) {
-                Log.e(TAG, i + "  " + match_inst.getMatch() + "  Team=" + team);
+//                Log.e(TAG, i + "  " + match_inst.getMatch() + "  Team=" + team);
                 numMatches++;
-//                autoCubeSw = autoCubeSw + match_inst.getAuto_gears_placed();
-//                Log.w(TAG, "Auto Gears = " + match_inst.getAuto_gears_placed());
-//                teleGears = teleGears + match_inst.getTele_gears_placed();
-//                Log.w(TAG, "Tele Gears Placed = " + match_inst.getTele_gears_placed());
-//                teleAttempt = teleAttempt + match_inst.getTele_gears_attempt();
-//                Log.w(TAG, "Tele Gears Attempted = " + match_inst.getTele_gears_attempt());
-                if (match_inst.isTele_climb_attempt()) {
-                    climbAttemps++;
-//                    Log.w(TAG, "Tele Climb Attempt Number= " + climbAttemps);
+                if (match_inst.isAuto_cube_switch()) {
+                    autoCubeSw++;
+                }
+                if (match_inst.isAuto_cube_switch_att()) {
+                    autoCubeSwAtt++;
+                }
+                if (match_inst.isAuto_cube_scale()) {
+                    autoCubeSc++;
+                }
+                if (match_inst.isAuto_cube_scale_att()) {
+                    autoCubeScAtt++;
+                }
+                teleCubeSw = teleCubeSw + match_inst.getTele_cube_switch();
+                teleCubeSwAtt = teleCubeSwAtt + match_inst.getTele_switch_attempt();
+                teleCubeSc = teleCubeSc + match_inst.getTele_cube_scale();
+                teleCubeScAtt = teleCubeScAtt + match_inst.getTele_scale_attempt();
+                if (match_inst.isTele_cube_pickup()) {
+                    cube_pu = true;
                 }
                 if (match_inst.isTele_climb_success()) {
                     climbs++;
-//                    Log.w(TAG, "Tele Climb Success Number= " + climbs);
+                }
+                if (match_inst.isTele_climb_attempt()) {
+                    climbAttemps++;
+                }
+                if (match_inst.isTele_lift_one()) {
+                    lift1Num++;
+                }
+                if (match_inst.isTele_lift_two()) {
+                    lift2Num++;
+                }
+                if (match_inst.isTele_lift_two()) {
+                    lift2Num++;
+                }
+                if (match_inst.isTele_got_lift()) {
+                    liftedNum++;
                 }
                 Log.w(TAG, "matches= " + numMatches);
             }
         } // End For
-
+        mdNumMatches = String.valueOf(numMatches);
         if (numMatches > 0) {
             if (cube_pu) {
                 cubeChk = "❎";
             } else {
                 cubeChk = "⎕";
             }
-            if (teleAttempt > 0) {
-                climbChk = "❎";
-            } else {
-                climbChk = "⎕";
-            }
-            autoSwRatio = autoCubeSw + "/" + numMatches;
-            teleSwRatio = teleGears + "/" + teleAttempt;
+            autoSwRatio = autoCubeSw + "/" + autoCubeSwAtt;
+            autoScRatio = autoCubeSc + "/" + autoCubeScAtt;
+            teleSwRatio = teleCubeSw + "/" + teleCubeSwAtt;
+            teleScRatio = teleCubeSc + "/" + teleCubeScAtt;
             climbRatio = climbs + "/" + climbAttemps;
+            liftOne = String.valueOf(lift1Num);
+            liftTwo = String.valueOf(lift2Num);
+            gotLifted = String.valueOf(liftedNum);
         } else {
             cubeChk = "⎕";
-            climbChk = "⎕";
             autoSwRatio = "0/0";
+            autoScRatio = "0/0";
             teleSwRatio = "0/0";
+            teleScRatio = "0/0";
             climbRatio = "0/0";
+            liftOne = "0";
+            liftTwo = "0";
+            gotLifted = "0";
         }
+        //============================
+        //Todo - add logic to compute Scores
+        int climbScore = 0; int cubeScore = 0;
+        Log.e(TAG, team + " "+ climbs + " "+ lift1Num + " "+ lift2Num + " " + platNum +  " " + liftedNum + " / " + numMatches);
+        climbScore = (int) (((climbs + lift1Num + (lift2Num * 2)) + (platNum * 0.15) + (liftedNum * 0.3)) / numMatches);
+        Log.w(TAG, team + " Climb Score= " + climbScore);
+
     }
 
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@ @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void addMD_VE_Listener(final DatabaseReference pfMatchData_DBReference) {
         pfMatchData_DBReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -424,23 +471,18 @@ public class DraftScout_Activity extends AppCompatActivity {
     private void initScores() {
         Log.w(TAG, " ## initScores ##");
         team_Scores.clear();
-        Scores curScrTeam = new Scores();       // instance of Scores object
         for (int i = 0; i < Pearadox.numTeams; i++) {
+            Scores curScrTeam = new Scores();       // instance of Scores object
             team_inst = Pearadox.team_List.get(i);
             curScrTeam.setTeamNum(team_inst.getTeam_num());
             curScrTeam.setTeamName(team_inst.getTeam_name());
-            Log.w(TAG, curScrTeam.getTeamNum() + "  " + curScrTeam.getTeamName());
+//            Log.w(TAG, curScrTeam.getTeamNum() + "  " + curScrTeam.getTeamName());
             curScrTeam.setClimbScore(0);
-            curScrTeam.setCubeScore(0);
+            curScrTeam.setCubeScore(i);
             curScrTeam.setWeightedScore(0);
             team_Scores.add(i, curScrTeam);
-            Log.w(TAG, "team=" + team_Scores.get(i).getTeamNum());
         }
         Log.w(TAG, "#Scores = " + team_Scores.size());
-        for (int n = 0; n < Pearadox.numTeams; n++) {
-            score_inst = team_Scores.get(n);
-            System.out.println(n + " " + score_inst.getTeamNum() + score_inst.getTeamName() + " " + score_inst.getCubeScore());
-        }
         loadTeams();
     }
 
