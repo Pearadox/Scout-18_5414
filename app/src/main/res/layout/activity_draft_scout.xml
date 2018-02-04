@@ -148,7 +148,7 @@
             android:layout_height="wrap_content"
             android:checked="true"
             android:onClick="RadioClick_Sort"
-            android:text="Team" />
+            android:text="Team#" />
         <RadioButton
             android:id="@+id/radio_Climb"
             android:layout_width="wrap_content"
