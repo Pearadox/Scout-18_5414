@@ -39,6 +39,7 @@ import java.util.Iterator;
 public class DraftScout_Activity extends AppCompatActivity {
 
     String TAG = "DraftScout_Activity";        // This CLASS name
+    Boolean is_Resumed = false;
     TextView txt_EventName, txt_NumTeams;
     ListView lstView_Teams;
     TextView TeamData, BA, Stats;
@@ -49,14 +50,16 @@ public class DraftScout_Activity extends AppCompatActivity {
     public ArrayAdapter<String> adaptTeams;
 //    ArrayList<String> draftList = new ArrayList<String>();
     static final ArrayList<HashMap<String,String>> draftList = new ArrayList<HashMap<String,String>>();
-    public int teamSelected = 0; public String sortType = "Team";
+    public int teamSelected = 0; public String sortType = "Team#";
     String tnum = "";
     String tn = "";
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj();
 //    Team[] teams;
     public static int BAnumTeams = 0;                                      // # of teams from Blue Alliance
-    String cubeChk=""; String climbChk=""; String climbRatio=""; String autoSwRatio=""; String autoScRatio="-/-"; String teleSwRatio="-/-"; String teleScRatio="-/-";
-    String mdNumMatches=""; String teleExch=""; String teleOthrRatio="";
+    String cubeChk=""; String climbChk=""; String climbRatio="";
+    String autoSwRatio=""; String autoScRatio="-/-"; String autoSwXover=""; String autoScXover="";
+    String teleSwRatio="-/-"; String teleScRatio="-/-";
+    String mdNumMatches=""; String teleExch=""; String teleOthrRatio=""; String telePort="";
     String liftOne = ""; String liftTwo = ""; String gotLifted = "";  String onPlatform = "";
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfMatchData_DBReference;
@@ -193,8 +196,8 @@ public class DraftScout_Activity extends AppCompatActivity {
         Log.w(TAG, "RadioSort -  '" + value + "'");
         switch (value) {
             case "Climb":
+//                Log.w(TAG, "Climb sort");
                 sortType = "Climb";
-//                Collections.sort(team_Scores, Scores.climbComp);
                 Collections.sort(team_Scores, new Comparator<Scores>() {
                     @Override
                     public int compare(Scores c1, Scores c2) {
@@ -206,28 +209,36 @@ public class DraftScout_Activity extends AppCompatActivity {
                 break;
             case "Cubes":
                 sortType = "Cubes";
-                Log.w(TAG, "Cube sort");
+//                Log.w(TAG, "Cube sort");
                 Collections.sort(team_Scores, new Comparator<Scores>() {
                     @Override
                     public int compare(Scores c1, Scores c2) {
                         return Float.compare(c1.getCubeScore(), c2.getCubeScore());
                     }
                 });
-                Collections.reverse(team_Scores);
+                Collections.reverse(team_Scores);   // D
                 loadTeams();
                 break;
             case "Weighted":
+//                Log.w(TAG, "Weighted sort");
                 sortType = "Weighted";
-
+                Collections.sort(team_Scores, new Comparator<Scores>() {
+                    @Override
+                    public int compare(Scores c1, Scores c2) {
+                        return Float.compare(c1.getWeightedScore(), c2.getWeightedScore());
+                    }
+                });
+                Collections.reverse(team_Scores);   // D
+                loadTeams();
                 break;
-            case "Team":
-                Log.w(TAG, "Team sort");
-                sortType = "Team";
+            case "Team#":
+//                Log.w(TAG, "Team# sort");
+                sortType = "Team#";
                 Collections.sort(team_Scores, Scores.teamComp);
                 loadTeams();
                 break;
             default:                //
-                Log.e(TAG, "Invalid Sort" );
+                Log.e(TAG, "*** Invalid Sort " + value);
         }
 
     }
@@ -249,10 +260,10 @@ public class DraftScout_Activity extends AppCompatActivity {
         draftList.get(teamSelected);
         temp = draftList.get(teamSelected);
         teamHash = temp.get("team");
-        Log.w(TAG, "teamHash: '" + teamHash + "' \n ");
+//        Log.w(TAG, "teamHash: '" + teamHash + "' \n ");
         load_team = teamHash.substring(0,4);
-        load_name = teamHash.substring(7,teamHash.length());
-        Log.w(TAG, "team & name: '" + load_team + "'  [" + load_name +"]");
+        load_name = teamHash.substring(7,teamHash.indexOf("("));  // UP TO # MATCHES
+//        Log.w(TAG, ">>>team & name: '" + load_team + "'  [" + load_name +"]");
         addMatchData_Team_Listener(pfMatchData_DBReference);        // Load Matches for _THIS_ selected team
     }
 
@@ -277,15 +288,14 @@ public class DraftScout_Activity extends AppCompatActivity {
                 if (Pearadox.Matches_Data.size() > 0) {
                     Intent match_intent = new Intent(DraftScout_Activity.this, VisMatch_Activity.class);
                     Bundle VZbundle = new Bundle();
-                    VZbundle.putString("team", load_team);        // Pass data to activity
-                    VZbundle.putString("name", load_name);        // Pass data to activity
+                    VZbundle.putString("team", load_team);          // Pass data to activity
+                    VZbundle.putString("name", load_name);          // Pass data to activity
                     match_intent.putExtras(VZbundle);
-                    startActivity(match_intent);               // Start Visualizer for Match Data
+                    startActivity(match_intent);                    // Start Visualizer for Match Data
                 } else {
                     Toast toast = Toast.makeText(getBaseContext(), "★★★★  There is _NO_ Match Data for Team " + load_team + "  ★★★★", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
-
                 }
             }
             @Override
@@ -310,7 +320,7 @@ public class DraftScout_Activity extends AppCompatActivity {
         String totalScore="";
         for (int i = 0; i < team_Scores.size(); i++) {    // load by sorted scores
             score_inst = team_Scores.get(i);
-            Log.w(TAG, i +" team=" + score_inst.getTeamNum());
+//            Log.w(TAG, i +" team=" + score_inst.getTeamNum());
             HashMap<String, String> temp = new HashMap<String, String>();
             tn = score_inst.getTeamNum();
 
@@ -325,17 +335,17 @@ public class DraftScout_Activity extends AppCompatActivity {
                 case "Weighted":
                     totalScore = "[" + String.format("%3.2f", score_inst.getWeightedScore()) + "]";
                     break;
-                case "Team":
+                case "Team#":
                     totalScore=" ";
                     break;
                 default:                //
-                    Log.e(TAG, "Invalid Sort" );
+                    Log.e(TAG, "Invalid Sort - " + sortType);
             }
 
             temp.put("team", tn + " - " + score_inst.getTeamName() + "   (" + mdNumMatches + ")   " +  totalScore);
 //            temp.put("BA", "Rank=" + teams[i].rank + "  " + teams[i].record + "   OPR=" + String.format("%3.1f", (teams[i].opr)) + "    ↑ " + String.format("%3.1f", (teams[i].touchpad)) + "   kPa=" + String.format("%3.1f", (teams[i].pressure)));
-            temp.put("Stats", "Auto ⚻ " + autoSwRatio + "  ⚖ " + autoScRatio + "    Tele ⚻ " + teleSwRatio + "  Oth⚻ " + teleOthrRatio +  "   ⚖ " + teleScRatio + "   ▉P/U  " + cubeChk + "   Exch " + teleExch);
-            temp.put("BA",  "Climb " + "  " + climbRatio + "  on⚌" + onPlatform + "  ↕One " + liftOne + "  ↕Two " + liftTwo + "    Was↑ " + gotLifted);
+            temp.put("Stats", "Auto ⚻ " + autoSwRatio + " ➽ " + autoSwXover + "  ⚖ " + autoScRatio + " ➽ " + autoScXover+ "    Tele ⚻ " + teleSwRatio + "  Oth⚻ " + teleOthrRatio +  "   ⚖ " + teleScRatio + "   Exch " + teleExch + "  Port " + telePort);
+            temp.put("BA",  "Climb " + "  " + climbRatio + "  on⚌" + onPlatform + "  ↕One " + liftOne + "  ↕Two " + liftTwo + "    Was↑ " + gotLifted + "    ▉P/U  " + cubeChk);
             draftList.add(temp);
         } // End For
         Log.w(TAG, "### Teams ###  : " + draftList.size());
@@ -395,10 +405,10 @@ public class DraftScout_Activity extends AppCompatActivity {
 //    }
 
     private void teamData(String team) {
-        Log.i(TAG, "$$$$  teamData  $$$$ " + team);
-        int autoCubeSw = 0; int autoCubeSwAtt = 0; int autoCubeSc = 0; int autoCubeScAtt = 0;
+//        Log.i(TAG, "$$$$  teamData  $$$$ " + team);
+        int autoCubeSw = 0; int autoCubeSwAtt = 0; int autoCubeSc = 0; int autoCubeScAtt = 0; int autoSwXnum = 0;  int autoScXnum = 0;
         int teleCubeSw = 0; int teleCubeSwAtt = 0; int teleCubeSc = 0; int teleCubeScAtt = 0;
-        int teleCubeExch = 0; int teleOthrNUM = 0;  int teleOthrATT = 0;
+        int teleCubeExch = 0; int teleOthrNUM = 0;  int teleOthrATT = 0; int telePortalNUM = 0; int teleZoneNUM = 0; int teleFloorNUM = 0; int teleTheirNUM = 0;
         int climbs = 0; int climbAttemps = 0; int platNum = 0; int lift1Num = 0; int lift2Num = 0; int liftedNum = 0;
         int numMatches = 0;
         boolean cube_pu =false;
@@ -406,7 +416,7 @@ public class DraftScout_Activity extends AppCompatActivity {
         for (int i = 0; i < All_Matches.size(); i++) {
             match_inst = All_Matches.get(i);      // Get instance of Match Data
             if (match_inst.getTeam_num().matches(team)) {
-                Log.e(TAG, i + "  " + match_inst.getMatch() + "  Team=" + team);
+//                Log.e(TAG, i + "  " + match_inst.getMatch() + "  Team=" + team);
                 numMatches++;
                 if (match_inst.isAuto_cube_switch()) {
                     autoCubeSw++;
@@ -414,17 +424,27 @@ public class DraftScout_Activity extends AppCompatActivity {
                 if (match_inst.isAuto_cube_switch_att()) {
                     autoCubeSwAtt++;
                 }
+                if (match_inst.isAuto_xover_switch()) {
+                    autoSwXnum++;
+                }
                 if (match_inst.isAuto_cube_scale()) {
                     autoCubeSc++;
                 }
                 if (match_inst.isAuto_cube_scale_att()) {
                     autoCubeScAtt++;
                 }
+                if (match_inst.isAuto_xover_scale()) {
+                    autoScXnum++;
+                }
                 teleCubeSw = teleCubeSw + match_inst.getTele_cube_switch();
                 teleCubeSwAtt = teleCubeSwAtt + match_inst.getTele_switch_attempt();
                 teleCubeSc = teleCubeSc + match_inst.getTele_cube_scale();
                 teleCubeScAtt = teleCubeScAtt + match_inst.getTele_scale_attempt();
                 teleCubeExch = teleCubeExch + match_inst.getTele_cube_exchange();
+                telePortalNUM = telePortalNUM + match_inst.getTele_cube_portal();
+                teleZoneNUM = teleZoneNUM + match_inst.getTele_cube_pwrzone();
+                teleFloorNUM = teleFloorNUM + match_inst.getTele_cube_floor();
+                teleTheirNUM = teleTheirNUM + match_inst.getTele_their_floor();
                 teleOthrNUM = teleOthrNUM + match_inst.getTele_their_switch();
                 teleOthrATT = teleOthrATT + match_inst.getTele_their_attempt();
                 if (match_inst.isTele_cube_pickup()) {
@@ -448,7 +468,7 @@ public class DraftScout_Activity extends AppCompatActivity {
                 if (match_inst.isTele_got_lift()) {
                     liftedNum++;
                 }
-                Log.w(TAG, "matches= " + numMatches);
+//                Log.w(TAG, "matches= " + numMatches);
             } //End if teams equal
         } // End For _ALL_ matches
         mdNumMatches = String.valueOf(numMatches);
@@ -460,10 +480,13 @@ public class DraftScout_Activity extends AppCompatActivity {
             }
             autoSwRatio = autoCubeSw + "/" + autoCubeSwAtt;
             autoScRatio = autoCubeSc + "/" + autoCubeScAtt;
+            autoSwXover = String.valueOf(autoSwXnum);
+            autoScXover = String.valueOf(autoScXnum);
             teleSwRatio = teleCubeSw + "/" + teleCubeSwAtt;
             teleScRatio = teleCubeSc + "/" + teleCubeScAtt;
             teleOthrRatio = teleOthrNUM + "/" + teleOthrATT;
             teleExch = String.valueOf(teleCubeExch);
+            telePort = String.valueOf(telePortalNUM);
             climbRatio = climbs + "/" + climbAttemps;
             liftOne = String.valueOf(lift1Num);
             liftTwo = String.valueOf(lift2Num);
@@ -473,10 +496,13 @@ public class DraftScout_Activity extends AppCompatActivity {
             cubeChk = "⎕";
             autoSwRatio = "0/0";
             autoScRatio = "0/0";
+            autoSwXover = "0";
+            autoScXover = "0";
             teleSwRatio = "0/0";
             teleScRatio = "0/0";
             teleOthrRatio = "0/0";
             teleExch = "0";
+            telePort = "0";
             climbRatio = "0/0";
             liftOne = "0";
             liftTwo = "0";
@@ -484,26 +510,27 @@ public class DraftScout_Activity extends AppCompatActivity {
             gotLifted = "0";
         }
         //============================
-        //Todo - add logic to compute Scores
-        float climbScore = 0; float cubeScore = 0;  float weightedScore = 0;
-        Log.e(TAG, team + " "+ climbs + " "+ lift1Num + " "+ lift2Num + " " + platNum +  " " + liftedNum + " / " + numMatches);
+        float climbScore = 0; float cubeScored = 0; float cubeCollect = 0; float cubeScore = 0;  float weightedScore = 0;
+//        Log.e(TAG, team + " "+ climbs + " "+ lift1Num + " "+ lift2Num + " " + platNum +  " " + liftedNum + " / " + numMatches);
         if (numMatches > 0) {
-            climbScore = (float) (((climbs + lift1Num + (lift2Num * 2)) + (platNum * 0.15) + (liftedNum * 0.3)) / numMatches);
-            Log.w(TAG, team + " Climb Score= " + String.format("%3.2f", climbScore));
-            cubeScore = (float) ((autoCubeSw + autoCubeSc + teleCubeSw + teleCubeSc + teleOthrNUM + teleCubeExch) / numMatches);
+            climbScore = (float) (((climbs + (lift1Num * 1.5) + (lift2Num * 2.0)) + (platNum * 0.15) + (liftedNum * 0.3)) / numMatches);
+            cubeScored = (float) ((autoCubeSw + autoCubeSc + teleCubeSw + teleCubeSc + teleOthrNUM + teleCubeExch) / numMatches);
+            cubeCollect = (float) ((telePortalNUM + teleZoneNUM + teleFloorNUM + teleTheirNUM) / numMatches);
+            cubeScore = (float) ((cubeScored * 2) + cubeCollect);
+            weightedScore = ((climbScore + cubeScore) / numMatches);
+//            Log.w(TAG, team + " **Scores**  Climb = " + String.format("%3.2f", climbScore) + "  Cubes Scored = " + String.format("%3.2f", cubeScored) + "  Cubes Collected = " + String.format("%3.2f", cubeCollect) + "  Cubes Score = " + String.format("%3.2f", cubeScore) + "  Weighted Score = " + String.format("%3.2f", weightedScore));
         } else {
             climbScore = 0;
             cubeScore = 0;
             weightedScore = 0;
         }
-        Log.e(TAG, team + " Cube Score= " + String.format("%3.2f", cubeScore));
         String tNumber="";
         for (int i = 0; i < team_Scores.size(); i++) {    // load by sorted scores
             Scores score_data = new Scores();
             score_data = team_Scores.get(i);
             tNumber = score_data.getTeamNum();
             if (score_data.getTeamNum().matches(team)) {
-                Log.w(TAG, "score team=" + score_data.getTeamNum());
+//                Log.w(TAG, "score team=" + score_data.getTeamNum());
                 score_data.setClimbScore(climbScore);           // Save
                 score_data.setCubeScore(cubeScore);             //  all
                 score_data.setWeightedScore(weightedScore);     //   scores
@@ -529,29 +556,39 @@ public class DraftScout_Activity extends AppCompatActivity {
                 Button btn_Match = (Button) findViewById(R.id.btn_Match);   // Listner defined in Layout XML
                 btn_Match.setEnabled(true);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 /*listener failed or was removed for security reasons*/
             }
         });
+        loadTeams();
     }
 
     private void initScores() {
-        Log.w(TAG, " ## initScores ##");
-        team_Scores.clear();
-        for (int i = 0; i < Pearadox.numTeams; i++) {
-            Scores curScrTeam = new Scores();       // instance of Scores object
-            team_inst = Pearadox.team_List.get(i);
-            curScrTeam.setTeamNum(team_inst.getTeam_num());
-            curScrTeam.setTeamName(team_inst.getTeam_name());
+        Log.w(TAG, " ## initScores ##  " + is_Resumed);
+        if (!is_Resumed) {
+            team_Scores.clear();
+            for (int i = 0; i < Pearadox.numTeams; i++) {
+                Scores curScrTeam = new Scores();       // instance of Scores object
+                team_inst = Pearadox.team_List.get(i);
+                curScrTeam.setTeamNum(team_inst.getTeam_num());
+                curScrTeam.setTeamName(team_inst.getTeam_name());
 //            Log.w(TAG, curScrTeam.getTeamNum() + "  " + curScrTeam.getTeamName());
-            curScrTeam.setClimbScore((float) 0);
-            curScrTeam.setCubeScore((float) 0);
-            curScrTeam.setWeightedScore((float)0);
-            team_Scores.add(i, curScrTeam);
+                curScrTeam.setClimbScore((float) 0);
+                curScrTeam.setCubeScore((float) 0);
+                curScrTeam.setWeightedScore((float) 0);
+                team_Scores.add(i, curScrTeam);
+            }
+            Log.w(TAG, "#Scores = " + team_Scores.size());
+        } else {
+            // ToDONE - Load teams according to Radio Button (VisMatch return messes it up)
+//            Log.w(TAG, "Leave scores alone '"  + sortType + "'");
+            radgrp_Sort = (RadioGroup) findViewById(R.id.radgrp_Sort);
+            radgrp_Sort.setActivated(true);
+            radgrp_Sort.setSelected(true);
+            radgrp_Sort.performClick();         // "force" radio button click
         }
-        Log.w(TAG, "#Scores = " + team_Scores.size());
-        loadTeams();
     }
 
 //###################################################################
@@ -559,26 +596,28 @@ public class DraftScout_Activity extends AppCompatActivity {
 //###################################################################
 @Override
 public void onStart() {
-        super.onStart();
-        Log.v(TAG, "onStart");
-        initScores();
-        addMD_VE_Listener(pfMatchData_DBReference);        // Load _ALL_ Matches
-}
+    super.onStart();
+    Log.v(TAG, "onStart");
+    initScores();
+    addMD_VE_Listener(pfMatchData_DBReference);        // Load _ALL_ Matches
+    }
 @Override
 public void onResume() {
-        super.onResume();
-        Log.v(TAG, "onResume");
-        }
+    super.onResume();
+    Log.v(TAG, "****> onResume <**** " + sortType);
+    is_Resumed = true;
+    }
+
 @Override
 public void onStop() {
-        super.onStop();
-        Log.v(TAG, "onStop");
-        }
+    super.onStop();
+    Log.v(TAG, "onStop");
+    }
 
 @Override
 public void onDestroy() {
-        super.onDestroy();
-        Log.v(TAG, "OnDestroy");
-        }
+    super.onDestroy();
+    Log.v(TAG, "OnDestroy");
+    }
 }
 

@@ -56,8 +56,9 @@
             android:name=".VisMatch_Activity"
             android:configChanges="orientation" />
 
-        <activity android:name=".DraftScout_Activity">
-        </activity>
+        <activity android:name=".DraftScout_Activity"
+            android:noHistory="false"
+            android:configChanges="orientation" />
 
         <meta-data
             android:name="com.google.android.gms.version"
