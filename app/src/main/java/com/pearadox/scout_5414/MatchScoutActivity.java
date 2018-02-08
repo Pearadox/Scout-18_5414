@@ -332,11 +332,17 @@ public class MatchScoutActivity extends AppCompatActivity {
                 if (chk_cubeSwitch.isChecked()) {
                     //checked
                     cube_switch = true;
+                    cube_switch_att = true;
+                    chk_attemptSwitch.setChecked(true);
                     Log.w(TAG, "Cube in Switch = " + cube_switch);
 
                 } else {
                     //not checked
                     cube_switch = false;
+                    cube_switch_att = false;
+                    chk_attemptSwitch.setChecked(false);
+                    xover_switch = false;
+                    chk_XoverSwitch.setChecked(false);
                     Log.w(TAG, "Cube in Switch = " + cube_switch);
 
                 }
@@ -404,11 +410,17 @@ public class MatchScoutActivity extends AppCompatActivity {
                 if (chk_cubeScale.isChecked()) {
                     //checked
                     cube_scale = true;
+                    cube_scale_att = true;
+                    chk_attemptScale.setChecked(true);
                     Log.w(TAG, "Cube in Scale = " + cube_scale);
 
                 } else {
                     //not checked
                     cube_scale = false;
+                    cube_scale_att = false;
+                    chk_attemptScale.setChecked(false);
+                    xover_scale = false;
+                    chk_XoverScale.setChecked(false);
                     Log.w(TAG, "Cube in Scale = " + cube_scale);
 
                 }

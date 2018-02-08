@@ -392,13 +392,13 @@
             android:textColor="@color/yellow" />
 
         <Button
-            android:id="@+id/btn_CubePlatformAttM"
+            android:id="@+id/btn_CubePlatformM"
             android:layout_width="30dp"
             android:layout_height="40dp"
             android:text="-" />
 
         <Button
-            android:id="@+id/btn_CubePlatformAttP"
+            android:id="@+id/btn_CubePlatformP"
             android:layout_width="30dp"
             android:layout_height="40dp"
             android:text="+" />
