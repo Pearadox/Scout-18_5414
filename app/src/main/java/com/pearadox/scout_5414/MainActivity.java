@@ -834,9 +834,12 @@ private void preReqs() {
             return true;
         }
         if (id == R.id.action_about) {
-            Toast toast = Toast.makeText(getBaseContext(), "Pearadox Scouting App ©2018  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-            toast.show();
+            AboutDialog about = new AboutDialog(this);
+            about.setTitle("Scout_5414   Ver " + Pearadox_Version);
+            about.show();
+//            Toast toast = Toast.makeText(getBaseContext(), "Pearadox Scouting App ©2018  Ver." + Pearadox_Version, Toast.LENGTH_LONG);
+//            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+//            toast.show();
             return true;
         }
 
