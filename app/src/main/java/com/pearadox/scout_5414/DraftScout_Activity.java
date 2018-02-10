@@ -1,14 +1,18 @@
 package com.pearadox.scout_5414;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -145,8 +149,25 @@ public class DraftScout_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draft_scout);
-
         Log.i(TAG, "@@@@@ DraftScout_Activity  @@@@@");
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+        SharedPreferences sharedPref =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        String cubeExch = sharedPref.getString("prefCube_exchange", "1.0");
+
+        String cubeColPort = sharedPref.getString("prefCubeCol_portal", "1.0");
+
+        String climbLift1 = sharedPref.getString("prefClimb_lift1", "1.5");
+        String climbLift2 = sharedPref.getString("prefClimb_lift2", "2.0");
+        String climbLifted = sharedPref.getString("prefClimb_lifted", "0.3");
+
+        String wtCubes = sharedPref.getString("prefWeight_cubes", "1.0");
+        String wtClimb = sharedPref.getString("prefWeight_climb", "1.0");
+// ToDo - add remaining preferences
+
+        Log.e(TAG,"CUBE Preferences: Port=" + cubeColPort + " Exch=" + cubeExch + "   CLIMB Preferences: Lift1=" + climbLift1 + " Lift2=" + climbLift2 + " Lifted=" + climbLifted+ "   WEIGHT Preferences: Cubes=" + wtCubes + " Climb=" + wtClimb);
+
         txt_EventName = (TextView) findViewById(R.id.txt_EventName);
         txt_NumTeams = (TextView) findViewById(R.id.txt_NumTeams);
         lstView_Teams = (ListView) findViewById(R.id.lstView_Teams);
@@ -403,7 +424,37 @@ public class DraftScout_Activity extends AppCompatActivity {
 //        }
 //
 //    }
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+    // Inflate the menu; this adds items to the action bar if it is present.
+    getMenuInflater().inflate(R.menu.menu_draft, menu);
+    return true;
+}
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, DraftSettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.action_help) {
+            Intent help_intent = new Intent(this, HelpActivity.class);
+            startActivity(help_intent);  	// Show Help
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
     private void teamData(String team) {
 //        Log.i(TAG, "$$$$  teamData  $$$$ " + team);
         int autoCubeSw = 0; int autoCubeSwAtt = 0; int autoCubeSc = 0; int autoCubeScAtt = 0; int autoSwXnum = 0;  int autoScXnum = 0;
@@ -510,6 +561,7 @@ public class DraftScout_Activity extends AppCompatActivity {
             gotLifted = "0";
         }
         //============================
+// ToDo - get multipliers from preferences
         float climbScore = 0; float cubeScored = 0; float cubeCollect = 0; float cubeScore = 0;  float weightedScore = 0;
 //        Log.e(TAG, team + " "+ climbs + " "+ lift1Num + " "+ lift2Num + " " + platNum +  " " + liftedNum + " / " + numMatches);
         if (numMatches > 0) {

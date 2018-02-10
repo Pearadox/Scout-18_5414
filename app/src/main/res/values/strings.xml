@@ -96,4 +96,7 @@
     <color name="black">#000000</color>
     <color name="grey">#a8a8a8</color>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

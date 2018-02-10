@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<android.support.v7.preference.SwitchPreferenceCompat />-->
+
+    <PreferenceCategory android:title="Cubes Scored">
+        <EditTextPreference
+            android:id="@+id/txt_autoSw"
+            android:inputType="numberDecimal"
+            android:defaultValue="1.0"
+            android:key="prefCube_autoSw"
+            android:summary="Multiplier for Cubes scored on Switch during Auto"
+            android:title="Auto Switch" />
+        <EditTextPreference
+            android:id="@+id/txt_autoSc"
+            android:inputType="numberDecimal"
+            android:defaultValue="1.0"
+            android:key="prefCube_autoSc"
+            android:summary="Multiplier for Cubes scored on Scale during Auto"
+            android:title="Auto Scale" />
+        <EditTextPreference
+            android:id="@+id/txt_teleSw"
+            android:inputType="numberDecimal"
+            android:defaultValue="1.0"
+            android:key="prefCube_teleSw"
+            android:summary="Multiplier for Cubes scored on Switch during TeleOps"
+            android:title="Tele Switch" />
+        <EditTextPreference
+            android:id="@+id/txt_teleSc"
+            android:inputType="numberDecimal"
+            android:defaultValue="1.0"
+            android:key="prefCube_teleSw"
+            android:summary="Multiplier for Cubes scored on Scale during TeleOps"
+            android:title="Tele Scale" />
+        <EditTextPreference
+            android:id="@+id/txt_othrSw"
+            android:inputType="numberDecimal"
+            android:defaultValue="1.0"
+            android:key="prefCube_othr"
+            android:summary="Multiplier for Cubes scored on Their Switch"
+            android:title="Other Switch" />
+        <EditTextPreference
+            android:id="@+id/txt_exchange"
+            android:inputType="numberDecimal"
+            android:defaultValue="1.0"
+            android:key="prefCube_exchange"
+            android:summary="Multiplier for Cubes put into Exchange"
+            android:title="Exchange" />
+
+    </PreferenceCategory>
+    //================================================================================
+    <PreferenceCategory android:title="Cubes Collected">
+        <EditTextPreference
+            android:id="@+id/txt_portal"
+            android:inputType="numberDecimal"
+            android:defaultValue="1.0"
+            android:key="prefCubeCol_portal"
+            android:summary="Multiplier for Cubes retrieved from portal"
+            android:title="Portal" />
+        <EditTextPreference
+            android:id="@+id/txt_zone"
+            android:inputType="numberDecimal"
+            android:defaultValue="1.0"
+            android:key="prefCubeCol_zone"
+            android:summary="Multiplier for Cubes retrieved from Power Cube Zone"
+            android:title="Power Cube Zone" />
+        <EditTextPreference
+            android:id="@+id/txt_floor"
+            android:inputType="numberDecimal"
+            android:defaultValue="1.0"
+            android:key="prefCubeCol_floor"
+            android:summary="Multiplier for Cubes retrieved from Platform Floor"
+            android:title="Platform Floor" />
+        <EditTextPreference
+            android:id="@+id/txt_stolen"
+            android:inputType="numberDecimal"
+            android:defaultValue="1.0"
+            android:key="prefCubeCol_stolen"
+            android:summary="Multiplier for Cubes stolen from their Switch"
+            android:title="Their Switch" />
+
+    </PreferenceCategory>
+//================================================================================
+    <PreferenceCategory android:title="Climb">
+        <EditTextPreference
+            android:id="@+id/txt_Lift1"
+            android:inputType="numberDecimal"
+            android:defaultValue="1.5"
+            android:key="prefClimb_lift1"
+            android:summary="Multiplier for Lifting one robot"
+            android:title="Lift 1" />
+
+        <EditTextPreference
+            android:id="@+id/txt_Lift2"
+            android:inputType="numberDecimal"
+            android:defaultValue="2.0"
+            android:key="prefClimb_lift2"
+            android:summary="Multiplier for Lifting two robots"
+            android:title="Lift 2" />
+        <EditTextPreference
+            android:id="@+id/txt_onPlat"
+            android:inputType="numberDecimal"
+            android:defaultValue="1.0"
+            android:key="prefClimb_onPlat"
+            android:summary="Multiplier for being on Platform last 30 seconds"
+            android:title="On Platform" />
+
+        <EditTextPreference
+            android:id="@+id/txt_WasLifted"
+            android:inputType="numberDecimal"
+            android:defaultValue="0.3"
+            android:key="prefClimb_lifted"
+            android:summary="Multiplier for being Lifted"
+            android:title="Was Lifted" />
+
+    </PreferenceCategory>
+
+//================================================================================
+    <PreferenceCategory android:title="Weighted">
+        <EditTextPreference
+            android:id="@+id/txt_Climb"
+            android:inputType="number"
+            android:defaultValue="1.0"
+            android:key="prefWeight_climb"
+            android:summary="Multiplier for Climbing"
+            android:title="Climb" />
+        <EditTextPreference
+            android:id="@+id/txt_CubesScored"
+            android:inputType="number"
+            android:defaultValue="1.0"
+            android:key="prefWeight_cubesScored"
+            android:summary="Multiplier for Cubes Scored"
+            android:title="Cubes Scored" />
+        <EditTextPreference
+            android:id="@+id/txt_CubesCollected"
+            android:inputType="number"
+            android:defaultValue="1.0"
+            android:key="prefWeight_cubesCollected"
+            android:summary="Multiplier for Cubes Collected"
+            android:title="Cubes Collected" />
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

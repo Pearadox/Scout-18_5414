@@ -32,32 +32,37 @@
             android:name=".MatchScoutActivity"
             android:configChanges="orientation"
             android:windowSoftInputMode="adjustNothing" />
-
         <activity
             android:name=".PitScoutActivity"
             android:configChanges="orientation"
             android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".Visualizer_Activity" />
-
         <activity
             android:name=".FinalActivity"
             android:configChanges="orientation"
             android:windowSoftInputMode="adjustNothing" />
-
         <activity android:name=".ArenaLayoutActivity" />
         <activity
             android:name=".TeleopScoutActivity"
             android:configChanges="orientation" />
-
-         <activity
+        <activity
             android:name=".VisPit_Activity"
             android:configChanges="orientation" />
         <activity
             android:name=".VisMatch_Activity"
             android:configChanges="orientation" />
-
-        <activity android:name=".DraftScout_Activity"
-            android:noHistory="false"
+        <activity
+            android:name=".DraftScout_Activity"
+            android:configChanges="orientation"
+            android:noHistory="false" />
+        <activity android:name=".DraftSettingsActivity"
+            android:parentActivityName=".DraftScout_Activity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DraftScout_Activity"/>
+        </activity>
+        <activity
+            android:name=".HelpActivity"
             android:configChanges="orientation" />
 
         <meta-data
