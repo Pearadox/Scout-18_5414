@@ -44,33 +44,50 @@ public class DraftScout_Activity extends AppCompatActivity {
 
     String TAG = "DraftScout_Activity";        // This CLASS name
     Boolean is_Resumed = false;
-    TextView txt_EventName, txt_NumTeams;
+    public String cubeAutoSw  = ""; public String cubeAutoSc  = ""; public String cubeTeleSw  = ""; public String cubeTeleSc  = ""; public String teleOthr  = ""; public String cubeExch = "";
+    public String cubeColPort = ""; public String climbLift1 = ""; public String climbLift2 = ""; public String climbLifted = "";
+    public String wtCubes = ""; public String wtClimb = "";
+    TextView txt_EventName, txt_NumTeams, txt_Formula;
     ListView lstView_Teams;
     TextView TeamData, BA, Stats;
-    Button btn_Match;
+    Button btn_Match, btn_Default;
     RadioGroup radgrp_Sort;
     RadioButton radio_Climb, radio_Cubes, radio_Weight, radio_Team;
-//    Button btn_Up, btn_Down, btn_Delete;
+    //    Button btn_Up, btn_Down, btn_Delete;
     public ArrayAdapter<String> adaptTeams;
-//    ArrayList<String> draftList = new ArrayList<String>();
-    static final ArrayList<HashMap<String,String>> draftList = new ArrayList<HashMap<String,String>>();
-    public int teamSelected = 0; public String sortType = "Team#";
+    //    ArrayList<String> draftList = new ArrayList<String>();
+    static final ArrayList<HashMap<String, String>> draftList = new ArrayList<HashMap<String, String>>();
+    public int teamSelected = 0;
+    public String sortType = "Team#";
     String tnum = "";
     String tn = "";
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj();
-//    Team[] teams;
+    //    Team[] teams;
     public static int BAnumTeams = 0;                                      // # of teams from Blue Alliance
-    String cubeChk=""; String climbChk=""; String climbRatio="";
-    String autoSwRatio=""; String autoScRatio="-/-"; String autoSwXover=""; String autoScXover="";
-    String teleSwRatio="-/-"; String teleScRatio="-/-";
-    String mdNumMatches=""; String teleExch=""; String teleOthrRatio=""; String telePort="";
-    String liftOne = ""; String liftTwo = ""; String gotLifted = "";  String onPlatform = "";
+    String cubeChk = "";
+    String climbChk = "";
+    String climbRatio = "";
+    String autoSwRatio = "";
+    String autoScRatio = "-/-";
+    String autoSwXover = "";
+    String autoScXover = "";
+    String teleSwRatio = "-/-";
+    String teleScRatio = "-/-";
+    String mdNumMatches = "";
+    String teleExch = "";
+    String teleOthrRatio = "";
+    String telePort = "";
+    String liftOne = "";
+    String liftTwo = "";
+    String gotLifted = "";
+    String onPlatform = "";
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfMatchData_DBReference;
     matchData match_inst = new matchData();
     // -----  Array of Match Data Objects for Draft Scout
     public static ArrayList<matchData> All_Matches = new ArrayList<matchData>();
     String load_team, load_name;
+
     //===========================
     public static class Scores {
         private String teamNum;
@@ -93,30 +110,39 @@ public class DraftScout_Activity extends AppCompatActivity {
         public String getTeamNum() {
             return teamNum;
         }
+
         public void setTeamNum(String teamNum) {
             this.teamNum = teamNum;
         }
+
         public String getTeamName() {
             return teamName;
         }
+
         public void setTeamName(String teamName) {
             this.teamName = teamName;
         }
+
         public float getCubeScore() {
             return cubeScore;
         }
+
         public void setCubeScore(float cubeScore) {
             this.cubeScore = cubeScore;
         }
+
         public float getClimbScore() {
             return climbScore;
         }
+
         public void setClimbScore(float climbScore) {
             this.climbScore = climbScore;
         }
+
         public float getWeightedScore() {
             return weightedScore;
         }
+
         public void setWeightedScore(float weightedScore) {
             this.weightedScore = weightedScore;
         }
@@ -129,7 +155,8 @@ public class DraftScout_Activity extends AppCompatActivity {
                 return TeamNum1.compareTo(TeamNum2);
                 //descending order
                 //return TeamNum2.compareTo(TeamNum1);
-            }};
+            }
+        };
         public static Comparator<Scores> climbComp = new Comparator<Scores>() {
             public int compare(Scores s1, Scores s2) {
                 float climbNum1 = s1.getClimbScore();
@@ -137,9 +164,11 @@ public class DraftScout_Activity extends AppCompatActivity {
 	            /*For ascending order*/
                 //return climbNum1-climbNum2;
 	            /*For descending order*/
-                return (int) (climbNum2-climbNum1);
-            }};
+                return (int) (climbNum2 - climbNum1);
+            }
+        };
     }
+
     //==========================
     public ArrayList<Scores> team_Scores = new ArrayList<Scores>();
     Scores score_inst = new Scores();
@@ -150,29 +179,15 @@ public class DraftScout_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draft_scout);
         Log.i(TAG, "@@@@@ DraftScout_Activity  @@@@@");
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-
-        SharedPreferences sharedPref =
-                PreferenceManager.getDefaultSharedPreferences(this);
-        String cubeExch = sharedPref.getString("prefCube_exchange", "1.0");
-
-        String cubeColPort = sharedPref.getString("prefCubeCol_portal", "1.0");
-
-        String climbLift1 = sharedPref.getString("prefClimb_lift1", "1.5");
-        String climbLift2 = sharedPref.getString("prefClimb_lift2", "2.0");
-        String climbLifted = sharedPref.getString("prefClimb_lifted", "0.3");
-
-        String wtCubes = sharedPref.getString("prefWeight_cubes", "1.0");
-        String wtClimb = sharedPref.getString("prefWeight_climb", "1.0");
-// ToDo - add remaining preferences
-
-        Log.e(TAG,"CUBE Preferences: Port=" + cubeColPort + " Exch=" + cubeExch + "   CLIMB Preferences: Lift1=" + climbLift1 + " Lift2=" + climbLift2 + " Lifted=" + climbLifted+ "   WEIGHT Preferences: Cubes=" + wtCubes + " Climb=" + wtClimb);
+        getprefs();
 
         txt_EventName = (TextView) findViewById(R.id.txt_EventName);
         txt_NumTeams = (TextView) findViewById(R.id.txt_NumTeams);
+        txt_Formula = (TextView) findViewById(R.id.txt_Formula);
         lstView_Teams = (ListView) findViewById(R.id.lstView_Teams);
         txt_EventName.setText(Pearadox.FRC_EventName);              // Event Name
         txt_NumTeams.setText(String.valueOf(Pearadox.numTeams));    // # of Teams
+        txt_Formula.setText(" ");
 
         pfDatabase = FirebaseDatabase.getInstance();
         pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
@@ -192,20 +207,73 @@ public class DraftScout_Activity extends AppCompatActivity {
 
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        lstView_Teams.setOnItemClickListener(new AdapterView.OnItemClickListener()	{
+        lstView_Teams.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent,
                                     View view, int pos, long id) {
-                Log.w(TAG,"*** lstView_Teams ***   Item Selected: " + pos);
+                Log.w(TAG, "*** lstView_Teams ***   Item Selected: " + pos);
                 teamSelected = pos;
                 lstView_Teams.setSelector(android.R.color.holo_blue_light);
         		/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 //                tnum = draftList.get(teamSelected).substring(0,4);
             }
+
             public void onNothingSelected(AdapterView<?> parent) {
                 // Do nothing.
             }
         });
     }
+
+    private void getprefs() {
+        Log.i(TAG, "** getprefs **");
+
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+        SharedPreferences sharedPref =
+                PreferenceManager.getDefaultSharedPreferences(this);
+
+        cubeAutoSw = sharedPref.getString("prefCube_autoSw", "1.0");
+        cubeAutoSc = sharedPref.getString("prefCube_autoSc", "1.0");
+        cubeTeleSw = sharedPref.getString("prefCube_teleSw", "1.0");
+        cubeTeleSc = sharedPref.getString("prefCube_teleSc", "1.0");
+        teleOthr =   sharedPref.getString("prefCube_othr", "1.0");
+        cubeExch =   sharedPref.getString("prefCube_exchange", "1.0");
+
+        cubeColPort = sharedPref.getString("prefCubeCol_portal", "1.0");
+
+        climbLift1 = sharedPref.getString("prefClimb_lift1", "1.5");
+        climbLift2 = sharedPref.getString("prefClimb_lift2", "2.0");
+        climbLifted = sharedPref.getString("prefClimb_lifted", "0.3");
+
+        wtCubes = sharedPref.getString("prefWeight_cubes", "1.0");
+        wtClimb = sharedPref.getString("prefWeight_climb", "1.0");
+        // ToDo - add remaining preferences
+
+    }
+
+    private String showFormula(String typ) {
+        Log.i(TAG, "** showFormula **  " + typ);
+        String form = "";
+        getprefs();         // make sure Prefs are up to date
+        switch (typ) {
+            case "Climb":
+                form = "?";
+                txt_Formula.setText(form);
+                break;
+            case "Cubes":
+                form = "SCR: (" + cubeAutoSw +"*(aCSw)+" + cubeAutoSc + "*(aCSc)+" + cubeTeleSw + "*(tCSw)+" + cubeTeleSc + "*(tCSc)+" + teleOthr + "*(oth)+" + cubeExch + "*(Exc))  \n";
+                form = form + "COL: (" + cubeColPort +"*(Port)+" ;
+                txt_Formula.setText(form);
+                break;
+            case "Weighted":
+                form = "?";
+                txt_Formula.setText(form);
+                break;
+            default:                //
+                Log.e(TAG, "*** Invalid Type " + typ);
+        }
+        return typ;
+    }
+
 
     public void RadioClick_Sort(View view) {
         Log.w(TAG, "@@ RadioClick_Sort @@");
@@ -237,7 +305,8 @@ public class DraftScout_Activity extends AppCompatActivity {
                         return Float.compare(c1.getCubeScore(), c2.getCubeScore());
                     }
                 });
-                Collections.reverse(team_Scores);   // D
+                Collections.reverse(team_Scores);   // Descending
+                showFormula(sortType);              // update the formula
                 loadTeams();
                 break;
             case "Weighted":
@@ -249,13 +318,14 @@ public class DraftScout_Activity extends AppCompatActivity {
                         return Float.compare(c1.getWeightedScore(), c2.getWeightedScore());
                     }
                 });
-                Collections.reverse(team_Scores);   // D
+                Collections.reverse(team_Scores);   // Descending
                 loadTeams();
                 break;
             case "Team#":
 //                Log.w(TAG, "Team# sort");
                 sortType = "Team#";
                 Collections.sort(team_Scores, Scores.teamComp);
+                txt_Formula.setText(" ");       // set formulat to blank
                 loadTeams();
                 break;
             default:                //
