@@ -82,6 +82,14 @@
 //================================================================================
     <PreferenceCategory android:title="Climb">
         <EditTextPreference
+            android:id="@+id/txt_NumClimbs"
+            android:inputType="numberDecimal"
+            android:defaultValue="1.0"
+            android:key="prefClimb_NumClimbs"
+            android:summary="Multiplier for number of Climbs"
+            android:title="Climbs" />
+
+        <EditTextPreference
             android:id="@+id/txt_Lift1"
             android:inputType="numberDecimal"
             android:defaultValue="1.5"
@@ -99,7 +107,7 @@
         <EditTextPreference
             android:id="@+id/txt_onPlat"
             android:inputType="numberDecimal"
-            android:defaultValue="1.0"
+            android:defaultValue="0.15"
             android:key="prefClimb_onPlat"
             android:summary="Multiplier for being on Platform last 30 seconds"
             android:title="On Platform" />
@@ -122,21 +130,21 @@
             android:defaultValue="1.0"
             android:key="prefWeight_climb"
             android:summary="Multiplier for Climbing"
-            android:title="Climb" />
+            android:title="Climb Weight" />
         <EditTextPreference
             android:id="@+id/txt_CubesScored"
             android:inputType="number"
             android:defaultValue="1.0"
             android:key="prefWeight_cubesScored"
             android:summary="Multiplier for Cubes Scored"
-            android:title="Cubes Scored" />
+            android:title="Cubes Scored Weight" />
         <EditTextPreference
             android:id="@+id/txt_CubesCollected"
             android:inputType="number"
             android:defaultValue="1.0"
             android:key="prefWeight_cubesCollected"
             android:summary="Multiplier for Cubes Collected"
-            android:title="Cubes Collected" />
+            android:title="Cubes Collected Weight" />
 
     </PreferenceCategory>
 

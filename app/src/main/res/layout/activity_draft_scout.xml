@@ -45,7 +45,7 @@
     <TextView
         android:id="@+id/lbl_NumTeamsView"
         android:layout_width="60dp"
-        android:layout_height="25dp"
+        android:layout_height="20dp"
         android:layout_below="@+id/txt_EventName"
         android:layout_marginRight="5dp"
         android:layout_toStartOf="@+id/txt_NumTeams"
@@ -65,13 +65,23 @@
         android:layout_below="@+id/txt_EventName"
         android:layout_alignParentEnd="true" />
 
+    <TextView
+        android:id="@+id/lbl_Formula"
+        android:layout_width="70dp"
+        android:layout_height="15dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/radgrp_Sort"
+        android:text="Formula"
+        android:textColor="@color/white"
+        android:textSize="10dp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/txt_Formula"
-        android:layout_width="450dp"
-        android:layout_height="40dp"
+        android:layout_width="500dp"
+        android:layout_height="35dp"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/btn_Match"
+        android:layout_below="@+id/lbl_Formula"
         android:background="#d3d3d3"
         android:text="(A*(aCSw)+B*(aCSc)+C*(tCSw)+D*(tCSc)+E*(oth)+F*(Exc) \n more..."
         android:textColor="@color/black"
@@ -80,7 +90,8 @@
     <Button
         android:id="@+id/btn_Default"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
+        android:onClick="buttonDefault_Click"
         android:layout_alignEnd="@+id/lbl_Selected"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/lbl_Selected"
@@ -94,8 +105,8 @@
         android:layout_width="750sp"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/btn_Match"
-        android:layout_marginTop="34dp" />
+        android:layout_below="@+id/txt_Formula"
+        android:layout_marginTop="5dp" />
 
     <!--<TextView-->
         <!--android:id="@+id/lbl_MoveTeam"-->
@@ -133,7 +144,7 @@
     <Button
         android:id="@+id/btn_Match"
         android:layout_width="70sp"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/lbl_NumTeamsView"
         android:background="@color/brightblue"
@@ -192,6 +203,7 @@
             android:layout_height="wrap_content"
             android:onClick="RadioClick_Sort"
             android:text="Weighted" />
+
     </RadioGroup>
 
 </RelativeLayout>
