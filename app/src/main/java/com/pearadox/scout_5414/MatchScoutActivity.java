@@ -279,7 +279,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         chk_WrongScale = (CheckBox) findViewById(R.id.chk_WrongScale);
 
 
-        Spinner spinner_startPos = (Spinner) findViewById(R.id.spinner_startPos);
+        final Spinner spinner_startPos = (Spinner) findViewById(R.id.spinner_startPos);
         String[] autostartPos = getResources().getStringArray(R.array.auto_start_array);
         adapter_autostartpos = new ArrayAdapter<String>(this, R.layout.dev_list_layout, autostartPos);
         adapter_autostartpos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -600,29 +600,29 @@ public class MatchScoutActivity extends AppCompatActivity {
 
                 } else {        // It's OK - Match has started
 
-                    if (0 > 0) {            //**COMPILE -  GLF 1/21 **
-//                        if (gearAttemptNum > 0 && spinner_GearPlacement.getSelectedItemPosition() == 0) {  //Required field
+                        if (spinner_startPos.getSelectedItemPosition() == 0) {  //Required field
 
-                        Toast.makeText(getBaseContext(), "*** Select Gear Position  *** ", Toast.LENGTH_LONG).show();
-//                        spinner_GearPlacement.performClick();
+                            Toast.makeText(getBaseContext(), "*** Select Starting Position!  *** ", Toast.LENGTH_LONG).show();
+                            spinner_startPos.performClick();
 
-                    } else {
-                        if (tn != null) {
-                            // ToDo - check to see if ALL required fields entered (Start-pos, stop, gear, ....)
-                            updateDev("Tele");      // Update 'Phase' for stoplight indicator in ScoutM aster
-                            storeAutoData();        // Put all the Autonomous data collected in Match object
-
-                            Intent smast_intent = new Intent(MatchScoutActivity.this, TeleopScoutActivity.class);
-                            Bundle SMbundle = new Bundle();
-                            SMbundle.putString("tnum", tn);
-                            smast_intent.putExtras(SMbundle);
-                            startActivity(smast_intent);
                         } else {
-                            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
-                            Toast.makeText(getBaseContext(), "*** Team # not entered  *** ", Toast.LENGTH_LONG).show();
+
+                            if (tn != null) {
+                                // ToDo - check to see if ALL required fields entered (Start-pos, stop, gear, ....)
+                                updateDev("Tele");      // Update 'Phase' for stoplight indicator in ScoutM aster
+                                storeAutoData();        // Put all the Autonomous data collected in Match object
+
+                                Intent smast_intent = new Intent(MatchScoutActivity.this, TeleopScoutActivity.class);
+                                Bundle SMbundle = new Bundle();
+                                SMbundle.putString("tnum", tn);
+                                smast_intent.putExtras(SMbundle);
+                                startActivity(smast_intent);
+                            } else {
+                                final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                                tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+                                Toast.makeText(getBaseContext(), "*** Team # not entered  *** ", Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
                 }
             }
         });
