@@ -421,7 +421,7 @@ public class DraftScout_Activity extends AppCompatActivity {
     }
 
     private void loadTeams() {
-        Log.w(TAG, "@@@@  loadTeams started  @@@@  " + team_Scores.size());
+        Log.w(TAG, "@@@@  loadTeams started  @@@@  " + team_Scores.size() + " Type=" + sortType);
 
         SimpleAdapter adaptTeams = new SimpleAdapter(
                 this,
