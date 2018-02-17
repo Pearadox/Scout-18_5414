@@ -299,10 +299,40 @@ public class MatchScoutActivity extends AppCompatActivity {
                      //checked
                      Log.w(TAG, "TextBox is checked.");
                      auto = true;
+
+                     chk_baseline.setEnabled(false);
+
+                     chk_cubeSwitch.setEnabled(false);
+                     chk_attemptSwitch.setEnabled(false);
+                     chk_XoverSwitch.setEnabled(false);
+                     chk_WrongSwitch.setEnabled(false);
+                     chk_ExtraSwitch.setEnabled(false);
+
+                     chk_cubeScale.setEnabled(false);
+                     chk_attemptScale.setEnabled(false);
+                     chk_XoverScale.setEnabled(false);
+                     chk_WrongScale.setEnabled(false);
+                     chk_ExtraScale.setEnabled(false);
+
+
                  } else {
                      //not checked
                      Log.w(TAG, "TextBox is unchecked.");
                      auto = false;
+
+                     chk_baseline.setEnabled(true);
+
+                     chk_cubeSwitch.setEnabled(true);
+                     chk_attemptSwitch.setEnabled(true);
+                     chk_XoverSwitch.setEnabled(true);
+                     chk_WrongSwitch.setEnabled(true);
+                     chk_ExtraSwitch.setEnabled(true);
+
+                     chk_cubeScale.setEnabled(true);
+                     chk_attemptScale.setEnabled(true);
+                     chk_XoverScale.setEnabled(true);
+                     chk_WrongScale.setEnabled(true);
+                     chk_ExtraScale.setEnabled(true);
                  }
              }
              }
@@ -342,9 +372,9 @@ public class MatchScoutActivity extends AppCompatActivity {
                     //not checked
                     cube_switch = false;
                     cube_switch_att = false;
-                    chk_attemptSwitch.setChecked(false);
+                    //chk_attemptSwitch.setChecked(false);
                     xover_switch = false;
-                    chk_XoverSwitch.setChecked(false);
+                    //chk_XoverSwitch.setChecked(false);
                     Log.w(TAG, "Cube in Switch = " + cube_switch);
 
                 }
@@ -362,6 +392,7 @@ public class MatchScoutActivity extends AppCompatActivity {
                 } else {
                     //not checked
                     cube_switch_att = false;
+                    chk_cubeSwitch.setChecked(false);
                     Log.w(TAG, "Attempted to place Cube in Switch = " + cube_switch_att);
 
                 }
@@ -420,9 +451,9 @@ public class MatchScoutActivity extends AppCompatActivity {
                     //not checked
                     cube_scale = false;
                     cube_scale_att = false;
-                    chk_attemptScale.setChecked(false);
+                    //chk_attemptScale.setChecked(false);
                     xover_scale = false;
-                    chk_XoverScale.setChecked(false);
+                    //chk_XoverScale.setChecked(false);
                     Log.w(TAG, "Cube in Scale = " + cube_scale);
 
                 }
@@ -440,6 +471,7 @@ public class MatchScoutActivity extends AppCompatActivity {
                 } else {
                     //not checked
                     cube_scale_att = false;
+                    chk_cubeScale.setChecked(false);
                     Log.w(TAG, "Attempted to place Cube in Scale = " + cube_scale_att);
 
                 }

@@ -675,6 +675,14 @@
             android:orientation="horizontal">
 
             <RadioButton
+                android:id="@+id/radio_Zero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="RadioClick_Lifted"
+                android:text="Zero"
+                android:textColor="@color/cyan" />
+
+            <RadioButton
                 android:id="@+id/radio_One"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
