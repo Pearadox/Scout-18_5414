@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
@@ -42,7 +43,7 @@ public class TeleopScoutActivity extends Activity {
     /*Retrieved Cbs*/ private Button btn_CubeZoneM, btn_CubeZoneP, btn_CubePlatformP, btn_CubePlatformM, btn_OthrSwtchP, btn_OthrSwtchM, btn_PortalP, btn_PortalM, btn_ExchangeP, btn_ExchangeM;
     CheckBox   chk_climbsuccessful, chk_climbattempted, chkBox_PU_Cubes_floor, chkBox_Platform, chk_LiftedBy;
     EditText   editText_TeleComments;
-    RadioGroup radgrp_Deliver, radgrp_Boss, radgrp_Lifted;      RadioButton radio_Deliver, radio_Climb, radio_Lift, radio_One, radio_Two, radio_Rung, radio_Side;
+    RadioGroup radgrp_Deliver, radgrp_Boss, radgrp_Lifted;      RadioButton radio_Deliver, radio_Climb, radio_Lift, radio_One, radio_Two, radio_Zero, radio_Rung, radio_Side;
 
     private FirebaseDatabase  pfDatabase;
     private DatabaseReference pfTeam_DBReference;
@@ -70,10 +71,11 @@ public class TeleopScoutActivity extends Activity {
     public boolean delLaunch          = false; // Cube Delivery = Launch   /  Button
     public boolean climb_attempt      = false; // Did they ATTEMPT climb?
     public boolean climb_success      = false; // Was climb successful?
-    public boolean grab_rung          = false; // == Grabbed rung to climb     \ Radio
-    public boolean grab_side          = false; // == Grabbed side to climb     /  Button
-    public boolean lift_one           = false; // Lifted one other robot
-    public boolean lift_two           = false; // Lifted one other robot
+    public boolean grab_rung          = false; // == Grabbed rung to climb   \ Radio
+    public boolean grab_side          = false; // == Grabbed side to climb   /  Button
+    public boolean lift_zero          = false; // Lifted no other robot     \
+    public boolean lift_one           = false; // Lifted one other robot       Radio
+    public boolean lift_two           = false; // Lifted two other robots   /   Button
     public boolean got_lift           = false; // Got Lifted by another robot
     /* */
     public String  teleComment        = " ";   // Tele Comment
@@ -147,9 +149,11 @@ public class TeleopScoutActivity extends Activity {
 //        pfCur_Match_DBReference   = pfDatabase      .getReference("current-match"); // _THE_ current Match
         pfDevice_DBReference      = pfDatabase      .getReference("devices");    // List of Devices
         radio_One = (RadioButton) findViewById(R.id.radio_One);
-        radio_One.setEnabled(false);        // Don't let them choose if CLIMB not selected
+        //radio_One.setEnabled(false);        // Don't let them choose if CLIMB not selected
         radio_Two = (RadioButton) findViewById(R.id.radio_Two);
-        radio_Two.setEnabled(false);        // Don't let them choose if CLIMB not selected
+        //radio_Two.setEnabled(false);        // Don't let them choose if CLIMB not selected
+        radio_Zero = (RadioButton) findViewById(R.id.radio_Zero);
+        //radio_Zero.setEnabled(false);        // Don't let them choose if CLIMB not selected
         radgrp_Boss = (RadioGroup) findViewById(R.id.radgrp_Boss);
         for (int i = 0; i < radgrp_Boss.getChildCount(); i++) {  // Same for Rung/Side
             radgrp_Boss.getChildAt(i).setEnabled(false);
@@ -437,12 +441,14 @@ public class TeleopScoutActivity extends Activity {
                     //checked
                     Log.i(TAG,"TextBox is checked.");
                     climb_attempt = true;
+                    chkBox_Platform.setChecked(true);
 
                 } else
                 {
                     //not checked
                     Log.i(TAG,"TextBox is unchecked.");
                     climb_attempt = false;
+                    chk_climbsuccessful.setChecked(false);
 
                 }
             }
@@ -461,8 +467,8 @@ public class TeleopScoutActivity extends Activity {
                     climb_success = true;
                     chk_climbattempted.setChecked(true);
                     chkBox_Platform.setChecked(true);       // Have to be on platform to climb!
-                    radio_One.setEnabled(true);     // Can't lift if you don't climb!!
-                    radio_Two.setEnabled(true);     // Can't lift if you don't climb!!
+                    //radio_One.setEnabled(true);     // Can't lift if you don't climb!!
+                    //radio_Two.setEnabled(true);     // Can't lift if you don't climb!!
                     for (int i = 0; i < radgrp_Boss.getChildCount(); i++) {  // Same for Rung/Side
                         radgrp_Boss.getChildAt(i).setEnabled(true);
                     }
@@ -471,15 +477,17 @@ public class TeleopScoutActivity extends Activity {
                         //not checked
                         Log.i(TAG, "TextBox is unchecked.");
                         climb_success = false;
-                        chk_climbattempted.setChecked(false);
-                        chkBox_Platform.setChecked(false);
-                        radio_One.setEnabled(false);        // Don't let them choose if CLIMB not selected
-                        radio_Two.setEnabled(false);        // Don't let them choose if CLIMB not selected
+                        //chk_climbattempted.setChecked(false);
+                        //chkBox_Platform.setChecked(false);
+                        //radio_One.setEnabled(false);        // Don't let them choose if CLIMB not selected
+                        //radio_Two.setEnabled(false);        // Don't let them choose if CLIMB not selected
                         for (int i = 0; i < radgrp_Boss.getChildCount(); i++) {  // Same for Rung/Side
                             radgrp_Boss.getChildAt(i).setEnabled(false);
                             radgrp_Boss.getChildAt(i).setActivated(false);
+                            radgrp_Boss.clearCheck();
                         }
                 }
+
             }
 
         });
@@ -500,6 +508,7 @@ public class TeleopScoutActivity extends Activity {
                     //not checked
                     Log.i(TAG,"LiftedBy is unchecked.");
                     got_lift = false;
+                    //chkBox_Platform.setChecked(false);       // Have to be on platform to get lifted!
                 }
             }
         });
@@ -521,6 +530,73 @@ public class TeleopScoutActivity extends Activity {
                 }
             }
         });
+
+
+            View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(radio_One.isChecked())
+                    {
+                        lift_one = true;
+                        chkBox_Platform.setChecked(true);
+                        Log.w(TAG, "radio_One is " + lift_one);
+
+                    }
+                    else
+                    {
+                        lift_one=false;
+                        Log.w(TAG, "radio_One is " + lift_one);
+
+                    }
+
+                }
+            };
+
+            radio_One.setOnClickListener(listener);
+
+            listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (radio_Two.isChecked()) {
+                        lift_two = true;
+                        chkBox_Platform.setChecked(true);
+                        Log.w(TAG, "radio_Two is " + lift_two);
+
+                    } else {
+                        lift_two = false;
+                        Log.w(TAG, "radio_Two is " + lift_two);
+
+
+                    }
+
+                }
+            };
+
+            radio_Two.setOnClickListener(listener);
+
+            listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (radio_Zero.isChecked()) {
+                        lift_zero = true;
+                        lift_one = false;
+                        lift_two = false;
+                        //chkBox_Platform.setChecked(true);
+                        Log.w(TAG, "radio_Zero is " + lift_zero);
+
+                    } else {
+                        lift_zero = false;
+                        Log.w(TAG, "radio_Zero is " + lift_zero);
+
+
+                    }
+
+                }
+            };
+
+            radio_Zero.setOnClickListener(listener);
+
+
 
         editText_TeleComments.addTextChangedListener(new TextWatcher() {
             @Override

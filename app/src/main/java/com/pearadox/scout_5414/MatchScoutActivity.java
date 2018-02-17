@@ -279,7 +279,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         chk_WrongScale = (CheckBox) findViewById(R.id.chk_WrongScale);
 
 
-        Spinner spinner_startPos = (Spinner) findViewById(R.id.spinner_startPos);
+        final Spinner spinner_startPos = (Spinner) findViewById(R.id.spinner_startPos);
         String[] autostartPos = getResources().getStringArray(R.array.auto_start_array);
         adapter_autostartpos = new ArrayAdapter<String>(this, R.layout.dev_list_layout, autostartPos);
         adapter_autostartpos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -299,10 +299,40 @@ public class MatchScoutActivity extends AppCompatActivity {
                      //checked
                      Log.w(TAG, "TextBox is checked.");
                      auto = true;
+
+                     chk_baseline.setEnabled(false);
+
+                     chk_cubeSwitch.setEnabled(false);
+                     chk_attemptSwitch.setEnabled(false);
+                     chk_XoverSwitch.setEnabled(false);
+                     chk_WrongSwitch.setEnabled(false);
+                     chk_ExtraSwitch.setEnabled(false);
+
+                     chk_cubeScale.setEnabled(false);
+                     chk_attemptScale.setEnabled(false);
+                     chk_XoverScale.setEnabled(false);
+                     chk_WrongScale.setEnabled(false);
+                     chk_ExtraScale.setEnabled(false);
+
+
                  } else {
                      //not checked
                      Log.w(TAG, "TextBox is unchecked.");
                      auto = false;
+
+                     chk_baseline.setEnabled(true);
+
+                     chk_cubeSwitch.setEnabled(true);
+                     chk_attemptSwitch.setEnabled(true);
+                     chk_XoverSwitch.setEnabled(true);
+                     chk_WrongSwitch.setEnabled(true);
+                     chk_ExtraSwitch.setEnabled(true);
+
+                     chk_cubeScale.setEnabled(true);
+                     chk_attemptScale.setEnabled(true);
+                     chk_XoverScale.setEnabled(true);
+                     chk_WrongScale.setEnabled(true);
+                     chk_ExtraScale.setEnabled(true);
                  }
              }
              }
@@ -342,9 +372,9 @@ public class MatchScoutActivity extends AppCompatActivity {
                     //not checked
                     cube_switch = false;
                     cube_switch_att = false;
-                    chk_attemptSwitch.setChecked(false);
+                    //chk_attemptSwitch.setChecked(false);
                     xover_switch = false;
-                    chk_XoverSwitch.setChecked(false);
+                    //chk_XoverSwitch.setChecked(false);
                     Log.w(TAG, "Cube in Switch = " + cube_switch);
 
                 }
@@ -362,6 +392,7 @@ public class MatchScoutActivity extends AppCompatActivity {
                 } else {
                     //not checked
                     cube_switch_att = false;
+                    chk_cubeSwitch.setChecked(false);
                     Log.w(TAG, "Attempted to place Cube in Switch = " + cube_switch_att);
 
                 }
@@ -420,9 +451,9 @@ public class MatchScoutActivity extends AppCompatActivity {
                     //not checked
                     cube_scale = false;
                     cube_scale_att = false;
-                    chk_attemptScale.setChecked(false);
+                    //chk_attemptScale.setChecked(false);
                     xover_scale = false;
-                    chk_XoverScale.setChecked(false);
+                    //chk_XoverScale.setChecked(false);
                     Log.w(TAG, "Cube in Scale = " + cube_scale);
 
                 }
@@ -440,6 +471,7 @@ public class MatchScoutActivity extends AppCompatActivity {
                 } else {
                     //not checked
                     cube_scale_att = false;
+                    chk_cubeScale.setChecked(false);
                     Log.w(TAG, "Attempted to place Cube in Scale = " + cube_scale_att);
 
                 }
@@ -568,29 +600,29 @@ public class MatchScoutActivity extends AppCompatActivity {
 
                 } else {        // It's OK - Match has started
 
-                    if (0 > 0) {            //**COMPILE -  GLF 1/21 **
-//                        if (gearAttemptNum > 0 && spinner_GearPlacement.getSelectedItemPosition() == 0) {  //Required field
+                        if (spinner_startPos.getSelectedItemPosition() == 0) {  //Required field
 
-                        Toast.makeText(getBaseContext(), "*** Select Gear Position  *** ", Toast.LENGTH_LONG).show();
-//                        spinner_GearPlacement.performClick();
+                            Toast.makeText(getBaseContext(), "*** Select Starting Position!  *** ", Toast.LENGTH_LONG).show();
+                            spinner_startPos.performClick();
 
-                    } else {
-                        if (tn != null) {
-                            // ToDo - check to see if ALL required fields entered (Start-pos, stop, gear, ....)
-                            updateDev("Tele");      // Update 'Phase' for stoplight indicator in ScoutM aster
-                            storeAutoData();        // Put all the Autonomous data collected in Match object
-
-                            Intent smast_intent = new Intent(MatchScoutActivity.this, TeleopScoutActivity.class);
-                            Bundle SMbundle = new Bundle();
-                            SMbundle.putString("tnum", tn);
-                            smast_intent.putExtras(SMbundle);
-                            startActivity(smast_intent);
                         } else {
-                            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
-                            Toast.makeText(getBaseContext(), "*** Team # not entered  *** ", Toast.LENGTH_LONG).show();
+
+                            if (tn != null) {
+                                // ToDo - check to see if ALL required fields entered (Start-pos, stop, gear, ....)
+                                updateDev("Tele");      // Update 'Phase' for stoplight indicator in ScoutM aster
+                                storeAutoData();        // Put all the Autonomous data collected in Match object
+
+                                Intent smast_intent = new Intent(MatchScoutActivity.this, TeleopScoutActivity.class);
+                                Bundle SMbundle = new Bundle();
+                                SMbundle.putString("tnum", tn);
+                                smast_intent.putExtras(SMbundle);
+                                startActivity(smast_intent);
+                            } else {
+                                final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                                tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+                                Toast.makeText(getBaseContext(), "*** Team # not entered  *** ", Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
                 }
             }
         });
