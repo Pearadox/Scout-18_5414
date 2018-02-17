@@ -251,6 +251,22 @@
             android:textColor="@color/red"
             tools:text="2/2" />
 
+        <TextView
+            android:id="@+id/lbl_ScExtra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="Extra"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_ScExtra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/red"
+            tools:text="2/2" />
+
     </LinearLayout>
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -856,11 +872,11 @@
         android:id="@+id/txt_final_DefStarve"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="4"
-        android:textColor="@color/green"
         android:layout_alignBaseline="@+id/lbl_final_DefStarve"
         android:layout_alignBottom="@+id/lbl_final_DefStarve"
-        android:layout_alignStart="@+id/txt_final_DefGood" />
+        android:layout_alignStart="@+id/txt_final_DefGood"
+        android:text="0"
+        android:textColor="@color/green" />
 
     <TextView
         android:id="@+id/lbl_final_NumPen"

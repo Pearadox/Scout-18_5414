@@ -354,6 +354,15 @@
 
     </LinearLayout>
 
+    <CheckBox
+        android:id="@+id/chk_ExtraScale"
+        android:layout_width="150dp"
+        android:layout_height="25dp"
+        android:layout_alignEnd="@+id/spinner_startPos"
+        android:layout_below="@+id/lin_cubePlacedScale"
+        android:layout_toEndOf="@+id/editTxt_Team"
+        android:text="Scored extra cube on scale" />
+
     // ==============================================================================
 
     <Button
@@ -381,7 +390,7 @@
         android:layout_width="500sp"
         android:layout_height="100sp"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/lin_cubePlacedScale"
+        android:layout_below="@+id/chk_ExtraScale"
         android:isScrollContainer="false">
 
         <EditText
