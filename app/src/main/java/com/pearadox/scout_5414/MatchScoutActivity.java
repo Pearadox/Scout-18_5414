@@ -46,7 +46,7 @@ public class MatchScoutActivity extends AppCompatActivity {
     EditText editTxt_Team, editTxt_Match;
     TextView txt_EventName, txt_dev, txt_stud, txt_Match, txt_MyTeam, txt_TeamName, text_HGSeekBarValue, text_LGSeekBarValue, text_collected_balls;
     CheckBox chk_baseline, checkbox_automode, chk_cubeSwitch, chk_attemptSwitch, chk_XoverSwitch, chk_WrongSwitch, chk_cubeScale, chk_attemptScale, chk_XoverScale, chk_WrongScale, chk_highGoal, chk_gears, chk_lowGoal, chk_activate_hopper, chk_baselineINVIS;
-    CheckBox chk_ExtraSwitch, chk_cube;
+    CheckBox chk_ExtraSwitch, chk_cube, chk_ExtraScale;
     EditText editText_autoComment, editText_Fuel;
     Spinner spinner_balls_collected;
     SeekBar seekBar_HighGoal, seekBar_LowGoal;
@@ -77,6 +77,7 @@ public class MatchScoutActivity extends AppCompatActivity {
     public boolean switch_extra;            // extra cube placed on switch during Auto
     public boolean cube_scale;              // cube placed on switch during Auto
     public boolean cube_scale_att;          // cube attemted on switch during Auto
+    public boolean scale_extra;             // extra cube placed on switch during Auto
     public boolean xover_switch;            // crossed over field to Switch
     public boolean xover_scale;             // crossed over field to Scale
     public boolean wrong_switch;            // put cube in WRONG Switch
@@ -245,6 +246,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         button_GoToTeleopActivity = (Button) findViewById(R.id.button_GoToTeleopActivity);
         button_GoToArenaLayoutActivity = (Button) findViewById(R.id.button_GoToArenaLayoutActivity);
         chk_ExtraSwitch = (CheckBox) findViewById(R.id.chk_ExtraSwitch);
+        chk_ExtraScale = (CheckBox) findViewById(R.id.chk_ExtraScale);
         chk_cube = (CheckBox) findViewById(R.id.chk_cube);
 //        txt_GearsPlaced.setText(Integer.toString(gearNum));
 //        txt_GearsAttempted.setText(Integer.toString(gearAttemptNum));
@@ -500,6 +502,24 @@ public class MatchScoutActivity extends AppCompatActivity {
             }
         });
 
+        chk_ExtraScale.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.w(TAG, "chk_ExtraScale Listener");
+                if (chk_ExtraScale.isChecked()) {
+                    //checked
+                    scale_extra = true;
+                    Log.w(TAG, "Extra Scale = " + scale_extra);
+
+                } else {
+                    //not checked
+                    scale_extra = false;
+                    Log.w(TAG, "Extra Scale = " + scale_extra);
+
+                }
+
+            }
+        });
+
 
         chk_cube.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -603,6 +623,7 @@ public class MatchScoutActivity extends AppCompatActivity {
         Pearadox.Match_Data.setAuto_wrong_switch(wrong_switch);
         Pearadox.Match_Data.setAuto_cube_scale(cube_scale);
         Pearadox.Match_Data.setAuto_cube_scale_att(cube_scale_att);
+        Pearadox.Match_Data.setAuto_scale_extra(scale_extra);
         Pearadox.Match_Data.setAuto_xover_switch(xover_switch);
         Pearadox.Match_Data.setAuto_xover_scale(xover_scale);
         Pearadox.Match_Data.setAuto_wrong_scale(wrong_scale);

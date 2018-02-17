@@ -13,27 +13,27 @@ public class VisMatch_Activity extends AppCompatActivity {
     String underScore = new String(new char[60]).replace("\0", "_");  // string of 'x' underscores
     String matches = "";
     TextView txt_team, txt_teamName, txt_NumMatches, txt_Matches;
-    TextView txt_auto_baselineRatio, txt_noAuto, txt_auto_cubeSwRatio, txt_SwXover, txt_SwWrong, txt_SwExtra, txt_auto_cubeScRatio, txt_ScXover, txt_ScWrong;
+    TextView txt_auto_baselineRatio, txt_noAuto, txt_auto_cubeSwRatio, txt_SwXover, txt_SwWrong, txt_SwExtra, txt_ScExtra, txt_auto_cubeScRatio, txt_ScXover, txt_ScWrong, txt_CubeTheirsNUM;
     TextView txt_tele_cubeSwRatio, txt_TheirSwitch, txt_tele_cubeScRatio, txt_PortalNUM;
     TextView txt_CubeZoneNUM, txt_CubePlatformNUM, txt_CubeFloorNUM;
     TextView txt_climbs, txt_Lift1NUM, txt_Lift2NUM, txt_WasLiftedNUM, txt_OnPlatNUM, txt_RungNUM, txt_SideNUM, txt_ExchangeNUM, txt_LaunchNUM, txt_PlaceNUM;
     /* Comment Boxes */     TextView txt_AutoComments, txt_TeleComments, txt_FinalComments;
     TextView txt_spSi, txt_spSo, txt_spM;
     //----------------------------------
-    int numAutoBaseline = 0; int noAuto = 0; int numExtra = 0;
+    int numAutoBaseline = 0; int noAuto = 0; int numExtraSw = 0; int numExtraSc = 0;
     int auto_SwCubesAttempted = 0; int auto_SwCubesPlaced = 0; int auto_SwCrossOver = 0; int Auto_SwWrong = 0;
     int auto_ScCubesAttempted = 0; int auto_ScCubesPlaced = 0; int auto_ScCrossOver = 0; int Auto_ScWrong = 0;
     int auto_B1 = 0; int auto_B2 = 0; int auto_B3 = 0;
     String auto_Comments = "";
     //----------------------------------
-    int tele_totalCubeSwAttempted = 0; int tele_totalCubeSwPlaced = 0; int tele_totalCubeScAttempted = 0; int tele_totalCubeScPlaced = 0; int tele_SwTheirs = 0; int tele_SwTheirAtt = 0;
+    int tele_totalCubeSwAttempted = 0; int tele_totalCubeSwPlaced = 0; int tele_totalCubeScAttempted = 0; int tele_totalCubeScPlaced = 0; int tele_SwTheirs = 0; int tele_SwTheirAtt = 0; int tele_their_floor = 0;
     int cubznNUM = 0; int cubplatNUM = 0; int cubPlatOthrNUM = 0; int offFloorNUM = 0; int portalNUM = 0;
     int numTeleExch = 0; int numTeleLaunch = 0; int numTelePlace = 0;
     int numTeleClimbSuccess = 0; int numTeleClimbAttempt = 0; int Lift1num = 0; int Lift2num = 0;  int WasLifted = 0; int rungNum = 0; int sideNum = 0; int onPlatform = 0;
     String tele_Comments = "";
     //----------------------------------
-    int final_LostComm = 0; int final_LostParts = 0; int final_DefGood = 0; int final_DefBlock = 0;  int final_DefDump = 0; int final_DefStarve = 0; int final_NumPen = 0;
-    TextView txt_final_LostComm, txt_final_LostParts, txt_final_DefGood, txt_final_DefBlock, txt_final_BlkSwtch, txt_final_NumPen;
+    int final_LostComm = 0; int final_LostParts = 0; int final_DefGood = 0; int final_DefBlock = 0;  int final_DefSwitch = 0; int final_DefStarve = 0; int final_NumPen = 0;
+    TextView txt_final_LostComm, txt_final_LostParts, txt_final_DefGood, txt_final_DefBlock, txt_final_BlkSwtch, txt_final_NumPen, txt_final_DefStarve;
     String final_Comments = "";
     //----------------------------------
 
@@ -66,7 +66,7 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_SwXover = (TextView) findViewById(R.id.txt_SwXover);
         txt_SwWrong = (TextView) findViewById(R.id.txt_SwWrong);
         txt_SwExtra = (TextView) findViewById(R.id.txt_SwExtra);
-        txt_auto_cubeScRatio = (TextView) findViewById(R.id.txt_auto_cubeScRatio);
+        txt_ScExtra = (TextView) findViewById(R.id.txt_ScExtra);
         txt_ScXover = (TextView) findViewById(R.id.txt_ScXover);
         txt_ScWrong = (TextView) findViewById(R.id.txt_ScWrong);
         txt_spSi = (TextView) findViewById(R.id.txt_spSi);
@@ -88,6 +88,7 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_OnPlatNUM = (TextView) findViewById(R.id.txt_OnPlatNUM);
         txt_RungNUM = (TextView) findViewById(R.id.txt_RungNUM);
         txt_SideNUM = (TextView) findViewById(R.id.txt_SideNUM);
+        txt_CubeTheirsNUM = (TextView) findViewById(R.id.txt_CubeTheirsNUM);
 
         txt_ExchangeNUM = (TextView) findViewById(R.id.txt_ExchangeNUM);
         txt_LaunchNUM = (TextView) findViewById(R.id.txt_LaunchNUM);
@@ -106,6 +107,7 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_final_DefBlock = (TextView) findViewById(R.id.txt_final_DefBlock);
         txt_final_BlkSwtch = (TextView) findViewById(R.id.txt_final_BlkSwtch);
         txt_final_NumPen = (TextView) findViewById(R.id.txt_final_NumPen);
+        txt_final_DefStarve = (TextView) findViewById(R.id.txt_final_DefStarve);
 
         txt_team.setText(tnum);
         txt_teamName.setText(tname);    // Get real
@@ -114,10 +116,10 @@ public class VisMatch_Activity extends AppCompatActivity {
         Log.w(TAG, "Objects = " + numObjects);
         txt_NumMatches.setText(String.valueOf(numObjects));
 
-        numAutoBaseline = 0; auto_SwCubesAttempted = 0; auto_SwCubesPlaced = 0; tele_totalCubeSwAttempted = 0; numExtra = 0;
+        numAutoBaseline = 0; auto_SwCubesAttempted = 0; auto_SwCubesPlaced = 0; tele_totalCubeSwAttempted = 0; numExtraSw = 0; numExtraSc = 0;
         auto_B1 = 0; auto_B2 = 0; auto_B3 = 0;
         auto_Comments = ""; tele_Comments = ""; final_Comments=""; matches = "";
-        final_LostComm = 0; final_LostParts = 0; final_DefGood = 0; final_DefBlock = 0;  final_DefDump = 0; final_DefStarve = 0; final_NumPen = 0;
+        final_LostComm = 0; final_LostParts = 0; final_DefGood = 0; final_DefBlock = 0;  final_DefSwitch = 0; final_DefStarve = 0; final_NumPen = 0;
 
 
 // ================================================================
@@ -145,13 +147,16 @@ public class VisMatch_Activity extends AppCompatActivity {
                 Auto_SwWrong++;
             }
             if (match_inst.isAuto_switch_extra()) {
-                numExtra++;
+                numExtraSw++;
             }
             if (match_inst.isAuto_cube_scale()) {
                 auto_ScCubesPlaced++;
             }
             if (match_inst.isAuto_cube_scale_att()) {
                 auto_ScCubesAttempted++;
+            }
+            if (match_inst.isAuto_scale_extra()) {
+                numExtraSc++;
             }
             if (match_inst.isAuto_xover_scale()) {
                 auto_ScCrossOver++;
@@ -190,6 +195,7 @@ public class VisMatch_Activity extends AppCompatActivity {
             portalNUM = portalNUM + match_inst.getTele_cube_portal();
             tele_SwTheirs = tele_SwTheirs + match_inst.getTele_their_switch();
             tele_SwTheirAtt = tele_SwTheirAtt + match_inst.getTele_their_attempt();
+            tele_their_floor = tele_their_floor + match_inst.getTele_their_floor();
 
             cubznNUM = cubznNUM + match_inst.getTele_cube_pwrzone();
             cubplatNUM = cubplatNUM + match_inst.getTele_cube_floor();
@@ -270,10 +276,11 @@ public class VisMatch_Activity extends AppCompatActivity {
 //        Log.w(TAG, "Ratio of Placed to Attempted Gears in Auto = " + auto_SwCubesPlaced + "/" + auto_SwCubesAttempted);
         txt_auto_cubeSwRatio.setText(auto_SwCubesPlaced + "/" + auto_SwCubesAttempted);
         txt_auto_cubeScRatio.setText(auto_ScCubesPlaced + "/" + auto_ScCubesAttempted);
-        txt_SwExtra.setText(String.valueOf(numExtra));
+        txt_SwExtra.setText(String.valueOf(numExtraSw));
         txt_SwXover.setText(String.valueOf(auto_SwCrossOver));
         txt_SwWrong.setText(String.valueOf(Auto_SwWrong));
         txt_auto_cubeScRatio.setText(auto_ScCubesPlaced + "/" + auto_ScCubesAttempted);
+        txt_ScExtra.setText(String.valueOf(numExtraSc));
         txt_ScXover.setText(String.valueOf(auto_ScCrossOver));
         txt_ScWrong.setText(String.valueOf(Auto_ScWrong));
         txt_spSi.setText(String.valueOf(auto_B1));
@@ -303,6 +310,7 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_LaunchNUM.setText(String.valueOf(numTeleLaunch));
         txt_PlaceNUM.setText(String.valueOf(numTelePlace));
         txt_climbs.setText(numTeleClimbSuccess + "/" + numTeleClimbAttempt);
+        txt_CubeTheirsNUM.setText(String.valueOf(tele_their_floor));
 
         txt_TeleComments.setText(tele_Comments);
 
@@ -311,9 +319,9 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_final_LostComm.setText(String.valueOf(final_LostComm));
         txt_final_LostParts.setText(String.valueOf(final_LostParts));
         txt_final_DefGood.setText(String.valueOf(final_DefGood));
-        txt_final_BlkSwtch.setText(String.valueOf(final_DefDump));
+        txt_final_BlkSwtch.setText(String.valueOf(final_DefSwitch));
         txt_final_DefBlock.setText(String.valueOf(final_DefBlock));
-        txt_final_BlkSwtch.setText(String.valueOf(final_DefStarve));
+        txt_final_DefStarve.setText(String.valueOf(final_DefStarve));
         txt_final_NumPen.setText(String.valueOf(final_NumPen));
 
         txt_FinalComments.setText(final_Comments);
@@ -345,3 +353,4 @@ public class VisMatch_Activity extends AppCompatActivity {
     }
 
 }
+//boo
