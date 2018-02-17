@@ -60,7 +60,7 @@ public class DraftScout_Activity extends AppCompatActivity {
     //    ArrayList<String> draftList = new ArrayList<String>();
     static final ArrayList<HashMap<String, String>> draftList = new ArrayList<HashMap<String, String>>();
     public int teamSelected = -1;
-    public String sortType = "Team#";
+    public static String sortType = "";
     String tnum = "";
     String tn = "";
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj();
@@ -539,6 +539,8 @@ public boolean onCreateOptionsMenu(Menu menu) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        Log.e(TAG, "@@@  Options  @@@ " + sortType);
+        Log.w(TAG, " \n  \n");
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -722,6 +724,9 @@ public boolean onCreateOptionsMenu(Menu menu) {
     private void initScores() {
         Log.w(TAG, " ## initScores ##  " + is_Resumed);
         if (!is_Resumed) {
+//        if (sortType.matches("")) {       // if 1st time
+            Log.w(TAG, "Start to Load teams '"  + sortType + "'");
+            sortType = "Team#";
             team_Scores.clear();
             for (int i = 0; i < Pearadox.numTeams; i++) {
                 Scores curScrTeam = new Scores();       // instance of Scores object
@@ -760,6 +765,7 @@ public void onResume() {
     super.onResume();
     Log.v(TAG, "****> onResume <**** " + sortType);
     is_Resumed = true;
+    initScores();           // make sure it sorts by _LAST_ radio button
     }
 
 @Override
