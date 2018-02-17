@@ -18,7 +18,7 @@ public class DraftSettingsActivity extends AppCompatActivity {
     public static final String  CUBECOL_PREF_FLOOR =  "prefCubeCol_floor";
     public static final String  CUBECOL_PREF_STOLEN = "prefCubeCol_stolen";
 
-    public static final String  CLIMB_PREF_CLIMBS =  "prefClimb_climbs";
+    public static final String  CLIMB_PREF_CLIMBS =  "prefClimb_NumClimbs";
     public static final String  CLIMB_PREF_LIFT1 =  "prefClimb_lift1";
     public static final String  CLIMB_PREF_LIFT2 =  "prefClimb_lift2";
     public static final String  CLIMB_PREF_PLAT =   "prefClimb_onPlat";
@@ -35,6 +35,8 @@ public class DraftSettingsActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new CubeSettingsFrag())
                 .commit();
-        Log.i(TAG, "**** Draft Scout Settings  ****");
+        Log.e(TAG, "**** Draft Scout Settings  **** ");
+        Log.w(TAG, " \n  \n");
     }
 }
+

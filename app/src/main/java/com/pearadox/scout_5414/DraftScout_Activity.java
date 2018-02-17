@@ -47,7 +47,7 @@ public class DraftScout_Activity extends AppCompatActivity {
     Boolean is_Resumed = false;
     public String cubeAutoSw  = ""; public String cubeAutoSc  = ""; public String cubeTeleSw  = ""; public String cubeTeleSc  = ""; public String teleOthr  = ""; public String cubeExch = "";
     public String cubeColPort = ""; public String cubeColZone  = ""; public String cubeColFloor  = "";  public String cubeColStolen  = "";
-    public String climbClimbs = "";public String climbLift1 = ""; public String climbLift2 = ""; public String climbPlat = ""; public String climbLifted = "";
+    public String climbClimbs = ""; public String climbLift1 = ""; public String climbLift2 = ""; public String climbPlat = ""; public String climbLifted = "";
     public String wtClimb = ""; public String wtCubeScore = ""; public String wtCubeCollct = "";
     TextView txt_EventName, txt_NumTeams, txt_Formula, lbl_Formula;
     ListView lstView_Teams;
@@ -59,7 +59,7 @@ public class DraftScout_Activity extends AppCompatActivity {
     public ArrayAdapter<String> adaptTeams;
     //    ArrayList<String> draftList = new ArrayList<String>();
     static final ArrayList<HashMap<String, String>> draftList = new ArrayList<HashMap<String, String>>();
-    public int teamSelected = 0;
+    public int teamSelected = -1;
     public String sortType = "Team#";
     String tnum = "";
     String tn = "";
@@ -246,7 +246,7 @@ public class DraftScout_Activity extends AppCompatActivity {
         cubeColFloor = sharedPref.getString("prefCubeCol_floor", "1.0");
         cubeColStolen = sharedPref.getString("prefCubeCol_stolen", "1.0");
 
-        climbClimbs = sharedPref.getString("prefClimb_lift1", "1.0");
+        climbClimbs = sharedPref.getString("prefClimb_NumClimbs", "1.0");
         climbLift1 = sharedPref.getString("prefClimb_lift1", "1.5");
         climbLift2 = sharedPref.getString("prefClimb_lift2", "2.0");
         climbPlat = sharedPref.getString("prefClimb_onPlat", "0.3");
@@ -263,6 +263,7 @@ public class DraftScout_Activity extends AppCompatActivity {
         getprefs();         // make sure Prefs are up to date
         switch (typ) {
             case "Climb":
+                Log.e(TAG, "*** CLIMB   cl=" + climbClimbs + " 1=" + climbLift1 + " 2=" + climbLift2 + " pl=" + climbPlat + " was=" + climbLifted);
                 form = "(" + climbClimbs + "*(climbs) + " +"(Lift1*" + climbLift1 + ") + " +"(Lift2*" + climbLift2 + ") + (Plat*" + climbPlat + ") + (WasLifted*" + climbLifted + ")) / # matches";
                 lbl_Formula.setTextColor(Color.parseColor("#4169e1"));
                 txt_Formula.setText(form);
@@ -372,14 +373,22 @@ public class DraftScout_Activity extends AppCompatActivity {
         HashMap<String, String> temp = new HashMap<String, String>();
         String teamHash;
 
-        draftList.get(teamSelected);
-        temp = draftList.get(teamSelected);
-        teamHash = temp.get("team");
+        if (teamSelected >= 0) {
+            draftList.get(teamSelected);
+            temp = draftList.get(teamSelected);
+            teamHash = temp.get("team");
 //        Log.w(TAG, "teamHash: '" + teamHash + "' \n ");
-        load_team = teamHash.substring(0,4);
-        load_name = teamHash.substring(7,teamHash.indexOf("("));  // UP TO # MATCHES
+            load_team = teamHash.substring(0, 4);
+            load_name = teamHash.substring(7, teamHash.indexOf("("));  // UP TO # MATCHES
 //        Log.w(TAG, ">>>team & name: '" + load_team + "'  [" + load_name +"]");
-        addMatchData_Team_Listener(pfMatchData_DBReference);        // Load Matches for _THIS_ selected team
+            addMatchData_Team_Listener(pfMatchData_DBReference);        // Load Matches for _THIS_ selected team
+        } else {
+            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+            Toast toast = Toast.makeText(getBaseContext(), "★★★★  There is _NO_ Team selected for Match Data ★★★★", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
+        }
     }
 
 
@@ -655,7 +664,6 @@ public boolean onCreateOptionsMenu(Menu menu) {
             gotLifted = "0";
         }
         //============================
-// ToDo - get multipliers from preferences
         float climbScore = 0; float cubeScored = 0; float cubeCollect = 0; float cubeScore = 0;  float weightedScore = 0;
 //        Log.e(TAG, team + " "+ climbs + " "+ lift1Num + " "+ lift2Num + " " + platNum +  " " + liftedNum + " / " + numMatches);
         if (numMatches > 0) {
@@ -729,7 +737,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
             Log.w(TAG, "#Scores = " + team_Scores.size());
         } else {
             // ToDONE - Load teams according to Radio Button (VisMatch return messes it up)
-//            Log.w(TAG, "Leave scores alone '"  + sortType + "'");
+            Log.e(TAG, "Leave scores alone '"  + sortType + "'");
             radgrp_Sort = (RadioGroup) findViewById(R.id.radgrp_Sort);
             radgrp_Sort.setActivated(true);
             radgrp_Sort.setSelected(true);

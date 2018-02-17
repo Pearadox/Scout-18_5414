@@ -30,7 +30,8 @@ public class CubeSettingsFrag extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState,
                                     String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
-        Log.i(TAG, "**** Cube Settings  ****");
+        Log.e(TAG, "**** Cube Settings  ****");
+        Log.w(TAG, " \n  \n");
 
     }
 
