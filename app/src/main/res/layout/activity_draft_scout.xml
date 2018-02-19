@@ -181,27 +181,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:onClick="RadioClick_Sort"
             android:text="Team#" />
         <RadioButton
             android:id="@+id/radio_Climb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="RadioClick_Sort"
             android:text="Climb" />
 
         <RadioButton
             android:id="@+id/radio_Cubes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="RadioClick_Sort"
             android:text="Cubes" />
 
         <RadioButton
             android:id="@+id/radio_Weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="RadioClick_Sort"
             android:text="Weighted" />
 
     </RadioGroup>

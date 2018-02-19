@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -34,7 +35,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -181,7 +181,16 @@ public class DraftScout_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draft_scout);
         Log.i(TAG, "@@@@@ DraftScout_Activity  @@@@@");
-        getprefs();
+        Log.e(TAG, "B4 - " + sortType);
+        if (savedInstanceState != null) {
+            Log.w(TAG, "Are we ever getting called? " + is_Resumed);
+            SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+            String sortType = prefs.getString("Sort", "");
+        } else {
+//            sortType = "Team#";
+        }
+        Log.e(TAG, "After - " + sortType);
+        getprefs();         // Get multiplier values from Preferences
 
         txt_EventName = (TextView) findViewById(R.id.txt_EventName);
         txt_NumTeams = (TextView) findViewById(R.id.txt_NumTeams);
@@ -194,6 +203,71 @@ public class DraftScout_Activity extends AppCompatActivity {
 
         pfDatabase = FirebaseDatabase.getInstance();
         pfMatchData_DBReference = pfDatabase.getReference("match-data/" + Pearadox.FRC_Event);    // Match Data
+
+        RadioGroup radgrp_Sort = (RadioGroup) findViewById(R.id.radgrp_Sort);
+        radgrp_Sort.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                Log.w(TAG, "@@ RadioClick_Sort @@");
+                radio_Team = (RadioButton) findViewById(checkedId);
+                String value = radio_Team.getText().toString();
+                Log.w(TAG, "RadioSort -  '" + value + "'");
+                switch (value) {
+                    case "Climb":
+                        Log.w(TAG, "Climb sort");
+                        sortType = "Climb";
+                        Collections.sort(team_Scores, new Comparator<Scores>() {
+                            @Override
+                            public int compare(Scores c1, Scores c2) {
+                                return Float.compare(c1.getClimbScore(), c2.getClimbScore());
+                            }
+                        });
+                        Collections.reverse(team_Scores);
+                        showFormula(sortType);              // update the formula
+                        loadTeams();
+                        break;
+                    case "Cubes":
+                        sortType = "Cubes";
+//                      Log.w(TAG, "Cube sort");
+                        Collections.sort(team_Scores, new Comparator<Scores>() {
+                            @Override
+                            public int compare(Scores c1, Scores c2) {
+                                return Float.compare(c1.getCubeScore(), c2.getCubeScore());
+                            }
+                        });
+                        Collections.reverse(team_Scores);   // Descending
+                        showFormula("Cubes");              // update the formula
+                        loadTeams();
+                        break;
+                    case "Weighted":
+//                Log.w(TAG, "Weighted sort");
+                        sortType = "Weighted";
+                        Collections.sort(team_Scores, new Comparator<Scores>() {
+                            @Override
+                            public int compare(Scores c1, Scores c2) {
+                                return Float.compare(c1.getWeightedScore(), c2.getWeightedScore());
+                            }
+                        });
+                        Collections.reverse(team_Scores);   // Descending
+                        showFormula(sortType);              // update the formula
+                        loadTeams();
+                        break;
+                    case "Team#":
+//                Log.w(TAG, "Team# sort");
+                        sortType = "Team#";
+                        Collections.sort(team_Scores, Scores.teamComp);
+                        lbl_Formula.setTextColor(Color.parseColor("#ffffff"));
+                        txt_Formula.setText(" ");       // set formulat to blank
+                        loadTeams();
+                        break;
+                    default:                //
+                        Log.e(TAG, "*** Invalid Sort " + value);
+                }
+
+            }
+        });
+
 
 //        SimpleAdapter adaptTeams = new SimpleAdapter(
 //                this,
@@ -269,7 +343,7 @@ public class DraftScout_Activity extends AppCompatActivity {
                 txt_Formula.setText(form);
                 break;
             case "Cubes":
-                form = "SCR:  (" + cubeAutoSw +"*(aCSw)+" + cubeAutoSc + "*(aCSc)+" + cubeTeleSw + "*(tCSw)+" + cubeTeleSc + "*(tCSc)+" + teleOthr + "*(oth)+" + cubeExch + "*(Exc)) / # matches  \n";
+                form = "SCR:  (" + cubeAutoSw +"*(aCSw)+" + cubeAutoSc + "*(aCSc)+" + cubeTeleSw + "*(tCSw)+" + cubeTeleSc + "*(tCSc)+" + teleOthr + "*(oth)+" + cubeExch + "*(Exc)) / # matches  ✚ \n";
                 form = form + "COL:  (" + cubeColPort +"*(Port) + " + cubeColZone + "*(zone) + " + cubeColFloor + "*(flr) + " + cubeColStolen + "*(Their)) / # matches";
                 lbl_Formula.setTextColor(Color.parseColor("#ee00ee"));
                 txt_Formula.setText(form);
@@ -285,74 +359,6 @@ public class DraftScout_Activity extends AppCompatActivity {
         return typ;
     }
 
-
-    public void RadioClick_Sort(View view) {
-        Log.w(TAG, "@@ RadioClick_Sort @@");
-        radgrp_Sort = (RadioGroup) findViewById(R.id.radgrp_Sort);
-        int selectedId = radgrp_Sort.getCheckedRadioButtonId();
-        radio_Team = (RadioButton) findViewById(selectedId);
-        String value = radio_Team.getText().toString();
-//        lstView_Teams = (ListView) findViewById(R.id.lstView_Teams);
-        Log.w(TAG, "RadioSort -  '" + value + "'");
-        switch (value) {
-            case "Climb":
-//                Log.w(TAG, "Climb sort");
-                sortType = "Climb";
-                Collections.sort(team_Scores, new Comparator<Scores>() {
-                    @Override
-                    public int compare(Scores c1, Scores c2) {
-                        return Float.compare(c1.getClimbScore(), c2.getClimbScore());
-                    }
-                });
-                Collections.reverse(team_Scores);
-                showFormula(sortType);              // update the formula
-                loadTeams();
-                break;
-            case "Cubes":
-                sortType = "Cubes";
-//                Log.w(TAG, "Cube sort");
-                Collections.sort(team_Scores, new Comparator<Scores>() {
-                    @Override
-                    public int compare(Scores c1, Scores c2) {
-                        return Float.compare(c1.getCubeScore(), c2.getCubeScore());
-                    }
-                });
-                Collections.reverse(team_Scores);   // Descending
-                showFormula(sortType);              // update the formula
-                loadTeams();
-                break;
-            case "Weighted":
-//                Log.w(TAG, "Weighted sort");
-                sortType = "Weighted";
-                Collections.sort(team_Scores, new Comparator<Scores>() {
-                    @Override
-                    public int compare(Scores c1, Scores c2) {
-                        return Float.compare(c1.getWeightedScore(), c2.getWeightedScore());
-                    }
-                });
-                Collections.reverse(team_Scores);   // Descending
-                showFormula(sortType);              // update the formula
-                loadTeams();
-                break;
-            case "Team#":
-//                Log.w(TAG, "Team# sort");
-                sortType = "Team#";
-                Collections.sort(team_Scores, Scores.teamComp);
-                lbl_Formula.setTextColor(Color.parseColor("#ffffff"));
-                txt_Formula.setText(" ");       // set formulat to blank
-                loadTeams();
-                break;
-            default:                //
-                Log.e(TAG, "*** Invalid Sort " + value);
-        }
-
-    }
-
-//    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-//    public void buttonDown_Click(View view) {
-//        Log.i(TAG, " buttonDown_Click   " + teamSelected);
-//
-//    }
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     public void buttonDefault_Click(View view) {
@@ -723,30 +729,47 @@ public boolean onCreateOptionsMenu(Menu menu) {
 
     private void initScores() {
         Log.w(TAG, " ## initScores ##  " + is_Resumed);
-        if (!is_Resumed) {
-//        if (sortType.matches("")) {       // if 1st time
-            Log.w(TAG, "Start to Load teams '"  + sortType + "'");
-            sortType = "Team#";
-            team_Scores.clear();
-            for (int i = 0; i < Pearadox.numTeams; i++) {
-                Scores curScrTeam = new Scores();       // instance of Scores object
-                team_inst = Pearadox.team_List.get(i);
-                curScrTeam.setTeamNum(team_inst.getTeam_num());
-                curScrTeam.setTeamName(team_inst.getTeam_name());
+        Log.w(TAG, "Start to Load teams '"  + sortType + "'");
+        team_Scores.clear();
+        for (int i = 0; i < Pearadox.numTeams; i++) {
+            Scores curScrTeam = new Scores();       // instance of Scores object
+            team_inst = Pearadox.team_List.get(i);
+            curScrTeam.setTeamNum(team_inst.getTeam_num());
+            curScrTeam.setTeamName(team_inst.getTeam_name());
 //            Log.w(TAG, curScrTeam.getTeamNum() + "  " + curScrTeam.getTeamName());
-                curScrTeam.setClimbScore((float) 0);
-                curScrTeam.setCubeScore((float) 0);
-                curScrTeam.setWeightedScore((float) 0);
-                team_Scores.add(i, curScrTeam);
-            }
-            Log.w(TAG, "#Scores = " + team_Scores.size());
+            curScrTeam.setClimbScore((float) 0);
+            curScrTeam.setCubeScore((float) 0);
+            curScrTeam.setWeightedScore((float) 0);
+            team_Scores.add(i, curScrTeam);
+        } // end For
+        Log.w(TAG, "#Scores = " + team_Scores.size());
+        if (sortType.matches("") || sortType.matches("Team#")) {       // if 1st time
+            sortType = "Team#";
         } else {
+//            SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+//            String sortType = prefs.getString("Sort", "");
+//
             // ToDONE - Load teams according to Radio Button (VisMatch return messes it up)
             Log.e(TAG, "Leave scores alone '"  + sortType + "'");
             radgrp_Sort = (RadioGroup) findViewById(R.id.radgrp_Sort);
             radgrp_Sort.setActivated(true);
             radgrp_Sort.setSelected(true);
-            radgrp_Sort.performClick();         // "force" radio button click
+            switch (sortType) {
+                case "Climb":
+                    radio_Climb = (RadioButton) findViewById(R.id.radio_Climb);
+                    radio_Climb.performClick();         // "force" radio button click
+                    break;
+                case "Cubes":
+                    radio_Cubes = (RadioButton) findViewById(R.id.radio_Cubes);
+                    radio_Cubes.performClick();         // "force" radio button click
+                    break;
+                case "Weighted":
+                    radio_Weight = (RadioButton) findViewById(R.id.radio_Weight);
+                    radio_Weight.performClick();         // "force" radio button click
+                    break;
+                default:                //
+                    Log.e(TAG, "*** Invalid Type " + sortType);
+            }
         }
     }
 
@@ -765,9 +788,20 @@ public void onResume() {
     super.onResume();
     Log.v(TAG, "****> onResume <**** " + sortType);
     is_Resumed = true;
-    initScores();           // make sure it sorts by _LAST_ radio button
+    SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+    String sortType = prefs.getString("Sort", "");
+//    initScores();           // make sure it sorts by _LAST_ radio button
     }
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.v(TAG, "onPause  "  + sortType);
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
 
+        editor.putString("Sort", sortType);
+        editor.commit();        // keep sort type
+    }
 @Override
 public void onStop() {
     super.onStop();
