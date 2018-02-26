@@ -17,6 +17,7 @@ public class DraftSettingsActivity extends AppCompatActivity {
     public static final String  CUBECOL_PREF_ZONE =   "prefCubeCol_zone";
     public static final String  CUBECOL_PREF_FLOOR =  "prefCubeCol_floor";
     public static final String  CUBECOL_PREF_STOLEN = "prefCubeCol_stolen";
+    public static final String  CUBECOL_PREF_RANDOM = "prefCubeCol_random";
 
     public static final String  CLIMB_PREF_CLIMBS =  "prefClimb_NumClimbs";
     public static final String  CLIMB_PREF_LIFT1 =  "prefClimb_lift1";

@@ -77,6 +77,13 @@
             android:key="prefCubeCol_stolen"
             android:summary="Multiplier for Cubes stolen from their Switch"
             android:title="Their Switch" />
+        <EditTextPreference
+            android:id="@+id/txt_random"
+            android:inputType="numberDecimal"
+            android:defaultValue="1.0"
+            android:key="prefCubeCol_random"
+            android:summary="Multiplier for Cubes randomly collected from floor"
+            android:title="Random Cubes" />
 
     </PreferenceCategory>
 //================================================================================

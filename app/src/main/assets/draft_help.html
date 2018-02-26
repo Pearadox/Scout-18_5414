@@ -32,7 +32,7 @@ Scored <BR/>
 
 <FONT color="green" face="courier" size=2>
 Collected <BR/>
-<B>( G*(telePortal) + H*(telePwrZone) + I*(teleFloor) + J*(teleOthrFloor) ) / # Matches </B>
+<B>( G*(telePortal) + H*(telePwrZone) + I*(teleFloor) + J*(teleOthrFloor) + K*(teleRandomFloor) ) / # Matches </B>
 </FONT>
 <BR/>
 <UL>
@@ -40,6 +40,7 @@ Collected <BR/>
 <LI>telePwrZone - number of cubes retrieved from Power Cube Zone</LI>
 <LI>teleFloor - number of cubes retrieved from our Platform Floor </LI>
 <LI>teleOthrFloor - number of cubes retrieved from their Platform Floor </LI>
+ <LI>teleRandomFloor - number of random cubes retrieved from Floor </LI>
 </UL>
 <BR/>
 <B>Cube Score</B> is the <U>sum</U> of of <FONT color="magenta">Scored</FONT> and <FONT color="green">Collected</FONT>
@@ -48,7 +49,7 @@ Collected <BR/>
 <HR></HR>
 <h4>Climbing</h4>
 <FONT color="blue" face="courier" size=2>
-<B>(K*(climbs) + (Lift1 *L) + (Lift2 *M) + (onPlatform *N) + (WasLifted *P)) / # Matches </B>
+<B>(L*(climbs) + (Lift1 *M) + (Lift2 *N) + (onPlatform *P) + (WasLifted *Q)) / # Matches </B>
 </FONT>
 <BR/>
 <UL>
@@ -64,7 +65,7 @@ Collected <BR/>
 <h4>Weighted</h4>
 
 <FONT color="red" face="courier" size=2>
-<B>( Q*(climbScore) + R*(cubesScored)  + S*(cubesCollected)) / # Matches  </B>
+<B>( R*(climbScore) + S*(cubesScored)  + T*(cubesCollected)) / # Matches  </B>
 </FONT>
 <BR/>
 <UL>
