@@ -36,6 +36,7 @@ public class matchData implements Serializable {
     private int     tele_cube_pwrzone;      // # cubes retrieved from Power Zone during Tele
     private int     tele_cube_floor;        // # cubes retrieved from our Floor or Platform Zone during Tele
     private int     tele_their_floor;       // # cubes retrieved from their Floor or Platform Zone during Tele
+    private int     tele_random_floor;      // # cubes retrieved from random places during Tele
     private boolean tele_cube_pickup;       // Did they pick up cube(s)
     private boolean tele_placed_cube;       // Did they place cube(s)
     private boolean tele_launched_cube;     // Did they launch cube(s)
@@ -64,8 +65,7 @@ public class matchData implements Serializable {
 
 // =================================================================================
 
-
-    public matchData(String match, String team_num, boolean pre_cube, String pre_startPos, boolean auto_mode, boolean auto_baseline, boolean auto_cube_switch, boolean auto_cube_switch_att, boolean auto_switch_extra, boolean auto_cube_scale, boolean auto_cube_scale_att, boolean auto_scale_extra, boolean auto_xover_switch, boolean auto_xover_scale, boolean auto_wrong_switch, boolean auto_wrong_scale, String auto_comment, int tele_cube_switch, int tele_switch_attempt, int tele_cube_scale, int tele_scale_attempt, int tele_their_switch, int tele_their_attempt, int tele_cube_exchange, int tele_cube_portal, int tele_cube_pwrzone, int tele_cube_floor, int tele_their_floor, boolean tele_cube_pickup, boolean tele_placed_cube, boolean tele_launched_cube, boolean tele_on_platform, boolean tele_climb_attempt, boolean tele_climb_success, boolean tele_grab_rung, boolean tele_grab_side, boolean tele_lift_one, boolean tele_lift_two, boolean tele_got_lift, String tele_comment, boolean final_lostParts, boolean final_lostComms, boolean final_defense_good, boolean final_def_Lane, boolean final_def_Block, boolean final_def_BlockSwitch, int final_num_Penalties, String final_comment, String final_studID, String final_dateTime) {
+    public matchData(String match, String team_num, boolean pre_cube, String pre_startPos, boolean auto_mode, boolean auto_baseline, boolean auto_cube_switch, boolean auto_cube_switch_att, boolean auto_switch_extra, boolean auto_cube_scale, boolean auto_cube_scale_att, boolean auto_scale_extra, boolean auto_xover_switch, boolean auto_xover_scale, boolean auto_wrong_switch, boolean auto_wrong_scale, String auto_comment, int tele_cube_switch, int tele_switch_attempt, int tele_cube_scale, int tele_scale_attempt, int tele_their_switch, int tele_their_attempt, int tele_cube_exchange, int tele_cube_portal, int tele_cube_pwrzone, int tele_cube_floor, int tele_their_floor, int tele_random_floor, boolean tele_cube_pickup, boolean tele_placed_cube, boolean tele_launched_cube, boolean tele_on_platform, boolean tele_climb_attempt, boolean tele_climb_success, boolean tele_grab_rung, boolean tele_grab_side, boolean tele_lift_one, boolean tele_lift_two, boolean tele_got_lift, String tele_comment, boolean final_lostParts, boolean final_lostComms, boolean final_defense_good, boolean final_def_Lane, boolean final_def_Block, boolean final_def_BlockSwitch, int final_num_Penalties, String final_comment, String final_studID, String final_dateTime) {
         this.match = match;
         this.team_num = team_num;
         this.pre_cube = pre_cube;
@@ -94,6 +94,7 @@ public class matchData implements Serializable {
         this.tele_cube_pwrzone = tele_cube_pwrzone;
         this.tele_cube_floor = tele_cube_floor;
         this.tele_their_floor = tele_their_floor;
+        this.tele_random_floor = tele_random_floor;
         this.tele_cube_pickup = tele_cube_pickup;
         this.tele_placed_cube = tele_placed_cube;
         this.tele_launched_cube = tele_launched_cube;
@@ -354,6 +355,14 @@ public matchData() {
 
     public void setTele_their_floor(int tele_their_floor) {
         this.tele_their_floor = tele_their_floor;
+    }
+
+    public int getTele_random_floor() {
+        return tele_random_floor;
+    }
+
+    public void setTele_random_floor(int tele_random_floor) {
+        this.tele_random_floor = tele_random_floor;
     }
 
     public boolean isTele_cube_pickup() {

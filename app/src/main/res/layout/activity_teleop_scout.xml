@@ -525,12 +525,12 @@
             android:id="@+id/lbl_Exchange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cube(s) into Exchange"
+            android:text="Cubes into Exchange"
             android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/txt_ExchangeNUM"
-            android:layout_width="30dp"
+            android:layout_width="20dp"
             android:layout_height="25dp"
             android:layout_marginLeft="5dp"
             android:text="0"
@@ -544,6 +544,34 @@
 
         <Button
             android:id="@+id/btn_ExchangeP"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:text="+" />
+
+        <TextView
+            android:id="@+id/lbl_Random"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Random Cubes from Floor"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_RandomNUM"
+            android:layout_width="20dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="5dp"
+            android:text="0"
+            android:textColor="@color/yellow" />
+
+        <Button
+            android:id="@+id/btn_RandomM"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:text="-" />
+
+        <Button
+            android:id="@+id/btn_RandomP"
             android:layout_width="30dp"
             android:layout_height="40dp"
             android:text="+" />

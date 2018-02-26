@@ -35,12 +35,12 @@ public class TeleopScoutActivity extends Activity {
 
     String TAG = "TeleopScoutActivity";      // This CLASS name
     TextView txt_dev, txt_stud, txt_match, txt_CubeSwitchNUM, txt_CubeSwitchAttNUM, txt_tnum, txt_CubeScaleNUM, txt_CubeScaleAttNUM;
-    TextView  txt_OtherSwitchNUM, txt_OtherSwitchAttNUM, txt_CubeZoneNUM, txt_CubePlatformNUM, txt_OthrSwtchNUM, txt_PortalNUM, txt_ExchangeNUM;
+    TextView  txt_OtherSwitchNUM, txt_OtherSwitchAttNUM, txt_CubeZoneNUM, txt_CubePlatformNUM, txt_OthrSwtchNUM, txt_PortalNUM, txt_ExchangeNUM, txt_RandomNUM;
     /* Final */       private Button button_GoToFinalActivity;
     /* Switch */      private Button btn_CubeSwitchM, btn_CubeSwitchP, btn_CubeSwitchAttP, btn_CubeSwitchAttM;
     /* Scale */       private Button btn_CubeScaleP,  btn_CubeScaleM,  btn_CubeScaleAttP,  btn_CubeScaleAttM;
     /* Opp Switch */  private Button btn_OtherSwitchM, btn_OtherSwitchP, btn_OtherSwitchAttP, btn_OtherSwitchAttM;
-    /*Retrieved Cbs*/ private Button btn_CubeZoneM, btn_CubeZoneP, btn_CubePlatformP, btn_CubePlatformM, btn_OthrSwtchP, btn_OthrSwtchM, btn_PortalP, btn_PortalM, btn_ExchangeP, btn_ExchangeM;
+    /*Retrieved Cbs*/ private Button btn_CubeZoneM, btn_CubeZoneP, btn_CubePlatformP, btn_CubePlatformM, btn_OthrSwtchP, btn_OthrSwtchM, btn_PortalP, btn_PortalM, btn_ExchangeP, btn_ExchangeM, btn_RandomP, btn_RandomM;
     CheckBox   chk_climbsuccessful, chk_climbattempted, chkBox_PU_Cubes_floor, chkBox_Platform, chk_LiftedBy;
     EditText   editText_TeleComments;
     RadioGroup radgrp_Deliver, radgrp_Boss, radgrp_Lifted;      RadioButton radio_Deliver, radio_Climb, radio_Lift, radio_One, radio_Two, radio_Zero, radio_Rung, radio_Side;
@@ -65,6 +65,7 @@ public class TeleopScoutActivity extends Activity {
     public int     cube_pwrzone       = 0;     // # cubes retrieved from Power Zone during Tele
     public int     cube_floor         = 0;     // # cubes retrieved from our Floor or Platform Zone during Tele
     public int     their_floor        = 0;     // # cubes retrieved from their Floor or Platform Zone during Tele
+    public int    random_floor        = 0;     // # cubes retrieved from random places during Tele
     public boolean cube_pickup        = false; // Did they pickup gears off the ground?
     public boolean on_platform        = false; // Finished on platform
     public boolean delPlace           = false; // Cube Delivery = Place    \ Radio
@@ -132,10 +133,13 @@ public class TeleopScoutActivity extends Activity {
         txt_CubeSwitchNUM         = (TextView) findViewById(R.id.txt_CubeSwitchNUM);
         btn_PortalP               = (Button) findViewById(R.id.btn_PortalP);
         btn_PortalM               = (Button) findViewById(R.id.btn_PortalM);
-        txt_PortalNUM           = (TextView) findViewById(R.id.txt_PortalNUM);
-        btn_ExchangeP               = (Button) findViewById(R.id.btn_ExchangeP);
-        btn_ExchangeM               = (Button) findViewById(R.id.btn_ExchangeM);
+        txt_PortalNUM             = (TextView) findViewById(R.id.txt_PortalNUM);
+        btn_ExchangeP             = (Button) findViewById(R.id.btn_ExchangeP);
+        btn_ExchangeM             = (Button) findViewById(R.id.btn_ExchangeM);
         txt_ExchangeNUM           = (TextView) findViewById(R.id.txt_ExchangeNUM);
+        btn_RandomP               = (Button) findViewById(R.id.btn_RandomP);
+        btn_RandomM               = (Button) findViewById(R.id.btn_RandomM);
+        txt_RandomNUM             = (TextView) findViewById(R.id.txt_RandomNUM);
 
         txt_CubeSwitchAttNUM.setText(Integer.toString(cubeSwitch_attempt));
         txt_CubeSwitchNUM   .setText(Integer.toString(cubeSwitch_placed));
@@ -329,6 +333,25 @@ public class TeleopScoutActivity extends Activity {
                 }
                 Log.w(TAG, "Their Cubes = " + their_floor);      // ** DEBUG **
                 txt_OthrSwtchNUM.setText(Integer.toString(their_floor));    // Perform action on click
+            }
+        });
+
+        btn_RandomP.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (random_floor < 6) {       // Max of 6 in Power Zone
+                    random_floor++;
+                }
+                Log.w(TAG, "Random Cubes = " + random_floor);          // ** DEBUG **
+                txt_RandomNUM.setText(Integer.toString(random_floor));    // Perform action on click
+            }
+        });
+        btn_RandomM.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (random_floor >= 1) {
+                    random_floor--;
+                }
+                Log.w(TAG, "Random Cubes = " + random_floor);      // ** DEBUG **
+                txt_RandomNUM.setText(Integer.toString(random_floor));    // Perform action on click
             }
         });
 
@@ -692,6 +715,7 @@ public class TeleopScoutActivity extends Activity {
         Pearadox.Match_Data.setTele_cube_pwrzone(cube_pwrzone);
         Pearadox.Match_Data.setTele_cube_floor(cube_floor);
         Pearadox.Match_Data.setTele_their_floor(their_floor);
+        Pearadox.Match_Data.setTele_random_floor(random_floor);
         Pearadox.Match_Data.setTele_cube_pickup(cube_pickup);
         Pearadox.Match_Data.setTele_on_platform(on_platform);
         Pearadox.Match_Data.setTele_placed_cube(delPlace);
