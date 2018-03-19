@@ -41,6 +41,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import static android.util.Log.i;
+
 public class DraftScout_Activity extends AppCompatActivity {
 
     String TAG = "DraftScout_Activity";        // This CLASS name
@@ -99,16 +101,22 @@ public class DraftScout_Activity extends AppCompatActivity {
         private float cubeScore;
         private float climbScore;
         private float weightedScore;
+        private float switchScore;
+        private float scaleScore;
+        private float exchangeScore;
 
         public Scores() {
         }
 
-        public Scores(String teamNum, String teamName, float cubeScore, float climbScore, float weightedScore) {
+        public Scores(String teamNum, String teamName, float cubeScore, float climbScore, float weightedScore, float switchScore, float scaleScore, float exchangeScore) {
             this.teamNum = teamNum;
             this.teamName = teamName;
             this.cubeScore = cubeScore;
             this.climbScore = climbScore;
             this.weightedScore = weightedScore;
+            this.switchScore = switchScore;
+            this.scaleScore = scaleScore;
+            this.exchangeScore = exchangeScore;
         }
 
         public String getTeamNum() {
@@ -149,6 +157,30 @@ public class DraftScout_Activity extends AppCompatActivity {
 
         public void setWeightedScore(float weightedScore) {
             this.weightedScore = weightedScore;
+        }
+
+        public float getSwitchScore() {
+            return switchScore;
+        }
+
+        public void setSwitchScore(float switchScore) {
+            this.switchScore = switchScore;
+        }
+
+        public float getScaleScore() {
+            return scaleScore;
+        }
+
+        public void setScaleScore(float scaleScore) {
+            this.scaleScore = scaleScore;
+        }
+
+        public float getExchangeScore() {
+            return exchangeScore;
+        }
+
+        public void setExchangeScore(float exchangeScore) {
+            this.exchangeScore = exchangeScore;
         }
 
         public static Comparator<Scores> teamComp = new Comparator<Scores>() {
@@ -254,6 +286,18 @@ public class DraftScout_Activity extends AppCompatActivity {
                         Collections.reverse(team_Scores);   // Descending
                         showFormula(sortType);              // update the formula
                         loadTeams();
+                        break;
+                    case "Switch":
+                        sortType = "Switch";
+                        Log.w(TAG, "Switch sort");
+                        break;
+                    case "Scale":
+                        sortType = "Scale";
+                        Log.w(TAG, "Scale sort");
+                        break;
+                    case "Exchange":
+                        sortType = "Exchange";
+                        Log.w(TAG, "Exchange sort");
                         break;
                     case "Team#":
 //                Log.w(TAG, "Team# sort");
@@ -401,6 +445,41 @@ public class DraftScout_Activity extends AppCompatActivity {
     }
 
 
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    public void buttonPit_Click(View view) {
+        Log.i(TAG, ">>>>> buttonPit_Click  " + teamSelected);
+        HashMap<String, String> temp = new HashMap<String, String>();
+        String teamHash;
+
+        if (teamSelected >= 0) {
+            draftList.get(teamSelected);
+            temp = draftList.get(teamSelected);
+            teamHash = temp.get("team");
+// ToDo - launch Viz_Pit
+        } else {
+            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+            tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+            Toast toast = Toast.makeText(getBaseContext(), "★★★★  There is _NO_ Team selected for Pit Data ★★★★", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
+        }
+    }
+
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private void launchVizPit(String team, String name, String imgURL) {
+        i(TAG,">>>>>>>>  launchVizPit " + team + " " + name + " " + imgURL);      // ** DEBUG **
+        Intent pit_intent = new Intent(DraftScout_Activity.this, VisPit_Activity.class);
+        Bundle VZbundle = new Bundle();
+        VZbundle.putString("team", team);        // Pass data to activity
+        VZbundle.putString("name", name);        // Pass data to activity
+        VZbundle.putString("url", imgURL);       // Pass data to activity
+        pit_intent.putExtras(VZbundle);
+        startActivity(pit_intent);               // Start Visualizer for Pit Data
+
+    }
+
+
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void addMatchData_Team_Listener(final DatabaseReference pfMatchData_DBReference) {
         pfMatchData_DBReference.addValueEventListener(new ValueEventListener() {
@@ -468,6 +547,7 @@ public class DraftScout_Activity extends AppCompatActivity {
                 case "Weighted":
                     totalScore = "[" + String.format("%3.2f", score_inst.getWeightedScore()) + "]";
                     break;
+ // ToDo - add new buttons
                 case "Team#":
                     totalScore=" ";
                     break;

@@ -1055,6 +1055,9 @@ public class Visualizer_Activity extends AppCompatActivity {
                     }
                 }
                 w(TAG,"### Matches ###  : " + matchList.size());
+                if (next_Match.length() > 60) {             // 12 matches fit in 60 Char.
+                    txt_NextMatch.setTextSize((float) 12.0);
+                }
                 txt_NextMatch.setText(next_Match);
                 listView_Matches = (ListView) findViewById(R.id.listView_Matches);
                 adaptMatch = new ArrayAdapter<String>(Visualizer_Activity.this, R.layout.match_list_layout, matchList);

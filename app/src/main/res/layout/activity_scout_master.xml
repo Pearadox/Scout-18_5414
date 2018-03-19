@@ -69,14 +69,16 @@
 
     <TextView
         android:id="@+id/txt_NextMatch"
-        android:layout_width="390sp"
+        android:layout_width="500sp"
         android:layout_height="20sp"
-        android:layout_marginStart="12dp"
-        android:text="Q001 Q002 Q003 Q004 Q005 Q006 Q007 Q008 Q009 Q010 "
-        android:textColor="@color/yellow"
-        android:textStyle="bold"
         android:layout_alignBottom="@+id/imgPearadox"
-        android:layout_toEndOf="@+id/imgPearadox" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="11sp"
+        android:layout_toEndOf="@+id/imgPearadox"
+        android:textSize="14sp"
+        android:text="Q001 Q002 Q003 Q004 Q005 Q006 Q007 Q008 Q009 Q010 Q011 Q012 Q013 Q014 Q015 Q016"
+        android:textColor="@color/yellow"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/lbl_space1"

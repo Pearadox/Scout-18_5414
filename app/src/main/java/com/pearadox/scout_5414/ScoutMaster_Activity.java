@@ -54,6 +54,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
     ArrayAdapter<String> adapter_Num;
     public String NumSelected = " ";
     public int matchSelected = 0;
+    public int our_matches = 0;                 // Matches for 5414
     public String matchID = "T00";              // Type + #
     public String batt_Stat = "00";             // Battery Status (
     ListView listView_Matches;
@@ -790,6 +791,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                 txt_NextMatch = (TextView) findViewById(R.id.txt_NextMatch);
                 matchList.clear();
                 next_Match = "";
+                our_matches = 0;
                 p_Firebase.matchObj match_inst = new p_Firebase.matchObj();
                 Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
                 Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
@@ -800,25 +802,34 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                     // Create the list of _OUR_ matches across the top
                     if (match_inst.getR1().matches("5414")) {
                         next_Match = next_Match + match_inst.getMatch() + " ";
+                        our_matches ++;
                     }
                     if (match_inst.getR2().matches("5414")) {
                         next_Match = next_Match + match_inst.getMatch() + " ";
+                        our_matches ++;
                     }
                     if (match_inst.getR3().matches("5414")) {
                         next_Match = next_Match + match_inst.getMatch() + " ";
+                        our_matches ++;
                     }
                     if (match_inst.getB1().matches("5414")) {
                         next_Match = next_Match + match_inst.getMatch() + " ";
+                        our_matches ++;
                     }
                     if (match_inst.getB2().matches("5414")) {
                         next_Match = next_Match + match_inst.getMatch() + " ";
+                        our_matches ++;
                     }
                     if (match_inst.getB3().matches("5414")) {
                         next_Match = next_Match + match_inst.getMatch() + " ";
+                        our_matches ++;
                     }
                 }
-                Log.w(TAG, "### Matches ###  : " + matchList.size());
+                Log.w(TAG, "### Matches ###  : " + matchList.size() + "    Ours=" + our_matches);
                 if (matchList.size() > 0) {
+                    if (our_matches > 12) {
+                        txt_NextMatch.setTextSize((float) 10.0);
+                    }
                     txt_NextMatch.setText(next_Match);
                     Pearadox.our_Matches = next_Match;
                     listView_Matches = (ListView) findViewById(R.id.listView_Matches);

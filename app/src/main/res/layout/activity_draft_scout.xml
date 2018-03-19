@@ -91,10 +91,11 @@
         android:id="@+id/btn_Default"
         android:layout_width="wrap_content"
         android:layout_height="45dp"
-        android:onClick="buttonDefault_Click"
         android:layout_alignEnd="@+id/lbl_Selected"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/lbl_Selected"
+        android:layout_marginStart="20dp"
+        android:onClick="buttonDefault_Click"
         android:padding="0dp"
         android:text="Reset Defaults" />
 
@@ -144,12 +145,25 @@
     <Button
         android:id="@+id/btn_Match"
         android:layout_width="70sp"
-        android:layout_height="35dp"
+        android:layout_height="30dp"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/lbl_NumTeamsView"
         android:background="@color/brightblue"
         android:onClick="buttonMatch_Click"
         android:text="MATCH DATA"
+        android:textColor="@android:color/black"
+        android:textSize="12sp"
+        tools:enabled="false" />
+
+    <Button
+        android:id="@+id/btn_Pit"
+        android:layout_width="70sp"
+        android:layout_height="30dp"
+        android:layout_alignBottom="@+id/lbl_Formula"
+        android:layout_alignParentEnd="true"
+        android:background="@color/magenta"
+        android:onClick="buttonPit_Click"
+        android:text="PIT DATA"
         android:textColor="@android:color/black"
         android:textSize="12sp"
         tools:enabled="false" />
@@ -162,16 +176,16 @@
         android:layout_height="15dp"
         android:layout_alignBottom="@+id/lbl_NumTeamsView"
         android:layout_alignStart="@+id/radgrp_Sort"
+        android:layout_marginStart="10dp"
         android:text="Sort By"
-        android:textColor="@color/white"
-        android:textSize="10dp"
+        android:textColor="@color/orange"
+        android:textSize="12dp"
         android:textStyle="bold" />
 
     <RadioGroup
         android:id="@+id/radgrp_Sort"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_width="350dp"
+        android:layout_height="60dp"
         android:layout_below="@+id/lbl_Selected"
         android:layout_toEndOf="@+id/imageView_DS"
         android:orientation="horizontal">
@@ -182,15 +196,16 @@
             android:layout_height="wrap_content"
             android:checked="true"
             android:text="Team#" />
+
         <RadioButton
             android:id="@+id/radio_Climb"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="Climb" />
 
         <RadioButton
             android:id="@+id/radio_Cubes"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="Cubes" />
 
@@ -199,6 +214,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Weighted" />
+        //-----------------------------------
+
+        <RadioButton
+            android:id="@+id/radio_Switch"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-300dp"
+            android:layout_marginTop="30dp"
+            android:text="Switch" />
+
+        <RadioButton
+            android:id="@+id/radio_Scale"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="30dp"
+            android:text="Scale" />
+
+        <RadioButton
+            android:id="@+id/radio_Exchange"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="30dp"
+            android:text="Exchange" />
 
     </RadioGroup>
 

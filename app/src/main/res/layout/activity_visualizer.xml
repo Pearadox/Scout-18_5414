@@ -122,17 +122,18 @@
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     /* Start of Red Alliance */
+
     <TextView
         android:id="@+id/lbl_RedAlliance"
         android:layout_width="match_parent"
-        android:textColor="@color/darkred"
-        android:background="@color/red"
         android:layout_height="wrap_content"
-        android:text="Red Alliance"
-        android:gravity="center_horizontal"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/linear_Matches"
-        android:layout_marginTop="1dp"
-        android:layout_alignParentStart="true" />
+        android:layout_marginTop="30dp"
+        android:background="@color/red"
+        android:gravity="center_horizontal"
+        android:text="Red Alliance"
+        android:textColor="@color/darkred" />
 
     <TextView
         android:id="@+id/lbl_spacer1"
@@ -1210,7 +1211,7 @@
     <LinearLayout
         android:id="@+id/linear_Matches"
         android:layout_width="160sp"
-        android:layout_height="140sp"
+        android:layout_height="130dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:choiceMode="singleChoice"
@@ -1222,7 +1223,7 @@
             android:id="@+id/listView_Matches"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:layout_margin="4dp"
+            android:layout_margin="2dp"
             android:minHeight="80dip"
             android:scrollbars="vertical"
             android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -1245,20 +1246,21 @@
 
     <TextView
         android:id="@+id/txt_NextMatch"
-        android:layout_width="390sp"
-        android:layout_height="20sp"
-        android:layout_above="@+id/lbl_RedAlliance"
-        android:layout_marginStart="5dp"
+        android:layout_width="500dp"
+        android:layout_height="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/linear_Matches"
         android:layout_toEndOf="@+id/imgPearadox"
-        android:text="Q001 Q002 Q003 Q004 Q005 Q006 Q007 Q008 Q009 Q010 "
+        android:text="Q001 Q002 Q003 Q004 Q005 Q006 Q007 Q008 Q009 Q010 Q011 Q012 Q013 Q014 Q015"
         android:textColor="@color/yellow"
+        android:textSize="14dp"
         android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/imgPearadox"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_above="@+id/lbl_RedAlliance"
+        android:layout_alignBottom="@+id/txt_NextMatch"
         android:layout_alignParentStart="true"
         app:srcCompat="@mipmap/p_logo" />
 
