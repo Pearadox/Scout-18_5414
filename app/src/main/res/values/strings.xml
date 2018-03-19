@@ -26,15 +26,6 @@
         <item>Draft Scout</item>
     </string-array>
 
-    <string-array name="spinner_balls_collected">
-        <item> </item>
-        <item>0-10</item>
-        <item>11-20</item>
-        <item>21-30</item>
-        <item>31-40</item>
-        <item>41-50</item>
-    </string-array>
-
 
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // String Values for 'non-Main' Activities
@@ -56,22 +47,6 @@
         <item>Side (out)</item>
         <item>Middle</item>
         <item>Side (in)</item>
-    </string-array>
-
-    <!-- ##### Stop Position for Autononous ##### -->
-    <string-array name="auto_stop_array">
-        <item> </item>
-        <item>Neutral Zone</item>
-        <item>Past Neutral Zone</item>
-        <item>Near Hopper</item>
-    </string-array>
-
-    <!-- ##### Gear Placement for Autononous ##### -->
-    <string-array name="auto_gear_placement">
-        <item> </item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
     </string-array>
 
 
@@ -96,7 +71,5 @@
     <color name="black">#000000</color>
     <color name="grey">#a8a8a8</color>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
