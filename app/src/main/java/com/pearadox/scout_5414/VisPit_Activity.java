@@ -6,8 +6,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -24,12 +26,13 @@ public class VisPit_Activity extends AppCompatActivity {
     String tnum = "", tname = "", imgURL = "";
     TextView txt_team, txt_teamName;
     TextView txt_Ht, txt_TotWheels, txt_NumTrac, txt_NumOmni, txt_NumMecanum, txt_LiftCap, txt_Scout, txt_Comments;
-    ImageView imgView_Robot;                // Robot image
+    ImageView imgView_Robot, imgView_LARGE;                // Robot image
     CheckBox chkBox_Vision, chkBox_Pneumatics, chkBox_Climb, chkBox_Lift, chkBox_Hook, chkBox_Ramp;
     CheckBox chkBox_Arms, chkBox_ArmIntake, chkBox_ArmPress, chkBox_OffFloor, chkBox_Belt, chkBox_Box, chkBox_Other;
     RadioGroup radgrp_Deliver;      RadioButton radio_Launch, radio_Place;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfPitData_DBReference;
+
 
     // ===================  Data Elements for Pit Scout object ===================
     public String teamSelected = " ";           // Team #
@@ -88,7 +91,6 @@ public class VisPit_Activity extends AppCompatActivity {
         } else {
             imgView_Robot.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
         }
-
         txt_Ht = (TextView) findViewById(R.id.txt_Ht);
         txt_Scout = (TextView) findViewById(R.id.txt_Scout);
         txt_Comments = (TextView) findViewById(R.id.txt_Comments);
@@ -96,7 +98,28 @@ public class VisPit_Activity extends AppCompatActivity {
         txt_Scout.setText(" ");
         txt_Comments.setText("***   No Pit data for this team   ***");
 
-    }
+    // *****  If image selected, view full screen   *****
+//        imgView_Robot.setOnClickListener(new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            ImageView imgView_LARGE = (ImageView) findViewById(R.id.imgView_LARGE);
+//            ImageView imgView_Robot = (ImageView) findViewById(R.id.imgView_Robot);
+//            imgView_Robot.setVisibility(View.INVISIBLE);
+//            imgView_LARGE.setVisibility(View.VISIBLE);
+//        }
+//    });
+//        imgView_LARGE.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ImageView imgView_LARGE = (ImageView) findViewById(R.id.imgView_LARGE);
+//                ImageView imgView_Robot = (ImageView) findViewById(R.id.imgView_Robot);
+//                imgView_Robot.setVisibility(View.VISIBLE);
+//                imgView_LARGE.setVisibility(View.INVISIBLE);
+//            }
+//        });
+}
+
+
     private void getTeam_Pit(String team) {
         Log.i(TAG, "$$$$$  getTeam_Pit  $$$$$  " + team);
 
@@ -209,7 +232,8 @@ public class VisPit_Activity extends AppCompatActivity {
                 Log.e(TAG, "%%%  DatabaseError");
             }
         });
-            }
+        }
+
 
 //###################################################################
 //###################################################################

@@ -55,7 +55,6 @@
         android:textSize="14dp"
         android:textStyle="bold" />
 
-
     <TextView
         android:id="@+id/txt_NumTeams"
         android:layout_width="25sp"
@@ -64,6 +63,18 @@
         android:textColor="@color/yellow"
         android:layout_below="@+id/txt_EventName"
         android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/txt_SelNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/lbl_NumTeamsView"
+        android:layout_alignTop="@+id/btn_Pit"
+        android:layout_marginStart="-15dp"
+        android:layout_marginTop="-30dp"
+        android:text="99"
+        android:textColor="@color/cyan"
+        android:textSize="24dp" />
 
     <TextView
         android:id="@+id/lbl_Formula"
@@ -98,6 +109,26 @@
         android:onClick="buttonDefault_Click"
         android:padding="0dp"
         android:text="Reset Defaults" />
+
+    <ImageView
+        android:id="@+id/imgStat_Load"
+        android:layout_width="30sp"
+        android:layout_height="30sp"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_toEndOf="@+id/btn_Default"
+        android:contentDescription="Load Status"
+        android:src="@drawable/traffic_light_red" />
+
+    <TextView
+        android:id="@+id/txt_LoadStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btn_Default"
+        android:layout_alignBottom="@+id/btn_Default"
+        android:layout_toEndOf="@+id/imgStat_Load"
+        android:text="Loading ...  Please Wait"
+        android:textColor="@color/orange" />
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -220,8 +251,10 @@
             android:id="@+id/radio_Switch"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/btn_Pit"
             android:layout_marginStart="-300dp"
             android:layout_marginTop="30dp"
+            android:layout_toStartOf="@+id/btn_Pit"
             android:text="Switch" />
 
         <RadioButton
@@ -241,5 +274,6 @@
             android:text="Exchange" />
 
     </RadioGroup>
+
 
 </RelativeLayout>

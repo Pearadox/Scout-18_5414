@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+import android.net.Uri;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -30,17 +32,24 @@ import com.cpjd.main.Settings;
 import com.cpjd.main.TBA;
 import com.cpjd.models.Event;
 import com.cpjd.models.Team;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import static android.util.Log.e;
 import static android.util.Log.i;
 
 public class DraftScout_Activity extends AppCompatActivity {
@@ -51,12 +60,13 @@ public class DraftScout_Activity extends AppCompatActivity {
     /*Shared Prefs-Retrieved Cbs*/ public String cubeColPort = ""; public String cubeColZone  = ""; public String cubeColFloor  = ""; public String cubeColStolen  = "";  public String cubeColRandom  = "";
     /*Shared Prefs-Climbing*/ public String climbClimbs = ""; public String climbLift1 = ""; public String climbLift2 = ""; public String climbPlat = ""; public String climbLifted = "";
     /*Weight factors*/ public String wtClimb = ""; public String wtCubeScore = ""; public String wtCubeCollct = "";
-    TextView txt_EventName, txt_NumTeams, txt_Formula, lbl_Formula;
+    ImageView imgStat_Load;
+    TextView txt_EventName, txt_NumTeams, txt_Formula, lbl_Formula, txt_LoadStatus, txt_SelNum;
     ListView lstView_Teams;
     TextView TeamData, BA, Stats;
     Button btn_Match, btn_Default;
     RadioGroup radgrp_Sort;
-    RadioButton radio_Climb, radio_Cubes, radio_Weight, radio_Team;
+    RadioButton radio_Climb, radio_Cubes, radio_Weight, radio_Team, radio_Switch, radio_Scale, radio_Exchange;
     //    Button btn_Up, btn_Down, btn_Delete;
     public ArrayAdapter<String> adaptTeams;
     //    ArrayList<String> draftList = new ArrayList<String>();
@@ -65,6 +75,8 @@ public class DraftScout_Activity extends AppCompatActivity {
     public static String sortType = "";
     String tnum = "";
     String tn = "";
+    String Viz_URL = "";
+    String teamNum=""; String teamName = "";
     p_Firebase.teamsObj team_inst = new p_Firebase.teamsObj();
     //    Team[] teams;
     public static int BAnumTeams = 0;                                      // # of teams from Blue Alliance
@@ -89,6 +101,8 @@ public class DraftScout_Activity extends AppCompatActivity {
     String onPlatform = "";
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfMatchData_DBReference;
+    FirebaseStorage storage;
+    StorageReference storageRef;
     matchData match_inst = new matchData();
     // -----  Array of Match Data Objects for Draft Scout
     public static ArrayList<matchData> All_Matches = new ArrayList<matchData>();
@@ -230,6 +244,9 @@ public class DraftScout_Activity extends AppCompatActivity {
         txt_NumTeams = (TextView) findViewById(R.id.txt_NumTeams);
         txt_Formula = (TextView) findViewById(R.id.txt_Formula);
         lbl_Formula = (TextView) findViewById(R.id.lbl_Formula);
+        txt_LoadStatus = (TextView) findViewById(R.id.txt_LoadStatus);
+        txt_SelNum = (TextView) findViewById(R.id.txt_SelNum);
+        txt_SelNum.setText("");
         lstView_Teams = (ListView) findViewById(R.id.lstView_Teams);
         txt_EventName.setText(Pearadox.FRC_EventName);              // Event Name
         txt_NumTeams.setText(String.valueOf(Pearadox.numTeams));    // # of Teams
@@ -244,6 +261,9 @@ public class DraftScout_Activity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 Log.w(TAG, "@@ RadioClick_Sort @@");
+                txt_SelNum = (TextView) findViewById(R.id.txt_SelNum);
+                txt_SelNum.setText("");
+                teamSelected = -1;
                 radio_Team = (RadioButton) findViewById(checkedId);
                 String value = radio_Team.getText().toString();
                 Log.w(TAG, "RadioSort -  '" + value + "'");
@@ -290,14 +310,41 @@ public class DraftScout_Activity extends AppCompatActivity {
                     case "Switch":
                         sortType = "Switch";
                         Log.w(TAG, "Switch sort");
+                        Collections.sort(team_Scores, new Comparator<Scores>() {
+                            @Override
+                            public int compare(Scores c1, Scores c2) {
+                                return Float.compare(c1.getSwitchScore(), c2.getSwitchScore());
+                            }
+                        });
+                        Collections.reverse(team_Scores);   // Descending
+                        showFormula(sortType);              // update the formula
+                        loadTeams();
                         break;
                     case "Scale":
                         sortType = "Scale";
                         Log.w(TAG, "Scale sort");
+                        Collections.sort(team_Scores, new Comparator<Scores>() {
+                            @Override
+                            public int compare(Scores c1, Scores c2) {
+                                return Float.compare(c1.getScaleScore(), c2.getScaleScore());
+                            }
+                        });
+                        Collections.reverse(team_Scores);   // Descending
+                        showFormula(sortType);              // update the formula
+                        loadTeams();
                         break;
                     case "Exchange":
                         sortType = "Exchange";
                         Log.w(TAG, "Exchange sort");
+                        Collections.sort(team_Scores, new Comparator<Scores>() {
+                            @Override
+                            public int compare(Scores c1, Scores c2) {
+                                return Float.compare(c1.getExchangeScore(), c2.getExchangeScore());
+                            }
+                        });
+                        Collections.reverse(team_Scores);   // Descending
+                        showFormula(sortType);              // update the formula
+                        loadTeams();
                         break;
                     case "Team#":
 //                Log.w(TAG, "Team# sort");
@@ -338,6 +385,8 @@ public class DraftScout_Activity extends AppCompatActivity {
                 lstView_Teams.setSelector(android.R.color.holo_blue_light);
         		/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 //                tnum = draftList.get(teamSelected).substring(0,4);
+                txt_SelNum = (TextView) findViewById(R.id.txt_SelNum);
+                txt_SelNum.setText(String.valueOf(pos+1));      // Sort Position
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -386,18 +435,33 @@ public class DraftScout_Activity extends AppCompatActivity {
             case "Climb":
                 Log.e(TAG, "*** CLIMB   cl=" + climbClimbs + " 1=" + climbLift1 + " 2=" + climbLift2 + " pl=" + climbPlat + " was=" + climbLifted);
                 form = "(" + climbClimbs + "*(climbs) + " +"(Lift1*" + climbLift1 + ") + " +"(Lift2*" + climbLift2 + ") + (Plat*" + climbPlat + ") + (WasLifted*" + climbLifted + ")) / # matches";
-                lbl_Formula.setTextColor(Color.parseColor("#4169e1"));
+                lbl_Formula.setTextColor(Color.parseColor("#4169e1"));      // blue
                 txt_Formula.setText(form);
                 break;
             case "Cubes":
                 form = "SCR:  (" + cubeAutoSw +"*(aCSw)+" + cubeAutoSc + "*(aCSc)+" + cubeTeleSw + "*(tCSw)+" + cubeTeleSc + "*(tCSc)+" + teleOthr + "*(oth)+" + cubeExch + "*(Exc)) / # matches  ✚ \n";
                 form = form + "COL:  (" + cubeColPort +"*(Port) + " + cubeColZone + "*(zone) + " + cubeColFloor + "*(flr) + " + cubeColStolen + "*(Their) " + cubeColRandom + "*(Random)) / # matches";
-                lbl_Formula.setTextColor(Color.parseColor("#ee00ee"));
+                lbl_Formula.setTextColor(Color.parseColor("#ee00ee"));      // magenta
                 txt_Formula.setText(form);
                 break;
             case "Weighted":
                 form = "((" + wtClimb + "*(climbScore) + " + wtCubeScore + "*(cubesScored) + " + wtCubeCollct + "*(cubesCollected)) / #matches";
-                lbl_Formula.setTextColor(Color.parseColor("#ff0000"));
+                lbl_Formula.setTextColor(Color.parseColor("#ff0000"));      // red
+                txt_Formula.setText(form);
+                break;
+            case "Switch":
+                form = "(" + cubeAutoSw +"*(aCSw) + " + cubeTeleSw + "*(tCSw) + " + teleOthr + "*(oth)) / #matches";
+                lbl_Formula.setTextColor(Color.parseColor("#00eeee"));          // cyan
+                txt_Formula.setText(form);
+                break;
+            case "Scale":
+                form = "(" + cubeAutoSc + "*(aCSc) + " + cubeTeleSc + "*(tCSc) / #matches";
+                lbl_Formula.setTextColor(Color.parseColor("#32cd32"));      // lime green
+                txt_Formula.setText(form);
+                break;
+            case "Exchange":
+                form = "(Exc) / #matches";
+                lbl_Formula.setTextColor(Color.parseColor("#a8a8a8"));      /// grey
                 txt_Formula.setText(form);
                 break;
             default:                //
@@ -449,13 +513,34 @@ public class DraftScout_Activity extends AppCompatActivity {
     public void buttonPit_Click(View view) {
         Log.i(TAG, ">>>>> buttonPit_Click  " + teamSelected);
         HashMap<String, String> temp = new HashMap<String, String>();
-        String teamHash;
+        String teamHash="";
+        final String[] URL = {""};
 
         if (teamSelected >= 0) {
             draftList.get(teamSelected);
             temp = draftList.get(teamSelected);
             teamHash = temp.get("team");
-// ToDo - launch Viz_Pit
+            teamNum = teamHash.substring(0, 4);
+            teamName = teamHash.substring(7, teamHash.indexOf("("));  // UP TO # MATCHES
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event).child("robot_" + teamNum.trim() + ".png");
+            Log.e(TAG, "gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event + ".child(robot_" + teamNum.trim() + ".png)");
+            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Log.w(TAG, "URI=" + uri);
+                    URL[0] = uri.toString();
+                    Log.w(TAG, "URL=" + URL[0]);
+                    Viz_URL = URL[0];
+                    Log.w(TAG, "Team '" + teamNum + "'  '" + teamName + "'  URL=" + Viz_URL);
+                    launchVizPit(teamNum, teamName, Viz_URL);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Log.e(TAG, "ERR= '" + exception + "'");
+                }
+            });
         } else {
             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
             tg.startTone(ToneGenerator.TONE_PROP_BEEP);
@@ -547,7 +632,15 @@ public class DraftScout_Activity extends AppCompatActivity {
                 case "Weighted":
                     totalScore = "[" + String.format("%3.2f", score_inst.getWeightedScore()) + "]";
                     break;
- // ToDo - add new buttons
+                case "Switch":
+                    totalScore = "[" + String.format("%3.2f", score_inst.getSwitchScore()) + "]";
+                    break;
+                case "Scale":
+                    totalScore = "[" + String.format("%3.2f", score_inst.getScaleScore()) + "]";
+                    break;
+                case "Exchange":
+                    totalScore = "[" + String.format("%3.2f", score_inst.getExchangeScore()) + "]";
+                    break;
                 case "Team#":
                     totalScore=" ";
                     break;
@@ -557,7 +650,7 @@ public class DraftScout_Activity extends AppCompatActivity {
 
             temp.put("team", tn + " - " + score_inst.getTeamName() + "   (" + mdNumMatches + ")   " +  totalScore);
 //            temp.put("BA", "Rank=" + teams[i].rank + "  " + teams[i].record + "   OPR=" + String.format("%3.1f", (teams[i].opr)) + "    ↑ " + String.format("%3.1f", (teams[i].touchpad)) + "   kPa=" + String.format("%3.1f", (teams[i].pressure)));
-            temp.put("Stats", "Auto ⚻ " + autoSwRatio + " ➽ " + autoSwXover + "  ⚖ " + autoScRatio + " ➽ " + autoScXover+ "    Tele ⚻ " + teleSwRatio + "  Oth⚻ " + teleOthrRatio +  "   ⚖ " + teleScRatio + "   Exch " + teleExch + "  Port " + telePort + "  Zone " + teleZone);
+            temp.put("Stats", "Auto ⚻ " + autoSwRatio + " ➽ " + autoSwXover + "  ⚖ " + autoScRatio + " ➽ " + autoScXover+ "  Tele ⚻ " + teleSwRatio + " Oth⚻ " + teleOthrRatio +  "  ⚖ " + teleScRatio + "  Exch " + teleExch + " Port " + telePort + " Zone " + teleZone);
             temp.put("BA",  "Climb " + "  " + climbRatio + "  ↕One " + liftOne + "  ↕Two " + liftTwo + "   onPlat⚌" + onPlatform+ "    Was↑ " + gotLifted + "    ▉P/U  " + cubeChk);
             draftList.add(temp);
         } // End For
@@ -760,7 +853,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
             gotLifted = "0";
         }
         //============================
-        float climbScore = 0; float cubeScored = 0; float cubeCollect = 0; float cubeScore = 0;  float weightedScore = 0;
+        float climbScore = 0; float cubeScored = 0; float cubeCollect = 0; float cubeScore = 0; float weightedScore = 0; float switchScore = 0; float scaleScore = 0; float exchangeScore = 0;
 //        Log.e(TAG, team + " "+ climbs + " "+ lift1Num + " "+ lift2Num + " " + platNum +  " " + liftedNum + " / " + numMatches);
         if (numMatches > 0) {
             climbScore = (float) (((climbs * Float.parseFloat(climbClimbs)) + (lift1Num * Float.parseFloat(climbLift1)) + (lift2Num * Float.parseFloat(climbLift2))) + (platNum * Float.parseFloat(climbPlat)) + (liftedNum * Float.parseFloat(climbLifted))) / numMatches;
@@ -768,11 +861,17 @@ public boolean onCreateOptionsMenu(Menu menu) {
             cubeCollect = (float) ((telePortalNUM * Float.parseFloat(cubeColPort) + teleZoneNUM * Float.parseFloat(cubeColZone) + teleFloorNUM * Float.parseFloat(cubeColFloor) + teleTheirNUM * Float.parseFloat(cubeColStolen) + teleRandomNUM * Float.parseFloat(cubeColRandom)) / numMatches);
             cubeScore = (float) ((cubeScored) + cubeCollect);
             weightedScore = ((climbScore* Float.parseFloat(wtClimb) + cubeScored * Float.parseFloat(wtCubeScore) + cubeCollect * Float.parseFloat(wtCubeCollct)) / numMatches);
-//            Log.w(TAG, team + " **Scores**  Climb = " + String.format("%3.2f", climbScore) + "  Cubes Scored = " + String.format("%3.2f", cubeScored) + "  Cubes Collected = " + String.format("%3.2f", cubeCollect) + "  Cubes Score = " + String.format("%3.2f", cubeScore) + "  Weighted Score = " + String.format("%3.2f", weightedScore));
+            switchScore = (float) ((autoCubeSw * Float.parseFloat(cubeAutoSw) + (teleCubeSw * Float.parseFloat(cubeTeleSw)) + (teleOthrNUM * Float.parseFloat(teleOthr)))) / numMatches;
+            scaleScore = (float) ((autoCubeSc * Float.parseFloat(cubeAutoSc) + teleCubeSc * Float.parseFloat(cubeTeleSc))) / numMatches;
+            exchangeScore = (float) (teleCubeExch / numMatches);
+//            Log.w(TAG, team + " **Scores**  Climb = " + String.format("%3. ", climbScore) + "  Cubes Scored = " + String.format("%3.2f", cubeScored) + "  Cubes Collected = " + String.format("%3.2f", cubeCollect) + "  Cubes Score = " + String.format("%3.2f", cubeScore) + "  Weighted Score = " + String.format("%3.2f", weightedScore));
         } else {
             climbScore = 0;
             cubeScore = 0;
             weightedScore = 0;
+            switchScore = 0;
+            scaleScore = 0;
+            exchangeScore = 0;
         }
         String tNumber="";
         for (int i = 0; i < team_Scores.size(); i++) {    // load by sorted scores
@@ -784,6 +883,9 @@ public boolean onCreateOptionsMenu(Menu menu) {
                 score_data.setClimbScore(climbScore);           // Save
                 score_data.setCubeScore(cubeScore);             //  all
                 score_data.setWeightedScore(weightedScore);     //   scores
+                score_data.setSwitchScore(switchScore);         //
+                score_data.setScaleScore(scaleScore);           //
+                score_data.setExchangeScore(exchangeScore);     //
             }
         }
     }
@@ -794,6 +896,8 @@ public boolean onCreateOptionsMenu(Menu menu) {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.i(TAG, "<<<< getFB_Data >>>> _ALL_ Match Data ");
+                ImageView imgStat_Load = (ImageView) findViewById(R.id.imgStat_Load);
+                txt_LoadStatus = (TextView) findViewById(R.id.txt_LoadStatus);
                 All_Matches.clear();
                 matchData mdobj = new matchData();
                 Iterable<DataSnapshot> snapshotIterator = dataSnapshot.getChildren();   /*get the data children*/
@@ -805,6 +909,8 @@ public boolean onCreateOptionsMenu(Menu menu) {
                 Log.w(TAG, "addMD_VE *****  Matches Loaded. # = "  + All_Matches.size());
                 Button btn_Match = (Button) findViewById(R.id.btn_Match);   // Listner defined in Layout XML
                 btn_Match.setEnabled(true);
+                imgStat_Load.setImageDrawable(getResources().getDrawable(R.drawable.traffic_light_green));
+                txt_LoadStatus.setText("");
             }
 
             @Override
@@ -828,6 +934,9 @@ public boolean onCreateOptionsMenu(Menu menu) {
             curScrTeam.setClimbScore((float) 0);
             curScrTeam.setCubeScore((float) 0);
             curScrTeam.setWeightedScore((float) 0);
+            curScrTeam.setSwitchScore((float) 0);
+            curScrTeam.setScaleScore((float) 0);
+            curScrTeam.setExchangeScore((float) 0);
             team_Scores.add(i, curScrTeam);
         } // end For
         Log.w(TAG, "#Scores = " + team_Scores.size());
@@ -854,6 +963,18 @@ public boolean onCreateOptionsMenu(Menu menu) {
                 case "Weighted":
                     radio_Weight = (RadioButton) findViewById(R.id.radio_Weight);
                     radio_Weight.performClick();         // "force" radio button click
+                    break;
+                case "Switch":
+                    radio_Switch = (RadioButton) findViewById(R.id.radio_Switch);
+                    radio_Switch.performClick();         // "force" radio button click
+                    break;
+                case "Scale":
+                    radio_Scale = (RadioButton) findViewById(R.id.radio_Scale);
+                    radio_Scale.performClick();         // "force" radio button click
+                    break;
+                case "Exchange":
+                    radio_Exchange = (RadioButton) findViewById(R.id.radio_Exchange);
+                    radio_Exchange.performClick();         // "force" radio button click
                     break;
                 default:                //
                     Log.e(TAG, "*** Invalid Type " + sortType);
