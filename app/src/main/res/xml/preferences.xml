@@ -24,13 +24,15 @@
             android:key="prefCube_teleSw"
             android:summary="Multiplier for Cubes scored on Switch during TeleOps"
             android:title="Tele Switch" />
+
         <EditTextPreference
             android:id="@+id/txt_teleSc"
             android:inputType="numberDecimal"
             android:defaultValue="1.0"
-            android:key="prefCube_teleSw"
+            android:key="prefCube_teleSc"
             android:summary="Multiplier for Cubes scored on Scale during TeleOps"
             android:title="Tele Scale" />
+
         <EditTextPreference
             android:id="@+id/txt_othrSw"
             android:inputType="numberDecimal"
