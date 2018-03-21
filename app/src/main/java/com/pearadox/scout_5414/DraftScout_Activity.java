@@ -807,9 +807,10 @@ public boolean onCreateOptionsMenu(Menu menu) {
                 if (match_inst.isTele_got_lift()) {
                     liftedNum++;
                 }
-//                Log.w(TAG, "matches= " + numMatches);
+//                Log.w(TAG, "Accum. matches = " + numMatches);
             } //End if teams equal
         } // End For _ALL_ matches
+//        Log.w(TAG, "####### Total Matches/Team = " + numMatches);
         mdNumMatches = String.valueOf(numMatches);
         if (numMatches > 0) {
             if (cube_pu) {
@@ -825,6 +826,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
             teleScRatio = teleCubeSc + "/" + teleCubeScAtt;
             teleOthrRatio = teleOthrNUM + "/" + teleOthrATT;
             teleExch = String.valueOf(teleCubeExch);
+                Log.w(TAG, "****  Exch= " + teleExch);
             telePort = String.valueOf(telePortalNUM);
             teleZone = String.valueOf(teleZoneNUM);
             cubeRandom = String.valueOf(teleRandomNUM);
@@ -863,7 +865,8 @@ public boolean onCreateOptionsMenu(Menu menu) {
             weightedScore = ((climbScore* Float.parseFloat(wtClimb) + cubeScored * Float.parseFloat(wtCubeScore) + cubeCollect * Float.parseFloat(wtCubeCollct)) / numMatches);
             switchScore = (float) ((autoCubeSw * Float.parseFloat(cubeAutoSw) + (teleCubeSw * Float.parseFloat(cubeTeleSw)) + (teleOthrNUM * Float.parseFloat(teleOthr)))) / numMatches;
             scaleScore = (float) ((autoCubeSc * Float.parseFloat(cubeAutoSc) + teleCubeSc * Float.parseFloat(cubeTeleSc))) / numMatches;
-            exchangeScore = (float) (teleCubeExch / numMatches);
+            exchangeScore = (float) ((teleCubeExch * Float.parseFloat(cubeExch)) / numMatches);
+            Log.e(TAG, "Exch= " + teleCubeExch + "  #Matches=" + numMatches + "  Score=" + String.format("%3.2f", exchangeScore));
 //            Log.w(TAG, team + " **Scores**  Climb = " + String.format("%3. ", climbScore) + "  Cubes Scored = " + String.format("%3.2f", cubeScored) + "  Cubes Collected = " + String.format("%3.2f", cubeCollect) + "  Cubes Score = " + String.format("%3.2f", cubeScore) + "  Weighted Score = " + String.format("%3.2f", weightedScore));
         } else {
             climbScore = 0;
