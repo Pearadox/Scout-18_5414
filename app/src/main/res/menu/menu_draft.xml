@@ -12,8 +12,14 @@
 
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="80"
+        android:orderInCategory="60"
         android:title="Settings"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_screen"
+        android:orderInCategory="80"
+        android:title="Screen Shot"
         app:showAsAction="never" />
 
 </menu>

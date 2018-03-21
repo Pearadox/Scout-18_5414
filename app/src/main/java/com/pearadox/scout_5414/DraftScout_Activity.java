@@ -2,10 +2,12 @@ package com.pearadox.scout_5414;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -43,6 +45,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -260,7 +264,7 @@ public class DraftScout_Activity extends AppCompatActivity {
         {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                Log.w(TAG, "@@ RadioClick_Sort @@");
+                Log.i(TAG, "@@ RadioClick_Sort @@");
                 txt_SelNum = (TextView) findViewById(R.id.txt_SelNum);
                 txt_SelNum.setText("");
                 teamSelected = -1;
@@ -269,7 +273,7 @@ public class DraftScout_Activity extends AppCompatActivity {
                 Log.w(TAG, "RadioSort -  '" + value + "'");
                 switch (value) {
                     case "Climb":
-                        Log.w(TAG, "Climb sort");
+//                        Log.w(TAG, "Climb sort");
                         sortType = "Climb";
                         Collections.sort(team_Scores, new Comparator<Scores>() {
                             @Override
@@ -309,7 +313,7 @@ public class DraftScout_Activity extends AppCompatActivity {
                         break;
                     case "Switch":
                         sortType = "Switch";
-                        Log.w(TAG, "Switch sort");
+//                        Log.w(TAG, "Switch sort");
                         Collections.sort(team_Scores, new Comparator<Scores>() {
                             @Override
                             public int compare(Scores c1, Scores c2) {
@@ -322,7 +326,7 @@ public class DraftScout_Activity extends AppCompatActivity {
                         break;
                     case "Scale":
                         sortType = "Scale";
-                        Log.w(TAG, "Scale sort");
+//                        Log.w(TAG, "Scale sort");
                         Collections.sort(team_Scores, new Comparator<Scores>() {
                             @Override
                             public int compare(Scores c1, Scores c2) {
@@ -335,7 +339,7 @@ public class DraftScout_Activity extends AppCompatActivity {
                         break;
                     case "Exchange":
                         sortType = "Exchange";
-                        Log.w(TAG, "Exchange sort");
+//                        Log.w(TAG, "Exchange sort");
                         Collections.sort(team_Scores, new Comparator<Scores>() {
                             @Override
                             public int compare(Scores c1, Scores c2) {
@@ -433,7 +437,7 @@ public class DraftScout_Activity extends AppCompatActivity {
         getprefs();         // make sure Prefs are up to date
         switch (typ) {
             case "Climb":
-                Log.e(TAG, "*** CLIMB   cl=" + climbClimbs + " 1=" + climbLift1 + " 2=" + climbLift2 + " pl=" + climbPlat + " was=" + climbLifted);
+//                Log.e(TAG, "*** CLIMB   cl=" + climbClimbs + " 1=" + climbLift1 + " 2=" + climbLift2 + " pl=" + climbPlat + " was=" + climbLifted);
                 form = "(" + climbClimbs + "*(climbs) + " +"(Lift1*" + climbLift1 + ") + " +"(Lift2*" + climbLift2 + ") + (Plat*" + climbPlat + ") + (WasLifted*" + climbLifted + ")) / # matches";
                 lbl_Formula.setTextColor(Color.parseColor("#4169e1"));      // blue
                 txt_Formula.setText(form);
@@ -524,15 +528,15 @@ public class DraftScout_Activity extends AppCompatActivity {
             teamName = teamHash.substring(7, teamHash.indexOf("("));  // UP TO # MATCHES
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageReference = storage.getReferenceFromUrl("gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event).child("robot_" + teamNum.trim() + ".png");
-            Log.e(TAG, "gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event + ".child(robot_" + teamNum.trim() + ".png)");
+//            Log.e(TAG, "gs://paradox-2017.appspot.com/images/" + Pearadox.FRC_Event + ".child(robot_" + teamNum.trim() + ".png)");
             storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
-                    Log.w(TAG, "URI=" + uri);
+//                    Log.w(TAG, "URI=" + uri);
                     URL[0] = uri.toString();
-                    Log.w(TAG, "URL=" + URL[0]);
+//                    Log.w(TAG, "URL=" + URL[0]);
                     Viz_URL = URL[0];
-                    Log.w(TAG, "Team '" + teamNum + "'  '" + teamName + "'  URL=" + Viz_URL);
+//                    Log.w(TAG, "Team '" + teamNum + "'  '" + teamName + "'  URL=" + Viz_URL);
                     launchVizPit(teamNum, teamName, Viz_URL);
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -736,6 +740,30 @@ public boolean onCreateOptionsMenu(Menu menu) {
             startActivity(help_intent);  	// Show Help
             return true;
         }
+        if (id == R.id.action_screen) {
+            String filNam = Pearadox.FRC_Event.toUpperCase() + "-Draft"  + "_" + sortType + ".JPG";
+            Log.w(TAG, "File='" + filNam + "'");
+            try {
+                File imageFile = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + filNam);
+                View v1 = getWindow().getDecorView().getRootView();             // **\
+                v1.setDrawingCacheEnabled(true);                                // ** \Capture screen
+                Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());      // ** /  as bitmap
+                v1.setDrawingCacheEnabled(false);                               // **/
+                FileOutputStream fos = new FileOutputStream(imageFile);
+                int quality = 100;
+                bitmap.compress(Bitmap.CompressFormat.JPEG, quality, fos);
+                fos.flush();
+                fos.close();
+                bitmap.recycle();           //release memory
+                Toast toast = Toast.makeText(getBaseContext(), "☢☢  Screen captured in Download/FRC5414  ☢☢", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                toast.show();
+            } catch (Throwable e) {
+                // Several error may come out with file handling or DOM
+                e.printStackTrace();
+            }
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -826,7 +854,6 @@ public boolean onCreateOptionsMenu(Menu menu) {
             teleScRatio = teleCubeSc + "/" + teleCubeScAtt;
             teleOthrRatio = teleOthrNUM + "/" + teleOthrATT;
             teleExch = String.valueOf(teleCubeExch);
-                Log.w(TAG, "****  Exch= " + teleExch);
             telePort = String.valueOf(telePortalNUM);
             teleZone = String.valueOf(teleZoneNUM);
             cubeRandom = String.valueOf(teleRandomNUM);
