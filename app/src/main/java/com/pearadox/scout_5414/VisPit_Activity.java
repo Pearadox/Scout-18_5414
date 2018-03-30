@@ -63,8 +63,10 @@ public class VisPit_Activity extends AppCompatActivity {
     /* */
     public String comments = "";                // Comment(s)
     public String scout = "";                   // Student who collected the data
+    public String pit_photoURL;                     // URL of the robot photo in Firebase
+
     // ===========================================================================
-    pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, numOmnis, numMecanums, vision, pneumatics, cubeManip, climb, canLift, numLifted, liftRamp, liftHook, cubeArm, armIntake, armSqueeze, cubeBox, cubeBelt, cubeOhtr, delLaunch, delPlace, comments, scout);
+    pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, numOmnis, numMecanums, vision, pneumatics, cubeManip, climb, canLift, numLifted, liftRamp, liftHook, cubeArm, armIntake, armSqueeze, cubeBox, cubeBelt, cubeOhtr, delLaunch, delPlace, comments, scout, pit_photoURL);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

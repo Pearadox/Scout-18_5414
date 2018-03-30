@@ -117,8 +117,10 @@ public class PitScoutActivity extends AppCompatActivity {
     /* */
     public String comments;                     // Comment(s)
     public String scout = " ";                  // Student who collected the data
+    public String photoURL = "";               // URL of the robot photo in Firebase
+
 // ===========================================================================
-pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, numOmnis, numMecanums, vision, pneumatics, cubeManip, climb, canLift, numLifted, liftRamp, liftHook, cubeArm, armIntake, armSqueeze, cubeBox, cubeBelt, cubeOhtr, delLaunch, delPlace, comments, scout);
+pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, numOmnis, numMecanums, vision, pneumatics, cubeManip, climb, canLift, numLifted, liftRamp, liftHook, cubeArm, armIntake, armSqueeze, cubeBox, cubeBelt, cubeOhtr, delLaunch, delPlace, comments, scout, photoURL);
 
 
     @Override
@@ -577,11 +579,20 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
 
         UploadTask uploadTask = storageReference.putFile(currentImageUri);
 
+        // Now get the URL
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Uri downloadURL = taskSnapshot.getDownloadUrl();
+                photoURL = downloadURL.toString();
+                Log.d(TAG, "#####  URL=" + photoURL  + " \n");
+            }
+        });
     }
 
     private void galleryAddPic() {
         /**
-         * copy current image to Galerry
+         * copy current image to Gallery
          */
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         mediaScanIntent.setData(currentImageUri);
@@ -666,6 +677,7 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
                     URL = uri.toString();
                     if (URL.length() > 0) {
                         Picasso.with(PitScoutActivity.this).load(URL).into(img_Photo);
+                        photoURL = URL;     // save URL in Pit object
                         imageOnFB = true;
                     } else {
                         img_Photo.setImageDrawable(getResources().getDrawable(R.drawable.photo_missing));
@@ -829,6 +841,7 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
          /* */
         Pit_Data.setPit_comment(comments);
         Pit_Data.setPit_scout(scout);
+        Pit_Data.setPit_photoURL(photoURL);
 // -----------------------------------------------
         saveDatatoSDcard();                 //Save locally
 //        if (Pearadox.is_Network) {        // is Internet available?         Commented out because 'tethered' show No internet

@@ -33,10 +33,11 @@ public class pitData implements Serializable {
     /* */
     public String pit_comment;                      // Comment(s)
     public String pit_scout = " ";                  // Student who collected the data
+    public String pit_photoURL;                     // URL of the robot photo in Firebase
 
 
     // ===========================================================================
-        public pitData(String pit_team, int pit_tall, int pit_totWheels, int pit_numTrac, int pit_numOmni, int pit_numMecanum, boolean pit_vision, boolean pit_pneumatics, boolean pit_cubeManip, boolean pit_climb, boolean pit_canLift, int pit_numLifted, boolean pit_liftRamp, boolean pit_liftHook, boolean pit_cubeArm, boolean pit_armIntake, boolean pit_armSqueeze, boolean pit_cubeBox, boolean pit_cubeBelt, boolean pit_cubeOhtr, boolean pit_delLaunch, boolean pit_delPlace, String pit_comment, String pit_scout) {
+        public pitData(String pit_team, int pit_tall, int pit_totWheels, int pit_numTrac, int pit_numOmni, int pit_numMecanum, boolean pit_vision, boolean pit_pneumatics, boolean pit_cubeManip, boolean pit_climb, boolean pit_canLift, int pit_numLifted, boolean pit_liftRamp, boolean pit_liftHook, boolean pit_cubeArm, boolean pit_armIntake, boolean pit_armSqueeze, boolean pit_cubeBox, boolean pit_cubeBelt, boolean pit_cubeOhtr, boolean pit_delLaunch, boolean pit_delPlace, String pit_comment, String pit_scout, String pit_photoURL) {
             this.pit_team = pit_team;
             this.pit_tall = pit_tall;
             this.pit_totWheels = pit_totWheels;
@@ -61,6 +62,7 @@ public class pitData implements Serializable {
             this.pit_delPlace = pit_delPlace;
             this.pit_comment = pit_comment;
             this.pit_scout = pit_scout;
+            this.pit_photoURL = pit_photoURL;
         }
 
 
@@ -263,5 +265,13 @@ public pitData() {
 
     public void setPit_scout(String pit_scout) {
         this.pit_scout = pit_scout;
+    }
+
+    public String getPit_photoURL() {
+        return pit_photoURL;
+    }
+
+    public void setPit_photoURL(String pit_photoURL) {
+        this.pit_photoURL = pit_photoURL;
     }
 }
