@@ -1,5 +1,6 @@
 package com.pearadox.scout_5414;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -35,8 +36,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -85,6 +90,7 @@ public class PitScoutActivity extends AppCompatActivity {
     private DatabaseReference pfPitData_DBReference;
     FirebaseStorage storage;
     StorageReference storageRef;
+    String pitPlace = "";  Boolean pitSD = false;   Boolean pitFB = false;
     String URL = "";
     Boolean imageOnFB = false;      // Does image already exist in Firebase
 
@@ -634,11 +640,111 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
             txt_TeamName.setText(team_inst.getTeam_name());
             txtEd_Height.setEnabled(true);
 
-            chkForPhoto(teamSelected);
+            chkForPhoto(teamSelected);              // see if photo already exists (SD card or Firebase)
+
+            chkForData(teamSelected);               // see if data already exists (SD card or Firebase)
+
+            // Check Firebase
+            getTeam_Pit(teamSelected);
+
         }
         public void onNothingSelected(AdapterView<?> parent) {
             // Do nothing.
         }
+    }
+
+
+    // =============================================================================
+    private void chkForData(String team) {
+        Log.w(TAG, "*****  chkForData - team = " + team);
+        pitPlace = ""; pitSD = false;  pitFB = false;
+        // First check SD card
+        String filename = team.trim() + ".dat";
+        File directData = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/" + Pearadox.FRC_Event + "/" + filename);
+        Log.w(TAG, "SD card Path = " + directData);
+        if(directData.exists())  {
+            if (pitPlace == "") {           // let Firebase take precedent
+                pitPlace = "SD card";
+            }
+            pitSD = true;
+            Log.w(TAG, "**** in 'chkForData'.   Place = '" + pitPlace + "'  " + pitSD + " " + pitFB + " \n");
+        }
+    }
+
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    private void getTeam_Pit(String team) {
+        Log.i(TAG, "$$$$$  getTeam_Pit  $$$$$  " + team);
+
+        String child = "pit_team";
+        String key = team;      // Removed .trim()       GLF 3/31/2017
+        Log.w(TAG, "   Q U E R Y  " + child + "  '" + key + "' \n ");
+        Query query = pfPitData_DBReference.orderByChild(child).equalTo(key);
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.w(TAG, "%%%%%%%%%%%%  ChildAdded");
+                pitPlace = "Firebase";
+                pitFB = true;
+                Log.w(TAG, "**** in 'getTeam_Pit'.   Place = '" + pitPlace + "'  " + pitSD + " " + pitFB + " \n");
+                System.out.println(dataSnapshot.getValue());
+                System.out.println("\n \n ");
+                pitData Pit_Data = dataSnapshot.getValue(pitData.class);
+                System.out.println("Team: " + Pit_Data.getPit_team());
+                System.out.println("Comment: " + Pit_Data.getPit_comment());
+                System.out.println("\n \n ");
+
+                Log.w(TAG, "Place = '" + pitPlace + "'  " + pitSD + " " + pitFB + " \n");
+                if (pitSD || pitFB) {
+                    diag();
+                }
+
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Log.w(TAG, "%%%  ChildChanged");
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Log.w(TAG, "%%%  ChildRemoved");
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                Log.w(TAG, "%%%  ChildMoved");
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "%%%  DatabaseError");
+            }
+        });
+        Log.w(TAG, "Place = '" + pitPlace + "'  " + pitSD + " " + pitFB + " \n");
+        if (pitSD || pitFB) {
+            diag();
+        }
+    }
+
+    private void diag() {
+        AlertDialog alertbox = new AlertDialog.Builder(this)
+                .setMessage("★★★  Pit Data exists on " + pitPlace + ".  ★★★  \n  Do you want to use that data and make changes? ")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                    // do something when the button is clicked
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        if (pitSD || pitFB) {
+                            // ToDo - Load data from Firebase
+
+                        } else {
+                            // ToDo - Load data from SD
+
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        // nothing
+                    }
+                })
+                .show();
+
     }
 
 // =============================================================================
