@@ -44,7 +44,7 @@ public class MatchScoutActivity extends AppCompatActivity {
     long[] thrice = { 0, 100, 400, 100, 400, 100 };
     public static String device = " ";
     EditText editTxt_Team, editTxt_Match;
-    TextView txt_EventName, txt_dev, txt_stud, txt_Match, txt_MyTeam, txt_TeamName, text_HGSeekBarValue, text_LGSeekBarValue, text_collected_balls;
+    TextView txt_EventName, txt_dev, txt_stud, txt_Match, txt_MyTeam, txt_TeamName, text_HGSeekBarValue, text_LGSeekBarValue, text_collected_balls, txt_NextMatch;
     CheckBox chk_baseline, checkbox_automode, chk_cubeSwitch, chk_attemptSwitch, chk_XoverSwitch, chk_WrongSwitch, chk_cubeScale, chk_attemptScale, chk_XoverScale, chk_WrongScale, chk_highGoal, chk_gears, chk_lowGoal, chk_activate_hopper, chk_baselineINVIS;
     CheckBox chk_ExtraSwitch, chk_cube, chk_ExtraScale;
     EditText editText_autoComment, editText_Fuel;
@@ -106,6 +106,8 @@ public class MatchScoutActivity extends AppCompatActivity {
         Pearadox.MatchData_Saved = false;    // Set flag to show need to saved
         txt_EventName = (TextView) findViewById(R.id.txt_EventName);
         txt_EventName.setText(Pearadox.FRC_EventName);          // Event Name
+        txt_NextMatch = (TextView) findViewById(R.id.txt_NextMatch);
+        txt_NextMatch.setText(Pearadox.our_Matches);
 
         pfDatabase = FirebaseDatabase.getInstance();
         pfTeam_DBReference = pfDatabase.getReference("teams");              // Tteam data from Firebase D/B
@@ -366,6 +368,8 @@ public class MatchScoutActivity extends AppCompatActivity {
                     cube_switch = true;
                     cube_switch_att = true;
                     chk_attemptSwitch.setChecked(true);
+                    baseline = true;            // set crossed baseline (Had to have!!)
+                    chk_baseline.setChecked(true);
                     Log.w(TAG, "Cube in Switch = " + cube_switch);
 
                 } else {
@@ -375,6 +379,7 @@ public class MatchScoutActivity extends AppCompatActivity {
                     //chk_attemptSwitch.setChecked(false);
                     xover_switch = false;
                     //chk_XoverSwitch.setChecked(false);
+                    chk_baseline.setChecked(false);
                     Log.w(TAG, "Cube in Switch = " + cube_switch);
 
                 }
@@ -387,12 +392,15 @@ public class MatchScoutActivity extends AppCompatActivity {
                 if (chk_attemptSwitch.isChecked()) {
                     //checked
                     cube_switch_att = true;
+                    baseline = true;            // set crossed baseline (Had to have!!)
+                    chk_baseline.setChecked(true);
                     Log.w(TAG, "Attempted to place Cube in Switch = " + cube_switch_att);
 
                 } else {
                     //not checked
                     cube_switch_att = false;
                     chk_cubeSwitch.setChecked(false);
+                    chk_baseline.setChecked(false);
                     Log.w(TAG, "Attempted to place Cube in Switch = " + cube_switch_att);
 
                 }
@@ -445,6 +453,8 @@ public class MatchScoutActivity extends AppCompatActivity {
                     cube_scale = true;
                     cube_scale_att = true;
                     chk_attemptScale.setChecked(true);
+                    baseline = true;            // set crossed baseline (Had to have!!)
+                    chk_baseline.setChecked(true);
                     Log.w(TAG, "Cube in Scale = " + cube_scale);
 
                 } else {
@@ -454,6 +464,7 @@ public class MatchScoutActivity extends AppCompatActivity {
                     //chk_attemptScale.setChecked(false);
                     xover_scale = false;
                     //chk_XoverScale.setChecked(false);
+                    chk_baseline.setChecked(false);
                     Log.w(TAG, "Cube in Scale = " + cube_scale);
 
                 }
@@ -466,12 +477,15 @@ public class MatchScoutActivity extends AppCompatActivity {
                 if (chk_attemptScale.isChecked()) {
                     //checked
                     cube_scale_att = true;
+                    baseline = true;            // set crossed baseline (Had to have!!)
+                    chk_baseline.setChecked(true);
                     Log.w(TAG, "Attempted to place Cube in Scale = " + cube_scale_att);
 
                 } else {
                     //not checked
                     cube_scale_att = false;
                     chk_cubeScale.setChecked(false);
+                    chk_baseline.setChecked(false);
                     Log.w(TAG, "Attempted to place Cube in Scale = " + cube_scale_att);
 
                 }

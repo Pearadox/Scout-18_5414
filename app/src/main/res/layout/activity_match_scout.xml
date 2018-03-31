@@ -161,7 +161,30 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_MyTeam"
         android:text=" " />
-// End Header
+
+
+    <ImageView
+        android:id="@+id/imgPearadox"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/lbl_MyTeam"
+        android:layout_toEndOf="@+id/lbl_space1"
+        android:src="@mipmap/p_logo" />
+
+    <TextView
+        android:id="@+id/txt_NextMatch"
+        android:layout_width="500sp"
+        android:layout_height="20sp"
+        android:layout_alignBottom="@+id/imgPearadox"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="11sp"
+        android:layout_toEndOf="@+id/imgPearadox"
+        android:text="Q001 Q002 Q003 Q004 Q005 Q006 Q007 Q008 Q009 Q010 Q011 Q012 Q013 Q014 Q015 Q016"
+        android:textColor="@color/yellow"
+        android:textSize="11sp"
+        android:textStyle="bold" />
+
+    // End Header
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -171,6 +194,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/imageView_MS"
+        android:layout_marginTop="30dp"
         android:text="Autonomous period"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         android:textColor="@color/red"
