@@ -278,7 +278,7 @@ public class TeleopScoutActivity extends Activity {
 
         btn_OtherSwitchP.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (their_switch < 6) {        // Max of 6 cubes
+                if (their_switch < 12) {        // Max of 12 cubes   (4/1 after CODE)
                     their_switch++;
                     their_attempt++;
                 }
@@ -304,11 +304,13 @@ public class TeleopScoutActivity extends Activity {
 
         btn_CubePlatformP.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (cube_floor < 6) {       // Max of 6 in Power Zone
+                if (cube_floor < 6) {       // Max of 6 in Platform Switch
                     cube_floor++;
                 }
                 Log.w(TAG, "+Platform Cubes = " + cube_floor);      // ** DEBUG **
                 txt_CubePlatformNUM.setText(Integer.toString(cube_floor));    // Perform action on click
+                cube_pickup = true;
+                chkBox_PU_Cubes_floor.setChecked(true);
             }
         });
         btn_CubePlatformM.setOnClickListener(new View.OnClickListener() {
@@ -323,11 +325,13 @@ public class TeleopScoutActivity extends Activity {
 
         btn_OthrSwtchP.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (their_floor < 6) {       // Max of 6 in Power Zone
+                if (their_floor < 12) {       // Max of 12 in other Switch     (4/1 after CODE)
                     their_floor++;
                 }
                 Log.w(TAG, "Their Cubes = " + their_floor);          // ** DEBUG **
                 txt_OthrSwtchNUM.setText(Integer.toString(their_floor));    // Perform action on click
+                cube_pickup = true;
+                chkBox_PU_Cubes_floor.setChecked(true);
             }
         });
         btn_OthrSwtchM.setOnClickListener(new View.OnClickListener() {
@@ -342,11 +346,13 @@ public class TeleopScoutActivity extends Activity {
 
         btn_RandomP.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (random_floor < 6) {       // Max of 6 in Power Zone
+                if (random_floor < 10) {       // Max of 10 from Floor    (4/1 after CODE)
                     random_floor++;
                 }
                 Log.w(TAG, "Random Cubes = " + random_floor);          // ** DEBUG **
                 txt_RandomNUM.setText(Integer.toString(random_floor));    // Perform action on click
+                cube_pickup = true;
+                chkBox_PU_Cubes_floor.setChecked(true);
             }
         });
         btn_RandomM.setOnClickListener(new View.OnClickListener() {
@@ -366,6 +372,8 @@ public class TeleopScoutActivity extends Activity {
                 }
                 Log.w(TAG, "+Power Zone Cubes = " + cube_pwrzone);      // ** DEBUG **
                 txt_CubeZoneNUM.setText(Integer.toString(cube_pwrzone));    // Perform action on click
+                cube_pickup = true;
+                chkBox_PU_Cubes_floor.setChecked(true);
             }
         });
         btn_CubeZoneM.setOnClickListener(new View.OnClickListener() {
