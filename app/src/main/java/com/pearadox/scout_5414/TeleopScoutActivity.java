@@ -34,9 +34,9 @@ import org.w3c.dom.Text;
 public class TeleopScoutActivity extends Activity {
 
     String TAG = "TeleopScoutActivity";      // This CLASS name
-    TextView txt_dev, txt_stud, txt_match, txt_CubeSwitchNUM, txt_CubeSwitchAttNUM, txt_tnum, txt_CubeScaleNUM, txt_CubeScaleAttNUM;
+    TextView txt_dev, txt_stud, txt_match, txt_CubeSwitchNUM, txt_CubeSwitchAttNUM, txt_tnum, txt_CubeScaleNUM, txt_CubeScaleAttNUM, lbl_Number_Penalties;
     TextView  txt_OtherSwitchNUM, txt_OtherSwitchAttNUM, txt_CubeZoneNUM, txt_CubePlatformNUM, txt_OthrSwtchNUM, txt_PortalNUM, txt_ExchangeNUM, txt_RandomNUM;
-    /* Final */       private Button button_GoToFinalActivity;
+    /* Final */       private Button button_GoToFinalActivity, button_Number_PenaltiesPlus, button_Number_PenaltiesUndo;
     /* Switch */      private Button btn_CubeSwitchM, btn_CubeSwitchP, btn_CubeSwitchAttP, btn_CubeSwitchAttM;
     /* Scale */       private Button btn_CubeScaleP,  btn_CubeScaleM,  btn_CubeScaleAttP,  btn_CubeScaleAttM;
     /* Opp Switch */  private Button btn_OtherSwitchM, btn_OtherSwitchP, btn_OtherSwitchAttP, btn_OtherSwitchAttM;
@@ -65,7 +65,7 @@ public class TeleopScoutActivity extends Activity {
     public int     cube_pwrzone       = 0;     // # cubes retrieved from Power Zone during Tele
     public int     cube_floor         = 0;     // # cubes retrieved from our Floor or Platform Zone during Tele
     public int     their_floor        = 0;     // # cubes retrieved from their Floor or Platform Zone during Tele
-    public int    random_floor        = 0;     // # cubes retrieved from random places during Tele
+    public int     random_floor       = 0;     // # cubes retrieved from random places during Tele
     public boolean cube_pickup        = false; // Did they pickup gears off the ground?
     public boolean on_platform        = false; // Finished on platform
     public boolean delPlace           = false; // Cube Delivery = Place    \ Radio
@@ -78,6 +78,7 @@ public class TeleopScoutActivity extends Activity {
     public boolean lift_one           = false; // Lifted one other robot       Radio
     public boolean lift_two           = false; // Lifted two other robots   /   Button
     public boolean got_lift           = false; // Got Lifted by another robot
+    public int    final_num_Penalties = 0;     // How many penalties received?
     /* */
     public String  teleComment        = " ";   // Tele Comment
     // ===========================================================================
@@ -140,11 +141,14 @@ public class TeleopScoutActivity extends Activity {
         btn_RandomP               = (Button) findViewById(R.id.btn_RandomP);
         btn_RandomM               = (Button) findViewById(R.id.btn_RandomM);
         txt_RandomNUM             = (TextView) findViewById(R.id.txt_RandomNUM);
+        lbl_Number_Penalties      = (TextView) findViewById(R.id.lbl_Number_Penalties);
 
         txt_CubeSwitchAttNUM.setText(Integer.toString(cubeSwitch_attempt));
         txt_CubeSwitchNUM   .setText(Integer.toString(cubeSwitch_placed));
         txt_CubeScaleAttNUM .setText(Integer.toString(scale_attempt));
         txt_CubeScaleNUM    .setText(Integer.toString(cube_scale));
+        button_Number_PenaltiesPlus = (Button) findViewById(R.id.button_Number_PenaltiesPlus);
+        button_Number_PenaltiesUndo = (Button) findViewById(R.id.button_Number_PenaltiesUndo);
 
         pfDatabase                = FirebaseDatabase.getInstance();
 //        pfTeam_DBReference        = pfDatabase      .getReference("teams");         // Tteam data from Firebase D/B
@@ -520,8 +524,8 @@ public class TeleopScoutActivity extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                 Log.i(TAG, "chk_LiftedBy Listener");
-                if (chk_LiftedBy.isChecked()) {
-                    //checked
+                    if (chk_LiftedBy.isChecked()) {
+                        //checked
                     Log.i(TAG,"LiftedBy is checked.");
                     got_lift = true;
                     chk_climbsuccessful.setChecked(false);       // Don't count as climb!!
@@ -618,6 +622,26 @@ public class TeleopScoutActivity extends Activity {
             };
 
             radio_Zero.setOnClickListener(listener);
+
+
+        button_Number_PenaltiesPlus.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                final_num_Penalties++;
+
+                Log.w(TAG, "Penalties = " + final_num_Penalties);      // ** DEBUG **
+                lbl_Number_Penalties.setText(Integer.toString(final_num_Penalties));    // Perform action on click
+            }
+        });
+        button_Number_PenaltiesUndo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (final_num_Penalties >= 1) {
+                    final_num_Penalties--;
+                }
+                Log.w(TAG, "Penalties = " + final_num_Penalties);      // ** DEBUG **
+                lbl_Number_Penalties.setText(Integer.toString(final_num_Penalties));    // Perform action on click
+            }
+        });
+
 
 
 
@@ -727,6 +751,7 @@ public class TeleopScoutActivity extends Activity {
         Pearadox.Match_Data.setTele_lift_one(lift_one);
         Pearadox.Match_Data.setTele_lift_two(lift_two);
         Pearadox.Match_Data.setTele_got_lift(got_lift);
+        Pearadox.Match_Data.setFinal_num_Penalties(final_num_Penalties);
         // **
         Pearadox.Match_Data.setTele_comment(teleComment);
     }

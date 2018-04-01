@@ -683,9 +683,8 @@
     <LinearLayout
         android:id="@+id/lin_Lift"
         android:layout_width="match_parent"
-        android:layout_height="50sp"
+        android:layout_height="40sp"
         android:layout_below="@+id/lin_Climb"
-        android:layout_marginTop="4sp"
         android:orientation="horizontal">
 
         <TextView
@@ -693,8 +692,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Lifted"
-            android:textSize="16sp"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
         <RadioGroup
             android:id="@+id/radgrp_Lifted"
             android:layout_width="wrap_content"
@@ -735,6 +735,46 @@
             android:text="Lifted by another Robot" />
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/button_Number_PenaltiesPlus"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@+id/lbl_Number_Penalties"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/button_Number_PenaltiesUndo"
+        android:text="+" />
+
+    <Button
+        android:id="@+id/button_Number_PenaltiesUndo"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_alignEnd="@+id/lbl_Opponent"
+        android:layout_alignTop="@+id/lbl_Number_Penalties"
+        android:layout_marginStart="15dp"
+        android:text="-" />
+
+    <TextView
+        android:id="@+id/txt_Number_Penalties"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lin_Lift"
+        android:layout_marginTop="10dp"
+        android:layout_toStartOf="@+id/lbl_Number_Penalties"
+        android:text="Number of Penalties"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/lbl_Number_Penalties"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txt_Number_Penalties"
+        android:layout_alignBottom="@+id/txt_Number_Penalties"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/lbl_robotnum"
+        android:text="0"
+        android:textColor="@color/green"
+        android:textSize="16dp" />
 
 
     <Button

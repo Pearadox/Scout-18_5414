@@ -54,10 +54,10 @@ import static com.pearadox.scout_5414.R.id.radioGroup_defense;
 public class FinalActivity extends Activity {
 
     String TAG = "FinalActivity";      // This CLASS name
-    TextView txt_dev, txt_stud, txt_match, txt_MyTeam, lbl_Number_Penalties, txt_robotnum;
+    TextView txt_dev, txt_stud, txt_match, txt_MyTeam, txt_robotnum;
     EditText editText_Comments;
     CheckBox chk_lostPart, chk_lostComm, chk_block, chk_starve, chk_dump, chkBox_final_def_gear;
-    Button button_Saved, button_Number_PenaltiesPlus, button_Number_PenaltiesUndo;
+    Button button_Saved;
     RadioGroup radioGroup_defense;
     RadioButton rdBtn_def_good, radioButton_def_bad;
     private FirebaseDatabase pfDatabase;
@@ -77,7 +77,6 @@ public class FinalActivity extends Activity {
     public boolean final_def_Lane = false;                      // Did they use Lane Defense?
     public boolean final_def_Block = false;                     // Did they use Blocking Defense?
     public boolean final_def_BlockSwitch;                       // Did they block the Switch
-    public int final_num_Penalties = 0;                         // How many penalties received?
     public String final_studID = "";                            // set in Auto
 
 
@@ -122,7 +121,6 @@ public class FinalActivity extends Activity {
         timeStamp = new SimpleDateFormat("yyyy.MM.dd  hh:mm:ss a").format(new Date());
         Log.w(TAG, timeStamp);
 
-        lbl_Number_Penalties = (TextView) findViewById(R.id.lbl_Number_Penalties);
         radioButton_def_bad = (RadioButton) findViewById(R.id.radioButton_def_bad);
         rdBtn_def_good = (RadioButton) findViewById(R.id.rdBtn_def_good);
         radioGroup_defense = (RadioGroup) findViewById(R.id.radioGroup_defense);
@@ -135,8 +133,6 @@ public class FinalActivity extends Activity {
         chk_dump = (CheckBox) findViewById(R.id.chk_dump);
         editText_Comments = (EditText) findViewById(R.id.editText_Comments);
         editText_Comments.setClickable(true);
-        button_Number_PenaltiesPlus = (Button) findViewById(R.id.button_Number_PenaltiesPlus);
-        button_Number_PenaltiesUndo = (Button) findViewById(R.id.button_Number_PenaltiesUndo);
         button_Saved = (Button) findViewById(R.id.button_Saved);
         button_Saved.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -148,25 +144,6 @@ public class FinalActivity extends Activity {
 
                 finish();       // Exit
 
-            }
-        });
-
-
-        button_Number_PenaltiesPlus.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                final_num_Penalties++;
-
-                Log.w(TAG, "Gears = " + final_num_Penalties);      // ** DEBUG **
-                lbl_Number_Penalties.setText(Integer.toString(final_num_Penalties));    // Perform action on click
-            }
-        });
-        button_Number_PenaltiesUndo.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (final_num_Penalties >= 1) {
-                    final_num_Penalties--;
-                }
-                Log.w(TAG, "Gears = " + final_num_Penalties);      // ** DEBUG **
-                lbl_Number_Penalties.setText(Integer.toString(final_num_Penalties));    // Perform action on click
             }
         });
 
@@ -277,7 +254,6 @@ public class FinalActivity extends Activity {
         Pearadox.Match_Data.setFinal_def_Lane(final_def_Lane);
         Pearadox.Match_Data.setFinal_def_Block(final_def_Block);
         Pearadox.Match_Data.setFinal_def_BlockSwitch(final_def_BlockSwitch);
-        Pearadox.Match_Data.setFinal_num_Penalties(final_num_Penalties);
 
 
          /* */
