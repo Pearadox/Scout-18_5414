@@ -47,11 +47,16 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 
@@ -63,14 +68,14 @@ import static android.view.View.inflate;
 public class PitScoutActivity extends AppCompatActivity {
 
     String TAG = "PitScout_Activity";      // This CLASS name
-    TextView txt_EventName, txt_dev, txt_stud, txt_TeamName, txt_NumWheels, lbl_FuelEst;
+    TextView txt_EventName, txt_dev, txt_stud, txt_TeamName, txt_NumWheels;
     EditText editTxt_Team, txtEd_Height, editText_Comments;
     ImageView imgScoutLogo, img_Photo;
     Spinner spinner_Team, spinner_Traction, spinner_Omni, spinner_Mecanum;
     Spinner spinner_numRobots;
     ArrayAdapter<String> adapter;
     ArrayAdapter<String> adapter_Trac, adapter_Omni, adapter_Mac ;
-    RadioGroup radgrp_Deliver;      RadioButton radio_Deliver;
+    RadioGroup radgrp_Deliver;      RadioButton radio_Deliver, radio_Launch, radio_Place;
     CheckBox chkBox_Ramp, chkBox_CanLift, chkBox_Hook, chkBox_Vision, chkBox_Pneumatics, chkBox_Climb, chkBox_Belt, chkBox_Box, chkBox_Other;
     CheckBox chkBox_Arms, chkBox_ArmPress, chkBox_ArmIntake, chkBox_OffFloor;
     Button btn_Save;
@@ -123,11 +128,11 @@ public class PitScoutActivity extends AppCompatActivity {
     /* */
     public String comments;                     // Comment(s)
     public String scout = " ";                  // Student who collected the data
-    public String photoURL = "";               // URL of the robot photo in Firebase
+    public String photoURL = "";                // URL of the robot photo in Firebase
 
 // ===========================================================================
 pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, numOmnis, numMecanums, vision, pneumatics, cubeManip, climb, canLift, numLifted, liftRamp, liftHook, cubeArm, armIntake, armSqueeze, cubeBox, cubeBelt, cubeOhtr, delLaunch, delPlace, comments, scout, photoURL);
-
+pitData Pit_Load = new pitData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,9 +235,7 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
         chkBox_Hook.setVisibility(View.GONE);
         chkBox_Vision = (CheckBox) findViewById(R.id.chkBox_Vision);
         chkBox_Pneumatics = (CheckBox) findViewById(R.id.chkBox_Pneumatics);
-        chkBox_CanLift = (CheckBox) findViewById(R.id.chkBox_CanLift);
-        lbl_FuelEst = (TextView) findViewById(R.id.lbl_RoboHeight);
-        chkBox_Arms = (CheckBox) findViewById(R.id.chkBox_Arms);
+        chkBox_CanLift = (CheckBox) findViewById(R.id.chkBox_CanLift);chkBox_Arms = (CheckBox) findViewById(R.id.chkBox_Arms);
         chkBox_ArmPress = (CheckBox) findViewById(R.id.chkBox_ArmPress);
         chkBox_ArmIntake = (CheckBox) findViewById(R.id.chkBox_ArmIntake);
         chkBox_OffFloor = (CheckBox) findViewById(R.id.chkBox_OffFloor);
@@ -242,6 +245,8 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
         chkBox_Other = (CheckBox) findViewById(R.id.chkBox_Other);
         editText_Comments = (EditText) findViewById(R.id.editText_Comments);
         editText_Comments.setClickable(true);
+        radio_Launch = (RadioButton) findViewById(R.id.radio_Launch);
+        radio_Place = (RadioButton) findViewById(R.id.radio_Place);
 //        final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 200);
 //        tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD);
         Toast toast = Toast.makeText(getBaseContext(), "*** Select a TEAM first before entering data ***", Toast.LENGTH_LONG);
@@ -688,16 +693,15 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
                 Log.w(TAG, "**** in 'getTeam_Pit'.   Place = '" + pitPlace + "'  " + pitSD + " " + pitFB + " \n");
                 System.out.println(dataSnapshot.getValue());
                 System.out.println("\n \n ");
-                pitData Pit_Data = dataSnapshot.getValue(pitData.class);
-                System.out.println("Team: " + Pit_Data.getPit_team());
-                System.out.println("Comment: " + Pit_Data.getPit_comment());
+                Pit_Load = dataSnapshot.getValue(pitData.class);
+                System.out.println("Team: " + Pit_Load.getPit_team());
+                System.out.println("Comment: " + Pit_Load.getPit_comment());
                 System.out.println("\n \n ");
 
                 Log.w(TAG, "Place = '" + pitPlace + "'  " + pitSD + " " + pitFB + " \n");
                 if (pitSD || pitFB) {
                     diag();
                 }
-
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -724,18 +728,94 @@ pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, num
 
     private void diag() {
         AlertDialog alertbox = new AlertDialog.Builder(this)
-                .setMessage("★★★  Pit Data exists on " + pitPlace + ".  ★★★  \n  Do you want to use that data and make changes? ")
+                .setMessage("★★★  Pit Data exists on " + pitPlace + ".  ★★★  \n  Do you want to use that data and make changes (or add photo)? ")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
                     // do something when the button is clicked
                     public void onClick(DialogInterface arg0, int arg1) {
-                        if (pitSD || pitFB) {
-                            // ToDo - Load data from Firebase
-
+                        Spinner spinner_Traction = (Spinner) findViewById(R.id.spinner_Traction);
+                        Spinner spinner_Omni = (Spinner) findViewById(R.id.spinner_Omni);
+                        Spinner spinner_Mecanum = (Spinner) findViewById(R.id.spinner_Mecanum);
+                        Spinner spinner_numRobots = (Spinner) findViewById(R.id.spinner_numRobots);
+                        if (pitFB) {
+                            // Already loaded data from Firebase in Pit_Load
                         } else {
                             // ToDo - Load data from SD
-
+                            File direct_pit = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/pit/" + Pearadox.FRC_Event);
+                            try {
+                                Log.w(TAG, "   Dir:" + direct_pit + "/" + teamSelected.trim() + ".dat");
+                                InputStream file = new FileInputStream(direct_pit + "/" + teamSelected.trim() + ".dat");
+                                InputStream buffer = new BufferedInputStream(file);
+                                ObjectInput input = new ObjectInputStream(buffer);
+                                Pit_Load = (pitData) input.readObject();
+                                Log.w(TAG, "#### Obect '" + Pit_Load.getPit_team() + "'  " + Pit_Load.getPit_scout());
+                            } catch (FileNotFoundException e) {
+                                final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                                tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (ClassNotFoundException e) {
+                                e.printStackTrace();
+                            }
                         }
+                        // Now load the screen & variables
+                        teamSelected = Pit_Load.getPit_team();
+                        txtEd_Height.setText(String.valueOf(Pit_Load.getPit_tall()));
+                        tall = Integer.valueOf(String.valueOf(txtEd_Height.getText()));
+                        txt_NumWheels.setText(String.valueOf(Pit_Load.getPit_totWheels()));
+                        totalWheels = Pit_Load.getPit_totWheels();
+                        spinner_Traction.setSelection((Pit_Load.getPit_numTrac()));
+                        spinner_Omni.setSelection((Pit_Load.getPit_numOmni()));
+                        spinner_Mecanum.setSelection((Pit_Load.getPit_numMecanum()));
+                        chkBox_Climb.setChecked(Pit_Load.isPit_climb());
+                        chkBox_Vision.setChecked(Pit_Load.isPit_vision());
+                        chkBox_Pneumatics.setChecked(Pit_Load.isPit_pneumatics());
+                        chkBox_CanLift.setChecked(Pit_Load.isPit_canLift());
+                        if (Pit_Load.isPit_canLift()) {
+                            spinner_numRobots.setVisibility(View.VISIBLE);
+                            spinner_numRobots.setSelection((Pit_Load.getPit_numLifted()-1));
+                            chkBox_Hook.setVisibility(View.VISIBLE);
+                            chkBox_Hook.setChecked(Pit_Load.isPit_liftHook());
+                            chkBox_Ramp.setVisibility(View.VISIBLE);
+                            chkBox_Ramp.setChecked(Pit_Load.isPit_liftRamp());
+                        } else {
+                            spinner_numRobots.setVisibility(View.INVISIBLE);
+                            chkBox_Ramp.setVisibility(View.INVISIBLE);
+                            chkBox_Hook.setVisibility(View.INVISIBLE);
+                        }
+                        chkBox_Arms.setChecked(Pit_Load.isPit_cubeArm());
+                        if (Pit_Load.isPit_cubeArm()) {
+                            chkBox_ArmIntake.setVisibility(View.VISIBLE);
+                            chkBox_ArmIntake.setChecked(Pit_Load.isPit_armIntake());
+                            chkBox_ArmPress.setVisibility(View.VISIBLE);
+                            chkBox_ArmPress.setChecked(Pit_Load.isPit_armSqueeze());
+                            chkBox_OffFloor.setVisibility(View.VISIBLE);
+                            chkBox_OffFloor.setChecked(Pit_Load.isPit_cubeManip());
+                        } else {
+                            chkBox_ArmIntake.setVisibility(View.INVISIBLE);
+                            chkBox_ArmPress.setVisibility(View.INVISIBLE);
+                            chkBox_OffFloor.setVisibility(View.INVISIBLE);
+                        }
+                        chkBox_Belt.setChecked(Pit_Load.isPit_cubeBelt());
+                        chkBox_Box.setChecked(Pit_Load.isPit_cubeBox());
+                        chkBox_Other.setChecked(Pit_Load.isPit_cubeOhtr());
+                        Log.w(TAG, "Radio - Launch= " + Pit_Load.isPit_delLaunch());
+                        if (Pit_Load.isPit_delLaunch()) {
+                            radio_Launch.setChecked(true);
+                            radio_Place.setChecked(false);      // ?
+                            delPlace = false;
+                            delLaunch = true;
+                        } else {
+                            radio_Place.setChecked(true);
+                            radio_Launch.setChecked(false);     // ?
+                            delPlace = true;
+                            delLaunch = false;
+                        }
+                        // Finally ...
+                        scout = Pit_Load.getPit_scout();
+                        editText_Comments.setText(Pit_Load.getPit_comment());
+                        photoURL = Pit_Load.pit_photoURL;
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
