@@ -342,6 +342,7 @@ public class p_Firebase {
         public void setB3(String b3) {
             this.b3 = b3;
         }
+
     }
 
     // ==========================================================
@@ -354,11 +355,12 @@ public class p_Firebase {
         private String b1;
         private String b2;
         private String b3;
+        private String our_matches;
 
         public curMatch() {
         }
 
-        public curMatch(String cur_match, String r1, String r2, String r3, String b1, String b2, String b3) {
+        public curMatch(String cur_match, String r1, String r2, String r3, String b1, String b2, String b3, String our_matches) {
             this.cur_match = cur_match;
             this.r1 = r1;
             this.r2 = r2;
@@ -366,6 +368,7 @@ public class p_Firebase {
             this.b1 = r1;
             this.b2 = b2;
             this.b3 = b3;
+            this.our_matches = our_matches;
         }
 
         public String getCur_match() {
@@ -422,6 +425,14 @@ public class p_Firebase {
 
         public void setB3(String b3) {
             this.b3 = b3;
+        }
+
+        public String getOur_matches() {
+            return our_matches;
+        }
+
+        public void setOur_matches(String our_matches) {
+            this.our_matches = our_matches;
         }
     }
 

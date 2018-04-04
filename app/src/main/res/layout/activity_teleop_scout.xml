@@ -773,7 +773,7 @@
         android:layout_marginStart="10dp"
         android:layout_toEndOf="@+id/lbl_robotnum"
         android:text="0"
-        android:textColor="@color/green"
+        android:textColor="@color/yellow"
         android:textSize="16dp" />
 
 

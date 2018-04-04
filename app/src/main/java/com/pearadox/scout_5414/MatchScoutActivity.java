@@ -106,16 +106,13 @@ public class MatchScoutActivity extends AppCompatActivity {
         Pearadox.MatchData_Saved = false;    // Set flag to show need to saved
         txt_EventName = (TextView) findViewById(R.id.txt_EventName);
         txt_EventName.setText(Pearadox.FRC_EventName);          // Event Name
-        txt_NextMatch = (TextView) findViewById(R.id.txt_NextMatch);
-        txt_NextMatch.setText(Pearadox.our_Matches);
 
         pfDatabase = FirebaseDatabase.getInstance();
         pfTeam_DBReference = pfDatabase.getReference("teams");              // Tteam data from Firebase D/B
 //        pfStudent_DBReference = pfDatabase.getReference("students");        // List of Students
-//        pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Students
-        pfMatch_DBReference = pfDatabase.getReference("matches");           // List of Students
+        pfMatch_DBReference = pfDatabase.getReference("matches");           // List of Matches
         pfCur_Match_DBReference = pfDatabase.getReference("current-match"); // _THE_ current Match
-        pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Students
+        pfDevice_DBReference = pfDatabase.getReference("devices");          // List of Devices
         updateDev("Auto");      // Update 'Phase' for stoplight indicator in ScoutMaster
 
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
@@ -701,11 +698,13 @@ public class MatchScoutActivity extends AppCompatActivity {
                         txt_Match.setText(" ");
                         txt_MyTeam.setText(" ");
                         txt_TeamName.setText(" ");
-                        updateDev("Auto");      // Update 'Phase' for stoplight indicator in ScoutM aster
+                        updateDev("Auto");      // Update 'Phase' for stoplight indicator in ScoutMaster
                     } else {        // OK!!  Match has started
 //                        Log.d(TAG, "Match started " + matchID);
                         txt_Match.setText(matchID);
 //                        Log.d(TAG, "Device = " + Pearadox.FRC514_Device + " ->" + onStart);
+                        txt_NextMatch = (TextView) findViewById(R.id.txt_NextMatch);
+                        txt_NextMatch.setText(match_Obj.getOur_matches());
                         switch (Pearadox.FRC514_Device) {          // Who am I?!?
                             case ("Red-1"):             //#Red or Blue Scout
                                 txt_MyTeam.setText(match_Obj.getR1());

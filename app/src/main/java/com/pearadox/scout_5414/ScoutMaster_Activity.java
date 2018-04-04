@@ -135,7 +135,7 @@ public class ScoutMaster_Activity extends AppCompatActivity {
         		/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
         		int blnk = matchList.get(matchSelected).indexOf(" ");          // 1st blank after MatchID
                 Log.w(TAG,"@@@  blnk= " + blnk + " \n \n ");
-                matchID = matchList.get(matchSelected).substring(0,blnk);      // GLF 4/19  (103 matches!!) 5/2 any length
+                matchID = matchList.get(matchSelected).substring(0,blnk);      // GLF 4/19/18  (World's 103 matches!!) 5/2 any length
                 Log.w(TAG,"@@@   MatchID: " + matchID);
                 txt_MatchID = (TextView) findViewById(R.id.txt_MatchID);
                 txt_MatchID.setText(matchID);
@@ -832,6 +832,8 @@ public class ScoutMaster_Activity extends AppCompatActivity {
                     }
                     txt_NextMatch.setText(next_Match);
                     Pearadox.our_Matches = next_Match;
+                    String key = "0";   // Since only 1, key is zero
+                    pfCur_Match_DBReference.child(key).child("our_matches").setValue(next_Match);  // Store it in Firebase for Scouts
                     listView_Matches = (ListView) findViewById(R.id.listView_Matches);
                     adaptMatch = new ArrayAdapter<String>(ScoutMaster_Activity.this, R.layout.match_list_layout, matchList);
                     listView_Matches.setAdapter(adaptMatch);
