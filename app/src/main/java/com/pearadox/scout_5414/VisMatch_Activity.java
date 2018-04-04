@@ -1,10 +1,21 @@
 package com.pearadox.scout_5414;
 
+import android.graphics.Bitmap;
+import android.media.MediaActionSound;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 public class VisMatch_Activity extends AppCompatActivity {
     String TAG = "VisMatch_Activity";        // This CLASS name
@@ -330,7 +341,56 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_FinalComments.setText(final_Comments);
     }
 
-//###################################################################
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_viz, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        Log.e(TAG, "@@@  Options  @@@ " );
+        Log.w(TAG, " \n  \n");
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_screen) {
+            String filNam = Pearadox.FRC_Event.toUpperCase() + "-VizMatch"  + "_" + tnum.trim() + ".JPG";
+            Log.w(TAG, "File='" + filNam + "'");
+            try {
+                File imageFile = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + filNam);
+                View v1 = getWindow().getDecorView().getRootView();             // **\
+                v1.setDrawingCacheEnabled(true);                                // ** \Capture screen
+                Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());      // ** /  as bitmap
+                v1.setDrawingCacheEnabled(false);                               // **/
+                FileOutputStream fos = new FileOutputStream(imageFile);
+                int quality = 100;
+                bitmap.compress(Bitmap.CompressFormat.JPEG, quality, fos);
+                fos.flush();
+                fos.close();
+                bitmap.recycle();           //release memory
+                MediaActionSound sound = new MediaActionSound();
+                sound.play(MediaActionSound.SHUTTER_CLICK);
+                Toast toast = Toast.makeText(getBaseContext(), "☢☢  Screen captured in Download/FRC5414  ☢☢", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                toast.show();
+            } catch (Throwable e) {
+                // Several error may come out with file handling or DOM
+                e.printStackTrace();
+            }
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    //###################################################################
 //###################################################################
 //###################################################################
     @Override
