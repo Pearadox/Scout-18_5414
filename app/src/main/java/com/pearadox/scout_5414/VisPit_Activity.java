@@ -60,6 +60,13 @@ public class VisPit_Activity extends AppCompatActivity {
     public int numLifted = 0;                   // Num. of robots can lift (1-2)
     public boolean liftRamp = false;            // lift type Ramp
     public boolean liftHook = false;            // lift type Hook
+    public int speed = 0;                       // Speed (Ft. per Sec)
+    public String motor;                        // Type of Motor
+    public String lang;                         // Programming  Language
+    public boolean autoSwitch = false;          // Can do Switch in Autonomous
+    public boolean switchMulti = false;         // Multiple Switch in Autonomous
+    public boolean autoScale = false;           // Can do Scale in Autonomous
+    public boolean scaleMulti = false;         // Multiple Scale in Autonomous
                                                 //==== cube Mechanism
     public boolean cubeArm = false;             // presence of a Cube arm
     public boolean armIntake = false;           // ++ presence of a Cube intake device      \  Only if
@@ -77,7 +84,7 @@ public class VisPit_Activity extends AppCompatActivity {
     public String pit_photoURL;                     // URL of the robot photo in Firebase
 
     // ===========================================================================
-    pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, numOmnis, numMecanums, vision, pneumatics, cubeManip, climb, canLift, numLifted, liftRamp, liftHook, cubeArm, armIntake, armSqueeze, cubeBox, cubeBelt, cubeOhtr, delLaunch, delPlace, comments, scout, pit_photoURL);
+    pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, numOmnis, numMecanums, vision, pneumatics, cubeManip, climb, canLift, numLifted, liftRamp, liftHook, speed, motor,  lang, autoSwitch, switchMulti, autoScale, scaleMulti, cubeArm, armIntake, armSqueeze, cubeBox, cubeBelt, cubeOhtr, delLaunch, delPlace, comments, scout, pit_photoURL);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

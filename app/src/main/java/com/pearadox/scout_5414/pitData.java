@@ -19,6 +19,13 @@ public class pitData implements Serializable {
     public int pit_numLifted = 0;                   // Num. of robots can lift (1-2)
     public boolean pit_liftRamp = false;            // lift type Ramp
     public boolean pit_liftHook = false;            // lift type Hook
+    public int pit_speed = 0;                       // Speed (Ft. per Sec)
+    public String pit_motor;                        // Type of Motor
+    public String pit_lang;                         // Programming  Language
+    public boolean pit_autoSwitch = false;          // Can do Switch in Autonomous
+    public boolean pit_switchMulti = false;         // Multiple Switch in Autonomous
+    public boolean pit_autoScale = false;           // Can do Scale in Autonomous
+    public boolean pit_scaleMulti = false;         // Multiple Scale in Autonomous
                                                     //==== cube Mechanism
     public boolean pit_cubeArm = false;             // presence of a Cube arm
     public boolean pit_armIntake = false;           // ++ presence of a Cube intake device      \  Only if
@@ -37,36 +44,42 @@ public class pitData implements Serializable {
 
 
     // ===========================================================================
-        public pitData(String pit_team, int pit_tall, int pit_totWheels, int pit_numTrac, int pit_numOmni, int pit_numMecanum, boolean pit_vision, boolean pit_pneumatics, boolean pit_cubeManip, boolean pit_climb, boolean pit_canLift, int pit_numLifted, boolean pit_liftRamp, boolean pit_liftHook, boolean pit_cubeArm, boolean pit_armIntake, boolean pit_armSqueeze, boolean pit_cubeBox, boolean pit_cubeBelt, boolean pit_cubeOhtr, boolean pit_delLaunch, boolean pit_delPlace, String pit_comment, String pit_scout, String pit_photoURL) {
-            this.pit_team = pit_team;
-            this.pit_tall = pit_tall;
-            this.pit_totWheels = pit_totWheels;
-            this.pit_numTrac = pit_numTrac;
-            this.pit_numOmni = pit_numOmni;
-            this.pit_numMecanum = pit_numMecanum;
-            this.pit_vision = pit_vision;
-            this.pit_pneumatics = pit_pneumatics;
-            this.pit_cubeManip = pit_cubeManip;
-            this.pit_climb = pit_climb;
-            this.pit_canLift = pit_canLift;
-            this.pit_numLifted = pit_numLifted;
-            this.pit_liftRamp = pit_liftRamp;
-            this.pit_liftHook = pit_liftHook;
-            this.pit_cubeArm = pit_cubeArm;
-            this.pit_armIntake = pit_armIntake;
-            this.pit_armSqueeze = pit_armSqueeze;
-            this.pit_cubeBox = pit_cubeBox;
-            this.pit_cubeBelt = pit_cubeBelt;
-            this.pit_cubeOhtr = pit_cubeOhtr;
-            this.pit_delLaunch = pit_delLaunch;
-            this.pit_delPlace = pit_delPlace;
-            this.pit_comment = pit_comment;
-            this.pit_scout = pit_scout;
-            this.pit_photoURL = pit_photoURL;
-        }
+    public pitData(String pit_team, int pit_tall, int pit_totWheels, int pit_numTrac, int pit_numOmni, int pit_numMecanum, boolean pit_vision, boolean pit_pneumatics, boolean pit_cubeManip, boolean pit_climb, boolean pit_canLift, int pit_numLifted, boolean pit_liftRamp, boolean pit_liftHook, int pit_speed, String pit_motor, String pit_lang, boolean pit_autoSwitch, boolean pit_switchMulti, boolean pit_autoScale, boolean pit_scaleMulti, boolean pit_cubeArm, boolean pit_armIntake, boolean pit_armSqueeze, boolean pit_cubeBox, boolean pit_cubeBelt, boolean pit_cubeOhtr, boolean pit_delLaunch, boolean pit_delPlace, String pit_comment, String pit_scout, String pit_photoURL) {
+        this.pit_team = pit_team;
+        this.pit_tall = pit_tall;
+        this.pit_totWheels = pit_totWheels;
+        this.pit_numTrac = pit_numTrac;
+        this.pit_numOmni = pit_numOmni;
+        this.pit_numMecanum = pit_numMecanum;
+        this.pit_vision = pit_vision;
+        this.pit_pneumatics = pit_pneumatics;
+        this.pit_cubeManip = pit_cubeManip;
+        this.pit_climb = pit_climb;
+        this.pit_canLift = pit_canLift;
+        this.pit_numLifted = pit_numLifted;
+        this.pit_liftRamp = pit_liftRamp;
+        this.pit_liftHook = pit_liftHook;
+        this.pit_speed = pit_speed;
+        this.pit_motor = pit_motor;
+        this.pit_lang = pit_lang;
+        this.pit_autoSwitch = pit_autoSwitch;
+        this.pit_switchMulti = pit_switchMulti;
+        this.pit_autoScale = pit_autoScale;
+        this.pit_scaleMulti = pit_scaleMulti;
+        this.pit_cubeArm = pit_cubeArm;
+        this.pit_armIntake = pit_armIntake;
+        this.pit_armSqueeze = pit_armSqueeze;
+        this.pit_cubeBox = pit_cubeBox;
+        this.pit_cubeBelt = pit_cubeBelt;
+        this.pit_cubeOhtr = pit_cubeOhtr;
+        this.pit_delLaunch = pit_delLaunch;
+        this.pit_delPlace = pit_delPlace;
+        this.pit_comment = pit_comment;
+        this.pit_scout = pit_scout;
+        this.pit_photoURL = pit_photoURL;
+    }
 
-
-// ===========================================================================
+    // ===========================================================================
 // Default constructor required for calls to
 // DataSnapshot.getValue(teams.class)
 public pitData() {
@@ -185,6 +198,62 @@ public pitData() {
 
     public void setPit_liftHook(boolean pit_liftHook) {
         this.pit_liftHook = pit_liftHook;
+    }
+
+    public int getPit_speed() {
+        return pit_speed;
+    }
+
+    public void setPit_speed(int pit_speed) {
+        this.pit_speed = pit_speed;
+    }
+
+    public String getPit_motor() {
+        return pit_motor;
+    }
+
+    public void setPit_motor(String pit_motor) {
+        this.pit_motor = pit_motor;
+    }
+
+    public String getPit_lang() {
+        return pit_lang;
+    }
+
+    public void setPit_lang(String pit_lang) {
+        this.pit_lang = pit_lang;
+    }
+
+    public boolean isPit_autoSwitch() {
+        return pit_autoSwitch;
+    }
+
+    public void setPit_autoSwitch(boolean pit_autoSwitch) {
+        this.pit_autoSwitch = pit_autoSwitch;
+    }
+
+    public boolean isPit_switchMulti() {
+        return pit_switchMulti;
+    }
+
+    public void setPit_switchMulti(boolean pit_switchMulti) {
+        this.pit_switchMulti = pit_switchMulti;
+    }
+
+    public boolean isPit_autoScale() {
+        return pit_autoScale;
+    }
+
+    public void setPit_autoScale(boolean pit_autoScale) {
+        this.pit_autoScale = pit_autoScale;
+    }
+
+    public boolean isPit_scaleMulti() {
+        return pit_scaleMulti;
+    }
+
+    public void setPit_scaleMulti(boolean pit_scaleMulti) {
+        this.pit_scaleMulti = pit_scaleMulti;
     }
 
     public boolean isPit_cubeArm() {

@@ -39,6 +39,22 @@
         <item>Playoff</item>
     </string-array>
 
+    <!--  Pit Scout  -->
+    <!-- ##### Programming Language ##### -->
+    <string-array name="prog_lang_array">
+        <item> </item>
+        <item>JAVA</item>
+        <item>C++</item>
+        <item>LabView</item>
+    </string-array>
+
+    <!-- ##### Programming Language ##### -->
+    <string-array name="drive_motor_array">
+        <item> </item>
+        <item>CIM</item>
+        <item>Mini-CIM</item>
+    </string-array>
+
 
     <!--  Match Scout  -->
     <!-- ##### Start Position for Autononous ##### -->

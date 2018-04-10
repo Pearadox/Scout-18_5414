@@ -69,15 +69,17 @@ public class PitScoutActivity extends AppCompatActivity {
 
     String TAG = "PitScout_Activity";      // This CLASS name
     TextView txt_EventName, txt_dev, txt_stud, txt_TeamName, txt_NumWheels;
-    EditText editTxt_Team, txtEd_Height, editText_Comments;
+    EditText editTxt_Team, txtEd_Height, editText_Comments, txtEd_Speed;
     ImageView imgScoutLogo, img_Photo;
     Spinner spinner_Team, spinner_Traction, spinner_Omni, spinner_Mecanum;
-    Spinner spinner_numRobots;
+    Spinner spinner_numRobots, spinner_Motor, spinner_Lang;
     ArrayAdapter<String> adapter;
     ArrayAdapter<String> adapter_Trac, adapter_Omni, adapter_Mac ;
+    ArrayAdapter<String> adapter_driveMotor, adapter_progLang;
     RadioGroup radgrp_Deliver;      RadioButton radio_Deliver, radio_Launch, radio_Place;
     CheckBox chkBox_Ramp, chkBox_CanLift, chkBox_Hook, chkBox_Vision, chkBox_Pneumatics, chkBox_Climb, chkBox_Belt, chkBox_Box, chkBox_Other;
     CheckBox chkBox_Arms, chkBox_ArmPress, chkBox_ArmIntake, chkBox_OffFloor;
+    CheckBox chkBox_Switch, chkBox_SwitchMulti, chkBox_Scale, chkBox_ScaleMulti;
     Button btn_Save;
     Uri currentImageUri;
     String currentImagePath;
@@ -115,6 +117,13 @@ public class PitScoutActivity extends AppCompatActivity {
     public int numLifted = 0;                   // Num. of robots can lift (1-2)
     public boolean liftRamp = false;            // lift type Ramp
     public boolean liftHook = false;            // lift type Hook
+    public int speed = 0;                       // Speed (Ft. per Sec)
+    public String motor;                        // Type of Motor
+    public String lang;                         // Programming  Language
+    public boolean autoSwitch = false;          // Can do Switch in Autonomous
+    public boolean switchMulti = false;         // Multiple Switch in Autonomous
+    public boolean autoScale = false;           // Can do Scale in Autonomous
+    public boolean scaleMulti = false;         // Multiple Scale in Autonomous
                                                 //==== cube Mechanism
     public boolean cubeArm = false;             // presence of a Cube arm
     public boolean armIntake = false;           // ++ presence of a Cube intake device      \  Only if
@@ -131,7 +140,7 @@ public class PitScoutActivity extends AppCompatActivity {
     public String photoURL = "";                // URL of the robot photo in Firebase
 
 // ===========================================================================
-pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, numOmnis, numMecanums, vision, pneumatics, cubeManip, climb, canLift, numLifted, liftRamp, liftHook, cubeArm, armIntake, armSqueeze, cubeBox, cubeBelt, cubeOhtr, delLaunch, delPlace, comments, scout, photoURL);
+pitData Pit_Data = new pitData(teamSelected, tall, totalWheels, numTraction, numOmnis, numMecanums, vision, pneumatics, cubeManip, climb, canLift, numLifted, liftRamp, liftHook, speed, motor,  lang, autoSwitch, switchMulti, autoScale, scaleMulti, cubeArm, armIntake, armSqueeze, cubeBox, cubeBelt, cubeOhtr, delLaunch, delPlace, comments, scout, photoURL);
 pitData Pit_Load = new pitData();
 
     @Override
@@ -229,13 +238,28 @@ pitData Pit_Load = new pitData();
         spinner_Mecanum.setAdapter(adapter_Mac);
         spinner_Mecanum.setSelection(0, false);
         spinner_Mecanum.setOnItemSelectedListener(new PitScoutActivity.Mecanum_OnItemSelectedListener());
+        spinner_Motor = (Spinner) findViewById(R.id.spinner_Motor);
+        String[] driveMotor = getResources().getStringArray(R.array.drive_motor_array);
+        adapter_driveMotor = new ArrayAdapter<String>(this, R.layout.dev_list_layout, driveMotor);
+        adapter_driveMotor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_Motor.setAdapter(adapter_driveMotor);
+        spinner_Motor.setSelection(0, false);
+        spinner_Motor.setOnItemSelectedListener(new driveMotorOnClickListener());
+        spinner_Lang = (Spinner) findViewById(R.id.spinner_Lang);
+        String[] progLang = getResources().getStringArray(R.array.prog_lang_array);
+        adapter_progLang = new ArrayAdapter<String>(this, R.layout.dev_list_layout, progLang);
+        adapter_progLang.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_Lang.setAdapter(adapter_progLang);
+        spinner_Lang.setSelection(0, false);
+        spinner_Lang.setOnItemSelectedListener(new progLangOnClickListener());
         chkBox_Ramp = (CheckBox) findViewById(R.id.chkBox_Ramp);
         chkBox_Hook = (CheckBox) findViewById(R.id.chkBox_Hook);
         chkBox_Ramp.setVisibility(View.GONE);
         chkBox_Hook.setVisibility(View.GONE);
         chkBox_Vision = (CheckBox) findViewById(R.id.chkBox_Vision);
         chkBox_Pneumatics = (CheckBox) findViewById(R.id.chkBox_Pneumatics);
-        chkBox_CanLift = (CheckBox) findViewById(R.id.chkBox_CanLift);chkBox_Arms = (CheckBox) findViewById(R.id.chkBox_Arms);
+        chkBox_CanLift = (CheckBox) findViewById(R.id.chkBox_CanLift);
+        chkBox_Arms = (CheckBox) findViewById(R.id.chkBox_Arms);
         chkBox_ArmPress = (CheckBox) findViewById(R.id.chkBox_ArmPress);
         chkBox_ArmIntake = (CheckBox) findViewById(R.id.chkBox_ArmIntake);
         chkBox_OffFloor = (CheckBox) findViewById(R.id.chkBox_OffFloor);
@@ -243,8 +267,13 @@ pitData Pit_Load = new pitData();
         chkBox_Belt = (CheckBox) findViewById(R.id.chkBox_Belt);
         chkBox_Box = (CheckBox) findViewById(R.id.chkBox_Box);
         chkBox_Other = (CheckBox) findViewById(R.id.chkBox_Other);
+        chkBox_Switch = (CheckBox) findViewById(R.id.chkBox_Switch);
+        chkBox_SwitchMulti = (CheckBox) findViewById(R.id.chkBox_SwitchMulti);
+        chkBox_Scale = (CheckBox) findViewById(R.id.chkBox_Scale);
+        chkBox_ScaleMulti = (CheckBox) findViewById(R.id.chkBox_ScaleMulti);
         editText_Comments = (EditText) findViewById(R.id.editText_Comments);
         editText_Comments.setClickable(true);
+        txtEd_Speed = (EditText) findViewById(R.id.txtEd_Speed);
         radio_Launch = (RadioButton) findViewById(R.id.radio_Launch);
         radio_Place = (RadioButton) findViewById(R.id.radio_Place);
 //        final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 200);
@@ -443,6 +472,63 @@ pitData Pit_Load = new pitData();
             }
         });
 
+        chkBox_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.w(TAG, "chkBox_Switch Listener");
+                if (buttonView.isChecked()) {
+                    Log.w(TAG,"Switch is checked.");
+                    autoSwitch = true;
+                } else {
+                    Log.w(TAG,"Switch is unchecked.");
+                    autoSwitch = false;
+                }
+            }
+        });
+
+        chkBox_SwitchMulti.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.w(TAG, "chkBox_SwitchMulti Listener");
+                if (buttonView.isChecked()) {
+                    Log.w(TAG,"Switch Multiple is checked.");
+                    switchMulti = true;
+                } else {
+                    Log.w(TAG,"Switch Multiple is unchecked.");
+                    switchMulti = false;
+                }
+            }
+        });
+
+        chkBox_Scale.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.w(TAG, "chkBox_Scale Listener");
+                if (buttonView.isChecked()) {
+                    Log.w(TAG,"Scale is checked.");
+                    autoScale = true;
+                } else {
+                    Log.w(TAG,"Scale is unchecked.");
+                    autoScale = false;
+                }
+            }
+        });
+
+        chkBox_ScaleMulti.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.w(TAG, "chkBox_ScaleMulti Listener");
+                if (buttonView.isChecked()) {
+                    Log.w(TAG,"Scale Multiple is checked.");
+                    scaleMulti = true;
+                } else {
+                    Log.w(TAG,"Scale Multiple is unchecked.");
+                    scaleMulti = false;
+                }
+            }
+        });
+
+//=================================================================
         editText_Comments.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -468,6 +554,20 @@ pitData Pit_Load = new pitData();
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     Log.w(TAG, " txtEd_Height listener"  + txtEd_Height.getText());
                     tall = Integer.valueOf(String.valueOf(txtEd_Height.getText()));
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        txtEd_Speed.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                Log.w(TAG, "******  txtEd_Speed listener  ******");
+
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    Log.w(TAG, "Speed = "  + txtEd_Speed.getText());
+                    speed = Integer.valueOf(String.valueOf(txtEd_Speed.getText()));
                     return true;
                 }
                 return false;
@@ -875,6 +975,31 @@ pitData Pit_Load = new pitData();
     }
 
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+
+    private class progLangOnClickListener implements android.widget.AdapterView.OnItemSelectedListener {
+        public void onItemSelected(AdapterView<?> parent,
+                                   View view, int pos, long id) {
+            lang = parent.getItemAtPosition(pos).toString();
+            Log.d(TAG, ">>>>>  '" + lang + "'");
+
+        }
+        public void onNothingSelected(AdapterView<?> parent) {
+            // Do nothing.
+        }
+    }
+
+    private class driveMotorOnClickListener implements android.widget.AdapterView.OnItemSelectedListener {
+        public void onItemSelected(AdapterView<?> parent,
+                                   View view, int pos, long id) {
+            motor = parent.getItemAtPosition(pos).toString();
+            Log.d(TAG, ">>>>>  '" + motor + "'");
+
+        }
+        public void onNothingSelected(AdapterView<?> parent) {
+            // Do nothing.
+        }
+    }
+
     public class Traction_OnItemSelectedListener implements OnItemSelectedListener {
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {
@@ -1016,6 +1141,13 @@ pitData Pit_Load = new pitData();
         Pit_Data.setPit_numLifted (numLifted );
         Pit_Data.setPit_liftRamp(liftRamp);
         Pit_Data.setPit_liftHook(liftHook);
+        Pit_Data.setPit_motor(motor);
+        Pit_Data.setPit_speed(speed);
+        Pit_Data.setPit_lang(lang);
+        Pit_Data.setPit_autoSwitch(autoSwitch);
+        Pit_Data.setPit_switchMulti(switchMulti);
+        Pit_Data.setPit_autoScale(autoScale);
+        Pit_Data.setPit_scaleMulti(scaleMulti);
         Pit_Data.setPit_cubeArm(cubeArm);
         Pit_Data.setPit_armIntake(armIntake);
         Pit_Data.setPit_armSqueeze(armSqueeze);
