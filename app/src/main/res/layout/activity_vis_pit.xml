@@ -96,8 +96,8 @@
 
     <ImageView
         android:id="@+id/imgView_Traction"
-        android:layout_width="75sp"
-        android:layout_height="75sp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         app:srcCompat="@drawable/wheel_traction"
         android:layout_alignTop="@+id/imgView_Omni"
         android:layout_alignStart="@+id/txt_teamName"
@@ -116,8 +116,8 @@
 
     <ImageView
         android:id="@+id/imgView_Omni"
-        android:layout_width="75sp"
-        android:layout_height="75sp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignTop="@+id/txt_NumOmni"
         android:layout_toEndOf="@+id/txt_NumTrac"
         app:srcCompat="@drawable/wheel_omni" />
@@ -134,8 +134,8 @@
 
     <ImageView
         android:id="@+id/imgView_Mecanum"
-        android:layout_width="75sp"
-        android:layout_height="75sp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignTop="@+id/txt_NumMecanum"
         android:layout_toEndOf="@+id/txt_NumOmni"
         app:srcCompat="@drawable/wheel_mecanum" />
@@ -350,6 +350,127 @@
                 android:clickable="false"
                 android:textColor="@color/green" />
         </RadioGroup>
+
+        <TextView
+            android:id="@+id/lbl_ProgLang"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginStart="20dp"
+            android:text="Prog. Language"
+            android:textColor="@color/limegreen"
+            android:textSize="16sp"
+            android:textStyle="bold"></TextView>
+
+        <TextView
+            android:id="@+id/txt_ProgLang"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginStart="20dp"
+            android:text="JAVA"
+            android:textColor="@color/white"
+            android:textSize="16sp"></TextView>
+
+    </LinearLayout>
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    <LinearLayout
+        android:id="@+id/robot_char"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/del_type"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/lbl_DriveMotor"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="Drive Motor"
+            android:textColor="@color/cyan"
+            android:textSize="16sp"
+            android:textStyle="bold"></TextView>
+
+        <TextView
+            android:id="@+id/txt_DriveMotor"
+            android:layout_width="80dp"
+            android:layout_height="25dp"
+            android:text="Mini-CIM"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/lbl_Speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Speed (ft/sec.)"
+            android:textColor="@color/cyan"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_Speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="99"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    <LinearLayout
+        android:id="@+id/Auto_Data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/robot_char"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/lbl_Auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Autonomous"
+            android:textColor="@color/yellow"
+            android:textStyle="bold"
+            android:textSize="16sp">
+        </TextView>
+
+        <CheckBox
+            android:id="@+id/chkBox_Switch"
+            android:layout_width="80sp"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:text="Switch"
+            android:textColor="@color/yellow" />
+
+        <CheckBox
+            android:id="@+id/chkBox_SwitchMulti"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content"
+            android:text="Multiple?"
+            android:clickable="false"
+            android:textColor="@color/yellow" />
+
+        <CheckBox
+            android:id="@+id/chkBox_Scale"
+            android:layout_width="70sp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="Scale"
+            android:clickable="false"
+            android:textColor="@color/yellow" />
+
+        <CheckBox
+            android:id="@+id/chkBox_ScaleMulti"
+            android:layout_width="140sp"
+            android:layout_height="wrap_content"
+            android:text="Multiple?"
+            android:clickable="false"
+            android:textColor="@color/yellow" />
+
     </LinearLayout>
 
     //*********************************************************************************8

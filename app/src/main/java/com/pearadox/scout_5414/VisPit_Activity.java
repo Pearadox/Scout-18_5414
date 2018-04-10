@@ -37,9 +37,11 @@ public class VisPit_Activity extends AppCompatActivity {
     String tnum = "", tname = "", imgURL = "";
     TextView txt_team, txt_teamName;
     TextView txt_Ht, txt_TotWheels, txt_NumTrac, txt_NumOmni, txt_NumMecanum, txt_LiftCap, txt_Scout, txt_Comments;
+    TextView txt_DriveMotor, txt_ProgLang, txt_Speed;
     ImageView imgView_Robot, imgView_LARGE;                // Robot image
     CheckBox chkBox_Vision, chkBox_Pneumatics, chkBox_Climb, chkBox_Lift, chkBox_Hook, chkBox_Ramp;
     CheckBox chkBox_Arms, chkBox_ArmIntake, chkBox_ArmPress, chkBox_OffFloor, chkBox_Belt, chkBox_Box, chkBox_Other;
+    CheckBox chkBox_Switch, chkBox_SwitchMulti, chkBox_Scale, chkBox_ScaleMulti;
     RadioGroup radgrp_Deliver;      RadioButton radio_Launch, radio_Place;
     private FirebaseDatabase pfDatabase;
     private DatabaseReference pfPitData_DBReference;
@@ -178,6 +180,13 @@ public class VisPit_Activity extends AppCompatActivity {
                 radgrp_Deliver = (RadioGroup) findViewById(R.id.radgrp_Deliver);
                 radio_Place = (RadioButton) findViewById(R.id.radio_Place);
                 radio_Launch = (RadioButton) findViewById(R.id.radio_Launch);
+                txt_DriveMotor = (TextView) findViewById(R.id.txt_DriveMotor);
+                txt_ProgLang = (TextView) findViewById(R.id.txt_ProgLang);
+                txt_Speed = (TextView) findViewById(R.id.txt_Speed);
+                chkBox_Switch = (CheckBox) findViewById(R.id.chkBox_Switch);
+                chkBox_SwitchMulti = (CheckBox) findViewById(R.id.chkBox_SwitchMulti);
+                chkBox_Scale = (CheckBox) findViewById(R.id.chkBox_Scale);
+                chkBox_ScaleMulti = (CheckBox) findViewById(R.id.chkBox_ScaleMulti);
 
                 txt_Scout = (TextView) findViewById(R.id.txt_Scout);
                 txt_Comments = (TextView) findViewById(R.id.txt_Comments);
@@ -229,6 +238,13 @@ public class VisPit_Activity extends AppCompatActivity {
                     radio_Place.setChecked(true);
                     radio_Launch.setChecked(false);     // ?
                 }
+                txt_Speed.setText(String.valueOf(Pit_Data.getPit_speed()));
+                txt_DriveMotor.setText(Pit_Data.getPit_motor());
+                txt_ProgLang.setText(Pit_Data.getPit_lang());
+                chkBox_Switch.setChecked(Pit_Data.isPit_autoSwitch());
+                chkBox_SwitchMulti.setChecked(Pit_Data.isPit_switchMulti());
+                chkBox_Scale.setChecked(Pit_Data.isPit_autoScale());
+                chkBox_ScaleMulti.setChecked(Pit_Data.isPit_scaleMulti());
 
                 // Finally ...
                 txt_Scout.setText(Pit_Data.getPit_scout());
