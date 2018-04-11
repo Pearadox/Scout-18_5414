@@ -534,31 +534,31 @@
 
         <CheckBox
             android:id="@+id/chkBox_Switch"
-            android:layout_width="80sp"
+            android:layout_width="90sp"
             android:layout_height="wrap_content"
-            android:text="Switch"
+            android:text="Switch ⚻"
             android:textColor="@color/yellow" />
 
         <CheckBox
             android:id="@+id/chkBox_SwitchMulti"
-            android:layout_width="100sp"
+            android:layout_width="160sp"
             android:layout_height="wrap_content"
-            android:text="Multiple?"
+            android:text="⚻ Multi-Cubes?"
             android:textColor="@color/yellow" />
 
         <CheckBox
             android:id="@+id/chkBox_Scale"
-            android:layout_width="70sp"
+            android:layout_width="90sp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:text="Scale"
+            android:layout_marginStart="5dp"
+            android:text="Scale ⚖"
             android:textColor="@color/yellow" />
 
         <CheckBox
             android:id="@+id/chkBox_ScaleMulti"
             android:layout_width="140sp"
             android:layout_height="wrap_content"
-            android:text="Multiple?"
+            android:text="⚖ Multi-Cubes?"
             android:textColor="@color/yellow" />
 
     </LinearLayout>
