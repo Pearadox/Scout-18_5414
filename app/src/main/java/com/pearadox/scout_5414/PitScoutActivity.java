@@ -868,13 +868,14 @@ pitData Pit_Load = new pitData();
                         spinner_Traction.setSelection((Pit_Load.getPit_numTrac()));
                         spinner_Omni.setSelection((Pit_Load.getPit_numOmni()));
                         spinner_Mecanum.setSelection((Pit_Load.getPit_numMecanum()));
+
                         chkBox_Climb.setChecked(Pit_Load.isPit_climb());
                         chkBox_Vision.setChecked(Pit_Load.isPit_vision());
                         chkBox_Pneumatics.setChecked(Pit_Load.isPit_pneumatics());
                         chkBox_CanLift.setChecked(Pit_Load.isPit_canLift());
                         if (Pit_Load.isPit_canLift()) {
                             spinner_numRobots.setVisibility(View.VISIBLE);
-                            spinner_numRobots.setSelection((Pit_Load.getPit_numLifted()-1));
+                            spinner_numRobots.setSelection((Pit_Load.getPit_numLifted()));
                             chkBox_Hook.setVisibility(View.VISIBLE);
                             chkBox_Hook.setChecked(Pit_Load.isPit_liftHook());
                             chkBox_Ramp.setVisibility(View.VISIBLE);
@@ -912,6 +913,45 @@ pitData Pit_Load = new pitData();
                             delPlace = true;
                             delLaunch = false;
                         }
+                        Log.w(TAG, "AUTO " + Pit_Load.isPit_autoSwitch() + " " + Pit_Load.isPit_switchMulti() + " " + Pit_Load.isPit_autoScale() + " " + Pit_Load.isPit_scaleMulti());
+                        chkBox_Switch.setChecked(Pit_Load.isPit_autoSwitch());
+                        chkBox_SwitchMulti.setChecked(Pit_Load.isPit_switchMulti());
+                        chkBox_Scale.setChecked(Pit_Load.isPit_autoScale());
+                        chkBox_ScaleMulti.setChecked(Pit_Load.isPit_scaleMulti());
+
+                        String motr = Pit_Load.getPit_motor();
+                        Log.w(TAG, "Motor = '" + motr + "'");
+                        switch (motr) {
+                            case ("CIM"):
+                                spinner_Motor.setSelection(1);
+                                break;
+                            case ("Mini-CIM"):
+                                spinner_Motor.setSelection(2);
+                                break;
+                            case ("775pro"):
+                                spinner_Motor.setSelection(3);
+                                break;
+                            default:
+                                Log.w(TAG, "►►►►►  E R R O R  ◄◄◄◄◄");
+                                break;
+                        }
+                        String pLang = Pit_Load.getPit_lang();
+                        Log.w(TAG, "Lauguage = '" + pLang + "'");
+                        switch (pLang) {
+                            case ("JAVA"):
+                                spinner_Lang.setSelection(1);
+                                break;
+                            case ("C++"):
+                                spinner_Lang.setSelection(2);
+                                break;
+                            case ("LabView"):
+                                spinner_Lang.setSelection(3);
+                                break;
+                            default:
+                                Log.w(TAG, "►►►►►  E R R O R  ◄◄◄◄◄");
+                                break;
+                        }
+                        txtEd_Speed.setText(String.valueOf(Pit_Load.getPit_speed()));
                         // Finally ...
                         scout = Pit_Load.getPit_scout();
                         editText_Comments.setText(Pit_Load.getPit_comment());
@@ -980,7 +1020,7 @@ pitData Pit_Load = new pitData();
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {
             lang = parent.getItemAtPosition(pos).toString();
-            Log.d(TAG, ">>>>>  '" + lang + "'");
+            Log.d(TAG, ">>>>> Language  '" + lang + "' " + pos);
 
         }
         public void onNothingSelected(AdapterView<?> parent) {
@@ -992,7 +1032,7 @@ pitData Pit_Load = new pitData();
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {
             motor = parent.getItemAtPosition(pos).toString();
-            Log.d(TAG, ">>>>>  '" + motor + "'");
+            Log.d(TAG, ">>>>> Motor  '" + motor + "' " + pos);
 
         }
         public void onNothingSelected(AdapterView<?> parent) {
