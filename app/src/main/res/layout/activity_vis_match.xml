@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/VisMatch_Activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -60,7 +61,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/lbl_team"
         android:layout_gravity="top"
-        android:textColor="@color/orange" />
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/lbl_Autonomous"
@@ -333,10 +334,10 @@
     <TextView
         android:id="@+id/txt_AutoComments"
         android:layout_width="500dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/lin_AutoScale"
-        android:layout_marginTop="5dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="180dp"
         android:background="@drawable/border"
         android:ems="12"
         android:lines="4"
@@ -570,15 +571,15 @@
         android:layout_width="500dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/lin_Cubes"
-        android:layout_marginTop="22dp"
+        android:layout_below="@+id/lin_Graph"
+        android:layout_marginTop="8dp"
         android:background="@drawable/border"
         android:ems="12"
-        android:lines="5"
+        android:lines="3"
         android:scrollbars="vertical"
         android:text="Comments"
         android:textColor="@color/yellow"
-        android:textSize="14dp" />
+        android:textSize="12dp" />
 
 //________________________________________________________
 
@@ -773,9 +774,59 @@
             android:text="0"
             android:textColor="@color/yellow" />
 
-
     </LinearLayout>
 
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <LinearLayout
+        android:id="@+id/lin_Legend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lin_Cubes"
+        android:layout_marginTop="12sp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/lbl_Switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⚻ = █"
+            android:textColor="@color/red"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/lbl_Scale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="⚖ = █"
+            android:textColor="@color/blue"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    <LinearLayout
+        android:id="@+id/lin_Graph"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/lin_Legend"
+        android:orientation="horizontal">
+
+        <org.eazegraph.lib.charts.BarChart
+            android:id="@+id/barchart"
+            android:layout_width="500dp"
+            android:layout_height="100dp"
+            android:padding="2dp"
+            app:egBarWidth="10dp"
+            app:egEnableScroll="true"
+            app:egFixedBarWidth="false"
+            app:egLegendHeight="0dp"
+            app:egShowDecimal="false"
+            app:egShowValues="true" />
+
+
+    </LinearLayout>
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
     <TextView
@@ -784,7 +835,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/txt_FinalComments"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="75dp"
+        android:layout_marginBottom="78dp"
         android:text="_________________________________Final________________________________"
         android:textColor="@color/green" />
 
@@ -815,7 +866,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/txt_TeleComments"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="20dp"
         android:text="Lost Parts"
         android:textColor="@color/white" />
 
@@ -959,8 +1010,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/lbl_team"
-        android:text="Q01  Q02  Q03  Q04  Q05  Q06  Q07  Q08  Q09  Q10"
+        android:text="Q001 Q002 Q003 Q004 Q005 Q006 Q007 Q008 Q009 Q010 Q011 Q012 Q013 Q014 Q015 Q016"
         android:textColor="@color/orange"
+        android:textSize="14dp"
         android:textStyle="bold" />
 
 

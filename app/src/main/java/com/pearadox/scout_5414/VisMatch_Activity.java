@@ -17,6 +17,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.eazegraph.lib.charts.BarChart;
+import org.eazegraph.lib.models.BarModel;
+
 import java.io.File;
 import java.io.FileOutputStream;
 
@@ -38,7 +41,7 @@ public class VisMatch_Activity extends AppCompatActivity {
     TextView txt_spSi, txt_spSo, txt_spM;
     public static String[] numMatch = new String[]             // Num. of Matches to process
             {"ALL","Last","Last 2","Last 3"};
-
+    BarChart mBarChart;
     //----------------------------------
     int numAutoBaseline = 0; int noAuto = 0; int numExtraSw = 0; int numExtraSc = 0;
     int auto_SwCubesAttempted = 0; int auto_SwCubesPlaced = 0; int auto_SwCrossOver = 0; int Auto_SwWrong = 0;
@@ -138,13 +141,14 @@ public class VisMatch_Activity extends AppCompatActivity {
 
         txt_team.setText(tnum);
         txt_teamName.setText(tname);    // Get real
+        mBarChart = (BarChart) findViewById(R.id.barchart);
 
         numObjects = Pearadox.Matches_Data.size();
         Log.w(TAG, "Objects = " + numObjects);
         txt_NumMatches.setText(String.valueOf(numObjects));
 
         init_Values();
-
+        numProcessed = numObjects;
         start = 0;
         getMatch_Data();
     }
@@ -216,8 +220,10 @@ public class VisMatch_Activity extends AppCompatActivity {
             //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
             // Tele elements
             tele_totalCubeSwPlaced = tele_totalCubeSwPlaced + match_inst.getTele_cube_switch();
+            mBarChart.addBar(new BarModel(match_inst.getTele_cube_switch(), 0xffff0000));       // Switch
             tele_totalCubeSwAttempted = tele_totalCubeSwAttempted + match_inst.getTele_switch_attempt();
             tele_totalCubeScPlaced = tele_totalCubeScPlaced + match_inst.getTele_cube_scale();
+            mBarChart.addBar(new BarModel(match_inst.getTele_cube_scale(),  0xff08457e));       // Scale
             tele_totalCubeScAttempted = tele_totalCubeScAttempted + match_inst.getTele_scale_attempt();
             portalNUM = portalNUM + match_inst.getTele_cube_portal();
             tele_SwTheirs = tele_SwTheirs + match_inst.getTele_their_switch();
@@ -354,6 +360,44 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_final_NumPen.setText(String.valueOf(final_NumPen));
 
         txt_FinalComments.setText(final_Comments);
+
+
+//
+//        mBarChart.addBar(new BarModel(2.0f, 0xffff0000));       //1
+//        mBarChart.addBar(new BarModel(4.0f,  0xff08457e));
+//        mBarChart.addBar(new BarModel(2.0f, 0xffff0000));       //2
+//        mBarChart.addBar(new BarModel(4.0f,  0xff08457e));
+//        mBarChart.addBar(new BarModel(3.0f, 0xffff0000));       //3
+//        mBarChart.addBar(new BarModel(2.0f, 0xff08457e));
+//        mBarChart.addBar(new BarModel(5.0f, 0xffff0000));       //4
+//        mBarChart.addBar(new BarModel(4.0f,  0xff08457e));
+//        mBarChart.addBar(new BarModel(6.0f, 0xffff0000));       //5
+//        mBarChart.addBar(new BarModel(5.0f,  0xff08457e));
+//        mBarChart.addBar(new BarModel(0.0f, 0xffff0000));       //6
+//        mBarChart.addBar(new BarModel(4.0f,  0xff08457e));
+//        mBarChart.addBar(new BarModel(6.0f, 0xffff0000));       //7
+//        mBarChart.addBar(new BarModel(2.0f,  0xff08457e));
+//        mBarChart.addBar(new BarModel(8.0f, 0xffff0000));       //8
+//        mBarChart.addBar(new BarModel(4.0f,  0xff08457e));
+//        mBarChart.addBar(new BarModel(10.0f, 0xffff0000));      //9
+//        mBarChart.addBar(new BarModel(5.0f,  0xff08457e));
+//        mBarChart.addBar(new BarModel(7.0f, 0xffff0000));       //10
+//        mBarChart.addBar(new BarModel(4.0f,  0xff08457e));
+//        mBarChart.addBar(new BarModel(12.0f, 0xffff0000));      //11
+//        mBarChart.addBar(new BarModel(5.0f,  0xff08457e));
+//        mBarChart.addBar(new BarModel(7.0f, 0xffff0000));       //12
+//        mBarChart.addBar(new BarModel(4.0f,  0xff08457e));
+//        mBarChart.addBar(new BarModel(10.0f, 0xffff0000));      //13
+//        mBarChart.addBar(new BarModel(5.0f,  0xff08457e));
+//        mBarChart.addBar(new BarModel(8.0f, 0xffff0000));       //14
+//        mBarChart.addBar(new BarModel(4.0f,  0xff08457e));
+//        mBarChart.addBar(new BarModel(10.0f, 0xffff0000));      //15
+//        mBarChart.addBar(new BarModel(5.0f,  0xff08457e));
+//        mBarChart.addBar(new BarModel(8.0f, 0xffff0000));       //16
+//        mBarChart.addBar(new BarModel(4.0f,  0xff08457e));
+
+        mBarChart.startAnimation();
+
     }
 
 //******************************
@@ -362,9 +406,16 @@ public class VisMatch_Activity extends AppCompatActivity {
         numAutoBaseline = 0;
         auto_SwCubesPlaced = 0;
         auto_SwCubesAttempted = 0;
-        auto_SwCubesPlaced = 0;
+        auto_SwCrossOver = 0;
+        Auto_SwWrong = 0;
+        auto_ScCubesPlaced = 0;
+        auto_ScCubesAttempted = 0;
+        auto_ScCrossOver = 0;
+        Auto_ScWrong = 0;
         tele_totalCubeSwPlaced = 0;
         tele_totalCubeSwAttempted = 0;
+        tele_totalCubeScPlaced = 0;
+        tele_totalCubeScAttempted = 0;
         tele_SwTheirs = 0;
         tele_SwTheirAtt = 0;
         numExtraSw = 0;
@@ -385,6 +436,7 @@ public class VisMatch_Activity extends AppCompatActivity {
         auto_B2 = 0;
         auto_B3 = 0;
         numTeleExch = 0;
+        numTeleLaunch = 0; numTelePlace = 0;
         tele_their_floor = 0;
         randomNUM = 0;
         auto_Comments = "";
@@ -399,6 +451,7 @@ public class VisMatch_Activity extends AppCompatActivity {
         final_DefStarve = 0;
         final_NumPen = 0;
 
+        mBarChart.clearChart();
     }
 
 
