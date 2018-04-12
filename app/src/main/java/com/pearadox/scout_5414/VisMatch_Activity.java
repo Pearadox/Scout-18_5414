@@ -11,6 +11,9 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,9 @@ public class VisMatch_Activity extends AppCompatActivity {
     String TAG = "VisMatch_Activity";        // This CLASS name
     String tnum = "";
     String tname = "";
+    int start = 0;          // Start Position for matches (0=ALL)
+    int numObjects = 0; int numProcessed = 0;
+    Spinner spinner_numMatches;
     String underScore = new String(new char[60]).replace("\0", "_");  // string of 'x' underscores
     String matches = "";
     TextView txt_team, txt_teamName, txt_NumMatches, txt_Matches;
@@ -30,6 +36,9 @@ public class VisMatch_Activity extends AppCompatActivity {
     TextView txt_climbs, txt_Lift1NUM, txt_Lift2NUM, txt_WasLiftedNUM, txt_OnPlatNUM, txt_RungNUM, txt_SideNUM, txt_ExchangeNUM, txt_LaunchNUM, txt_PlaceNUM;
     /* Comment Boxes */     TextView txt_AutoComments, txt_TeleComments, txt_FinalComments;
     TextView txt_spSi, txt_spSo, txt_spM;
+    public static String[] numMatch = new String[]             // Num. of Matches to process
+            {"ALL","Last","Last 2","Last 3"};
+
     //----------------------------------
     int numAutoBaseline = 0; int noAuto = 0; int numExtraSw = 0; int numExtraSc = 0;
     int auto_SwCubesAttempted = 0; int auto_SwCubesPlaced = 0; int auto_SwCrossOver = 0; int Auto_SwWrong = 0;
@@ -69,6 +78,12 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_team = (TextView) findViewById(R.id.txt_team);
         txt_teamName = (TextView) findViewById(R.id.txt_teamName);
         txt_NumMatches = (TextView) findViewById(R.id.txt_NumMatches);
+        Spinner spinner_numMatches = (Spinner) findViewById(R.id.spinner_numMatches);
+        ArrayAdapter adapter_Matches = new ArrayAdapter<String>(this, R.layout.robonum_list_layout, numMatch);
+        adapter_Matches.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_numMatches.setAdapter(adapter_Matches);
+        spinner_numMatches.setSelection(0, false);
+        spinner_numMatches.setOnItemSelectedListener(new VisMatch_Activity.numMatches_OnItemSelectedListener());
         /*  Auto  */
         txt_auto_baselineRatio = (TextView) findViewById(R.id.txt_auto_baselineRatio);
         txt_noAuto = (TextView) findViewById(R.id.txt_noAuto);
@@ -124,18 +139,18 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_team.setText(tnum);
         txt_teamName.setText(tname);    // Get real
 
-        int numObjects = Pearadox.Matches_Data.size();
+        numObjects = Pearadox.Matches_Data.size();
         Log.w(TAG, "Objects = " + numObjects);
         txt_NumMatches.setText(String.valueOf(numObjects));
 
-        numAutoBaseline = 0; auto_SwCubesAttempted = 0; auto_SwCubesPlaced = 0; tele_totalCubeSwAttempted = 0; numExtraSw = 0; numExtraSc = 0;
-        auto_B1 = 0; auto_B2 = 0; auto_B3 = 0;
-        auto_Comments = ""; tele_Comments = ""; final_Comments=""; matches = "";
-        final_LostComm = 0; final_LostParts = 0; final_DefGood = 0; final_DefBlock = 0;  final_DefSwitch = 0; final_DefStarve = 0; final_NumPen = 0;
+        init_Values();
 
-
+        start = 0;
+        getMatch_Data();
+    }
 // ================================================================
-        for (int i = 0; i < numObjects; i++) {
+    private void getMatch_Data() {
+        for (int i = start; i < numObjects; i++) {
             Log.w(TAG, "In for loop!   " + i);
             match_inst = Pearadox.Matches_Data.get(i);      // Get instance of Match Data
             matches = matches + match_inst.getMatch() + "  ";
@@ -284,8 +299,8 @@ public class VisMatch_Activity extends AppCompatActivity {
 // ================================================================
         txt_Matches.setText(matches);
 
-        txt_auto_baselineRatio.setText(numAutoBaseline +  "/" + numObjects);
-        txt_noAuto.setText(noAuto +  "/" + numObjects);
+        txt_auto_baselineRatio.setText(numAutoBaseline +  "/" + numProcessed);
+        txt_noAuto.setText(noAuto +  "/" + numProcessed);
 //        Log.w(TAG, "Ratio of Placed to Attempted Gears in Auto = " + auto_SwCubesPlaced + "/" + auto_SwCubesAttempted);
         txt_auto_cubeSwRatio.setText(auto_SwCubesPlaced + "/" + auto_SwCubesAttempted);
         txt_auto_cubeScRatio.setText(auto_ScCubesPlaced + "/" + auto_ScCubesAttempted);
@@ -339,6 +354,88 @@ public class VisMatch_Activity extends AppCompatActivity {
         txt_final_NumPen.setText(String.valueOf(final_NumPen));
 
         txt_FinalComments.setText(final_Comments);
+    }
+
+//******************************
+    private void init_Values() {
+        noAuto = 0;
+        numAutoBaseline = 0;
+        auto_SwCubesPlaced = 0;
+        auto_SwCubesAttempted = 0;
+        auto_SwCubesPlaced = 0;
+        tele_totalCubeSwPlaced = 0;
+        tele_totalCubeSwAttempted = 0;
+        tele_SwTheirs = 0;
+        tele_SwTheirAtt = 0;
+        numExtraSw = 0;
+        numExtraSc = 0;
+        portalNUM = 0;
+        cubznNUM = 0;
+        cubplatNUM = 0;
+        offFloorNUM = 0;
+        numTeleClimbSuccess = 0;
+        numTeleClimbAttempt = 0;
+        Lift1num = 0;
+        Lift2num = 0;
+        WasLifted = 0;
+        onPlatform = 0;
+        rungNum = 0;
+        sideNum = 0;
+        auto_B1 = 0;
+        auto_B2 = 0;
+        auto_B3 = 0;
+        numTeleExch = 0;
+        tele_their_floor = 0;
+        randomNUM = 0;
+        auto_Comments = "";
+        tele_Comments = "";
+        final_Comments = "";
+        matches = "";
+        final_LostComm = 0;
+        final_LostParts = 0;
+        final_DefGood = 0;
+        final_DefBlock = 0;
+        final_DefSwitch = 0;
+        final_DefStarve = 0;
+        final_NumPen = 0;
+
+    }
+
+
+//===========================================================================================
+    public class numMatches_OnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        public void onItemSelected(AdapterView<?> parent,
+                                   View view, int pos, long id) {
+            String num = " ";
+            num = parent.getItemAtPosition(pos).toString();
+            Log.w(TAG, ">>>>> NumMatches '" + num + "'");
+            switch (num) {
+                case "Last":
+                    start = numObjects - 1;     //
+                    numProcessed = 1;
+                    break;
+                case "Last 2":
+                    start = numObjects - 2;     //
+                    numProcessed = 2;
+                    break;
+                case "Last 3":
+                    start = numObjects - 3;     //
+                    numProcessed = 3;
+                    break;
+                case "ALL":
+                    start = 0;                  // Start at beginning
+                    numProcessed = numObjects;
+                    break;
+                default:                //
+                    Log.e(TAG, "Invalid Sort - " + start);
+            }
+            Log.w(TAG, "Start = " + num );
+            init_Values();
+            getMatch_Data();
+        }
+        public void onNothingSelected(AdapterView<?> parent) {
+            // Do nothing.
+        }
     }
 
 
