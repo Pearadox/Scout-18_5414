@@ -45,8 +45,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -60,6 +64,7 @@ public class DraftScout_Activity extends AppCompatActivity {
 
     String TAG = "DraftScout_Activity";        // This CLASS name
     Boolean is_Resumed = false;
+    int numPicks = 24;              // # of picks to show for Alliance Picks
     /*Shared Prefs-Scored Cubes*/ public String cubeAutoSw  = ""; public String cubeAutoSc  = ""; public String cubeTeleSw  = ""; public String cubeTeleSc  = ""; public String teleOthr  = ""; public String cubeExch = "";
     /*Shared Prefs-Retrieved Cbs*/ public String cubeColPort = ""; public String cubeColZone  = ""; public String cubeColFloor  = ""; public String cubeColStolen  = "";  public String cubeColRandom  = "";
     /*Shared Prefs-Climbing*/ public String climbClimbs = ""; public String climbLift1 = ""; public String climbLift2 = ""; public String climbPlat = ""; public String climbLifted = "";
@@ -77,7 +82,7 @@ public class DraftScout_Activity extends AppCompatActivity {
     static final ArrayList<HashMap<String, String>> draftList = new ArrayList<HashMap<String, String>>();
     public int teamSelected = -1;
     public static String sortType = "";
-    String tnum = "";
+    String tNumb = "";
     String tn = "";
     String Viz_URL = "";
     String teamNum=""; String teamName = "";
@@ -740,6 +745,12 @@ public boolean onCreateOptionsMenu(Menu menu) {
             startActivity(help_intent);  	// Show Help
             return true;
         }
+        if (id == R.id.action_picks) {
+            Intent help_intent = new Intent(this, HelpActivity.class);
+            Log.e(TAG, "Picks");
+            alliance_Picks();
+            return true;
+        }
         if (id == R.id.action_screen) {
             String filNam = Pearadox.FRC_Event.toUpperCase() + "-Draft"  + "_" + sortType + ".JPG";
             Log.w(TAG, "File='" + filNam + "'");
@@ -768,8 +779,83 @@ public boolean onCreateOptionsMenu(Menu menu) {
         return super.onOptionsItemSelected(item);
     }
 
+    private void alliance_Picks() {
 
-/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+        String tName = ""; String totalScore="";
+        String underScore = new String(new char[30]).replace("\0", "_");    // string of 'x' underscores
+        String blanks = new String(new char[50]).replace("\0", " ");        // string of 'x' blanks
+        String destFile = Pearadox.FRC_ChampDiv + "_Alliance-Picks" + ".txt";
+        Log.w(TAG, " filename = " + destFile);
+        try {
+            File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + destFile);
+//            Log.e(TAG, " path = " + prt);
+            BufferedWriter bW;
+            bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
+            bW.write(underScore + "  SWITCH  " + underScore +  "\n \n");
+            //  Switch sort
+            sortType = "Switch";
+            Collections.sort(team_Scores, new Comparator<Scores>() {
+                @Override
+                public int compare(Scores c1, Scores c2) {
+                    return Float.compare(c1.getSwitchScore(), c2.getSwitchScore());
+                }
+            });
+            Collections.reverse(team_Scores);   // Descending
+            loadTeams();
+            for (int i = 0; i < numPicks; i++) {    // load by sorted scores
+                score_inst = team_Scores.get(i);
+                Log.w(TAG, " Scores = " + score_inst.teamNum + " " + score_inst.switchScore + " " + score_inst.scaleScore + " " + score_inst.exchangeScore );
+                tNumb = score_inst.getTeamNum();
+                tName = score_inst.getTeamName();
+                tName = tName + blanks.substring(0, (40 - tName.length()));
+                totalScore = "[" + String.format("%3.2f", score_inst.getSwitchScore()) + "]";
+                bW.write(String.format("%2d", i+1) +" ) " + tNumb + " - " + tName + " \t  (" + mdNumMatches + ") \t    " +  totalScore + "\n\n");
+
+            } // end For # teams
+            bW.write(" \n" + "\n" + (char)12);        // NL & FF
+            //=====================================================================
+
+            bW.write(underScore + "  SCALE  " + underScore +  "\n \n ");
+            sortType = "Scale";
+            Collections.sort(team_Scores, new Comparator<Scores>() {
+                @Override
+                public int compare(Scores c1, Scores c2) {
+                    return Float.compare(c1.getScaleScore(), c2.getScaleScore());
+                }
+            });
+            Collections.reverse(team_Scores);   // Descending
+            loadTeams();
+            for (int i = 0; i < numPicks; i++) {    // load by sorted scores
+                score_inst = team_Scores.get(i);
+                tNumb = score_inst.getTeamNum();
+                tName = score_inst.getTeamName();
+                tName = tName + blanks.substring(0, (40 - tName.length()));
+                totalScore = "[" + String.format("%3.2f", score_inst.getScaleScore()) + "]";
+                bW.write(String.format("%2d", i+1) +" ) " + tNumb + " - " + tName + " \t  (" + mdNumMatches + ")   " +  totalScore + "\n\n");
+
+            } // end For # teams
+            bW.write(" \n" + "\n" + (char)12);        // NL & FF
+            //=====================================================================
+
+            bW.write(underScore + "  EXCHANGE  " + underScore +  "\n \n ");
+
+
+            bW.flush();
+            bW.close();
+            Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Alliance Picks file (" + numPicks + " teams) written to SD card [Download/FRC5414] ***", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage() + " not found in the specified directory.");
+            System.exit(0);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+
+    /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
     private void teamData(String team) {
 //        Log.i(TAG, "$$$$  teamData  $$$$ " + team);
         int autoCubeSw = 0; int autoCubeSwAtt = 0; int autoCubeSc = 0; int autoCubeScAtt = 0; int autoSwXnum = 0;  int autoScXnum = 0;
@@ -893,7 +979,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
             switchScore = (float) ((autoCubeSw * Float.parseFloat(cubeAutoSw) + (teleCubeSw * Float.parseFloat(cubeTeleSw)) + (teleOthrNUM * Float.parseFloat(teleOthr)))) / numMatches;
             scaleScore = (float) ((autoCubeSc * Float.parseFloat(cubeAutoSc) + teleCubeSc * Float.parseFloat(cubeTeleSc))) / numMatches;
             exchangeScore = (float) ((teleCubeExch * Float.parseFloat(cubeExch)) / numMatches);
-            Log.e(TAG, "Exch= " + teleCubeExch + "  #Matches=" + numMatches + "  Score=" + String.format("%3.2f", exchangeScore));
+//            Log.e(TAG, "Exch= " + teleCubeExch + "  #Matches=" + numMatches + "  Score=" + String.format("%3.2f", exchangeScore));
 //            Log.w(TAG, team + " **Scores**  Climb = " + String.format("%3. ", climbScore) + "  Cubes Scored = " + String.format("%3.2f", cubeScored) + "  Cubes Collected = " + String.format("%3.2f", cubeCollect) + "  Cubes Score = " + String.format("%3.2f", cubeScore) + "  Weighted Score = " + String.format("%3.2f", weightedScore));
         } else {
             climbScore = 0;

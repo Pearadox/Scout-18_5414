@@ -22,5 +22,12 @@
         android:title="Screen Shot"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_picks"
+        android:orderInCategory="80"
+        android:title="Alliance Picks"
+        app:showAsAction="never" />
+
+
 </menu>
 
