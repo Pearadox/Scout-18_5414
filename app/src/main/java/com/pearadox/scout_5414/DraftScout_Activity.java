@@ -4,15 +4,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.icu.text.SimpleDateFormat;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
-import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -25,15 +26,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.TextView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cpjd.main.Settings;
-import com.cpjd.main.TBA;
-import com.cpjd.models.Event;
-import com.cpjd.models.Team;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -43,7 +39,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -51,13 +46,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import static android.util.Log.e;
 import static android.util.Log.i;
 
 public class DraftScout_Activity extends AppCompatActivity {
@@ -434,6 +432,10 @@ public class DraftScout_Activity extends AppCompatActivity {
         wtCubeScore = sharedPref.getString("prefWeight_cubesScored", "1.0");
         wtCubeCollct = sharedPref.getString("prefWeight_cubesCollected", "1.0");
         wtClimb = sharedPref.getString("prefWeight_climb", "1.0");
+
+        numPicks = Integer.parseInt(sharedPref.getString("prefAlliance_num", "24"));
+
+
     }
 
     private String showFormula(String typ) {
@@ -781,16 +783,28 @@ public boolean onCreateOptionsMenu(Menu menu) {
 
     private void alliance_Picks() {
 
-        String tName = ""; String totalScore="";
+        String tName = ""; String totalScore=""; String DS = "";
         String underScore = new String(new char[30]).replace("\0", "_");    // string of 'x' underscores
         String blanks = new String(new char[50]).replace("\0", " ");        // string of 'x' blanks
-        String destFile = Pearadox.FRC_ChampDiv + "_Alliance-Picks" + ".txt";
-        Log.w(TAG, " filename = " + destFile);
+        if (numPicks > team_Scores.size()) {
+//            Log.w(TAG, "******>> numPick changed to: " + team_Scores.size());
+            numPicks = team_Scores.size();      // Use max (prevent Error when # teams < 'numPicks')
+        }
+        if (numPicks > 24) {
+            DS = "";
+        }else {
+            DS = "\n";
+        }
         try {
+            String destFile = Pearadox.FRC_ChampDiv + "_Alliance-Picks" + ".txt";
             File prt = new File(Environment.getExternalStorageDirectory() + "/download/FRC5414/" + destFile);
 //            Log.e(TAG, " path = " + prt);
-            BufferedWriter bW;
-            bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
+//            BufferedWriter bW;
+//            bW = new BufferedWriter(new FileWriter(prt, false));    // true = Append to existing file
+            BufferedWriter bW = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(prt), "UTF-8"
+            ));
+            bW.write(Pearadox.FRC_ChampDiv + " - " + Pearadox.FRC_EventName +  "\n");
             bW.write(underScore + "  SWITCH  " + underScore +  "\n \n");
             //  Switch sort
             sortType = "Switch";
@@ -804,18 +818,20 @@ public boolean onCreateOptionsMenu(Menu menu) {
             loadTeams();
             for (int i = 0; i < numPicks; i++) {    // load by sorted scores
                 score_inst = team_Scores.get(i);
-                Log.w(TAG, " Scores = " + score_inst.teamNum + " " + score_inst.switchScore + " " + score_inst.scaleScore + " " + score_inst.exchangeScore );
+//                Log.w(TAG, " Scores = " + score_inst.teamNum + " " + score_inst.switchScore + " " + score_inst.scaleScore + " " + score_inst.exchangeScore );
                 tNumb = score_inst.getTeamNum();
                 tName = score_inst.getTeamName();
-                tName = tName + blanks.substring(0, (40 - tName.length()));
+                tName = tName + blanks.substring(0, (36 - tName.length()));
                 totalScore = "[" + String.format("%3.2f", score_inst.getSwitchScore()) + "]";
-                bW.write(String.format("%2d", i+1) +" ) " + tNumb + " - " + tName + " \t  (" + mdNumMatches + ") \t    " +  totalScore + "\n\n");
-
+                teamData(tNumb);   // Get Team's Match Data
+                bW.write(String.format("%2d", i+1) +" ) " + tNumb + "-" + tName + " \t (" + String.format("%2d",(Integer.parseInt(mdNumMatches))) + ") " +  totalScore + "\t");
+                bW.write("A⚻ " + autoSwRatio + " ➽ " + autoSwXover + "  T⚻ " + teleSwRatio + " Oth⚻ " + teleOthrRatio+ "\n" + DS);
             } // end For # teams
             bW.write(" \n" + "\n" + (char)12);        // NL & FF
             //=====================================================================
 
-            bW.write(underScore + "  SCALE  " + underScore +  "\n \n ");
+            bW.write(Pearadox.FRC_ChampDiv + " - " + Pearadox.FRC_EventName +  "\n");
+            bW.write(underScore + "  SCALE  " + underScore +  "\n \n");
             sortType = "Scale";
             Collections.sort(team_Scores, new Comparator<Scores>() {
                 @Override
@@ -829,15 +845,38 @@ public boolean onCreateOptionsMenu(Menu menu) {
                 score_inst = team_Scores.get(i);
                 tNumb = score_inst.getTeamNum();
                 tName = score_inst.getTeamName();
-                tName = tName + blanks.substring(0, (40 - tName.length()));
+                tName = tName + blanks.substring(0, (36 - tName.length()));
                 totalScore = "[" + String.format("%3.2f", score_inst.getScaleScore()) + "]";
-                bW.write(String.format("%2d", i+1) +" ) " + tNumb + " - " + tName + " \t  (" + mdNumMatches + ")   " +  totalScore + "\n\n");
-
+                teamData(tNumb);   // Get Team's Match Data
+                bW.write(String.format("%2d", i+1) +" ) " + tNumb + " - " + tName + " \t  (" + String.format("%2d",(Integer.parseInt(mdNumMatches))) + ") " +  totalScore + " \t");
+                bW.write(" A⚖ " + autoScRatio + " ➽ " + autoScXover + "  T⚖ " + teleScRatio+ "\n" + DS);
             } // end For # teams
             bW.write(" \n" + "\n" + (char)12);        // NL & FF
             //=====================================================================
 
-            bW.write(underScore + "  EXCHANGE  " + underScore +  "\n \n ");
+            bW.write(Pearadox.FRC_ChampDiv + " - " + Pearadox.FRC_EventName +  "\n");
+            bW.write(underScore + "  EXCHANGE  " + underScore +  "\n " + DS);
+            sortType = "Exchange";
+            Collections.sort(team_Scores, new Comparator<Scores>() {
+                @Override
+                public int compare(Scores c1, Scores c2) {
+                    return Float.compare(c1.getExchangeScore(), c2.getExchangeScore());
+                }
+            });
+            Collections.reverse(team_Scores);   // Descending
+            loadTeams();
+            for (int i = 0; i < numPicks; i++) {    // load by sorted scores
+                score_inst = team_Scores.get(i);
+                tNumb = score_inst.getTeamNum();
+                tName = score_inst.getTeamName();
+                tName = tName + blanks.substring(0, (36 - tName.length()));
+                totalScore = "[" + String.format("%3.2f", score_inst.getExchangeScore()) + "]";
+                teamData(tNumb);   // Get Team's Match Data
+                bW.write(String.format("%2d", i+1) +" ) " + tNumb + " - " + tName + " \t  (" + String.format("%2d",(Integer.parseInt(mdNumMatches))) + ")   " +  totalScore + "  \t");
+                bW.write( "Exch " + teleExch + "\n" + DS);
+            } // end For # teams
+            bW.write(" \n" + "\n");        // NL
+            //=====================================================================
 
 
             bW.flush();

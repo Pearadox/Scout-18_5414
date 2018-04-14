@@ -157,4 +157,15 @@
 
     </PreferenceCategory>
 
+    //================================================================================
+    <PreferenceCategory android:title="Alliance Picks">
+    <EditTextPreference
+        android:id="@+id/txt_Picks"
+        android:inputType="number"
+        android:defaultValue="24"
+        android:key="prefAlliance_num"
+        android:summary="Number of Teams to print out for Alliance Picks"
+        android:title="# Teams" />
+    </PreferenceCategory>
+
 </PreferenceScreen>

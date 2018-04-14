@@ -29,6 +29,8 @@ public class DraftSettingsActivity extends AppCompatActivity {
     public static final String  WEIGHT_PREF_CUBESSCORED =   "prefWeight_cubesScored";
     public static final String  WEIGHT_PREF_CUBESSCOLLECT = "prefWeight_cubesCollected";
 
+    public static final String  ALLIANCE_PICKS_NUM =   "prefAlliance_num";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
