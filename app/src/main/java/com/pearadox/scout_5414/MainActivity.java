@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         spinner_Device.setSelection(0, false);
         spinner_Device.setOnItemSelectedListener(new device_OnItemSelectedListener());
         ImageView img_netStatus = (ImageView) findViewById(R.id.img_netStatus);
-
+        Button btn_StoreData = (Button) findViewById(R.id.btn_StoreData);
         isInternetAvailable();          // See if device has Internet
 
 //        FirebaseDatabase.getInstance().setPersistenceEnabled(true);     // Enable 'Offline' Database
@@ -431,9 +431,9 @@ public class MainActivity extends AppCompatActivity {
                         currentImageUri = Uri.fromFile(x);
                         Log.w(TAG, " URI " + currentImageUri);
                         FirebaseStorage storage = FirebaseStorage.getInstance();
-                        StorageReference storageReference = storage.getReferenceFromUrl("gs://pearadox-2018.appspot.com/images/" + Pearadox.FRC_Event).child(tmpf);
-
-                        UploadTask uploadTask = storageReference.putFile(currentImageUri);
+//                        StorageReference storageReference = storage.getReferenceFromUrl("gs://pearadox-2018.appspot.com/images/" + Pearadox.FRC_Event).child(tmpf);
+//
+//                        UploadTask uploadTask = storageReference.putFile(currentImageUri);
                         String src = direct_img + "/" + tmpf;
                         String dest = bkup_img + "/" + tmpf;
                         copyFile(src, dest);     // Copy to Backup
@@ -883,10 +883,12 @@ private void preReqs() {
             Log.w(TAG, ">>>>> Device '" + devSelected + "'");
             Pearadox.FRC514_Device = devSelected;
             RadioGroup radgrp_Scout = (RadioGroup) findViewById(R.id.radgrp_Scout);
+            Button btn_StoreData = (Button) findViewById(R.id.btn_StoreData);
             switch (devSelected) {
                 case "Scout Master": 	            // Scout Master
                     radgrp_Scout.setVisibility(View.GONE);    // Hide scout group
                     radgrp_Scout.setEnabled(false);
+                    btn_StoreData.setVisibility(View.VISIBLE);
                     break;
                 case "Visualizer": 		// Visualizer
                     radgrp_Scout.setVisibility(View.GONE);    // Hide scout group
