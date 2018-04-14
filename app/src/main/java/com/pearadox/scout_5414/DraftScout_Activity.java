@@ -782,10 +782,19 @@ public boolean onCreateOptionsMenu(Menu menu) {
     }
 
     private void alliance_Picks() {
-
         String tName = ""; String totalScore=""; String DS = "";
         String underScore = new String(new char[30]).replace("\0", "_");    // string of 'x' underscores
         String blanks = new String(new char[50]).replace("\0", " ");        // string of 'x' blanks
+        sortType = "Weighted";          // Attempt to "force" correct sort 1st time
+        Collections.sort(team_Scores, new Comparator<Scores>() {
+            @Override
+            public int compare(Scores c1, Scores c2) {
+                return Float.compare(c1.getWeightedScore(), c2.getWeightedScore());
+            }
+        });
+        Collections.reverse(team_Scores);   // Descending
+        loadTeams();
+
         if (numPicks > team_Scores.size()) {
 //            Log.w(TAG, "******>> numPick changed to: " + team_Scores.size());
             numPicks = team_Scores.size();      // Use max (prevent Error when # teams < 'numPicks')
@@ -824,7 +833,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
                 tName = tName + blanks.substring(0, (36 - tName.length()));
                 totalScore = "[" + String.format("%3.2f", score_inst.getSwitchScore()) + "]";
                 teamData(tNumb);   // Get Team's Match Data
-                bW.write(String.format("%2d", i+1) +" ) " + tNumb + "-" + tName + " \t (" + String.format("%2d",(Integer.parseInt(mdNumMatches))) + ") " +  totalScore + "\t");
+                bW.write(String.format("%2d", i+1) + ") " + tNumb + "-" + tName + " \t (" + String.format("%2d",(Integer.parseInt(mdNumMatches))) + ") " +  totalScore + "\t");
                 bW.write("A⚻ " + autoSwRatio + " ➽ " + autoSwXover + "  T⚻ " + teleSwRatio + " Oth⚻ " + teleOthrRatio+ "\n" + DS);
             } // end For # teams
             bW.write(" \n" + "\n" + (char)12);        // NL & FF
@@ -848,7 +857,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
                 tName = tName + blanks.substring(0, (36 - tName.length()));
                 totalScore = "[" + String.format("%3.2f", score_inst.getScaleScore()) + "]";
                 teamData(tNumb);   // Get Team's Match Data
-                bW.write(String.format("%2d", i+1) +" ) " + tNumb + " - " + tName + " \t  (" + String.format("%2d",(Integer.parseInt(mdNumMatches))) + ") " +  totalScore + " \t");
+                bW.write(String.format("%2d", i+1) +") " + tNumb + " - " + tName + " \t  (" + String.format("%2d",(Integer.parseInt(mdNumMatches))) + ") " +  totalScore + " \t");
                 bW.write(" A⚖ " + autoScRatio + " ➽ " + autoScXover + "  T⚖ " + teleScRatio+ "\n" + DS);
             } // end For # teams
             bW.write(" \n" + "\n" + (char)12);        // NL & FF
@@ -872,7 +881,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
                 tName = tName + blanks.substring(0, (36 - tName.length()));
                 totalScore = "[" + String.format("%3.2f", score_inst.getExchangeScore()) + "]";
                 teamData(tNumb);   // Get Team's Match Data
-                bW.write(String.format("%2d", i+1) +" ) " + tNumb + " - " + tName + " \t  (" + String.format("%2d",(Integer.parseInt(mdNumMatches))) + ")   " +  totalScore + "  \t");
+                bW.write(String.format("%2d", i+1) +") " + tNumb + " - " + tName + " \t  (" + String.format("%2d",(Integer.parseInt(mdNumMatches))) + ")   " +  totalScore + "  \t");
                 bW.write( "Exch " + teleExch + "\n" + DS);
             } // end For # teams
             bW.write(" \n" + "\n");        // NL
