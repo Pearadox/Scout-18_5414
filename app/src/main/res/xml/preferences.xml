@@ -6,14 +6,14 @@
         <EditTextPreference
             android:id="@+id/txt_autoSw"
             android:inputType="numberDecimal"
-            android:defaultValue="1.0"
+            android:defaultValue="3.5"
             android:key="prefCube_autoSw"
             android:summary="Multiplier for Cubes scored on Switch during Auto"
             android:title="Auto Switch" />
         <EditTextPreference
             android:id="@+id/txt_autoSc"
             android:inputType="numberDecimal"
-            android:defaultValue="1.0"
+            android:defaultValue="3.5"
             android:key="prefCube_autoSc"
             android:summary="Multiplier for Cubes scored on Scale during Auto"
             android:title="Auto Scale" />
@@ -36,7 +36,7 @@
         <EditTextPreference
             android:id="@+id/txt_othrSw"
             android:inputType="numberDecimal"
-            android:defaultValue="1.0"
+            android:defaultValue="1.5"
             android:key="prefCube_othr"
             android:summary="Multiplier for Cubes scored on Their Switch"
             android:title="Other Switch" />
@@ -132,18 +132,18 @@
     </PreferenceCategory>
 
 //================================================================================
-    <PreferenceCategory android:title="Weighted">
+    <PreferenceCategory android:title="Combined">
         <EditTextPreference
             android:id="@+id/txt_Climb"
             android:inputType="number"
-            android:defaultValue="1.0"
+            android:defaultValue="1.5"
             android:key="prefWeight_climb"
             android:summary="Multiplier for Climbing"
             android:title="Climb Weight" />
         <EditTextPreference
             android:id="@+id/txt_CubesScored"
             android:inputType="number"
-            android:defaultValue="1.0"
+            android:defaultValue="2.0"
             android:key="prefWeight_cubesScored"
             android:summary="Multiplier for Cubes Scored"
             android:title="Cubes Scored Weight" />

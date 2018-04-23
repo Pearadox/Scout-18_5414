@@ -89,7 +89,7 @@
 
     <TextView
         android:id="@+id/txt_Formula"
-        android:layout_width="500dp"
+        android:layout_width="575dp"
         android:layout_height="35dp"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/lbl_Formula"
@@ -192,6 +192,7 @@
         android:layout_height="30dp"
         android:layout_alignBottom="@+id/lbl_Formula"
         android:layout_alignParentEnd="true"
+        android:layout_marginBottom="5dp"
         android:background="@color/magenta"
         android:onClick="buttonPit_Click"
         android:text="PIT DATA"
@@ -244,7 +245,7 @@
             android:id="@+id/radio_Weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Weighted" />
+            android:text="Combined" />
         //-----------------------------------
 
         <RadioButton

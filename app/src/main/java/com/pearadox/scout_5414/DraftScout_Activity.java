@@ -62,7 +62,7 @@ public class DraftScout_Activity extends AppCompatActivity {
 
     String TAG = "DraftScout_Activity";        // This CLASS name
     Boolean is_Resumed = false;
-    int numPicks = 24;              // # of picks to show for Alliance Picks
+    int numPicks = 24;              // # of picks to show for Alliance Picks (actually get from Preferences)
     /*Shared Prefs-Scored Cubes*/ public String cubeAutoSw  = ""; public String cubeAutoSc  = ""; public String cubeTeleSw  = ""; public String cubeTeleSc  = ""; public String teleOthr  = ""; public String cubeExch = "";
     /*Shared Prefs-Retrieved Cbs*/ public String cubeColPort = ""; public String cubeColZone  = ""; public String cubeColFloor  = ""; public String cubeColStolen  = "";  public String cubeColRandom  = "";
     /*Shared Prefs-Climbing*/ public String climbClimbs = ""; public String climbLift1 = ""; public String climbLift2 = ""; public String climbPlat = ""; public String climbLifted = "";
@@ -93,7 +93,9 @@ public class DraftScout_Activity extends AppCompatActivity {
     String autoSwRatio = "";
     String autoScRatio = "-/-";
     String autoSwXover = "";
+    String autoSwExtra = "";
     String autoScXover = "";
+    String autoScExtra = "";
     String teleSwRatio = "-/-";
     String teleScRatio = "-/-";
     String mdNumMatches = "";
@@ -246,6 +248,7 @@ public class DraftScout_Activity extends AppCompatActivity {
         }
         Log.e(TAG, "After - " + sortType);
         getprefs();         // Get multiplier values from Preferences
+        Log.e(TAG, " 1st cubeAutoSc=" + cubeAutoSc);
 
         txt_EventName = (TextView) findViewById(R.id.txt_EventName);
         txt_NumTeams = (TextView) findViewById(R.id.txt_NumTeams);
@@ -301,9 +304,9 @@ public class DraftScout_Activity extends AppCompatActivity {
                         showFormula("Cubes");              // update the formula
                         loadTeams();
                         break;
-                    case "Weighted":
-//                Log.w(TAG, "Weighted sort");
-                        sortType = "Weighted";
+                    case "Combined":
+//                Log.w(TAG, "Combined sort");
+                        sortType = "Combined";
                         Collections.sort(team_Scores, new Comparator<Scores>() {
                             @Override
                             public int compare(Scores c1, Scores c2) {
@@ -410,11 +413,13 @@ public class DraftScout_Activity extends AppCompatActivity {
         SharedPreferences sharedPref =
                 PreferenceManager.getDefaultSharedPreferences(this);
 
-        cubeAutoSw = sharedPref.getString("prefCube_autoSw", "1.0");
-        cubeAutoSc = sharedPref.getString("prefCube_autoSc", "1.0");
+        cubeAutoSw = sharedPref.getString("prefCube_autoSw", "3.5");
+        Log.e(TAG, "cubeAutoSw=" + cubeAutoSw);
+        cubeAutoSc = sharedPref.getString("prefCube_autoSc", "3.5");
+        Log.e(TAG, "cubeAutoSc=" + cubeAutoSc);
         cubeTeleSw = sharedPref.getString("prefCube_teleSw", "1.0");
         cubeTeleSc = sharedPref.getString("prefCube_teleSc", "1.0");
-        teleOthr =   sharedPref.getString("prefCube_othr", "1.0");
+        teleOthr =   sharedPref.getString("prefCube_othr", "1.5");
         cubeExch =   sharedPref.getString("prefCube_exchange", "1.0");
 
         cubeColPort = sharedPref.getString("prefCubeCol_portal", "1.0");
@@ -429,9 +434,9 @@ public class DraftScout_Activity extends AppCompatActivity {
         climbPlat = sharedPref.getString("prefClimb_onPlat", "0.3");
         climbLifted = sharedPref.getString("prefClimb_lifted", "0.3");
 
-        wtCubeScore = sharedPref.getString("prefWeight_cubesScored", "1.0");
+        wtCubeScore = sharedPref.getString("prefWeight_cubesScored", "2.0");
         wtCubeCollct = sharedPref.getString("prefWeight_cubesCollected", "1.0");
-        wtClimb = sharedPref.getString("prefWeight_climb", "1.0");
+        wtClimb = sharedPref.getString("prefWeight_climb", "1.5");
 
         numPicks = Integer.parseInt(sharedPref.getString("prefAlliance_num", "24"));
 
@@ -450,23 +455,23 @@ public class DraftScout_Activity extends AppCompatActivity {
                 txt_Formula.setText(form);
                 break;
             case "Cubes":
-                form = "SCR:  (" + cubeAutoSw +"*(aCSw)+" + cubeAutoSc + "*(aCSc)+" + cubeTeleSw + "*(tCSw)+" + cubeTeleSc + "*(tCSc)+" + teleOthr + "*(oth)+" + cubeExch + "*(Exc)) / # matches  ✚ \n";
+                form = "SCR:(" + cubeAutoSw +"*((aCSw+Aex+➽*.5)+" + cubeAutoSc + "*(aCSc+Tex+➽*.5)+" + cubeTeleSw + "*(tCSw)+" + cubeTeleSc + "*(tCSc)+" + teleOthr + "*(oth)+" + cubeExch + "*(Exc))/# matches ✚ \n";
                 form = form + "COL:  (" + cubeColPort +"*(Port) + " + cubeColZone + "*(zone) + " + cubeColFloor + "*(flr) + " + cubeColStolen + "*(Their) " + cubeColRandom + "*(Random)) / # matches";
                 lbl_Formula.setTextColor(Color.parseColor("#ee00ee"));      // magenta
                 txt_Formula.setText(form);
                 break;
-            case "Weighted":
+            case "Combined":
                 form = "((" + wtClimb + "*(climbScore) + " + wtCubeScore + "*(cubesScored) + " + wtCubeCollct + "*(cubesCollected)) / #matches";
                 lbl_Formula.setTextColor(Color.parseColor("#ff0000"));      // red
                 txt_Formula.setText(form);
                 break;
             case "Switch":
-                form = "(" + cubeAutoSw +"*(aCSw) + " + cubeTeleSw + "*(tCSw) + " + teleOthr + "*(oth)) / #matches";
+                form = "(" + cubeAutoSw +"*(aCSw + Aex + ➽*.5) + " + cubeTeleSw + "*(tCSw) + " + teleOthr + "*(oth)) / #matches";
                 lbl_Formula.setTextColor(Color.parseColor("#00eeee"));          // cyan
                 txt_Formula.setText(form);
                 break;
             case "Scale":
-                form = "(" + cubeAutoSc + "*(aCSc) + " + cubeTeleSc + "*(tCSc) / #matches";
+                form = "(" + cubeAutoSc + "*(aCSc + Tex + ➽*.5) + " + cubeTeleSc + "*(tCSc) / #matches";
                 lbl_Formula.setTextColor(Color.parseColor("#32cd32"));      // lime green
                 txt_Formula.setText(form);
                 break;
@@ -490,6 +495,9 @@ public class DraftScout_Activity extends AppCompatActivity {
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
         editor.commit();
+        Toast toast = Toast.makeText(getBaseContext(), "Default Settings have been reset", Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
 
         showFormula(sortType);              // update the formula
         loadTeams();                        // reload based on default
@@ -640,7 +648,7 @@ public class DraftScout_Activity extends AppCompatActivity {
                 case "Cubes":
                     totalScore = "[" + String.format("%3.2f", score_inst.getCubeScore()) + "]";
                     break;
-                case "Weighted":
+                case "Combined":
                     totalScore = "[" + String.format("%3.2f", score_inst.getWeightedScore()) + "]";
                     break;
                 case "Switch":
@@ -661,7 +669,7 @@ public class DraftScout_Activity extends AppCompatActivity {
 
             temp.put("team", tn + " - " + score_inst.getTeamName() + "   (" + mdNumMatches + ")   " +  totalScore);
 //            temp.put("BA", "Rank=" + teams[i].rank + "  " + teams[i].record + "   OPR=" + String.format("%3.1f", (teams[i].opr)) + "    ↑ " + String.format("%3.1f", (teams[i].touchpad)) + "   kPa=" + String.format("%3.1f", (teams[i].pressure)));
-            temp.put("Stats", "Auto ⚻ " + autoSwRatio + " ➽ " + autoSwXover + "  ⚖ " + autoScRatio + " ➽ " + autoScXover+ "  Tele ⚻ " + teleSwRatio + " Oth⚻ " + teleOthrRatio +  "  ⚖ " + teleScRatio + "  Exch " + teleExch + " Port " + telePort + " Zone " + teleZone);
+            temp.put("Stats", "Auto⚻ " + autoSwRatio + " ➽" + autoSwXover + "✚" + autoSwExtra + "  ⚖ " + autoScRatio + " ➽" + autoScXover + "✚" + autoScExtra + "  Tele⚻ " + teleSwRatio + " Oth⚻ " + teleOthrRatio +  "  ⚖ " + teleScRatio + "  Exch " + teleExch + " Port " + telePort + " Zone " + teleZone);
             temp.put("BA",  "Climb " + "  " + climbRatio + "  ↕One " + liftOne + "  ↕Two " + liftTwo + "   onPlat⚌" + onPlatform+ "    Was↑ " + gotLifted + "    ▉P/U  " + cubeChk);
             draftList.add(temp);
         } // End For
@@ -785,7 +793,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
         String tName = ""; String totalScore=""; String DS = "";
         String underScore = new String(new char[30]).replace("\0", "_");    // string of 'x' underscores
         String blanks = new String(new char[50]).replace("\0", " ");        // string of 'x' blanks
-        sortType = "Weighted";          // Attempt to "force" correct sort 1st time
+        sortType = "Combined";          // Attempt to "force" correct sort 1st time
         Collections.sort(team_Scores, new Comparator<Scores>() {
             @Override
             public int compare(Scores c1, Scores c2) {
@@ -905,8 +913,8 @@ public boolean onCreateOptionsMenu(Menu menu) {
 
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
     private void teamData(String team) {
-//        Log.i(TAG, "$$$$  teamData  $$$$ " + team);
-        int autoCubeSw = 0; int autoCubeSwAtt = 0; int autoCubeSc = 0; int autoCubeScAtt = 0; int autoSwXnum = 0;  int autoScXnum = 0;
+        Log.i(TAG, "$$$$  teamData  $$$$ " + team);
+        int autoCubeSw = 0; int autoCubeSwAtt = 0; int autoCubeSc = 0; int autoCubeScAtt = 0; int autoSwXnum = 0;  int autoScXnum = 0; int autoCubeSwExtra = 0; int autoCubeScExtra = 0;
         int teleCubeSw = 0; int teleCubeSwAtt = 0; int teleCubeSc = 0; int teleCubeScAtt = 0;
         int teleCubeExch = 0; int teleOthrNUM = 0;  int teleOthrATT = 0; int telePortalNUM = 0; int teleZoneNUM = 0; int teleFloorNUM = 0; int teleTheirNUM = 0; int teleRandomNUM = 0;
         int climbs = 0; int climbAttemps = 0; int platNum = 0; int lift1Num = 0; int lift2Num = 0; int liftedNum = 0;
@@ -926,6 +934,12 @@ public boolean onCreateOptionsMenu(Menu menu) {
                 }
                 if (match_inst.isAuto_xover_switch()) {
                     autoSwXnum++;
+                }
+                if (match_inst.isAuto_switch_extra()) {
+                    autoCubeSwExtra++;
+                }
+                if (match_inst.isAuto_scale_extra()) {
+                    autoCubeScExtra++;
                 }
                 if (match_inst.isAuto_cube_scale()) {
                     autoCubeSc++;
@@ -983,9 +997,11 @@ public boolean onCreateOptionsMenu(Menu menu) {
             autoSwRatio = autoCubeSw + "/" + autoCubeSwAtt;
             autoScRatio = autoCubeSc + "/" + autoCubeScAtt;
             autoSwXover = String.valueOf(autoSwXnum);
+            autoSwExtra  = String.valueOf(autoCubeSwExtra);
             autoScXover = String.valueOf(autoScXnum);
             teleSwRatio = teleCubeSw + "/" + teleCubeSwAtt;
             teleScRatio = teleCubeSc + "/" + teleCubeScAtt;
+            autoScExtra = String.valueOf(autoCubeScExtra);
             teleOthrRatio = teleOthrNUM + "/" + teleOthrATT;
             teleExch = String.valueOf(teleCubeExch);
             telePort = String.valueOf(telePortalNUM);
@@ -1001,6 +1017,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
             autoSwRatio = "0/0";
             autoScRatio = "0/0";
             autoSwXover = "0";
+            autoSwExtra = "0";
             autoScXover = "0";
             teleSwRatio = "0/0";
             teleScRatio = "0/0";
@@ -1020,7 +1037,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
 //        Log.e(TAG, team + " "+ climbs + " "+ lift1Num + " "+ lift2Num + " " + platNum +  " " + liftedNum + " / " + numMatches);
         if (numMatches > 0) {
             climbScore = (float) (((climbs * Float.parseFloat(climbClimbs)) + (lift1Num * Float.parseFloat(climbLift1)) + (lift2Num * Float.parseFloat(climbLift2))) + (platNum * Float.parseFloat(climbPlat)) + (liftedNum * Float.parseFloat(climbLifted))) / numMatches;
-            cubeScored = (float) ((autoCubeSw * Float.parseFloat(cubeAutoSw) + autoCubeSc * Float.parseFloat(cubeAutoSc) + teleCubeSw * Float.parseFloat(cubeTeleSw) + teleCubeSc * Float.parseFloat(cubeTeleSc) + teleOthrNUM * Float.parseFloat(teleOthr) + teleCubeExch * Float.parseFloat(cubeExch)) / numMatches);
+            cubeScored = (float) (((autoCubeSw +  + (autoCubeSwExtra * 2) + (autoSwXnum *.5)) * Float.parseFloat(cubeAutoSw) + (autoCubeSc + (autoCubeScExtra * 2) + (autoScXnum *.5)) * Float.parseFloat(cubeAutoSc) + teleCubeSw * Float.parseFloat(cubeTeleSw) + teleCubeSc * Float.parseFloat(cubeTeleSc) + teleOthrNUM * Float.parseFloat(teleOthr) + teleCubeExch * Float.parseFloat(cubeExch)) / numMatches);
             cubeCollect = (float) ((telePortalNUM * Float.parseFloat(cubeColPort) + teleZoneNUM * Float.parseFloat(cubeColZone) + teleFloorNUM * Float.parseFloat(cubeColFloor) + teleTheirNUM * Float.parseFloat(cubeColStolen) + teleRandomNUM * Float.parseFloat(cubeColRandom)) / numMatches);
             cubeScore = (float) ((cubeScored) + cubeCollect);
             weightedScore = ((climbScore* Float.parseFloat(wtClimb) + cubeScored * Float.parseFloat(wtCubeScore) + cubeCollect * Float.parseFloat(wtCubeCollct)) / numMatches);
@@ -1028,7 +1045,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
             scaleScore = (float) ((autoCubeSc * Float.parseFloat(cubeAutoSc) + teleCubeSc * Float.parseFloat(cubeTeleSc))) / numMatches;
             exchangeScore = (float) ((teleCubeExch * Float.parseFloat(cubeExch)) / numMatches);
 //            Log.e(TAG, "Exch= " + teleCubeExch + "  #Matches=" + numMatches + "  Score=" + String.format("%3.2f", exchangeScore));
-//            Log.w(TAG, team + " **Scores**  Climb = " + String.format("%3. ", climbScore) + "  Cubes Scored = " + String.format("%3.2f", cubeScored) + "  Cubes Collected = " + String.format("%3.2f", cubeCollect) + "  Cubes Score = " + String.format("%3.2f", cubeScore) + "  Weighted Score = " + String.format("%3.2f", weightedScore));
+//            Log.w(TAG, team + " **Scores**  Climb = " + String.format("%3. ", climbScore) + "  Cubes Scored = " + String.format("%3.2f", cubeScored) + "  Cubes Collected = " + String.format("%3.2f", cubeCollect) + "  Cubes Score = " + String.format("%3.2f", cubeScore) + "  Combined Score = " + String.format("%3.2f", weightedScore));
         } else {
             climbScore = 0;
             cubeScore = 0;
@@ -1124,7 +1141,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
                     radio_Cubes = (RadioButton) findViewById(R.id.radio_Cubes);
                     radio_Cubes.performClick();         // "force" radio button click
                     break;
-                case "Weighted":
+                case "Combined":
                     radio_Weight = (RadioButton) findViewById(R.id.radio_Weight);
                     radio_Weight.performClick();         // "force" radio button click
                     break;
