@@ -141,19 +141,19 @@
             android:summary="Multiplier for Climbing"
             android:title="Climb Weight" />
         <EditTextPreference
-            android:id="@+id/txt_CubesScored"
+            android:id="@+id/txt_SwitchScored"
             android:inputType="number"
             android:defaultValue="2.0"
-            android:key="prefWeight_cubesScored"
-            android:summary="Multiplier for Cubes Scored"
-            android:title="Cubes Scored Weight" />
+            android:key="prefWeight_cubesSwitch"
+            android:summary="Multiplier for Switch Cubes Scored"
+            android:title="Switch Cubes Scored Weight" />
         <EditTextPreference
-            android:id="@+id/txt_CubesCollected"
+            android:id="@+id/txt_ScaleScored"
             android:inputType="number"
-            android:defaultValue="1.0"
-            android:key="prefWeight_cubesCollected"
-            android:summary="Multiplier for Cubes Collected"
-            android:title="Cubes Collected Weight" />
+            android:defaultValue="3.0"
+            android:key="prefWeight_cubesScale"
+            android:summary="Multiplier for Scale Cubes Scored"
+            android:title="Scale Cubes Scored Weight" />
 
     </PreferenceCategory>
 

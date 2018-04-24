@@ -1,5 +1,6 @@
 package com.pearadox.scout_5414;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -80,6 +81,7 @@ public class DraftScout_Activity extends AppCompatActivity {
     static final ArrayList<HashMap<String, String>> draftList = new ArrayList<HashMap<String, String>>();
     public int teamSelected = -1;
     public static String sortType = "";
+    private ProgressDialog progress;
     String tNumb = "";
     String tn = "";
     String Viz_URL = "";
@@ -434,8 +436,8 @@ public class DraftScout_Activity extends AppCompatActivity {
         climbPlat = sharedPref.getString("prefClimb_onPlat", "0.3");
         climbLifted = sharedPref.getString("prefClimb_lifted", "0.3");
 
-        wtCubeScore = sharedPref.getString("prefWeight_cubesScored", "2.0");
-        wtCubeCollct = sharedPref.getString("prefWeight_cubesCollected", "1.0");
+        wtCubeScore = sharedPref.getString("prefWeight_cubesSwitch", "2.0");
+        wtCubeCollct = sharedPref.getString("prefWeight_cubesScale", "3.0");
         wtClimb = sharedPref.getString("prefWeight_climb", "1.5");
 
         numPicks = Integer.parseInt(sharedPref.getString("prefAlliance_num", "24"));
@@ -455,28 +457,28 @@ public class DraftScout_Activity extends AppCompatActivity {
                 txt_Formula.setText(form);
                 break;
             case "Cubes":
-                form = "SCR:(" + cubeAutoSw +"*((aCSw+Aex+➽*.5)+" + cubeAutoSc + "*(aCSc+Tex+➽*.5)+" + cubeTeleSw + "*(tCSw)+" + cubeTeleSc + "*(tCSc)+" + teleOthr + "*(oth)+" + cubeExch + "*(Exc))/# matches ✚ \n";
+                form = "SCR:(" + cubeAutoSw +"*((aCSw*Aex)+➽*.5)+" + cubeAutoSc + "*(aCSc*Tex)+➽*.5)+" + cubeTeleSw + "*(tCSw)+" + cubeTeleSc + "*(tCSc)+" + teleOthr + "*(oth)+" + cubeExch + "*(Exc))/# matches ✚ \n";
                 form = form + "COL:  (" + cubeColPort +"*(Port) + " + cubeColZone + "*(zone) + " + cubeColFloor + "*(flr) + " + cubeColStolen + "*(Their) " + cubeColRandom + "*(Random)) / # matches";
                 lbl_Formula.setTextColor(Color.parseColor("#ee00ee"));      // magenta
                 txt_Formula.setText(form);
                 break;
             case "Combined":
-                form = "((" + wtClimb + "*(climbScore) + " + wtCubeScore + "*(cubesScored) + " + wtCubeCollct + "*(cubesCollected)) / #matches";
+                form = "((" + wtClimb + "*(climbScore) + " + wtCubeScore + "*(Switch) + " + wtCubeScore + "*(Scale) + (Exc) / #matches";
                 lbl_Formula.setTextColor(Color.parseColor("#ff0000"));      // red
                 txt_Formula.setText(form);
                 break;
             case "Switch":
-                form = "(" + cubeAutoSw +"*(aCSw + Aex + ➽*.5) + " + cubeTeleSw + "*(tCSw) + " + teleOthr + "*(oth)) / #matches";
+                form = "(" + cubeAutoSw +"*((aCSw * Aex) + ➽*.5) + " + cubeTeleSw + "*(tCSw) + " + teleOthr + "*(oth)) / #matches";
                 lbl_Formula.setTextColor(Color.parseColor("#00eeee"));          // cyan
                 txt_Formula.setText(form);
                 break;
             case "Scale":
-                form = "(" + cubeAutoSc + "*(aCSc + Tex + ➽*.5) + " + cubeTeleSc + "*(tCSc) / #matches";
+                form = "(" + cubeAutoSc + "*((aCSc * Tex) + ➽*.5) + " + cubeTeleSc + "*(tCSc) / #matches";
                 lbl_Formula.setTextColor(Color.parseColor("#32cd32"));      // lime green
                 txt_Formula.setText(form);
                 break;
             case "Exchange":
-                form = "(Exc) / #matches";
+                form = cubeExch + " * (Exc) / #matches";
                 lbl_Formula.setTextColor(Color.parseColor("#a8a8a8"));      /// grey
                 txt_Formula.setText(form);
                 break;
@@ -790,9 +792,13 @@ public boolean onCreateOptionsMenu(Menu menu) {
     }
 
     private void alliance_Picks() {
+        Toast toast = Toast.makeText(getBaseContext(), "Generating Alliance Picks file - Please wait ...", Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
         String tName = ""; String totalScore=""; String DS = "";
         String underScore = new String(new char[30]).replace("\0", "_");    // string of 'x' underscores
         String blanks = new String(new char[50]).replace("\0", " ");        // string of 'x' blanks
+// ======================================================================================
         sortType = "Combined";          // Attempt to "force" correct sort 1st time
         Collections.sort(team_Scores, new Comparator<Scores>() {
             @Override
@@ -802,15 +808,16 @@ public boolean onCreateOptionsMenu(Menu menu) {
         });
         Collections.reverse(team_Scores);   // Descending
         loadTeams();
+// ======================================================================================
 
         if (numPicks > team_Scores.size()) {
 //            Log.w(TAG, "******>> numPick changed to: " + team_Scores.size());
             numPicks = team_Scores.size();      // Use max (prevent Error when # teams < 'numPicks')
         }
         if (numPicks > 24) {
-            DS = "";
+            DS = "";                    // Use Single Space
         }else {
-            DS = "\n";
+            DS = "\n";                  // Use Double Space on anything less than 24
         }
         try {
             String destFile = Pearadox.FRC_ChampDiv + "_Alliance-Picks" + ".txt";
@@ -849,6 +856,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
 
             bW.write(Pearadox.FRC_ChampDiv + " - " + Pearadox.FRC_EventName +  "\n");
             bW.write(underScore + "  SCALE  " + underScore +  "\n \n");
+            //  Scale sort
             sortType = "Scale";
             Collections.sort(team_Scores, new Comparator<Scores>() {
                 @Override
@@ -873,6 +881,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
 
             bW.write(Pearadox.FRC_ChampDiv + " - " + Pearadox.FRC_EventName +  "\n");
             bW.write(underScore + "  EXCHANGE  " + underScore +  "\n " + DS);
+            //  Exchange sort
             sortType = "Exchange";
             Collections.sort(team_Scores, new Comparator<Scores>() {
                 @Override
@@ -892,22 +901,45 @@ public boolean onCreateOptionsMenu(Menu menu) {
                 bW.write(String.format("%2d", i+1) +") " + tNumb + " - " + tName + " \t  (" + String.format("%2d",(Integer.parseInt(mdNumMatches))) + ")   " +  totalScore + "  \t");
                 bW.write( "Exch " + teleExch + "\n" + DS);
             } // end For # teams
+            bW.write(" \n" + "\n" + (char)12);        // NL & FF
+            //=====================================================================
+
+            bW.write(Pearadox.FRC_ChampDiv + " - " + Pearadox.FRC_EventName +  "\n");
+            bW.write(underScore + "  COMBINED  " + underScore +  "\n " + DS);
+            //  Combined sort
+            Collections.sort(team_Scores, new Comparator<Scores>() {
+                @Override
+                public int compare(Scores c1, Scores c2) {
+                    return Float.compare(c1.getWeightedScore(), c2.getWeightedScore());
+                }
+            });
+            Collections.reverse(team_Scores);   // Descending
+            loadTeams();
+            for (int i = 0; i < numPicks; i++) {    // load by sorted scores
+                score_inst = team_Scores.get(i);
+                tNumb = score_inst.getTeamNum();
+                tName = score_inst.getTeamName();
+                tName = tName + blanks.substring(0, (36 - tName.length()));
+                totalScore = "[" + String.format("%3.2f", score_inst.getWeightedScore()) + "]";
+                teamData(tNumb);   // Get Team's Match Data
+                bW.write(String.format("%2d", i+1) +") " + tNumb + " - " + tName + " \t  (" + String.format("%2d",(Integer.parseInt(mdNumMatches))) + ")   " +  totalScore + "  \t");
+                bW.write( "\n" + DS);
+            } // end For # teams
+
             bW.write(" \n" + "\n");        // NL
             //=====================================================================
 
-
             bW.flush();
             bW.close();
-            Toast toast = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Alliance Picks file (" + numPicks + " teams) written to SD card [Download/FRC5414] ***", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-            toast.show();
+            Toast toast2 = Toast.makeText(getBaseContext(), "*** '" + Pearadox.FRC_Event + "' Alliance Picks file (" + numPicks + " teams) written to SD card [Download/FRC5414] ***", Toast.LENGTH_LONG);
+            toast2.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast2.show();
         } catch (FileNotFoundException ex) {
             System.out.println(ex.getMessage() + " not found in the specified directory.");
             System.exit(0);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-
     }
 
 
@@ -1021,6 +1053,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
             autoScXover = "0";
             teleSwRatio = "0/0";
             teleScRatio = "0/0";
+            autoScExtra = "0";
             teleOthrRatio = "0/0";
             teleExch = "0";
             telePort = "0";
@@ -1037,13 +1070,13 @@ public boolean onCreateOptionsMenu(Menu menu) {
 //        Log.e(TAG, team + " "+ climbs + " "+ lift1Num + " "+ lift2Num + " " + platNum +  " " + liftedNum + " / " + numMatches);
         if (numMatches > 0) {
             climbScore = (float) (((climbs * Float.parseFloat(climbClimbs)) + (lift1Num * Float.parseFloat(climbLift1)) + (lift2Num * Float.parseFloat(climbLift2))) + (platNum * Float.parseFloat(climbPlat)) + (liftedNum * Float.parseFloat(climbLifted))) / numMatches;
-            cubeScored = (float) (((autoCubeSw +  + (autoCubeSwExtra * 2) + (autoSwXnum *.5)) * Float.parseFloat(cubeAutoSw) + (autoCubeSc + (autoCubeScExtra * 2) + (autoScXnum *.5)) * Float.parseFloat(cubeAutoSc) + teleCubeSw * Float.parseFloat(cubeTeleSw) + teleCubeSc * Float.parseFloat(cubeTeleSc) + teleOthrNUM * Float.parseFloat(teleOthr) + teleCubeExch * Float.parseFloat(cubeExch)) / numMatches);
+            cubeScored = (float) ((((autoCubeSw * autoCubeSwExtra) + (autoSwXnum *.5)) * Float.parseFloat(cubeAutoSw) + ((autoCubeSc * autoCubeScExtra) + (autoScXnum *.5)) * Float.parseFloat(cubeAutoSc) + teleCubeSw * Float.parseFloat(cubeTeleSw) + teleCubeSc * Float.parseFloat(cubeTeleSc) + teleOthrNUM * Float.parseFloat(teleOthr) + teleCubeExch * Float.parseFloat(cubeExch)) / numMatches);
             cubeCollect = (float) ((telePortalNUM * Float.parseFloat(cubeColPort) + teleZoneNUM * Float.parseFloat(cubeColZone) + teleFloorNUM * Float.parseFloat(cubeColFloor) + teleTheirNUM * Float.parseFloat(cubeColStolen) + teleRandomNUM * Float.parseFloat(cubeColRandom)) / numMatches);
             cubeScore = (float) ((cubeScored) + cubeCollect);
-            weightedScore = ((climbScore* Float.parseFloat(wtClimb) + cubeScored * Float.parseFloat(wtCubeScore) + cubeCollect * Float.parseFloat(wtCubeCollct)) / numMatches);
-            switchScore = (float) ((autoCubeSw * Float.parseFloat(cubeAutoSw) + (teleCubeSw * Float.parseFloat(cubeTeleSw)) + (teleOthrNUM * Float.parseFloat(teleOthr)))) / numMatches;
-            scaleScore = (float) ((autoCubeSc * Float.parseFloat(cubeAutoSc) + teleCubeSc * Float.parseFloat(cubeTeleSc))) / numMatches;
+            switchScore = (float) ((((autoCubeSw * autoCubeSwExtra) + (autoSwXnum *.5)) * Float.parseFloat(cubeAutoSw) + (teleCubeSw * Float.parseFloat(cubeTeleSw)) + (teleOthrNUM * Float.parseFloat(teleOthr)))) / numMatches;
+            scaleScore = (float) ((((autoCubeSc * autoCubeScExtra) + (autoScXnum *.5)) * Float.parseFloat(cubeAutoSc) + teleCubeSc * Float.parseFloat(cubeTeleSc))) / numMatches;
             exchangeScore = (float) ((teleCubeExch * Float.parseFloat(cubeExch)) / numMatches);
+            weightedScore = ((climbScore* Float.parseFloat(wtClimb) + switchScore * Float.parseFloat(wtCubeScore) + scaleScore * Float.parseFloat(wtCubeScore) + exchangeScore) / numMatches);
 //            Log.e(TAG, "Exch= " + teleCubeExch + "  #Matches=" + numMatches + "  Score=" + String.format("%3.2f", exchangeScore));
 //            Log.w(TAG, team + " **Scores**  Climb = " + String.format("%3. ", climbScore) + "  Cubes Scored = " + String.format("%3.2f", cubeScored) + "  Cubes Collected = " + String.format("%3.2f", cubeCollect) + "  Cubes Score = " + String.format("%3.2f", cubeScore) + "  Combined Score = " + String.format("%3.2f", weightedScore));
         } else {

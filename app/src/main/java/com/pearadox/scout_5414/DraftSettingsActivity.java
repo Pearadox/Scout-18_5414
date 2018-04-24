@@ -25,9 +25,9 @@ public class DraftSettingsActivity extends AppCompatActivity {
     public static final String  CLIMB_PREF_PLAT =   "prefClimb_onPlat";
     public static final String  CLIMB_PREF_LIFTED = "prefClimb_lifted";
 
-    public static final String  WEIGHT_PREF_CLIMB =         "prefWeight_climb";
-    public static final String  WEIGHT_PREF_CUBESSCORED =   "prefWeight_cubesScored";
-    public static final String  WEIGHT_PREF_CUBESSCOLLECT = "prefWeight_cubesCollected";
+    public static final String  WEIGHT_PREF_CLIMB =       "prefWeight_climb";
+    public static final String  WEIGHT_PREF_CUBESSWITCH = "prefWeight_cubesSwitch";
+    public static final String  WEIGHT_PREF_CUBESSCALE =  "prefWeight_cubesScale";
 
     public static final String  ALLIANCE_PICKS_NUM =   "prefAlliance_num";
 
